@@ -97,11 +97,11 @@ Luku 19 toimii hakemistona Rustin mallien (patterns) ja mallivastaavuuden (patte
 
 
 
-| Ferris                                                                                                           | Meaning                                          |
+| Ferris                                                                                                           | Merkitys                                          |
 | ---------------------------------------------------------------------------------------------------------------- | ------------------------------------------------ |
-| <img src="img/ferris/does_not_compile.svg" class="ferris-explain" alt="Ferris with a question mark"/>            | This code does not compile!                      |
-| <img src="img/ferris/panics.svg" class="ferris-explain" alt="Ferris throwing up their hands"/>                   | This code panics!                                |
-| <img src="img/ferris/not_desired_behavior.svg" class="ferris-explain" alt="Ferris with one claw up, shrugging"/> | This code does not produce the desired behavior. |
+| <img src="img/ferris/does_not_compile.svg" class="ferris-explain" alt="Ferris with a question mark"/>            | Tämä koodi ei käänny!                      |
+| <img src="img/ferris/panics.svg" class="ferris-explain" alt="Ferris throwing up their hands"/>                   | Tämä koodi panikoi!                                |
+| <img src="img/ferris/not_desired_behavior.svg" class="ferris-explain" alt="Ferris with one claw up, shrugging"/> | Tämä koodi ei käyttäydy kuten sen pitäisi |
 
 
 ## Lähdekoodi
