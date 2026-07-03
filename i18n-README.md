@@ -19,8 +19,12 @@ mdbook build --open
 ```
 
 ### Finnish Version
-```bash
-mdbook build -d book-fi.toml --open
+```powershell
+# Windows
+powershell -File tools/build-fi.ps1
+
+# Or manually: temporarily use book-fi.toml as book.toml, then:
+mdbook build -d book-fi --open
 ```
 
 Or use the provided scripts:

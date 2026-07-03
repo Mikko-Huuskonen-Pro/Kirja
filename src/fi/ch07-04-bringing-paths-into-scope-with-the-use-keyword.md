@@ -1,120 +1,201 @@
 ## Polkujen tuominen laajuuteen `use`-avainsanalla
 
-Funktioiden kutsuminen polkuja kirjoittamalla voi tuntua hankalalta ja toistavalta. Luvun 7-7 esimerkissä, riippumatta siitä, käytimmekö absoluuttista tai suhteellista polkua `add_to_waitlist`-funktioon, jouduimme aina erikseen mainitsemaan `front_of_house`- ja `hosting`-moduulit. Onneksi tähän on helpotus: voimme luoda polulle lyhenteen `use`-avainsanalla ja käyttää jatkossa lyhyempää nimeä koko laajuuden sisällä.
+Funktioiden kutsuminen polkuja kirjoittamalla voi tuntua hankalalta ja toistavalta. Listauksessa 7-7, riippumatta siitä, valitsimmeko absoluuttisen vai suhteellisen polun `add_to_waitlist`-funktioon, jouduimme aina määrittämään myös `front_of_house`- ja `hosting`-moduulit, kun halusimme kutsua `add_to_waitlist`-funktiota. Onneksi on olemassa tapa yksinkertaistaa tätä prosessia: voimme luoda polulle lyhenteen `use`-avainsanalla kerran ja käyttää sitten lyhyempää nimeä kaikkialla muualla laajuudessa.
 
-Alla olevassa esimerkissä tuomme `crate::front_of_house::hosting`-moduulin `eat_at_restaurant`-funktion laajuuteen, jolloin riittää kutsua `hosting::add_to_waitlist`:
+Listauksessa 7-11 tuomme `crate::front_of_house::hosting`-moduulin `eat_at_restaurant`-funktion laajuuteen, joten meidän tarvitsee vain määrittää `hosting::add_to_waitlist` kutsuaksemme `add_to_waitlist`-funktiota funktiossa `eat_at_restaurant`.
+
+<Listing number="7-11" file-name="src/lib.rs" caption="Moduulin tuominen laajuuteen `use`:lla">
 
 ```rust,noplayground,test_harness
 {{#rustdoc_include ../listings/ch07-managing-growing-projects/listing-07-11/src/lib.rs}}
 ```
 
-`use`-avainsanan lisääminen polun eteen vastaa symbolisen linkin luomista tiedostojärjestelmässä. Kun lisäämme `use crate::front_of_house::hosting`, `hosting` on nyt käytettävissä siinä laajuudessa kuin se olisi määritetty ohjelmakokonaisuuden juuressa.
+</Listing>
 
-Huomaa, että `use` luo lyhenteen vain siihen laajuuteen, jossa se on määritelty. Alla `eat_at_restaurant` siirretään uuteen `customer`-moduuliin, joka on eri laajuudessa kuin alkuperäinen `use`, mikä aiheuttaa käännösvirheen:
+`use`-avainsanan ja polun lisääminen laajuuteen on samankaltaista kuin symbolisen linkin luominen tiedostojärjestelmässä. Lisäämällä `use crate::front_of_house::hosting` crate-juureen, `hosting` on nyt kelvollinen nimi siinä laajuudessa, ikään kuin `hosting`-moduuli olisi määritelty crate-juuressa. `use`:lla laajuuteen tuodut polut tarkistavat myös yksityisyyden, kuten muutkin polut.
+
+Huomaa, että `use` luo lyhenteen vain siihen laajuuteen, jossa `use` esiintyy. Listausta 7-12 siirtää `eat_at_restaurant`-funktion uuteen lapsimoduuliin nimeltä `customer`, joka on sitten eri laajuudessa kuin `use`-lauseke, joten funktion runko ei käänny.
+
+<Listing number="7-12" file-name="src/lib.rs" caption="`use`-lauseke pätee vain laajuudessa, jossa se on.">
 
 ```rust,noplayground,test_harness,does_not_compile,ignore
 {{#rustdoc_include ../listings/ch07-managing-growing-projects/listing-07-12/src/lib.rs}}
 ```
 
-Tämän voi korjata joko lisäämällä `use` myös `customer`-moduulin sisään tai viittaamalla ylätason polkuun `super::hosting`.
+</Listing>
 
-### Idiomaattiset `use`-polut
+Kääntäjän virhe näyttää, että lyhenne ei enää päde `customer`-moduulissa:
 
-Voit miettiä, miksi edellisessä esimerkissä käytettiin `use crate::front_of_house::hosting` eikä tuotu funktiota suoraan laajuuteen polulla `use crate::front_of_house::hosting::add_to_waitlist`, kuten alla:
+```console
+{{#include ../listings/ch07-managing-growing-projects/listing-07-12/output.txt}}
+```
+
+Huomaa, että on myös varoitus siitä, että `use` ei ole enää käytössä laajuudessaan! Korjataksesi tämän ongelman, siirrä `use` myös `customer`-moduulin sisään, tai viittaa lyhenteeseen emomoduulissa `super::hosting`:lla `customer`-lapsimoduulissa.
+
+### Idiomaattisten `use`-polkujen luominen
+
+Listauksessa 7-11 saatoit ihmetellä, miksi määritimme `use crate::front_of_house::hosting` ja kutsuimme sitten `hosting::add_to_waitlist` funktiossa `eat_at_restaurant`, sen sijaan että määrittäisimme `use`-polun aina `add_to_waitlist`-funktioon saakka saavuttaaksemme saman tuloksen, kuten Listauksessa 7-13.
+
+<Listing number="7-13" file-name="src/lib.rs" caption="`add_to_waitlist`-funktion tuominen laajuuteen `use`:lla, mikä ei ole idiomaattista">
 
 ```rust,noplayground,test_harness
 {{#rustdoc_include ../listings/ch07-managing-growing-projects/listing-07-13/src/lib.rs}}
 ```
 
-Molemmat tavat toimivat, mutta ensimmäinen on idiomaattisempi tapa käyttää `use`-avainsanaa funktioiden kohdalla. Kun tuomme funktiota sisältävän moduulin laajuuteen, meidän on edelleen kutsuttava funktiota moduulin nimen kautta (`hosting::add_to_waitlist`), mikä tekee koodista selkeämpää. Jos tuotaisimme funktion suoraan, olisi epäselvää, mistä se on peräisin.
+</Listing>
 
-Toisaalta rakenteiden, luetteloiden ja muiden kohteiden kohdalla on tapana tuoda koko polku. Alla tuodaan standardikirjaston `HashMap`-rakenne oikein:
+Vaikka sekä Listausta 7-11 että Listausta 7-13 saavuttavat saman tehtävän, Listausta 7-11 on idiomaattinen tapa tuoda funktio laajuuteen `use`:lla. Funktion emomoduulin tuominen laajuuteen `use`:lla tarkoittaa, että meidän täytyy määrittää emomoduuli funktiota kutsuttaessa. Emomoduulin määrittäminen funktiota kutsuttaessa tekee selväksi, ettei funktio ole määritelty paikallisesti, mutta silti minimoidaan koko polun toistuminen. Listauksen 7-13 koodi ei kerro selvästi, mistä `add_to_waitlist` on määritelty.
+
+Toisaalta, kun tuomme rakenteita, enumeja ja muita kohteita `use`:lla, on idiomaattista määrittää koko polku. Listausta 7-14 näyttää idiomaattisen tavan tuoda standardikirjaston `HashMap`-rakenne binääricraten laajuuteen.
+
+<Listing number="7-14" file-name="src/main.rs" caption="`HashMap`:n tuominen laajuuteen idiomaattisella tavalla">
 
 ```rust
 {{#rustdoc_include ../listings/ch07-managing-growing-projects/listing-07-14/src/main.rs}}
 ```
 
-Tämä on vain vakiintunut käytäntö, johon Rust-yhteisö on tottunut.
+</Listing>
 
-Poikkeuksena tähän sääntöön on tapaus, jossa kaksi samaa nimeä käyttävää kohdetta tuodaan samaan laajuuteen. Alla tuodaan kaksi `Result`-tyyppiä eri moduuleista ja pidetään ne erillään:
+Tämän idiooman takana ei ole vahvaa syytä: se on vain vakiintunut käytäntö, johon ihmiset ovat tottuneet lukemaan ja kirjoittamaan Rust-koodia tällä tavalla.
+
+Poikkeus tähän idioomaan on, jos tuomme kaksi samaa nimeä käyttävää kohdetta laajuuteen `use`-lausekkeilla, koska Rust ei salli sitä. Listausta 7-15 näyttää, miten tuodaan kaksi `Result`-tyyppiä, joilla on sama nimi mutta eri emomoduulit, ja miten niihin viitataan.
+
+<Listing number="7-15" file-name="src/lib.rs" caption="Kahden saman nimisen tyypin tuominen samaan laajuuteen vaatii niiden emomoduulien käyttöä.">
 
 ```rust,noplayground
 {{#rustdoc_include ../listings/ch07-managing-growing-projects/listing-07-15/src/lib.rs:here}}
 ```
 
-Jos olisimme tuoneet molemmat suoraan `use std::fmt::Result` ja `use std::io::Result`, Rust ei tietäisi, kumpaa `Result`-tyyppiä tarkoitetaan.
+</Listing>
+
+Kuten näet, emomoduulien käyttö erottaa kaksi `Result`-tyyppiä toisistaan. Jos sen sijaan määrittäisimme `use std::fmt::Result` ja `use std::io::Result`, meillä olisi kaksi `Result`-tyyppiä samassa laajuudessa, eikä Rust tietäisi, kumpaa tarkoitamme, kun käytämme `Result`:ia.
 
 ### Uusien nimien antaminen `as`-avainsanalla
 
-Jos haluamme tuoda kaksi samaa nimeä käyttävää tyyppiä laajuuteen, mutta ilman epäselvyyttä, voimme käyttää `as`-avainsanaa antamaan tyypille uuden nimen:
+On olemassa toinen ratkaisu ongelmaan, jossa tuodaan kaksi samaa nimeä käyttävää tyyppiä samaan laajuuteen `use`:lla: polun jälkeen voimme määrittää `as` ja uuden paikallisen nimen, eli _aliasin_, tyypille. Listausta 7-16 näyttää toisen tavan kirjoittaa Listauksen 7-15 koodi uudelleennimeämällä toinen kahdesta `Result`-tyypistä `as`:lla.
+
+<Listing number="7-16" file-name="src/lib.rs" caption="Tyypin uudelleennimeäminen, kun se tuodaan laajuuteen `as`-avainsanalla">
 
 ```rust,noplayground
 {{#rustdoc_include ../listings/ch07-managing-growing-projects/listing-07-16/src/lib.rs:here}}
 ```
 
-Tässä `std::io::Result` on nimetty `IoResult`-aliasilla, jolloin se ei sekoitu `std::fmt::Result`-tyyppiin.
+</Listing>
 
-### Nimien uudelleenjulkaisu `pub use` -avainsanalla
+Toisessa `use`-lausekkeessa valitsimme uuden nimen `IoResult` tyypille `std::io::Result`, joka ei ole ristiriidassa `std::fmt`:n `Result`-tyypin kanssa, jonka olemme myös tuoneet laajuuteen. Listausta 7-15 ja Listausta 7-16 pidetään idiomaattisina, joten valinta on sinun!
 
-Kun tuomme nimen laajuuteen `use`-avainsanalla, se on oletuksena yksityinen. Jos haluamme, että muu koodi voi käyttää tuomaamme nimeä, voimme yhdistää `pub` ja `use` -avainsanat. Tätä kutsutaan **uudelleenjulkaisuksi** (*re-exporting*).
+### Nimien uudelleenjulkaisu `pub use`:lla
 
-Alla `use`-avainsana on muutettu `pub use` -muotoon:
+Kun tuomme nimen laajuuteen `use`-avainsanalla, uudessa laajuudessa käytettävissä oleva nimi on yksityinen. Jotta koodi, joka kutsuu koodiamme, voisi viitata kyseiseen nimeen ikään kuin se olisi määritelty sen koodin laajuudessa, voimme yhdistää `pub` ja `use`. Tätä tekniikkaa kutsutaan _uudelleenjulkaisuksi_, koska tuomme kohteen laajuuteen mutta teemme sen myös muiden saataville tuotavaksi heidän laajuuteensa.
+
+Listausta 7-17 näyttää Listauksen 7-11 koodin, jossa juurimoduulin `use` on muutettu muotoon `pub use`.
+
+<Listing number="7-17" file-name="src/lib.rs" caption="Nimen saataville asettaminen kaikelle koodille uudesta laajuudesta `pub use`:lla">
 
 ```rust,noplayground,test_harness
 {{#rustdoc_include ../listings/ch07-managing-growing-projects/listing-07-17/src/lib.rs}}
 ```
 
-Aiemmin ulkoisen koodin olisi pitänyt kutsua `add_to_waitlist`-funktiota polulla `restaurant::front_of_house::hosting::add_to_waitlist()`, mutta nyt `restaurant::hosting::add_to_waitlist()` riittää.
+</Listing>
 
-Tätä tekniikkaa voi käyttää, jos koodin sisäinen rakenne eroaa siitä, miten ohjelmoijat ajattelevat kirjaston toiminnallisuutta.
+Ennen tätä muutosta ulkoisen koodin olisi pitänyt kutsua `add_to_waitlist`-funktiota polulla `restaurant::front_of_house::hosting::add_to_waitlist()`, mikä olisi myös vaatinut `front_of_house`-moduulin merkitsemistä `pub`:iksi. Nyt kun tämä `pub use` on uudelleenjulkaissut `hosting`-moduulin juurimoduulista, ulkoinen koodi voi käyttää polkua `restaurant::hosting::add_to_waitlist()` sen sijaan.
+
+Uudelleenjulkaisu on hyödyllistä, kun koodisi sisäinen rakenne poikkeaa siitä, miten koodiasi kutsuvat ohjelmoijat ajattelevat toimialuetta. Esimerkiksi tässä ravintolametaforassa ravintolaa pyörittävät ihmiset ajattelevat ”etutaloa” ja ”takataloa”. Ravintolaa vierailevat asiakkaat eivät kuitenkaan todennäköisesti ajattele ravintolan osia näillä termeillä. `pub use`:lla voimme kirjoittaa koodimme yhdellä rakenteella mutta paljastaa erilaisen rakenteen. Näin kirjastomme on hyvin organisoitu sekä kirjastoa työstäville ohjelmoijille että kirjastoa kutsuville ohjelmoijille. Katsomme toisen esimerkin `pub use`:sta ja sen vaikutuksesta craten dokumentaatioon [”Kätevän julkisen API:n vienti `pub use`:lla”][ch14-pub-use]<!-- ignore --> -osiossa Luvussa 14.
 
 ### Ulkoisten pakettien käyttäminen
 
-Jos käytämme ulkoista pakettia kuten `rand`, lisäämme sen `Cargo.toml`-tiedostoon:
+Luvussa 2 ohjelmoimme arvauspeliprojektin, joka käytti ulkoista pakettia nimeltä `rand` satunnaislukujen saamiseen. Käyttääksemme `rand`:ia projektissamme lisäsimme tämän rivin tiedostoon _Cargo.toml_:
+
+<!-- When updating the version of `rand` used, also update the version of
+`rand` used in these files so they all match:
+* ch02-00-guessing-game-tutorial.md
+* ch14-03-cargo-workspaces.md
+-->
+
+<Listing file-name="Cargo.toml">
 
 ```toml
 {{#include ../listings/ch02-guessing-game-tutorial/listing-02-02/Cargo.toml:9:}}
 ```
 
-Sen jälkeen voimme tuoda tarvittavat määrittelyt laajuuteen `use`-avainsanalla:
+</Listing>
+
+`rand`:in lisääminen riippuvuudeksi tiedostoon _Cargo.toml_ kertoo Cargolle lataamaan `rand`-paketin ja sen riippuvuudet osoitteesta [crates.io](https://crates.io/) ja tekemään `rand`:in saataville projektillemme.
+
+Sitten tuodaksemme `rand`:in määrittelyt pakettimme laajuuteen lisäsimme `use`-rivin, joka alkaa craten nimellä `rand`, ja listasimme kohteet, jotka halusimme tuoda laajuuteen. Muista, että [”Satunnaisluvun generointi”][rand]<!-- ignore --> -osiossa Luvussa 2 toimme `Rng`-traitin laajuuteen ja kutsuimme `rand::thread_rng`-funktiota:
 
 ```rust,ignore
 {{#rustdoc_include ../listings/ch02-guessing-game-tutorial/listing-02-03/src/main.rs:ch07-04}}
 ```
 
-Standardikirjasto `std` on myös ulkoinen paketti, mutta koska se toimitetaan Rustin mukana, sitä ei tarvitse määrittää `Cargo.toml`-tiedostossa. Silti tarvitsemme `use`-avainsanaa sen laajuuteen tuomiseen:
+Rust-yhteisön jäsenet ovat tehneet monia paketteja saataville osoitteessa [crates.io](https://crates.io/), ja minkä tahansa niistä tuominen pakettiisi sisältää samat vaiheet: niiden listaaminen pakettisi tiedostossa _Cargo.toml_ ja `use`:n käyttö kohteiden tuomiseen laajuuteen niiden crateista.
+
+Huomaa, että standardikirjasto `std` on myös paketti, joka on ulkoinen pakettimme suhteen. Koska standardikirjasto toimitetaan Rust-kielen mukana, meidän ei tarvitse muuttaa tiedostoa _Cargo.toml_ sisällyttääksemme `std`:n. Meidän täytyy kuitenkin viitata siihen `use`:lla tuodaksemme kohteita sieltä pakettimme laajuuteen. Esimerkiksi `HashMap`:n kohdalla käyttäisimme tätä riviä:
 
 ```rust
 use std::collections::HashMap;
 ```
 
+Tämä on absoluuttinen polku, joka alkaa `std`:llä, standardikirjaston craten nimellä.
+
 ### Sisäkkäisten polkujen käyttö suurten `use`-listojen siistimiseen
 
-Jos haluamme tuoda useita kohteita samasta moduulista, voimme välttää turhia rivejä käyttämällä sisäkkäisiä polkuja. Sen sijaan, että kirjoittaisimme:
+Jos käytämme useita samassa cratessa tai moduulissa määriteltyjä kohteita, kunkin kohteen listaaminen omalle rivilleen voi viedä paljon pystysuuntaista tilaa tiedostoissamme. Esimerkiksi nämä kaksi `use`-lauseketta, joita käytimme arvauspelissä Listauksessa 2-4, tuovat kohteita `std`:stä laajuuteen:
+
+<Listing file-name="src/main.rs">
 
 ```rust,ignore
 {{#rustdoc_include ../listings/ch07-managing-growing-projects/no-listing-01-use-std-unnested/src/main.rs:here}}
 ```
 
-Voimme käyttää lyhyempää muotoa:
+</Listing>
+
+Sen sijaan voimme käyttää sisäkkäisiä polkuja tuodaksemme samat kohteet laajuuteen yhdellä rivillä. Teemme tämän määrittämällä polun yhteisen osan, jota seuraa kaksoispiste ja sitten aaltosulkeet eri polkujen osien listan ympärillä, kuten Listauksessa 7-18 on esitetty.
+
+<Listing number="7-18" file-name="src/main.rs" caption="Sisäkkäisen polun määrittäminen useiden saman etuliitteen omaavien kohteiden tuomiseksi laajuuteen">
 
 ```rust,ignore
 {{#rustdoc_include ../listings/ch07-managing-growing-projects/listing-07-18/src/main.rs:here}}
 ```
 
-Tätä voidaan käyttää myös eri tasojen yhdistämiseen. Seuraavassa `std::io` ja `std::io::Write` tuodaan samalla rivillä:
+</Listing>
+
+Suuremmissa ohjelmissa monien kohteiden tuominen laajuuteen samasta cratesta tai moduulista sisäkkäisiä polkuja käyttäen voi vähentää erillisten `use`-lausekkeiden määrää huomattavasti!
+
+Voimme käyttää sisäkkäistä polkua millaisella tahansa polun tasolla, mikä on hyödyllistä, kun yhdistämme kaksi `use`-lauseketta, joilla on yhteinen alipolku. Esimerkiksi Listausta 7-19 näyttää kaksi `use`-lauseketta: toinen tuo `std::io`:n laajuuteen ja toinen tuo `std::io::Write`:n laajuuteen.
+
+<Listing number="7-19" file-name="src/lib.rs" caption="Kaksi `use`-lauseketta, joista toinen on toisen alipolku">
+
+```rust,noplayground
+{{#rustdoc_include ../listings/ch07-managing-growing-projects/listing-07-19/src/lib.rs}}
+```
+
+</Listing>
+
+Näiden kahden polun yhteinen osa on `std::io`, ja se on koko ensimmäinen polku. Yhdistääksemme nämä kaksi polkua yhdeksi `use`-lausekkeeksi voimme käyttää `self`:ää sisäkkäisessä polussa, kuten Listauksessa 7-20 on esitetty.
+
+<Listing number="7-20" file-name="src/lib.rs" caption="Listauksen 7-19 polut yhdistettynä yhdeksi `use`-lausekkeeksi">
 
 ```rust,noplayground
 {{#rustdoc_include ../listings/ch07-managing-growing-projects/listing-07-20/src/lib.rs}}
 ```
 
-### Yleismerkkioperaattori `*`
+</Listing>
 
-Voimme tuoda _kaikki_ polussa määritetyt julkiset kohteet laajuuteen käyttämällä `*`-merkkiä:
+Tämä rivi tuo `std::io`:n ja `std::io::Write`:n laajuuteen.
+
+### Glob-operaattori
+
+Jos haluamme tuoda _kaikki_ polussa määritellyt julkiset kohteet laajuuteen, voimme määrittää kyseisen polun, jota seuraa `*`-glob-operaattori:
 
 ```rust
 use std::collections::*;
 ```
 
-Tämä tuo kaikki `std::collections`-moduulin julkiset kohteet laajuuteen. Tätä on käytettävä varoen, koska se voi tehdä koodista vaikeaselkoisemman.
+Tämä `use`-lauseke tuo kaikki `std::collections`:ssa määritellyt julkiset kohteet nykyiseen laajuuteen. Ole varovainen käyttäessäsi glob-operaattoria! Glob voi vaikeuttaa sen tunnistamista, mitkä nimet ovat laajuudessa ja mistä ohjelmassasi käytetty nimi on määritelty.
 
+Glob-operaattoria käytetään usein testauksessa tuomaan kaikki testattava `tests`-moduuliin; puhumme siitä [”Testien kirjoittaminen”][writing-tests]<!-- ignore --> -osiossa Luvussa 11. Glob-operaattoria käytetään joskus myös osana preludimallia: katso [standardikirjaston dokumentaatio](../std/prelude/index.html#other-preludes)<!-- ignore --> lisätietoja tästä mallista.
+
+[ch14-pub-use]: ch14-02-publishing-to-crates-io.html#exporting-a-convenient-public-api-with-pub-use
+[rand]: ch02-00-guessing-game-tutorial.html#generating-a-random-number
+[writing-tests]: ch11-01-writing-tests.html#how-to-write-tests
