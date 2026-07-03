@@ -12,44 +12,56 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
 
-        <link rel="icon" href="favicon.svg">
-        <link rel="shortcut icon" href="favicon.png">
-        <link rel="stylesheet" href="css/variables.css">
-        <link rel="stylesheet" href="css/general.css">
-        <link rel="stylesheet" href="css/chrome.css">
-        <link rel="stylesheet" href="css/print.css" media="print">
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-2459343d.css">
+        <link rel="stylesheet" href="css/chrome-ae938929.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
-        <link rel="stylesheet" href="fonts/fonts.css">
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" href="highlight.css">
-        <link rel="stylesheet" href="tomorrow-night.css">
-        <link rel="stylesheet" href="ayu-highlight.css">
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="ferris.css">
-        <link rel="stylesheet" href="theme/2018-edition.css">
-        <link rel="stylesheet" href="theme/semantic-notes.css">
-        <link rel="stylesheet" href="theme/listing.css">
+        <link rel="stylesheet" href="ferris-d33b75bf.css">
+        <link rel="stylesheet" href="theme/2018-edition-4e126c62.css">
+        <link rel="stylesheet" href="theme/semantic-notes-9b5766c0.css">
+        <link rel="stylesheet" href="theme/listing-cab26221.css">
 
 
-        <!-- Provide site root to javascript -->
+        <!-- Provide site root and default themes to javascript -->
         <script>
-            var path_to_root = "";
-            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex-454febf7.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc.js"></script>
+        <script src="toc-7f90d00d.js"></script>
     </head>
     <body>
-    <div id="body-container">
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
             try {
-                var theme = localStorage.getItem('mdbook-theme');
-                var sidebar = localStorage.getItem('mdbook-sidebar');
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
 
                 if (theme.startsWith('"') && theme.endsWith('"')) {
                     localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
@@ -63,7 +75,8 @@
 
         <!-- Set the theme before any content is loaded, prevents flash -->
         <script>
-            var theme;
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
             const html = document.documentElement;
@@ -72,55 +85,59 @@
             html.classList.add("js");
         </script>
 
-        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
-            var sidebar = null;
-            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
             } else {
                 sidebar = 'hidden';
+                sidebar_toggle.checked = false;
             }
-            sidebar_toggle.checked = sidebar === 'visible';
-            html.classList.remove('sidebar-visible');
-            html.classList.add("sidebar-" + sidebar);
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
         </script>
 
-        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
             <!-- populated by js -->
             <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
             <noscript>
                 <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
             </noscript>
-            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
             </div>
         </nav>
 
-        <div id="page-wrapper" class="page-wrapper">
+        <div id="mdbook-page-wrapper" class="page-wrapper">
 
             <div class="page">
-                <div id="menu-bar-hover-placeholder"></div>
-                <div id="menu-bar" class="menu-bar sticky">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
-                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
-                            <i class="fa fa-bars"></i>
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
                         </label>
-                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
-                            <i class="fa fa-paint-brush"></i>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
                         </button>
-                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
-                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
                         </ul>
-                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
-                            <i class="fa fa-search"></i>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
                         </button>
                     </div>
 
@@ -128,131 +145,137 @@
 
                     <div class="right-buttons">
                         <a href="print.html" title="Print this book" aria-label="Print this book">
-                            <i id="print-button" class="fa fa-print"></i>
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
                         </a>
                         <a href="https://github.com/rust-lang/book" title="Git repository" aria-label="Git repository">
-                            <i id="git-repository-button" class="fa fa-github"></i>
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></span>
                         </a>
 
                     </div>
                 </div>
 
-                <div id="search-wrapper" class="hidden">
-                    <form id="searchbar-outer" class="searchbar-outer">
-                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
                     </form>
-                    <div id="searchresults-outer" class="searchresults-outer hidden">
-                        <div id="searchresults-header" class="searchresults-header"></div>
-                        <ul id="searchresults">
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
                         </ul>
                     </div>
                 </div>
 
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
                 <script>
-                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
-                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
-                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
                         link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
                     });
                 </script>
 
-                <div id="content" class="content">
+                <div id="mdbook-content" class="content">
                     <main>
-                        <h2 id="kehittyneitä-tyyppejä"><a class="header" href="#kehittyneitä-tyyppejä">Kehittyneitä tyyppejä</a></h2>
-<p>Rustin tyyppijärjestelmässä on joitakin ominaisuuksia, joita olemme tähän asti maininneet, mutta joita emme ole vielä käsitelleet. Aloitamme käsittelemällä newtype-kuvioita yleisesti ja tarkastelemalla, miksi newtypet ovat hyödyllisiä tyyppeinä. Siirrymme sitten tyyppialiasseihin, ominaisuuteen, joka on samanlainen kuin newtypet mutta hieman erilaisella semantiikalla. Käsittelemme myös <code>!</code>-tyyppiä ja dynaamisesti kokoisia tyyppejä.</p>
-<h3 id="newtype-kuvion-käyttäminen-tyyppiturvallisuuteen-ja-abstraktioon"><a class="header" href="#newtype-kuvion-käyttäminen-tyyppiturvallisuuteen-ja-abstraktioon">Newtype-kuvion käyttäminen tyyppiturvallisuuteen ja abstraktioon</a></h3>
-<p>Tämä osio olettaa, että olet lukenut aiemman osion <a href="ch20-02-advanced-traits.html#using-the-newtype-pattern-to-implement-external-traits-on-external-types">”Newtype-mallin käyttö ulkoisten traitien toteuttamiseen ulkoisille tyypeille.”</a><!--
-ignore --> Newtype-kuvio on hyödyllinen myös tehtäviin, joita emme ole vielä käsitelleet, mukaan lukien arvojen sekoittumisen staattinen estäminen ja arvon yksiköiden ilmaiseminen. Näitä arvojen yksiköiden ilmaisemiseen liittyvää newtype-käyttöä esitettiin Listauksessa 20-16: muistathan, että <code>Millimeters</code>- ja <code>Meters</code>-rakenteet käärivät <code>u32</code>-arvot newtypeen. Jos kirjoittaisimme funktion, jonka parametrin tyyppi on <code>Millimeters</code>, emme voisi kääntää ohjelmaa, joka yrittäisi vahingossa kutsua kyseistä funktiota <code>Meters</code>-tyyppisellä arvolla tai pelkällä <code>u32</code>:lla.</p>
-<p>Voimme käyttää newtype-kuviota myös piilottamaan tyypin toteutustietoja: uusi tyyppi voi tarjota julkisen rajapinnan, joka eroaa yksityisen sisätyypin rajapinnasta.</p>
-<p>Newtypet voivat myös piilottaa sisäisen toteutuksen. Esimerkiksi voisimme tarjota <code>People</code>-tyypin käärimään <code>HashMap&lt;i32, String&gt;</code>-rakenteen, joka tallentaa henkilön tunnuksen liitettynä hänen nimeensä. <code>People</code>-tyyppiä käyttävä koodi vuorovaikuttaisi vain tarjoamamme julkisen rajapinnan kanssa, kuten metodin, joka lisää nimirivin <code>People</code>-kokoelmaan; kyseisen koodin ei tarvitsisi tietää, että liitämme nimiin sisäisesti <code>i32</code>-tunnuksen. Newtype-kuvio on kevyt tapa saavuttaa kapselointi toteutustietojen piilottamiseksi, josta käsittelimme <a href="ch18-01-what-is-oo.html#encapsulation-that-hides-implementation-details">”Kapselointi, joka piilottaa toteutustiedot”</a><!--
-ignore --> -osiossa Luvussa 18.</p>
-<h3 id="tyyppisynonyymien-luominen-tyyppialiasseilla"><a class="header" href="#tyyppisynonyymien-luominen-tyyppialiasseilla">Tyyppisynonyymien luominen tyyppialiasseilla</a></h3>
+                        <h2 id="edistyneet-tyypit"><a class="header" href="#edistyneet-tyypit">Edistyneet tyypit</a></h2>
+<p>Rustin tyyppijärjestelmässä on ominaisuuksia, joista olemme maininneet mutta joita emme ole vielä käsitelleet. Aloitamme käsittelemällä newtype-tyyppejä yleisesti ja tutkimalla, miksi ne ovat hyödyllisiä tyyppeinä. Siirrymme sitten tyyppialiasiin, ominaisuuteen, joka muistuttaa newtype-tyyppejä mutta hieman eri semantiikalla. Käsittelemme myös <code>!</code>-tyypin ja dynaamisesti mitoitetut tyypit.</p>
+<!-- Old headings. Do not remove or links may break. -->
+<p><a id="using-the-newtype-pattern-for-type-safety-and-abstraction"></a></p>
+<h3 id="tyyppiturvallisuus-ja-abstraktio-newtype-kuviolla"><a class="header" href="#tyyppiturvallisuus-ja-abstraktio-newtype-kuviolla">Tyyppiturvallisuus ja abstraktio newtype-kuviolla</a></h3>
+<p>Tämä osio olettaa, että olet lukenut aiemman <a href="ch20-02-advanced-traits.html#implementing-external-traits-with-the-newtype-pattern">”Ulkoisten traitien toteuttaminen newtype-kuviolla”</a><!-- ignore --> -kohdan. Newtype-kuvio on hyödyllinen myös muissa tehtävissä kuin niissä, joita olemme tähän asti käsitelleet, mukaan lukien arvojen sekoittumisen estäminen staattisesti ja arvon yksiköiden ilmaiseminen. Näit esimerkin newtype-tyyppien käytöstä yksiköiden ilmaisemiseen listauksessa 20-16: muista, että <code>Millimeters</code>- ja <code>Meters</code>-rakenteet käärivät <code>u32</code>-arvot newtype-tyyppiin. Jos kirjoittaisimme funktion, jonka parametri on tyyppiä <code>Millimeters</code>, emme voisi kääntää ohjelmaa, joka yrittäisi vahingossa kutsua funktiota <code>Meters</code>- tai tavallisella <code>u32</code>-arvolla.</p>
+<p>Voimme käyttää newtype-kuviota myös piilottaaksemme tyypin toteutuksen yksityiskohtia: uusi tyyppi voi tarjota julkisen API:n, joka eroaa sisäisen yksityisen tyypin API:sta.</p>
+<p>Newtype-tyypit voivat myös piilottaa sisäisen toteutuksen. Esimerkiksi voisimme tarjota <code>People</code>-tyypin käärimään <code>HashMap&lt;i32, String&gt;</code>-rakenteen, joka tallentaa henkilön tunnuksen ja nimen. <code>People</code>-tyyppiä käyttävä koodi käyttäisi vain tarjoamaamme julkista API:a, kuten metodia nimen lisäämiseen <code>People</code>-kokoelmaan; koodin ei tarvitse tietää, että liitämme nimiin sisäisesti <code>i32</code>-tunnuksen. Newtype-kuvio on kevyt tapa saavuttaa kapselointi toteutuksen yksityiskohtien piilottamiseksi, josta puhuimme luvun 18 <a href="ch18-01-what-is-oo.html#encapsulation-that-hides-implementation-details">”Toteutuksen yksityiskohdat piilottava kapselointi”</a><!-- ignore --> -kohdassa.</p>
+<!-- Old headings. Do not remove or links may break. -->
+<p><a id="creating-type-synonyms-with-type-aliases"></a></p>
+<h3 id="tyyppisynonyymit-ja-tyyppialiasit"><a class="header" href="#tyyppisynonyymit-ja-tyyppialiasit">Tyyppisynonyymit ja tyyppialiasit</a></h3>
 <p>Rust tarjoaa mahdollisuuden julistaa <em>tyyppialiasin</em> antaakseen olemassa olevalle tyypille toisen nimen. Tätä varten käytämme <code>type</code>-avainsanaa. Esimerkiksi voimme luoda aliasin <code>Kilometers</code> tyypille <code>i32</code> näin:</p>
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+<pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>{{#rustdoc_include ../listings/ch20-advanced-features/no-listing-04-kilometers-alias/src/main.rs:here}}
-<span class="boring">}</span></code></pre></pre>
-<p>Nyt alias <code>Kilometers</code> on <em>synonyymi</em> tyypille <code>i32</code>; toisin kuin Listauksessa 20-16 luodut <code>Millimeters</code>- ja <code>Meters</code>-tyypit, <code>Kilometers</code> ei ole erillinen, uusi tyyppi. Arvoja, joiden tyyppi on <code>Kilometers</code>, käsitellään samalla tavalla kuin arvoja, joiden tyyppi on <code>i32</code>:</p>
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+<span class="boring">}</span></code></pre>
+<p>Nyt alias <code>Kilometers</code> on <em>synonyymi</em> tyypille <code>i32</code>; toisin kuin listauksessa 20-16 luodut <code>Millimeters</code>- ja <code>Meters</code>-tyypit, <code>Kilometers</code> ei ole erillinen uusi tyyppi. <code>Kilometers</code>-tyypin arvoja käsitellään samoin kuin <code>i32</code>-tyypin arvoja:</p>
+<pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>{{#rustdoc_include ../listings/ch20-advanced-features/no-listing-04-kilometers-alias/src/main.rs:there}}
-<span class="boring">}</span></code></pre></pre>
-<p>Koska <code>Kilometers</code> ja <code>i32</code> ovat sama tyyppi, voimme laskea yhteen molempien tyyppien arvoja ja välittää <code>Kilometers</code>-arvoja funktioille, jotka ottavat <code>i32</code>-parametreja. Tällä menetelmällä emme kuitenkaan saa tyyppitarkistuksen etuja, joita saamme aiemmin käsitellystä newtype-kuviosta. Toisin sanoen, jos sekoitamme <code>Kilometers</code>- ja <code>i32</code>-arvoja jossakin, kääntäjä ei anna meille virhettä.</p>
-<p>Tyyppisynonyymien pääasiallinen käyttötapaus on toiston vähentäminen. Esimerkiksi meillä saattaa olla pitkä tyyppi, kuten tämä:</p>
+<span class="boring">}</span></code></pre>
+<p>Koska <code>Kilometers</code> ja <code>i32</code> ovat sama tyyppi, voimme laskea yhteen molempien tyyppien arvoja ja välittää <code>Kilometers</code>-arvoja funktioille, jotka ottavat <code>i32</code>-parametreja. Tällä tavalla emme kuitenkaan saa tyyppitarkistuksen etuja, joita saamme aiemmin käsitellystä newtype-kuviosta. Toisin sanoen, jos sekoitamme <code>Kilometers</code>- ja <code>i32</code>-arvoja jossain, kääntäjä ei anna virhettä.</p>
+<p>Tyyppisynonyymien pääasiallinen käyttötarkoitus on toiston vähentäminen. Esimerkiksi meillä voi olla pitkä tyyppi kuten tämä:</p>
 <pre><code class="language-rust ignore">Box&lt;dyn Fn() + Send + 'static&gt;</code></pre>
-<p>Tämän pitkän tyypin kirjoittaminen funktiomerkintöihin ja tyyppihuomautuksiin koko koodissa voi olla työlästä ja virhealtista. Kuvittele projekti, joka on täynnä Listauksen 20-25 kaltaista koodia.</p>
-<figure class="listing">
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+<p>Tämän pitkän tyypin kirjoittaminen funktiosignatuureissa ja tyyppimerkinnöissä koko koodissa voi olla työlästä ja virhealtista. Kuvittele projekti, joka on täynnä tällaista koodia kuten listauksessa 20-25.</p>
+<figure class="listing" id="listing-20-25">
+<pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-25/src/main.rs:here}}
-<span class="boring">}</span></code></pre></pre>
-<figcaption>Listing 20-25: Pitkän tyypin käyttö monessa paikassa</figcaption>
+<span class="boring">}</span></code></pre>
+<figcaption><a href="#listing-20-25">Listing 20-25</a>: Pitkän tyypin käyttö monessa paikassa</figcaption>
 </figure>
-<p>Tyyppialias tekee tästä koodista hallittavampaa vähentämällä toistoa. Listauksessa 20-26 olemme ottaneet käyttöön aliasin nimeltä <code>Thunk</code> pitkälle tyypille ja voimme korvata kaikki tyypin käytöt lyhyemmällä aliasilla <code>Thunk</code>.</p>
-<figure class="listing">
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+<p>Tyyppialias tekee tästä koodista hallittavampaa vähentämällä toistoa. Listauksessa 20-26 olemme tuoneet aliasin nimeltä <code>Thunk</code> monimutkaiselle tyypille ja voimme korvata kaikki tyypin käytöt lyhyemmällä aliasilla <code>Thunk</code>.</p>
+<figure class="listing" id="listing-20-26">
+<pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-26/src/main.rs:here}}
-<span class="boring">}</span></code></pre></pre>
-<figcaption>Listing 20-26: Tyyppialiasin <code>Thunk</code> käyttöönotto toiston vähentämiseksi</figcaption>
+<span class="boring">}</span></code></pre>
+<figcaption><a href="#listing-20-26">Listing 20-26</a>: Tyyppialiasin <code>Thunk</code> käyttöönotto toiston vähentämiseksi</figcaption>
 </figure>
-<p>Tätä koodia on paljon helpompi lukea ja kirjoittaa! Tyyppialiasille merkityksellisen nimen valitseminen voi auttaa myös viestimään aikomuksestasi (<em>thunk</em> on sana koodille, joka arvioidaan myöhemmin, joten se on sopiva nimi tallennettavalle sulkeiselle).</p>
-<p>Tyyppialiasseja käytetään myös yleisesti <code>Result&lt;T, E&gt;</code>-tyypin kanssa toiston vähentämiseksi. Harkitse standardikirjaston <code>std::io</code>-moduulia. I/O-operaatiot palauttavat usein <code>Result&lt;T, E&gt;</code>-tyypin käsitelläkseen tilanteita, joissa operaatiot eivät onnistu. Tässä kirjastossa on <code>std::io::Error</code>-rakenne, joka edustaa kaikkia mahdollisia I/O-virheitä. Monet <code>std::io</code>-moduulin funktioista palauttavat <code>Result&lt;T, E&gt;</code>-tyypin, jossa <code>E</code> on <code>std::io::Error</code>, kuten nämä <code>Write</code>-traitin funktiot:</p>
+<p>Tätä koodia on paljon helpompi lukea ja kirjoittaa! Tyyppialiasille merkityksellisen nimen valinta auttaa myös viestimään aikomuksestasi (<em>thunk</em> tarkoittaa koodia, joka arvioidaan myöhemmin, joten se on sopiva nimi tallennettavalle sulkeumalle).</p>
+<p>Tyyppialiasit ovat myös yleisiä <code>Result&lt;T, E&gt;</code>-tyypin kanssa toiston vähentämiseksi. Harkitse standardikirjaston <code>std::io</code>-moduulia. I/O-operaatiot palauttavat usein <code>Result&lt;T, E&gt;</code>-tyypin käsitelläkseen tilanteita, joissa operaatiot eivät onnistu. Tässä kirjastossa on <code>std::io::Error</code>-rakenne, joka edustaa kaikkia mahdollisia I/O-virheitä. Monet <code>std::io</code>-moduulin funktiot palauttavat <code>Result&lt;T, E&gt;</code>-tyypin, jossa <code>E</code> on <code>std::io::Error</code>, kuten nämä <code>Write</code>-traitin funktiot:</p>
 <pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch20-advanced-features/no-listing-05-write-trait/src/lib.rs}}</code></pre>
-<p><code>Result&lt;..., Error&gt;</code> toistuu paljon. Siksi <code>std::io</code>-moduulissa on tämä tyyppialiasjulistus:</p>
+<p><code>Result&lt;..., Error&gt;</code> toistuu paljon. Siksi <code>std::io</code>-moduulissa on tämä tyyppialiasin:</p>
 <pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch20-advanced-features/no-listing-06-result-alias/src/lib.rs:here}}</code></pre>
-<p>Koska tämä julistus on <code>std::io</code>-moduulissa, voimme käyttää täysin määriteltyä aliasia <code>std::io::Result&lt;T&gt;</code>; eli <code>Result&lt;T, E&gt;</code>, jossa <code>E</code> on täytetty arvolla <code>std::io::Error</code>. <code>Write</code>-traitin funktiomerkinnät näyttävät lopulta tältä:</p>
+<p>Koska tämä julistus on <code>std::io</code>-moduulissa, voimme käyttää täysin pätevää aliasia <code>std::io::Result&lt;T&gt;</code>; eli <code>Result&lt;T, E&gt;</code>-tyyppiä, jossa <code>E</code> on <code>std::io::Error</code>. <code>Write</code>-traitin funktiosignatuurit näyttävät lopulta tältä:</p>
 <pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch20-advanced-features/no-listing-06-result-alias/src/lib.rs:there}}</code></pre>
-<p>Tyyppialias auttaa kahdella tavalla: se tekee koodin kirjoittamisesta helpompaa <em>ja</em> antaa meille yhtenäisen rajapinnan koko <code>std::io</code>-moduulissa. Koska se on alias, se on vain toinen <code>Result&lt;T, E&gt;</code>, mikä tarkoittaa, että voimme käyttää sen kanssa kaikkia <code>Result&lt;T, E&gt;</code>-tyypille toimivia metodeja sekä erityissyntaksia, kuten <code>?</code>-operaattoria.</p>
-<h3 id="never-tyyppi-joka-ei-koskaan-palauta"><a class="header" href="#never-tyyppi-joka-ei-koskaan-palauta">Never-tyyppi, joka ei koskaan palauta</a></h3>
-<p>Rustissa on erityinen tyyppi nimeltä <code>!</code>, joka tunnetaan tyypinteoriassa <em>tyhjänä tyypinä</em>, koska sillä ei ole arvoja. Kutsumme sitä mieluummin <em>never-tyypiksi</em>, koska se on paluutyypin paikalla, kun funktio ei koskaan palauta. Tässä esimerkki:</p>
+<p>Tyyppialias auttaa kahdella tavalla: se helpottaa koodin kirjoittamista <em>ja</em> tarjoaa yhtenäisen rajapinnan koko <code>std::io</code>-moduulissa. Koska se on alias, se on vain toinen <code>Result&lt;T, E&gt;</code>, mikä tarkoittaa, että voimme käyttää kaikkia <code>Result&lt;T, E&gt;</code>-tyypin metodeja sen kanssa sekä erityissyntaksia kuten <code>?</code>-operaattoria.</p>
+<h3 id="never-tyyppi-joka-ei-koskaan-palaa"><a class="header" href="#never-tyyppi-joka-ei-koskaan-palaa">Never-tyyppi, joka ei koskaan palaa</a></h3>
+<p>Rustissa on erityinen tyyppi nimeltä <code>!</code>, jota työteorian kielessä kutsutaan <em>tyhjäksi tyypiksi</em>, koska sillä ei ole arvoja. Kutsumme sitä mieluummin <em>never-tyypiksi</em>, koska se edustaa palautustyyppiä, kun funktio ei koskaan palaa. Tässä on esimerkki:</p>
 <pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch20-advanced-features/no-listing-07-never-type/src/lib.rs:here}}</code></pre>
-<p>Tämä koodi luetaan ”funktio <code>bar</code> palauttaa never”. Funktioita, jotka eivät koskaan palauta, kutsutaan <em>divergoiviksi funktioiksi</em>. Emme voi luoda arvoja tyypille <code>!</code>, joten <code>bar</code> ei voi koskaan palauttaa.</p>
-<p>Mutta mitä hyötyä on tyypistä, jolle et voi koskaan luoda arvoja? Muista Listauksen 2-5 koodi, osa numeronarvailupelistä; olemme toistaneet osan siitä tässä Listauksessa 20-27.</p>
-<figure class="listing">
+<p>Tämä koodi luetaan: ”funktio <code>bar</code> palauttaa never-tyypin.” Funktioita, jotka eivät koskaan palaavat, kutsutaan <em>hajautuviksi funktioiksi</em>. Emme voi luoda <code>!</code>-tyypin arvoja, joten <code>bar</code> ei voi koskaan palata.</p>
+<p>Mutta mitä hyötyä on tyypistä, jonka arvoja ei voi koskaan luoda? Muista listauksen 2-5 koodi numeronarvauspelistä; olemme toistaneet osan siitä listauksessa 20-27.</p>
+<figure class="listing" id="listing-20-27">
 <pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch02-guessing-game-tutorial/listing-02-05/src/main.rs:ch19}}</code></pre>
-<figcaption>Listing 20-27: <code>match</code>, jossa haara päättyy <code>continue</code>en</figcaption>
+<figcaption><a href="#listing-20-27">Listing 20-27</a>: <code>match</code>-lauseke, jonka haara päättyy <code>continue</code>-lauseeseen</figcaption>
 </figure>
-<p>Tuolloin ohitimme tässä koodissa joitakin yksityiskohtia. <a href="ch06-02-match.html#the-match-control-flow-operator">”<code>match</code>-ohjausrakenne”</a><!-- ignore --> -osiossa Luvussa 6 käsittelimme, että <code>match</code>-haarojen on kaikkien palautettava sama tyyppi. Esimerkiksi seuraava koodi ei toimi:</p>
+<p>Silloin ohitimme joitakin yksityiskohtia tässä koodissa. Luvun 6 <a href="ch06-02-match.html#the-match-control-flow-construct">”<code>match</code>-ohjausrakenne”</a><!-- ignore --> -kohdassa käsittelimme, että <code>match</code>-haarojen täytyy kaikkien palauttaa sama tyyppi. Esimerkiksi seuraava koodi ei toimi:</p>
 <pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch20-advanced-features/no-listing-08-match-arms-different-types/src/main.rs:here}}</code></pre>
-<p>Muuttujan <code>guess</code> tyypin tässä koodissa pitäisi olla kokonaisluku <em>ja</em> merkkijono, ja Rust vaatii, että <code>guess</code>illä on vain yksi tyyppi. Mitä <code>continue</code> sitten palauttaa? Miten saimme palauttaa <code>u32</code>:n yhdestä haarasta ja toisessa haarassa Listauksessa 20-27 päättyä <code>continue</code>en?</p>
-<p>Kuten saatoit arvata, <code>continue</code>lla on <code>!</code>-arvo. Eli kun Rust laskee muuttujan <code>guess</code> tyypin, se katsoo molempia match-haaroja, joista ensimmäisessä on <code>u32</code>-arvo ja jälkimmäisessä <code>!</code>-arvo. Koska <code>!</code> ei voi koskaan saada arvoa, Rust päättää, että <code>guess</code>in tyyppi on <code>u32</code>.</p>
-<p>Tämän käyttäytymisen muodollinen kuvaus on, että <code>!</code>-tyyppiset lausekkeet voidaan pakottaa mihin tahansa muuhun tyyppiin. Saamme päättää tämän <code>match</code>-haaran <code>continue</code>lla, koska <code>continue</code> ei palauta arvoa; sen sijaan se siirtää ohjauksen takaisin silmukan alkuun, joten <code>Err</code>-tapauksessa emme koskaan anna arvoa muuttujalle <code>guess</code>.</p>
-<p>Never-tyyppi on hyödyllinen myös <code>panic!</code>-makron kanssa. Muista <code>unwrap</code>-funktio, jota kutsumme <code>Option&lt;T&gt;</code>-arvoilla tuottaaksemme arvon tai panikoidaksemme tällä määritelmällä:</p>
+<p>Tässä koodissa <code>guess</code>-muuttujan tyypin pitäisi olla sekä kokonaisluku <em>että</em> merkkijono, ja Rust vaatii, että <code>guess</code>-muuttujalla on vain yksi tyyppi. Mitä siis <code>continue</code> palauttaa? Miten saimme palauttaa <code>u32</code>-arvon yhdestä haarasta ja toisessa haarassa <code>continue</code>-lauseen listauksessa 20-27?</p>
+<p>Kuten saatoit arvata, <code>continue</code>-lauseella on <code>!</code>-arvon tyyppi. Eli kun Rust laskee <code>guess</code>-muuttujan tyypin, se katsoo molemmat <code>match</code>-haarat: edellisessä arvo on <code>u32</code> ja jälkimmäisessä <code>!</code>-arvon tyyppi. Koska <code>!</code>-tyypillä ei voi koskaan olla arvoa, Rust päättelee, että <code>guess</code>-muuttujan tyyppi on <code>u32</code>.</p>
+<p>Tätä käyttäytymistä kuvataan muodollisesti niin, että <code>!</code>-tyypin lausekkeet voidaan pakottaa mihin tahansa muuhun tyyppiin. Saamme päättää tämän <code>match</code>-haaran <code>continue</code>-lauseella, koska <code>continue</code> ei palauta arvoa; sen sijaan se siirtää ohjauksen silmukan alkuun, joten <code>Err</code>-tapauksessa emme koskaan sijoita arvoa <code>guess</code>-muuttujaan.</p>
+<p>Never-tyyppi on hyödyllinen myös <code>panic!</code>-makron kanssa. Muista <code>unwrap</code>-funktio, jota kutsumme <code>Option&lt;T&gt;</code>-arvoilla saadaksemme arvon tai panikoidaksemme tämän määritelmän mukaisesti:</p>
 <pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch20-advanced-features/no-listing-09-unwrap-definition/src/lib.rs:here}}</code></pre>
-<p>Tässä koodissa tapahtuu sama kuin Listauksen 20-27 <code>match</code>issa: Rust näkee, että <code>val</code>illa on tyyppi <code>T</code> ja <code>panic!</code>illa on tyyppi <code>!</code>, joten koko <code>match</code>-lausekkeen tulos on <code>T</code>. Tämä koodi toimii, koska <code>panic!</code> ei tuota arvoa; se lopettaa ohjelman. <code>None</code>-tapauksessa emme palauta arvoa <code>unwrap</code>ista, joten tämä koodi on kelvollinen.</p>
-<p>Yksi viimeinen lauseke, jolla on tyyppi <code>!</code>, on <code>loop</code>:</p>
+<p>Tässä koodissa tapahtuu sama kuin listauksen 20-27 <code>match</code>-lausekkeessa: Rust näkee, että <code>val</code> on tyyppiä <code>T</code> ja <code>panic!</code> on tyyppiä <code>!</code>, joten koko <code>match</code>-lausekkeen tulos on <code>T</code>. Tämä koodi toimii, koska <code>panic!</code> ei tuota arvoa; se lopettaa ohjelman. <code>None</code>-tapauksessa emme palauta arvoa <code>unwrap</code>-funktiosta, joten tämä koodi on kelvollinen.</p>
+<p>Viimeinen lauseke, jolla on tyyppi <code>!</code>, on silmukka:</p>
 <pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch20-advanced-features/no-listing-10-loop-returns-never/src/main.rs:here}}</code></pre>
-<p>Tässä silmukka ei koskaan pääty, joten <code>!</code> on lausekkeen arvo. Tämä ei kuitenkaan pitäisi paikkaansa, jos sisällyttäisimme <code>break</code>in, koska silmukka päättyisi, kun se saavuttaisi <code>break</code>in.</p>
-<h3 id="dynaamisesti-kokoiset-tyypit-ja-sized-trait"><a class="header" href="#dynaamisesti-kokoiset-tyypit-ja-sized-trait">Dynaamisesti kokoiset tyypit ja <code>Sized</code>-trait</a></h3>
-<p>Rustin täytyy tietää tiettyjä yksityiskohtia tyypeistään, kuten kuinka paljon tilaa varata tietyn tyypin arvolle. Tämä jättää tyyppijärjestelmän yhden nurkan aluksi hieman hämmentäväksi: <em>dynaamisesti kokoisten tyyppien</em> käsite. Joskus <em>DST:iksi</em> tai <em>kokoon mitoittamattomiksi tyypeiksi</em> kutsuttujen tyyppien avulla voimme kirjoittaa koodia käyttäen arvoja, joiden koon tiedämme vasta ajonaikana.</p>
-<p>Syvennytään dynaamisesti kokoisen tyypin nimeltä <code>str</code> yksityiskohtiin, jota olemme käyttäneet koko kirjassa. Aivan oikein, ei <code>&amp;str</code>, vaan pelkkä <code>str</code> on DST. Emme voi tietää, kuinka pitkä merkkijono on, ennen ajonaikaa, mikä tarkoittaa, että emme voi luoda muuttujaa tyypille <code>str</code>, emmekä voi ottaa parametria tyypille <code>str</code>. Harkitse seuraavaa koodia, joka ei toimi:</p>
+<p>Tässä silmukka ei koskaan pääty, joten lausekkeen arvo on <code>!</code>. Tämä ei kuitenkaan pitäisi paikkaansa, jos sisällyttäisimme <code>break</code>-lauseen, koska silmukka päättyisi <code>break</code>-lauseeseen.</p>
+<h3 id="dynaamisesti-mitoitetut-tyypit-ja-sized-trait"><a class="header" href="#dynaamisesti-mitoitetut-tyypit-ja-sized-trait">Dynaamisesti mitoitetut tyypit ja <code>Sized</code>-trait</a></h3>
+<p>Rustin täytyy tietää tiettyjä yksityiskohtia tyypeistään, kuten kuinka paljon tilaa varata tietyn tyypin arvolle. Tämä jättää tyyppijärjestelmän yhden nurkan aluksi hieman hämmentäväksi: <em>dynaamisesti mitoitettujen tyyppien</em> käsite. Joskus kutsutaan <em>DST-tyypeiksi</em> tai <em>kokoon mitoittamattomiksi tyypeiksi</em>, nämä tyypit sallivat koodin kirjoittamisen arvoilla, joiden koon tiedämme vasta ajonaikana.</p>
+<p>Syvennytään dynaamisesti mitoitetun tyypin <code>str</code> yksityiskohtiin, jota olemme käyttäneet koko kirjan ajan. Aivan oikein, ei <code>&amp;str</code> vaan pelkkä <code>str</code> on DST. Monissa tapauksissa, kuten kun tallennamme käyttäjän syöttämää tekstiä, emme voi tietää merkkijonon pituutta ennen ajonaikaa. Tämä tarkoittaa, ettemme voi luoda <code>str</code>-tyyppistä muuttujaa emmekä ottaa <code>str</code>-tyyppistä argumenttia. Harkitse seuraavaa koodia, joka ei toimi:</p>
 <pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch20-advanced-features/no-listing-11-cant-create-str/src/main.rs:here}}</code></pre>
-<p>Rustin täytyy tietää, kuinka paljon muistia varata mille tahansa tietyn tyypin arvolle, ja kaikkien tietyn tyypin arvojen on käytettävä samaa määrää muistia. Jos Rust sallisi tämän koodin kirjoittamisen, nämä kaksi <code>str</code>-arvoa pitäisi viedä saman verran tilaa. Mutta niillä on eri pituudet: <code>s1</code> tarvitsee 12 tavua tallennustilaa ja <code>s2</code> tarvitsee 15. Siksi dynaamisesti kokoisen tyypin arvoa sisältävää muuttujaa ei voi luoda.</p>
-<p>Mitä teemme siis? Tässä tapauksessa tiedät jo vastauksen: teemme <code>s1</code>:n ja <code>s2</code>:n tyypeistä <code>&amp;str</code> eikä <code>str</code>. Muista <a href="ch04-03-slices.html#string-slices">”Merkkijonoviipaleet”</a><!-- ignore --> -osio Luvusta 4, jossa viipalerakenne tallentaa vain viipaleen aloitusposition ja pituuden. Vaikka <code>&amp;T</code> on yksittäinen arvo, joka tallentaa muistiosoitteen, jossa <code>T</code> sijaitsee, <code>&amp;str</code> on <em>kaksi</em> arvoa: <code>str</code>:n osoite ja sen pituus. Näin voimme tietää <code>&amp;str</code>-arvon koon käännösaikana: se on kaksi kertaa <code>usize</code>:n pituus. Eli tiedämme aina <code>&amp;str</code>:n koon riippumatta siitä, kuinka pitkä sen viittaama merkkijono on. Yleisesti ottaen näin dynaamisesti kokoisia tyyppejä käytetään Rustissa: niillä on ylimääräinen metatieto, joka tallentaa dynaamisen tiedon koon. Dynaamisesti kokoisten tyyppien kultainen sääntö on, että dynaamisesti kokoisten tyyppien arvot on aina sijoitettava jonkinlaisen osoittimen taakse.</p>
-<p>Voimme yhdistää <code>str</code>:n kaikenlaisiin osoittimiin: esimerkiksi <code>Box&lt;str&gt;</code> tai <code>Rc&lt;str&gt;</code>. Itse asiassa olet nähnyt tämän aiemmin, mutta eri dynaamisesti kokoisella tyypillä: traitit. Jokainen trait on dynaamisesti kokoinen tyyppi, johon voimme viitata traitin nimellä. <a href="ch18-02-trait-objects.html#using-trait-objects-that-allow-for-values-of-different-types">”Trait-objektien käyttö, jotka sallivat eri tyyppisten arvojen käytön”</a><!-- ignore
---> -osiossa Luvussa 18 mainitsimme, että käyttääksemme traitteja trait-objekteina meidän on sijoitettava ne osoittimen taakse, kuten <code>&amp;dyn Trait</code> tai <code>Box&lt;dyn Trait&gt;</code> (<code>Rc&lt;dyn Trait&gt;</code> toimisi myös).</p>
-<p>DST:iden kanssa työskentelyyn Rust tarjoaa <code>Sized</code>-traitin määrittämään, tiedetäänkö tyypin koko käännösaikana. Tämä trait toteutetaan automaattisesti kaikelle, jonka koko tiedetään käännösaikana. Lisäksi Rust lisää implisiittisesti <code>Sized</code>-rajoituksen jokaiseen geneeriseen funktioon. Eli geneerinen funktiomäärittely, kuten tämä:</p>
+<p>Rustin täytyy tietää, kuinka paljon muistia varata minkä tahansa tietyn tyypin arvolle, ja kaikkien saman tyypin arvojen täytyy käyttää saman verran muistia. Jos Rust sallisi tämän koodin kirjoittamisen, nämä kaksi <code>str</code>-arvoa tarvitsisivat saman verran tilaa. Niillä on kuitenkin eri pituudet: <code>s1</code> tarvitsee 12 tavua tallennustilaa ja <code>s2</code> tarvitsee 15. Siksi dynaamisesti mitoitetun tyypin muuttujaa ei voi luoda.</p>
+<p>Mitä siis teemme? Tässä tapauksessa tiedät jo vastauksen: teemme <code>s1</code>:n ja <code>s2</code>:n tyypiksi merkkijonoviipaleen (<code>&amp;str</code>) eikä <code>str</code>. Muista luvun 4 <a href="ch04-03-slices.html#string-slices">”Merkkijonoviipaleet”</a><!-- ignore --> -kohdasta, että viipaleen tietorakenne tallentaa vain aloitusposition ja viipaleen pituuden. Vaikka <code>&amp;T</code> on yksi arvo, joka tallentaa muistiosoitteen, jossa <code>T</code> sijaitsee, merkkijonoviipale on <em>kaksi</em> arvoa: <code>str</code>:n osoite ja sen pituus. Näin ollen merkkijonoviipaleen arvon koon tiedämme käännösaikana: se on kaksi kertaa <code>usize</code>:n pituus. Eli tiedämme aina merkkijonoviipaleen koon riippumatta siitä, kuinka pitkä viipaleen viittaama merkkijono on. Yleisesti tämä on tapa, jolla dynaamisesti mitoitettuja tyyppejä käytetään Rustissa: niillä on ylimääräinen metatieto, joka tallentaa dynaamisen tiedon koon. Dynaamisesti mitoitettujen tyyppien kultainen sääntö on, että dynaamisesti mitoitettujen tyyppien arvot täytyy aina sijoittaa jonkinlaisen osoittimen taakse.</p>
+<p>Voimme yhdistää <code>str</code>:n kaikenlaisiin osoittimiin: esimerkiksi <code>Box&lt;str&gt;</code> tai <code>Rc&lt;str&gt;</code>. Itse asiassa olet nähnyt tämän aiemmin, mutta eri dynaamisesti mitoitetulla tyypillä: traitit. Jokainen trait on dynaamisesti mitoitettu tyyppi, johon voimme viitata traitin nimellä. Luvun 18 <a href="ch18-02-trait-objects.html#using-trait-objects-to-abstract-over-shared-behavior">”Trait-olioiden käyttö yhteisen käyttäytymisen abstrahoimiseen”</a><!-- ignore --> -kohdassa mainitsimme, että traitien käyttämiseksi trait-olioina meidän täytyy sijoittaa ne osoittimen taakse, kuten <code>&amp;dyn Trait</code> tai <code>Box&lt;dyn Trait&gt;</code> (<code>Rc&lt;dyn Trait&gt;</code> toimisi myös).</p>
+<p>DST-tyyppien kanssa työskentelyyn Rust tarjoaa <code>Sized</code>-traitin määrittämään, tiedetäänkö tyypin koko käännösaikana. Tämä trait toteutetaan automaattisesti kaikelle, jonka koko tiedetään käännösaikana. Lisäksi Rust lisää implisiittisesti <code>Sized</code>-sidonnan jokaiseen geneeriseen funktioon. Eli geneerinen funktiomääritelmä kuten tämä:</p>
 <pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch20-advanced-features/no-listing-12-generic-fn-definition/src/lib.rs}}</code></pre>
-<p>käsitellään itse asiassa ikään kuin olisimme kirjoittaneet tämän:</p>
+<p>käsitellään ikään kuin olisimme kirjoittaneet tämän:</p>
 <pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch20-advanced-features/no-listing-13-generic-implicit-sized-bound/src/lib.rs}}</code></pre>
-<p>Oletusarvoisesti geneeriset funktiot toimivat vain tyypeillä, joiden koko tunnetaan käännösaikana. Voit kuitenkin käyttää seuraavaa erityissyntaksia tämän rajoituksen lieventämiseksi:</p>
+<p>Oletuksena geneeriset funktiot toimivat vain tyypeillä, joiden koko tunnetaan käännösaikana. Voit kuitenkin käyttää seuraavaa erityissyntaksia tämän rajoituksen lieventämiseksi:</p>
 <pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch20-advanced-features/no-listing-14-generic-maybe-sized/src/lib.rs}}</code></pre>
-<p><code>?Sized</code>-traitrajoitus tarkoittaa ”<code>T</code> voi olla tai olla olematta <code>Sized</code>”, ja tämä merkintä ohittaa oletuksen, että geneeristen tyyppien on oltava tunnetun kokoisia käännösaikana. <code>?Trait</code>-syntaksi tällä merkityksellä on käytettävissä vain <code>Sized</code>-traitille, ei millekään muulle traitille.</p>
-<p>Huomaa myös, että vaihdoimme parametrin <code>t</code> tyypin <code>T</code>:stä <code>&amp;T</code>:hen. Koska tyyppi ei välttämättä ole <code>Sized</code>, meidän täytyy käyttää sitä jonkinlaisen osoittimen taakse. Tässä tapauksessa olemme valinneet viitteen.</p>
-<p>Seuraavaksi puhumme funktioista ja sulkeisista!</p>
+<p><code>?Sized</code>-trait-sidonta tarkoittaa ”<code>T</code> voi olla tai olla olematta <code>Sized</code>”, ja tämä merkintä ohittaa oletuksen, että geneeristen tyyppien täytyy olla koon tiedetty käännösaikana. <code>?Trait</code>-syntaksi tällä merkityksellä on saatavilla vain <code>Sized</code>-traitille, ei muille traitille.</p>
+<p>Huomaa myös, että vaihdoimme <code>t</code>-parametrin tyypin <code>T</code>:stä <code>&amp;T</code>:hen. Koska tyyppi ei välttämättä ole <code>Sized</code>, meidän täytyy käyttää sitä jonkinlaisen osoittimen kautta. Tässä tapauksessa valitsimme viitteen.</p>
+<p>Seuraavaksi puhumme funktioista ja sulkeumista!</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                             <a rel="prev" href="ch20-02-advanced-traits.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                                <i class="fa fa-angle-left"></i>
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
                             <a rel="next prefetch" href="ch20-04-advanced-functions-and-closures.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
                         <div style="clear: both"></div>
@@ -262,16 +285,21 @@ ignore --> -osiossa Luvussa 18.</p>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                     <a rel="prev" href="ch20-02-advanced-traits.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                        <i class="fa fa-angle-left"></i>
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
                     <a rel="next prefetch" href="ch20-04-advanced-functions-and-closures.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>
 
         </div>
 
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
 
 
 
@@ -280,16 +308,17 @@ ignore --> -osiossa Luvussa 18.</p>
         </script>
 
 
-        <script src="elasticlunr.min.js"></script>
-        <script src="mark.min.js"></script>
-        <script src="searcher.js"></script>
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-c2a407aa.js"></script>
 
-        <script src="clipboard.min.js"></script>
-        <script src="highlight.js"></script>
-        <script src="book.js"></script>
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-abc7f01d.js"></script>
+        <script src="book-a0b12cfe.js"></script>
 
         <!-- Custom JS scripts -->
-        <script src="ferris.js"></script>
+        <script src="ferris-2317480c.js"></script>
+
 
 
     </div>

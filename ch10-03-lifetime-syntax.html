@@ -12,44 +12,56 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
 
-        <link rel="icon" href="favicon.svg">
-        <link rel="shortcut icon" href="favicon.png">
-        <link rel="stylesheet" href="css/variables.css">
-        <link rel="stylesheet" href="css/general.css">
-        <link rel="stylesheet" href="css/chrome.css">
-        <link rel="stylesheet" href="css/print.css" media="print">
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-2459343d.css">
+        <link rel="stylesheet" href="css/chrome-ae938929.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
-        <link rel="stylesheet" href="fonts/fonts.css">
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" href="highlight.css">
-        <link rel="stylesheet" href="tomorrow-night.css">
-        <link rel="stylesheet" href="ayu-highlight.css">
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="ferris.css">
-        <link rel="stylesheet" href="theme/2018-edition.css">
-        <link rel="stylesheet" href="theme/semantic-notes.css">
-        <link rel="stylesheet" href="theme/listing.css">
+        <link rel="stylesheet" href="ferris-d33b75bf.css">
+        <link rel="stylesheet" href="theme/2018-edition-4e126c62.css">
+        <link rel="stylesheet" href="theme/semantic-notes-9b5766c0.css">
+        <link rel="stylesheet" href="theme/listing-cab26221.css">
 
 
-        <!-- Provide site root to javascript -->
+        <!-- Provide site root and default themes to javascript -->
         <script>
-            var path_to_root = "";
-            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex-454febf7.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc.js"></script>
+        <script src="toc-7f90d00d.js"></script>
     </head>
     <body>
-    <div id="body-container">
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
             try {
-                var theme = localStorage.getItem('mdbook-theme');
-                var sidebar = localStorage.getItem('mdbook-sidebar');
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
 
                 if (theme.startsWith('"') && theme.endsWith('"')) {
                     localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
@@ -63,7 +75,8 @@
 
         <!-- Set the theme before any content is loaded, prevents flash -->
         <script>
-            var theme;
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
             const html = document.documentElement;
@@ -72,55 +85,59 @@
             html.classList.add("js");
         </script>
 
-        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
-            var sidebar = null;
-            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
             } else {
                 sidebar = 'hidden';
+                sidebar_toggle.checked = false;
             }
-            sidebar_toggle.checked = sidebar === 'visible';
-            html.classList.remove('sidebar-visible');
-            html.classList.add("sidebar-" + sidebar);
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
         </script>
 
-        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
             <!-- populated by js -->
             <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
             <noscript>
                 <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
             </noscript>
-            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
             </div>
         </nav>
 
-        <div id="page-wrapper" class="page-wrapper">
+        <div id="mdbook-page-wrapper" class="page-wrapper">
 
             <div class="page">
-                <div id="menu-bar-hover-placeholder"></div>
-                <div id="menu-bar" class="menu-bar sticky">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
-                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
-                            <i class="fa fa-bars"></i>
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
                         </label>
-                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
-                            <i class="fa fa-paint-brush"></i>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
                         </button>
-                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
-                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
                         </ul>
-                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
-                            <i class="fa fa-search"></i>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
                         </button>
                     </div>
 
@@ -128,247 +145,535 @@
 
                     <div class="right-buttons">
                         <a href="print.html" title="Print this book" aria-label="Print this book">
-                            <i id="print-button" class="fa fa-print"></i>
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
                         </a>
                         <a href="https://github.com/rust-lang/book" title="Git repository" aria-label="Git repository">
-                            <i id="git-repository-button" class="fa fa-github"></i>
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></span>
                         </a>
 
                     </div>
                 </div>
 
-                <div id="search-wrapper" class="hidden">
-                    <form id="searchbar-outer" class="searchbar-outer">
-                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
                     </form>
-                    <div id="searchresults-outer" class="searchresults-outer hidden">
-                        <div id="searchresults-header" class="searchresults-header"></div>
-                        <ul id="searchresults">
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
                         </ul>
                     </div>
                 </div>
 
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
                 <script>
-                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
-                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
-                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
                         link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
                     });
                 </script>
 
-                <div id="content" class="content">
+                <div id="mdbook-content" class="content">
                     <main>
-                        <h2 id="viitteiden-validointi-elinikien-avulla"><a class="header" href="#viitteiden-validointi-elinikien-avulla">Viitteiden validointi elinikien avulla</a></h2>
-<p>Elinikä on toinen geneerinen käsite, jota olemme jo käyttäneet. Sen sijaan, että se varmistaisi, että tyypillä on haluamamme käyttäytyminen, elinikä varmistaa, että viittaukset ovat voimassa niin kauan kuin niitä tarvitsemme.</p>
-<p>Yksi yksityiskohta, jota emme käsitelleet <a href="ch04-02-references-and-borrowing.html#references-and-borrowing">”Viittaukset ja lainaaminen”</a><!-- ignore --> -osiossa luvussa 4, on se, että jokaisella viittauksella Rustissa on <em>elinikä</em>, joka on alue, jonka ajan viittaus on voimassa. Useimmiten elinikä on implisiittinen ja päätelty, aivan kuten useimmiten tyypitkin päätellään. Meidän täytyy annotoida tyypit vain, kun useat tyypit ovat mahdollisia. Samalla tavalla meidän täytyy annotoida elinikä, kun viittausten elinikät voivat liittyä toisiinsa useilla eri tavoilla. Rust vaatii meitä annotoimaan suhteet geneeristen elinikäparametrien avulla varmistaakseen, että ajonaikaisesti käytetyt viittaukset ovat varmasti kelvollisia.</p>
-<p>Elinikien annotointi ei ole edes käsite, jota useimmissa muissa ohjelmointikielissä on, joten tämä tuntuu tutulta. Vaikka emme käsittele elinikää kokonaisuudessaan tässä luvussa, käsittelemme yleisiä tapoja, joilla saatat kohdata elinikäsyntaksia, jotta voit tottua käsitteeseen.</p>
-<h3 id="roikkuvien-viittausten-estäminen-elinikien-avulla"><a class="header" href="#roikkuvien-viittausten-estäminen-elinikien-avulla">Roikkuvien viittausten estäminen elinikien avulla</a></h3>
-<p>Elinikien pääasiallinen tarkoitus on estää <em>roikkuvat viittaukset</em>, jotka saavat ohjelman viittaamaan dataan, johon sen ei ole tarkoitus viitata. Tarkastellaan listauksen 10-16 ohjelmaa, jossa on ulompi ja sisempi alue.</p>
-<figure class="listing">
+                        <h2 id="viittausten-validointi-elinikien-avulla"><a class="header" href="#viittausten-validointi-elinikien-avulla">Viittausten validointi elinikien avulla</a></h2>
+<p>Eliniät (<em>lifetimes</em>) ovat toinen geneeristen tyyppien laji, jota olemme jo
+käyttäneet. Sen sijaan, että varmistaisimme tyypin käyttäytyvän haluamallamme
+tavalla, eliniät varmistavat, että viittaukset ovat kelvollisia niin kauan kuin
+tarvitsemme niitä.</p>
+<p>Yksi yksityiskohta, jota emme käsitelleet luvun 4 osiossa <a href="ch04-02-references-and-borrowing.html#references-and-borrowing">”Viittaukset ja
+lainaaminen”</a><!-- ignore -->, on se, että jokaisella
+Rustin viittauksella on elinikä, joka on alue, jolla viittaus on kelvollinen.
+Useimmiten eliniät ovat implisiittisiä ja pääteltyjä, aivan kuten useimmiten
+tyypit ovat pääteltyjä. Meidän täytyy ilmoittaa tyypit vain, kun useita tyyppejä
+on mahdollista. Vastaavasti meidän täytyy merkitä eliniät, kun viittausten
+eliniöillä voi olla useita eri suhteita. Rust vaatii meitä merkitsemään
+suhteet geneeristen elinikäparametrien avulla varmistaakseen, että ajonaikana
+käytetyt viittaukset ovat varmasti kelvollisia.</p>
+<p>Elinikien merkitseminen ei ole edes käsite, jota useimmissa muissa
+ohjelmointikielissä on, joten tämä tuntuu tutustumattomalta. Vaikka emme käsittele
+eliniä kokonaisuudessaan tässä luvussa, käsittelemme yleisiä tapoja, joilla
+voit kohdata elinikäsyntaksia, jotta voit tottua käsitteeseen.</p>
+<!-- Old headings. Do not remove or links may break. -->
+<p><a id="preventing-dangling-references-with-lifetimes"></a></p>
+<h3 id="riippuvat-viittaukset"><a class="header" href="#riippuvat-viittaukset">Riippuvat viittaukset</a></h3>
+<p>Elinikien pääasiallinen tarkoitus on estää riippuvia viittauksia (<em>dangling
+references</em>), jotka, jos niiden olemassaolo sallittaisiin, saisivat ohjelman
+viittaamaan muihin tietoihin kuin niihin, joihin sen on tarkoitus viitata.
+Harkitse listauksen 10-16 ohjelmaa, jossa on ulompi ja sisempi näkyvyysalue.</p>
+<figure class="listing" id="listing-10-16">
 <pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch10-generic-types-traits-and-lifetimes/listing-10-16/src/main.rs}}</code></pre>
-<figcaption>Listing 10-16: Yritys käyttää viittausta, jonka arvo on poistunut alueelta</figcaption>
+<figcaption><a href="#listing-10-16">Listing 10-16</a>: Yritys käyttää viittausta, jonka arvo on poistunut näkyvyysalueelta</figcaption>
 </figure>
 <blockquote>
-<p>Huom: Esimerkit listauksissa 10-16, 10-17 ja 10-23 määrittelevät muuttujia antamatta niille alkuarvoa, joten muuttujan nimi on olemassa ulommalla alueella. Ensi silmäyksellä tämä saattaa näyttää ristiriitaiselta Rustin null-arvojen puuttumisen kanssa. Jos kuitenkin yritämme käyttää muuttujaa ennen arvon antamista, saamme käännösvirheen, mikä osoittaa, ettei Rust todellakaan salli null-arvoja.</p>
+<p>Huom: Listausten 10-16, 10-17 ja 10-23 esimerkit ilmoittavat muuttujia
+antamatta niille alkuarvoa, joten muuttujan nimi on olemassa ulommalla
+näkyvyysalueella. Ensi silmäyksellä tämä saattaa vaikuttaa ristiriitaiselta
+Rustin null-arvojen puuttumisen kanssa. Jos kuitenkin yritämme käyttää
+muuttujaa ennen arvon antamista, saamme käännösvirheen, mikä osoittaa, että
+Rust todellakaan ei salli null-arvoja.</p>
 </blockquote>
-<p>Ulompi alue määrittelee muuttujan nimeltä <code>r</code> ilman alkuarvoa, ja sisempi alue määrittelee muuttujan nimeltä <code>x</code> alkuarvolla <code>5</code>. Sisemmällä alueella yritämme asettaa <code>r</code>:n arvoksi viittauksen <code>x</code>:ään. Sitten sisempi alue päättyy, ja yritämme tulostaa <code>r</code>:n arvon. Tämä koodi ei käänny, koska arvo, johon <code>r</code> viittaa, on poistunut alueelta ennen kuin yritämme käyttää sitä. Tässä on virheilmoitus:</p>
+<p>Ulompi näkyvyysalue ilmoittaa muuttujan nimeltä <code>r</code> ilman alkuarvoa, ja
+sisempi näkyvyysalue ilmoittaa muuttujan nimeltä <code>x</code> alkuarvolla <code>5</code>. Sisemmällä
+näkyvyysalueella yritämme asettaa <code>r</code>:n arvoksi viittauksen <code>x</code>:ään. Sitten
+sisempi näkyvyysalue päättyy, ja yritämme tulostaa <code>r</code>:n arvon. Tämä koodi ei
+käänny, koska arvo, johon <code>r</code> viittaa, on poistunut näkyvyysalueelta ennen kuin
+yritämme käyttää sitä. Tässä on virheilmoitus:</p>
 <pre><code class="language-console">{{#include ../listings/ch10-generic-types-traits-and-lifetimes/listing-10-16/output.txt}}
 </code></pre>
-<p>Virheilmoitus sanoo, että muuttuja <code>x</code> ”ei elä tarpeeksi pitkään.” Syy on, että <code>x</code> on alueen ulkopuolella, kun sisempi alue päättyy rivillä 7. Mutta <code>r</code> on edelleen voimassa ulommalla alueella; koska sen alue on suurempi, sanomme sen ”elävän pidempään.” Jos Rust sallisi tämän koodin toimia, <code>r</code> viittaisi muistiin, joka vapautettiin kun <code>x</code> poistui alueelta, eikä mikään, mitä yrittäisimme tehdä <code>r</code>:llä, toimisi oikein. Miten Rust määrittää, että tämä koodi on virheellinen? Se käyttää lainantarkistinta.</p>
-<h3 id="lainantarkistin"><a class="header" href="#lainantarkistin">Lainantarkistin</a></h3>
-<p>Rustin kääntäjällä on <em>lainantarkistin</em>, joka vertaa alueita määrittääkseen, ovatko kaikki lainat kelvollisia. Listausta 10-17 näyttää saman koodin kuin listaus 10-16, mutta annotaatioilla, jotka näyttävät muuttujien elinikät.</p>
-<figure class="listing">
+<p>Virheilmoitus sanoo, että muuttuja <code>x</code> ”does not live long enough”. Syy on, että
+<code>x</code> on näkyvyysalueen ulkopuolella, kun sisempi näkyvyysalue päättyy rivillä 7.
+Mutta <code>r</code> on silti kelvollinen ulommalla näkyvyysalueella; koska sen
+näkyvyysalue on suurempi, sanomme, että se ”elää pidempään”. Jos Rust sallisi
+tämän koodin toimia, <code>r</code> viittaisi muistiin, joka vapautettiin, kun <code>x</code> poistui
+näkyvyysalueelta, eikä mikään, mitä yrittäisimme tehdä <code>r</code>:llä, toimisi
+oikein. Miten Rust määrittää, että tämä koodi on virheellinen? Se käyttää
+lainauskontrolleria.</p>
+<h3 id="lainauskontrolleri"><a class="header" href="#lainauskontrolleri">Lainauskontrolleri</a></h3>
+<p>Rustin kääntäjällä on <em>lainauskontrolleri</em> (<em>borrow checker</em>), joka vertaa
+näkyvyysalueita määrittääkseen, ovatko kaikki lainaukset kelvollisia. Listaus
+10-17 näyttää saman koodin kuin listaus 10-16, mutta merkinnöillä, jotka
+näyttävät muuttujien eliniät.</p>
+<figure class="listing" id="listing-10-17">
 <pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch10-generic-types-traits-and-lifetimes/listing-10-17/src/main.rs}}</code></pre>
-<figcaption>Listing 10-17: Muuttujien <code>r</code> ja <code>x</code> elinikien annotaatiot, nimiltään <code>'a</code> ja <code>'b</code></figcaption>
+<figcaption><a href="#listing-10-17">Listing 10-17</a>: Muuttujien <code>r</code> ja <code>x</code> eliniöiden merkinnät, nimiltään <code>'a</code> ja <code>'b</code></figcaption>
 </figure>
-<p>Tässä olemme annotoineet <code>r</code>:n elinikäksi <code>'a</code> ja <code>x</code>:n elinikäksi <code>'b</code>. Kuten näet, sisempi <code>'b</code>-lohko on paljon pienempi kuin ulompi <code>'a</code>-elinikälohko. Käännösaikana Rust vertaa näiden kahden elinikän kokoa ja näkee, että <code>r</code>:llä on elinikä <code>'a</code>, mutta se viittaa muistiin, jonka elinikä on <code>'b</code>. Ohjelma hylätään, koska <code>'b</code> on lyhyempi kuin <code>'a</code>: viittauksen kohde ei elä niin kauan kuin viittaus.</p>
-<p>Listausta 10-18 korjaa koodin niin, ettei siinä ole roikkuvaa viittausta, ja se kääntyy ilman virheitä.</p>
-<figure class="listing">
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+<p>Tässä olemme merkinneet <code>r</code>:n eliniän <code>'a</code>:lla ja <code>x</code>:n eliniän <code>'b</code>:llä. Kuten
+näet, sisempi <code>'b</code>-lohko on paljon pienempi kuin ulompi <code>'a</code>-elinikälohko.
+Käännösaikana Rust vertaa kahden eliniän kokoa ja näkee, että <code>r</code>:llä on elinikä
+<code>'a</code>, mutta se viittaa muistiin, jonka elinikä on <code>'b</code>. Ohjelma hylätään, koska
+<code>'b</code> on lyhyempi kuin <code>'a</code>: Viittauksen kohteella ei ole yhtä pitkää elinikää
+kuin viittauksella.</p>
+<p>Listaus 10-18 korjaa koodin niin, ettei siinä ole riippuvaa viittausta, ja se
+kääntyy ilman virheitä.</p>
+<figure class="listing" id="listing-10-18">
+<pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>{{#rustdoc_include ../listings/ch10-generic-types-traits-and-lifetimes/listing-10-18/src/main.rs}}
-<span class="boring">}</span></code></pre></pre>
-<figcaption>Listing 10-18: Kelvollinen viittaus, koska datalla on pidempi elinikä kuin viittauksella</figcaption>
+<span class="boring">}</span></code></pre>
+<figcaption><a href="#listing-10-18">Listing 10-18</a>: Kelvollinen viittaus, koska datalla on pidempi elinikä kuin viittauksella</figcaption>
 </figure>
-<p>Tässä <code>x</code>:llä on elinikä <code>'b</code>, joka tässä tapauksessa on suurempi kuin <code>'a</code>. Tämä tarkoittaa, että <code>r</code> voi viitata <code>x</code>:ään, koska Rust tietää, että <code>r</code>:n viittaus on aina voimassa niin kauan kuin <code>x</code> on voimassa.</p>
-<p>Nyt kun tiedät, missä viittausten elinikät ovat ja miten Rust analysoi elinikää varmistaakseen viittausten olevan aina kelvollisia, tutkitaan geneerisiä elinikäparametreja ja palautusarvoja funktioiden yhteydessä.</p>
-<h3 id="geneeriset-elinikäparametrit-funktioissa"><a class="header" href="#geneeriset-elinikäparametrit-funktioissa">Geneeriset elinikäparametrit funktioissa</a></h3>
-<p>Kirjoitamme funktion, joka palauttaa pidemmän kahdesta merkkijonon viipaleesta. Tämä funktio ottaa kaksi merkkijonon viipaletta ja palauttaa yhden merkkijonon viipaleen. Kun olemme toteuttaneet <code>longest</code>-funktion, listauksen 10-19 koodin pitäisi tulostaa <code>The longest string is abcd</code>.</p>
-<figure class="listing">
+<p>Tässä <code>x</code>:llä on elinikä <code>'b</code>, joka tässä tapauksessa on suurempi kuin <code>'a</code>. Tämä
+tarkoittaa, että <code>r</code> voi viitata <code>x</code>:ään, koska Rust tietää, että <code>r</code>:n
+viittaus on aina kelvollinen niin kauan kuin <code>x</code> on kelvollinen.</p>
+<p>Nyt kun tiedät, missä viittausten eliniät ovat ja miten Rust analysoi eliniitä
+varmistaakseen, että viittaukset ovat aina kelvollisia, tutkitaan geneerisiä
+eliniä funktioiden parametreissa ja palautusarvoissa.</p>
+<h3 id="geneeriset-eliniät-funktioissa"><a class="header" href="#geneeriset-eliniät-funktioissa">Geneeriset eliniät funktioissa</a></h3>
+<p>Kirjoitamme funktion, joka palauttaa pidemmän kahdesta merkkijonoviipaleesta.
+Tämä funktio ottaa kaksi merkkijonoviipaletta ja palauttaa yhden
+merkkijonoviipaleen. Kun olemme toteuttaneet <code>longest</code>-funktion, listauksen
+10-19 koodin pitäisi tulostaa <code>The longest string is abcd</code>.</p>
+<figure class="listing" id="listing-10-19">
 <span class="file-name">Filename: src/main.rs</span>
 <pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch10-generic-types-traits-and-lifetimes/listing-10-19/src/main.rs}}</code></pre>
-<figcaption>Listing 10-19: <code>main</code>-funktio, joka kutsuu <code>longest</code>-funktiota löytääkseen pidemmän kahdesta merkkijonon viipaleesta</figcaption>
+<figcaption><a href="#listing-10-19">Listing 10-19</a>: <code>main</code>-funktio, joka kutsuu <code>longest</code>-funktiota löytääkseen pidemmän kahdesta merkkijonoviipaleesta</figcaption>
 </figure>
-<p>Huomaa, että haluamme funktion ottavan merkkijonon viipaleita, jotka ovat viittauksia, eivätkä merkkijonoja, koska emme halua <code>longest</code>-funktion ottavan parametriensa omistajuutta. Katso <a href="ch04-03-slices.html#string-slices-as-parameters">”Merkkijonon viipaleet parametreina”</a><!-- ignore --> -osio luvussa 4 lisäkeskustelua siitä, miksi listauksen 10-19 parametrit ovat haluamiamme.</p>
+<p>Huomaa, että haluamme funktion ottavan merkkijonoviipaleita, jotka ovat
+viittauksia, eivät merkkijonoja, koska emme halua <code>longest</code>-funktion ottavan
+parametriensa omistajuutta. Katso lisätietoja siitä, miksi listauksen 10-19
+parametrit ovat haluamiamme, luvun 4 osiosta <a href="ch04-03-slices.html#string-slices-as-parameters">”Merkkijonoviipaleet
+parametreina”</a><!-- ignore -->.</p>
 <p>Jos yritämme toteuttaa <code>longest</code>-funktion kuten listauksessa 10-20, se ei käänny.</p>
-<figure class="listing">
+<figure class="listing" id="listing-10-20">
 <span class="file-name">Filename: src/main.rs</span>
 <pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch10-generic-types-traits-and-lifetimes/listing-10-20/src/main.rs:here}}</code></pre>
-<figcaption>Listing 10-20: <code>longest</code>-funktion toteutus, joka palauttaa pidemmän kahdesta merkkijonon viipaleesta mutta ei vielä käänny</figcaption>
+<figcaption><a href="#listing-10-20">Listing 10-20</a>: <code>longest</code>-funktion toteutus, joka palauttaa pidemmän kahdesta merkkijonoviipaleesta mutta ei vielä käänny</figcaption>
 </figure>
-<p>Sen sijaan saamme seuraavan virheen, joka puhuu elinikästä:</p>
+<p>Sen sijaan saamme seuraavan virheen, joka käsittelee eliniitä:</p>
 <pre><code class="language-console">{{#include ../listings/ch10-generic-types-traits-and-lifetimes/listing-10-20/output.txt}}
 </code></pre>
-<p>Ohjeteksti paljastaa, että palautustyypillä täytyy olla geneerinen elinikäparametri, koska Rust ei voi kertoa, viittaako palautettava viittaus <code>x</code>:ään vai <code>y</code>:hyn. Itse asiassa emme tiedä sitäkään, koska funktion rungon <code>if</code>-lohko palauttaa viittauksen <code>x</code>:ään ja <code>else</code>-lohko viittauksen <code>y</code>:hyn!</p>
-<p>Kun määrittelemme tämän funktion, emme tiedä konkreettisia arvoja, jotka välitetään funktioon, joten emme tiedä, suoritetaanko <code>if</code>- tai <code>else</code>-tapaus. Emme myöskään tiedä viittausten konkreettisia elinikäjä, joten emme voi tarkastella alueita kuten listauksissa 10-17 ja 10-18 määrittääksemme, onko palauttamamme viittaus aina kelvollinen. Lainantarkistin ei voi määrittää tätäkään, koska se ei tiedä, miten <code>x</code>:n ja <code>y</code>:n elinikät liittyvät palautusarvon elinikään. Korjataksemme tämän virheen lisäämme geneeriset elinikäparametrit, jotka määrittelevät viittausten välisen suhteen, jotta lainantarkistin voi suorittaa analyysinsä.</p>
-<h3 id="elinikäannotaation-syntaksi"><a class="header" href="#elinikäannotaation-syntaksi">Elinikäannotaation syntaksi</a></h3>
-<p>Elinikäannotaatiot eivät muuta sitä, kuinka kauan mikään viittauksista elää. Sen sijaan ne kuvaavat useiden viittausten eliniköiden välisiä suhteita vaikuttamatta elinikään. Aivan kuten funktiot voivat hyväksyä minkä tahansa tyypin, kun allekirjoituksessa määritellään geneerinen tyyppiparametri, funktiot voivat hyväksyä viittauksia millä tahansa elinikällä määrittelemällä geneerisen elinikäparametrin.</p>
-<p>Elinikäannotaatioilla on hieman epätavallinen syntaksi: elinikäparametrien nimien täytyy alkaa heittomerkillä (<code>'</code>) ja ne ovat yleensä pieniä kirjaimia ja hyvin lyhyitä, kuten geneeriset tyypit. Useimmat ihmiset käyttävät nimeä <code>'a</code> ensimmäiselle elinikäannotaatiolle. Sijoitamme elinikäparametrien annotaatiot viittauksen <code>&amp;</code>-merkin jälkeen käyttäen välilyöntiä erottamaan annotaation viittauksen tyypistä.</p>
-<p>Tässä on joitakin esimerkkejä: viittaus <code>i32</code>-tyyppiin ilman elinikäparametria, viittaus <code>i32</code>-tyyppiin, jolla on elinikäparametri nimeltä <code>'a</code>, ja muokattava viittaus <code>i32</code>-tyyppiin, jolla on myös elinikä <code>'a</code>.</p>
+<p>Ohjeteksti paljastaa, että palautustyypillä täytyy olla geneerinen elinikäparametri,
+koska Rust ei voi kertoa, viittaako palautettava viittaus <code>x</code>:ään vai <code>y</code>:ään.
+Itse asiassa emme tiedä sitäkään, koska funktion rungon <code>if</code>-lohko palauttaa
+viittauksen <code>x</code>:ään ja <code>else</code>-lohko viittauksen <code>y</code>:ään!</p>
+<p>Kun määrittelemme tämän funktion, emme tiedä konkreettisia arvoja, jotka
+annetaan tälle funktiolle, joten emme tiedä, suoritetaanko <code>if</code>- vai <code>else</code>-
+tapaus. Emme myöskään tiedä viittausten konkreettisia eliniä, joten emme voi
+tarkastella näkyvyysalueita kuten listauksissa 10-17 ja 10-18 määrittääksemme,
+onko palauttamamme viittaus aina kelvollinen. Lainauskontrolleri ei voi
+määrittää tätäkään, koska se ei tiedä, miten <code>x</code>:n ja <code>y</code>:n eliniät liittyvät
+palautusarvon elinikään. Korjataksemme tämän virheen lisäämme geneerisiä
+elinikäparametreja, jotka määrittelevät viittausten välisen suhteen, jotta
+lainauskontrolleri voi suorittaa analyysinsä.</p>
+<h3 id="elinikämerkintöjen-syntaksi"><a class="header" href="#elinikämerkintöjen-syntaksi">Elinikämerkintöjen syntaksi</a></h3>
+<p>Elinikämerkinnät eivät muuta sitä, kuinka kauan mikään viittauksista elää.
+Pikemminkin ne kuvaavat useiden viittausten eliniöiden välisiä suhteita
+vaikuttamatta eliniöihin. Aivan kuten funktiot voivat hyväksyä minkä tahansa
+tyypin, kun allekirjoitus määrittää geneerisen tyyppiparametrin, funktiot voivat
+hyväksyä viittauksia millä tahansa eliniällä määrittämällä geneerisen
+elinikäparametrin.</p>
+<p>Elinikämerkinnöillä on hieman epätavallinen syntaksi: Elinikäparametrien
+nimien täytyy alkaa heittomerkillä (<code>'</code>) ja ne ovat yleensä pieniä kirjaimia
+ja hyvin lyhyitä, kuten geneeriset tyypit. Useimmat ihmiset käyttävät nimeä
+<code>'a</code> ensimmäiselle elinikämerkinnälle. Sijoitamme elinikäparametrien
+merkinnät <code>&amp;</code>-merkin jälkeen viittauksessa käyttäen välilyöntiä erottamaan
+merkinnän viittauksen tyypistä.</p>
+<p>Tässä on joitakin esimerkkejä — viittaus <code>i32</code>:een ilman elinikäparametria,
+viittaus <code>i32</code>:een, jolla on elinikäparametri nimeltä <code>'a</code>, ja muuttuva
+viittaus <code>i32</code>:een, jolla on myös elinikä <code>'a</code>:</p>
 <pre><code class="language-rust ignore">&amp;i32        // a reference
 &amp;'a i32     // a reference with an explicit lifetime
 &amp;'a mut i32 // a mutable reference with an explicit lifetime</code></pre>
-<p>Yksittäisellä elinikäannotaatiolla ei ole paljon merkitystä, koska annotaatioiden tarkoitus on kertoa Rustille, miten useiden viittausten geneeriset elinikäparametrit liittyvät toisiinsa. Tarkastellaan, miten elinikäannotaatiot liittyvät toisiinsa <code>longest</code>-funktion yhteydessä.</p>
-<h3 id="elinikäannotaatiot-funktioallekirjoituksissa"><a class="header" href="#elinikäannotaatiot-funktioallekirjoituksissa">Elinikäannotaatiot funktioallekirjoituksissa</a></h3>
-<p>Käyttääksemme elinikäannotaatioita funktioallekirjoituksissa meidän täytyy määritellä geneeriset <em>elinikä</em> parametrit kulmasulkeissa funktion nimen ja parametrilistan välissä, aivan kuten teimme geneeristen <em>tyyppi</em> parametrien kanssa.</p>
-<p>Haluamme allekirjoituksen ilmaisevan seuraavan rajoitteen: palautettu viittaus on voimassa niin kauan kuin molemmat parametrit ovat voimassa. Tämä on parametrien ja palautusarvon eliniköiden välinen suhde. Nimeämme elinikäparametrin <code>'a</code>:ksi ja lisäämme sen jokaiseen viittaukseen, kuten listauksessa 10-21.</p>
-<figure class="listing">
+<p>Yksi elinikämerkintä itsessään ei merkitse paljon, koska merkinnät on
+tarkoitettu kertomaan Rustille, miten useiden viittausten geneeriset
+elinikäparametrit liittyvät toisiinsa. Tarkastellaan, miten elinikämerkinnät
+liittyvät toisiinsa <code>longest</code>-funktion yhteydessä.</p>
+<!-- Old headings. Do not remove or links may break. -->
+<p><a id="lifetime-annotations-in-function-signatures"></a></p>
+<h3 id="funktioiden-allekirjoituksissa"><a class="header" href="#funktioiden-allekirjoituksissa">Funktioiden allekirjoituksissa</a></h3>
+<p>Käyttääksemme elinikämerkintöjä funktioiden allekirjoituksissa meidän täytyy
+ilmoittaa geneeriset elinikäparametrit kulmasulkeissa funktion nimen ja
+parametrilistan välissä, aivan kuten teimme geneeristen tyyppiparametrien
+kanssa.</p>
+<p>Haluamme allekirjoituksen ilmaisevan seuraavan rajoituksen: Palautettu viittaus
+on kelvollinen niin kauan kuin molemmat parametrit ovat kelvollisia. Tämä on
+parametrien ja palautusarvon eliniöiden välinen suhde. Nimeämme eliniän <code>'a</code>:ksi
+ja lisäämme sen jokaiseen viittaukseen, kuten listauksessa 10-21.</p>
+<figure class="listing" id="listing-10-21">
 <span class="file-name">Filename: src/main.rs</span>
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+<pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>{{#rustdoc_include ../listings/ch10-generic-types-traits-and-lifetimes/listing-10-21/src/main.rs:here}}
-<span class="boring">}</span></code></pre></pre>
-<figcaption>Listing 10-21: <code>longest</code>-funktion määrittely, joka määrittelee kaikkien allekirjoituksen viittausten olevan saman elinikäparametrin <code>'a</code></figcaption>
+<span class="boring">}</span></code></pre>
+<figcaption><a href="#listing-10-21">Listing 10-21</a>: <code>longest</code>-funktion määrittely, joka määrittää, että kaikilla allekirjoituksen viittauksilla täytyy olla sama elinikä <code>'a</code></figcaption>
 </figure>
-<p>Tämän koodin pitäisi kääntyä ja tuottaa haluamamme tuloksen, kun käytämme sitä listauksen 10-19 <code>main</code>-funktion kanssa.</p>
-<p>Funktioallekirjoitus kertoo nyt Rustille, että jollekin elinikäparametrille <code>'a</code> funktio ottaa kaksi parametria, jotka molemmat ovat merkkijonon viipaleita, jotka elävät vähintään elinikäparametrin <code>'a</code> verran. Funktioallekirjoitus kertoo myös Rustille, että funktiosta palautettu merkkijonon viipale elää vähintään elinikäparametrin <code>'a</code> verran. Käytännössä tämä tarkoittaa, että <code>longest</code>-funktion palauttaman viittauksen elinikä on sama kuin funktioargumenttien viittaamien arvojen eliniköistä lyhyempi. Nämä suhteet ovat se, mitä haluamme Rustin käyttävän analysoidessaan tätä koodia.</p>
-<p>Muista, että kun määrittelemme elinikäparametrit tässä funktioallekirjoituksessa, emme muuta minkään välitetyn tai palautetun arvon elinikää. Sen sijaan määrittelemme, että lainantarkistimen pitäisi hylätä arvot, jotka eivät noudata näitä rajoituksia. Huomaa, että <code>longest</code>-funktion ei tarvitse tietää tarkalleen, kuinka kauan <code>x</code> ja <code>y</code> elävät, vain että jokin alue voidaan korvata <code>'a</code>:lla, joka tyydyttää tämän allekirjoituksen.</p>
-<p>Kun annotoimme elinikäjä funktioissa, annotaatiot menevät funktioallekirjoitukseen, eivät funktion runkoon. Elinikäannotaatiot tulevat osaksi funktion sopimusta, aivan kuten allekirjoituksen tyypit. Kun funktioallekirjoitukset sisältävät elinikäsopimuksen, Rustin kääntäjän analyysi voi olla yksinkertaisempaa. Jos funktion annotoinnissa tai sen kutsumisessa on ongelma, kääntäjän virheet voivat osoittaa tarkemmin koodin osaan ja rajoituksiin. Jos sen sijaan Rustin kääntäjä tekisi enemmän päätelmiä siitä, mitä tarkoitimme eliniköiden suhteilla, kääntäjä saattaisi pystyä osoittamaan vain koodin käyttökohtaan monta askelta ongelman syystä.</p>
-<p>Kun välitämme konkreettisia viittauksia <code>longest</code>-funktiolle, konkreettinen elinikä, joka korvaa <code>'a</code>:n, on se osa <code>x</code>:n alueesta, joka limittyy <code>y</code>:n alueen kanssa. Toisin sanoen geneerinen elinikä <code>'a</code> saa konkreettisen elinikäparametrin, joka on yhtä suuri kuin <code>x</code>:n ja <code>y</code>:n eliniköistä lyhyempi. Koska olemme annotoineet palautetun viittauksen samalla elinikäparametrilla <code>'a</code>, palautettu viittaus on myös voimassa <code>x</code>:n ja <code>y</code>:n eliniköistä lyhyemmän ajan.</p>
-<p>Katsotaan, miten elinikäannotaatiot rajoittavat <code>longest</code>-funktiota välittämällä viittauksia, joilla on eri konkreettiset elinikäparametrit. Listausta 10-22 on suoraviivainen esimerkki.</p>
-<figure class="listing">
+<p>Tämän koodin pitäisi kääntyä ja tuottaa haluamamme tuloksen, kun käytämme sitä
+listauksen 10-19 <code>main</code>-funktion kanssa.</p>
+<p>Funktion allekirjoitus kertoo nyt Rustille, että jollekin eliniälle <code>'a</code> funktio
+ottaa kaksi parametria, jotka molemmat ovat merkkijonoviipaleita, jotka elävät
+vähintään yhtä kauan kuin elinikä <code>'a</code>. Funktion allekirjoitus kertoo myös
+Rustille, että funktiosta palautettu merkkijonoviipale elää vähintään yhtä
+kauan kuin elinikä <code>'a</code>. Käytännössä tämä tarkoittaa, että <code>longest</code>-funktion
+palauttaman viittauksen elinikä on sama kuin funktioargumenttien viittaamien
+arvojen eliniöistä lyhyempi. Nämä suhteet ovat ne, joita haluamme Rustin
+käyttävän analysoidessaan tätä koodia.</p>
+<p>Muista, että kun määrittelemme elinikäparametrit tässä funktion allekirjoituksessa,
+emme muuta annettujen tai palautettujen arvojen eliniöitä. Pikemminkin
+määrittelemme, että lainauskontrollerin täytyy hylätä kaikki arvot, jotka eivät
+noudata näitä rajoituksia. Huomaa, että <code>longest</code>-funktion ei tarvitse tietää
+tarkalleen, kuinka kauan <code>x</code> ja <code>y</code> elävät, vain että jokin näkyvyysalue voidaan
+korvata <code>'a</code>:lla, joka tyydyttää tämän allekirjoituksen.</p>
+<p>Kun merkitsemme eliniöitä funktioissa, merkinnät menevät funktion allekirjoitukseen,
+ei funktion runkoon. Elinikämerkinnät tulevat osaksi funktion sopimusta, aivan
+kuten allekirjoituksen tyypit. Funktioallekirjoitusten sisältäminen elinikäsopimus
+tarkoittaa, että Rust-kääntäjän suorittama analyysi voi olla yksinkertaisempaa.
+Jos on ongelma funktion merkinnöissä tai sen kutsumisessa, kääntäjän virheet
+voivat osoittaa koodimme osan ja rajoitukset tarkemmin. Jos sen sijaan Rust-
+kääntäjä tekisi enemmän päätelmiä siitä, mitä aioimme eliniöiden suhteilla,
+kääntäjä saattaisi pystyä osoittamaan vain koodimme käytön monia askelia
+ongelman syystä.</p>
+<p>Kun annamme konkreettisia viittauksia <code>longest</code>-funktiolle, konkreettinen
+elinikä, joka korvaa <code>'a</code>:n, on osa <code>x</code>:n näkyvyysalueesta, joka leikkaa <code>y</code>:n
+näkyvyysalueen kanssa. Toisin sanoen geneerinen elinikä <code>'a</code> saa konkreettisen
+eliniän, joka on yhtä suuri kuin <code>x</code>:n ja <code>y</code>:n eliniöistä lyhyempi. Koska
+olemme merkinneet palautetun viittauksen samalla elinikäparametrilla <code>'a</code>,
+palautettu viittaus on myös kelvollinen <code>x</code>:n ja <code>y</code>:n eliniöistä lyhyemmän
+pituuden ajan.</p>
+<p>Katsotaan, miten elinikämerkinnät rajoittavat <code>longest</code>-funktiota antamalla
+viittauksia, joilla on eri konkreettiset eliniät. Listaus 10-22 on
+suoraviivainen esimerkki.</p>
+<figure class="listing" id="listing-10-22">
 <span class="file-name">Filename: src/main.rs</span>
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+<pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>{{#rustdoc_include ../listings/ch10-generic-types-traits-and-lifetimes/listing-10-22/src/main.rs:here}}
-<span class="boring">}</span></code></pre></pre>
-<figcaption>Listing 10-22: <code>longest</code>-funktion käyttö viittauksilla <code>String</code>-arvoihin, joilla on eri konkreettiset elinikäparametrit</figcaption>
+<span class="boring">}</span></code></pre>
+<figcaption><a href="#listing-10-22">Listing 10-22</a>: <code>longest</code>-funktion käyttö viittauksilla <code>String</code>-arvoihin, joilla on eri konkreettiset eliniät</figcaption>
 </figure>
-<p>Tässä esimerkissä <code>string1</code> on voimassa ulomman alueen loppuun, <code>string2</code> on voimassa sisemmän alueen loppuun, ja <code>result</code> viittaa johonkin, joka on voimassa sisemmän alueen loppuun. Suorita tämä koodi ja näet lainantarkistimen hyväksyvän sen; se kääntyy ja tulostaa <code>The longest string is long string is long</code>.</p>
-<p>Kokeillaan seuraavaksi esimerkkiä, joka osoittaa, että <code>result</code>-viittauksen elinikäparametrin täytyy olla argumenttien elinikäparametreista lyhyempi. Siirrämme <code>result</code>-muuttujan määrittelyn sisemmän alueen ulkopuolelle, mutta jätämme arvon osoittamisen <code>result</code>-muuttujalle sisemmälle alueelle <code>string2</code>:n kanssa. Siirrämme sitten <code>println!</code>-kutsun, joka käyttää <code>result</code>-muuttujaa, sisemmän alueen ulkopuolelle, sen jälkeen kun sisempi alue on päättynyt. Listauksen 10-23 koodi ei käänny.</p>
-<figure class="listing">
+<p>Tässä esimerkissä <code>string1</code> on kelvollinen ulomman näkyvyysalueen loppuun asti,
+<code>string2</code> on kelvollinen sisemmän näkyvyysalueen loppuun asti, ja <code>result</code>
+viittaa johonkin, joka on kelvollinen sisemmän näkyvyysalueen loppuun asti.
+Aja tämä koodi ja näet, että lainauskontrolleri hyväksyy sen; se kääntyy ja
+tulostaa <code>The longest string is long string is long</code>.</p>
+<p>Seuraavaksi kokeillaan esimerkkiä, joka näyttää, että <code>result</code>-viittauksen
+elinikän täytyy olla kahden argumentin lyhyempi elinikä. Siirrämme <code>result</code>-
+muuttujan ilmoituksen sisemmän näkyvyysalueen ulkopuolelle, mutta jätämme arvon
+<code>result</code>-muuttujalle antamisen sisemmän näkyvyysalueen sisälle <code>string2</code>:n
+kanssa. Sitten siirrämme <code>result</code>:ia käyttävän <code>println!</code>:n sisemmän
+näkyvyysalueen ulkopuolelle, sen päättymisen jälkeen. Listauksen 10-23 koodi ei
+käänny.</p>
+<figure class="listing" id="listing-10-23">
 <span class="file-name">Filename: src/main.rs</span>
 <pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch10-generic-types-traits-and-lifetimes/listing-10-23/src/main.rs:here}}</code></pre>
-<figcaption>Listing 10-23: Yritys käyttää <code>result</code>-muuttujaa sen jälkeen, kun <code>string2</code> on poistunut alueelta</figcaption>
+<figcaption><a href="#listing-10-23">Listing 10-23</a>: Yritys käyttää <code>result</code>-muuttujaa sen jälkeen, kun <code>string2</code> on poistunut näkyvyysalueelta</figcaption>
 </figure>
 <p>Kun yritämme kääntää tämän koodin, saamme tämän virheen:</p>
 <pre><code class="language-console">{{#include ../listings/ch10-generic-types-traits-and-lifetimes/listing-10-23/output.txt}}
 </code></pre>
-<p>Virhe osoittaa, että jotta <code>result</code> olisi kelvollinen <code>println!</code>-lausekkeelle, <code>string2</code>:n täytyisi olla voimassa ulomman alueen loppuun. Rust tietää tämän, koska annotoimme funktioiden parametrien ja palautusarvojen elinikäparametrit samalla elinikäparametrilla <code>'a</code>.</p>
-<p>Ihmisenä voimme katsoa tätä koodia ja nähdä, että <code>string1</code> on pidempi kuin <code>string2</code>, ja siksi <code>result</code> sisältää viittauksen <code>string1</code>:een. Koska <code>string1</code> ei ole vielä poistunut alueelta, viittaus <code>string1</code>:een on edelleen kelvollinen <code>println!</code>-lausekkeelle. Kääntäjä ei kuitenkaan näe viittauksen olevan kelvollinen tässä tapauksessa. Olemme kertoneet Rustille, että <code>longest</code>-funktion palauttaman viittauksen elinikäparametri on sama kuin välitettyjen viittausten elinikäparametreista lyhyempi. Siksi lainantarkistin kieltää listauksen 10-23 koodin mahdollisesti virheellisenä viittauksena.</p>
-<p>Kokeile suunnitella lisää kokeita, joissa vaihtelet <code>longest</code>-funktiolle välitettyjen viittausten arvoja ja elinikäparametreja sekä sitä, miten palautettua viittausta käytetään. Tee hypoteeseja siitä, läpäisevätkö kokeesi lainantarkistimen ennen kuin käännät; tarkista sitten, olitko oikeassa!</p>
-<h3 id="ajattelu-elinikäparametrien-näkökulmasta"><a class="header" href="#ajattelu-elinikäparametrien-näkökulmasta">Ajattelu elinikäparametrien näkökulmasta</a></h3>
-<p>Tapa, jolla sinun täytyy määritellä elinikäparametrit, riippuu siitä, mitä funktiosi tekee. Jos esimerkiksi muuttaisimme <code>longest</code>-funktion toteutusta palauttamaan aina ensimmäisen parametrin pidemmän merkkijonon viipaleen sijaan, emme tarvitsisi elinikäparametria <code>y</code>-parametrille. Seuraava koodi kääntyy:</p>
+<p>Virhe näyttää, että jotta <code>result</code> olisi kelvollinen <code>println!</code>-lauseelle,
+<code>string2</code>:n täytyisi olla kelvollinen ulomman näkyvyysalueen loppuun asti. Rust
+tietää tämän, koska olemme merkinneet funktioiden parametrien ja palautusarvojen
+eliniät käyttämällä samaa elinikäparametria <code>'a</code>.</p>
+<p>Ihmisinä voimme katsoa tätä koodia ja nähdä, että <code>string1</code> on pidempi kuin
+<code>string2</code>, ja siksi <code>result</code> sisältää viittauksen <code>string1</code>:een. Koska <code>string1</code>
+ei ole vielä poistunut näkyvyysalueelta, viittaus <code>string1</code>:een on silti
+kelvollinen <code>println!</code>-lauseelle. Kääntäjä ei kuitenkaan näe, että viittaus on
+kelvollinen tässä tapauksessa. Olemme kertoneet Rustille, että <code>longest</code>-
+funktion palauttaman viittauksen elinikä on sama kuin annettujen viittausten
+eliniöistä lyhyempi. Siksi lainauskontrolleri kieltää listauksen 10-23 koodin,
+koska siinä voi olla virheellinen viittaus.</p>
+<p>Kokeile suunnitella lisää kokeita, joissa vaihtelet <code>longest</code>-funktiolle
+annettujen viittausten arvoja ja eliniöitä sekä sitä, miten palautettua
+viittausta käytetään. Tee hypoteeseja siitä, läpäisevätkö kokeesi lainauskontrollerin
+ennen kääntämistä; tarkista sitten, olitko oikeassa!</p>
+<!-- Old headings. Do not remove or links may break. -->
+<p><a id="thinking-in-terms-of-lifetimes"></a></p>
+<h3 id="suhteet"><a class="header" href="#suhteet">Suhteet</a></h3>
+<p>Tapa, jolla sinun täytyy määrittää elinikäparametrit, riippuu siitä, mitä
+funktiosi tekee. Esimerkiksi, jos muuttaisimme <code>longest</code>-funktion toteutusta
+palauttamaan aina ensimmäisen parametrin pidemmän merkkijonoviipaleen sijaan,
+emme tarvitsisi määrittää elinikää <code>y</code>-parametrille. Seuraava koodi kääntyy:</p>
 <figure class="listing">
 <span class="file-name">Filename: src/main.rs</span>
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+<pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>{{#rustdoc_include ../listings/ch10-generic-types-traits-and-lifetimes/no-listing-08-only-one-reference-with-lifetime/src/main.rs:here}}
-<span class="boring">}</span></code></pre></pre>
+<span class="boring">}</span></code></pre>
 </figure>
-<p>Olemme määritelleet elinikäparametrin <code>'a</code> parametrille <code>x</code> ja palautustyypille, mutta emme parametrille <code>y</code>, koska <code>y</code>:n elinikäparametrilla ei ole mitään suhdetta <code>x</code>:n tai palautusarvon elinikäparametriin.</p>
-<p>Kun palautamme viittauksen funktiosta, palautustyypin elinikäparametrin täytyy vastata jonkin parametrin elinikäparametria. Jos palautettu viittaus <em>ei</em> viittaa johonkin parametreista, sen täytyy viitata tässä funktiossa luotuun arvoon. Tämä olisi kuitenkin roikkuva viittaus, koska arvo poistuu alueelta funktion lopussa. Tarkastele tätä yritystä toteuttaa <code>longest</code>-funktio, joka ei käänny:</p>
+<p>Olemme määrittäneet elinikäparametrin <code>'a</code> parametrille <code>x</code> ja palautustyypille,
+mutta emme parametrille <code>y</code>, koska <code>y</code>:n eliniällä ei ole mitään suhdetta <code>x</code>:n
+tai palautusarvon elinikään.</p>
+<p>Kun palautamme viittauksen funktiosta, palautustyypin elinikäparametrin täytyy
+vastata jonkin parametrin elinikäparametria. Jos palautettu viittaus <em>ei</em>
+viittaa mihinkään parametreista, sen täytyy viitata tässä funktiossa luotuun
+arvoon. Tämä olisi kuitenkin riippuva viittaus, koska arvo poistuu
+näkyvyysalueelta funktion lopussa. Harkitse tätä yritystä toteuttaa <code>longest</code>-
+funktio, joka ei käänny:</p>
 <figure class="listing">
 <span class="file-name">Filename: src/main.rs</span>
 <pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch10-generic-types-traits-and-lifetimes/no-listing-09-unrelated-lifetime/src/main.rs:here}}</code></pre>
 </figure>
-<p>Tässä, vaikka olemme määritelleet elinikäparametrin <code>'a</code> palautustyypille, tämä toteutus ei käänny, koska palautusarvon elinikäparametrilla ei ole mitään tekemistä parametrien elinikäparametrien kanssa. Tässä on virheilmoitus, jonka saamme:</p>
+<p>Tässä, vaikka olemme määrittäneet elinikäparametrin <code>'a</code> palautustyypille, tämä
+toteutus ei käänny, koska palautusarvon elinikä ei liity parametrien eliniöihin
+ollenkaan. Tässä on virheilmoitus, jonka saamme:</p>
 <pre><code class="language-console">{{#include ../listings/ch10-generic-types-traits-and-lifetimes/no-listing-09-unrelated-lifetime/output.txt}}
 </code></pre>
-<p>Ongelma on, että <code>result</code> poistuu alueelta ja siivotaan <code>longest</code>-funktion lopussa. Yritämme myös palauttaa viittauksen <code>result</code>-muuttujaan funktiosta. Emme voi määritellä elinikäparametreja, jotka muuttaisivat roikkuvaa viittausta, eikä Rust anna meidän luoda roikkuvaa viittausta. Tässä tapauksessa paras korjaus olisi palauttaa omistettu datatyyppi viittauksen sijaan, jolloin kutsupuolen funktio on vastuussa arvon siivoamisesta.</p>
-<p>Lopulta elinikäsyntaksi liittyy eri funktioiden parametrien ja palautusarvojen elinikäparametrien yhdistämiseen. Kun ne on yhdistetty, Rustilla on tarpeeksi tietoa salliakseen muistiturvalliset operaatiot ja kieltääkseen operaatiot, jotka luovat roikkuvia osoittimia tai muuten rikkovat muistiturvallisuutta.</p>
-<h3 id="elinikäannotaatiot-rakenteen-määrittelyissä"><a class="header" href="#elinikäannotaatiot-rakenteen-määrittelyissä">Elinikäannotaatiot rakenteen määrittelyissä</a></h3>
-<p>Tähän asti määrittelemämme rakenteet ovat sisältäneet omistettuja tyyppejä. Voimme määritellä rakenteita, jotka sisältävät viittauksia, mutta siinä tapauksessa meidän täytyy lisätä elinikäannotaatio jokaiseen viittaukseen rakenteen määrittelyssä. Listauksessa 10-24 on rakenne nimeltä <code>ImportantExcerpt</code>, joka sisältää merkkijonon viipaleen.</p>
-<figure class="listing">
+<p>Ongelma on, että <code>result</code> poistuu näkyvyysalueelta ja siivotaan <code>longest</code>-
+funktion lopussa. Yritämme myös palauttaa viittauksen <code>result</code>:iin funktiosta.
+Emme voi määrittää elinikäparametreja, jotka muuttaisivat riippuvaa viittausta,
+eikä Rust anna meidän luoda riippuvaa viittausta. Tässä tapauksessa paras korjaus
+olisi palauttaa omistettu tietotyyppi viittauksen sijaan, jolloin kutsuva
+funktio on vastuussa arvon siivoamisesta.</p>
+<p>Lopulta elinikäsyntaksi koskee eri parametrien ja funktioiden palautusarvojen
+eliniöiden yhdistämistä. Kun ne on yhdistetty, Rustilla on tarpeeksi tietoa
+salliakseen muistiturvalliset operaatiot ja kieltääkseen operaatiot, jotka
+luoisivat riippuvia osoittimia tai muuten rikkoisivat muistiturvallisuutta.</p>
+<!-- Old headings. Do not remove or links may break. -->
+<p><a id="lifetime-annotations-in-struct-definitions"></a></p>
+<h3 id="struct-määrittelyissä"><a class="header" href="#struct-määrittelyissä">Struct-määrittelyissä</a></h3>
+<p>Tähän asti määrittelemämme structit säilyttävät kaikki omistettuja tyyppejä.
+Voimme määritellä structeja säilyttämään viittauksia, mutta siinä tapauksessa
+meidän täytyy lisätä elinikämerkintä jokaiseen viittaukseen structin
+määrittelyssä. Listauksessa 10-24 on struct nimeltä <code>ImportantExcerpt</code>, joka
+säilyttää merkkijonoviipaleen.</p>
+<figure class="listing" id="listing-10-24">
 <span class="file-name">Filename: src/main.rs</span>
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+<pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>{{#rustdoc_include ../listings/ch10-generic-types-traits-and-lifetimes/listing-10-24/src/main.rs}}
-<span class="boring">}</span></code></pre></pre>
-<figcaption>Listing 10-24: Rakenne, joka sisältää viittauksen ja vaatii elinikäannotaation</figcaption>
+<span class="boring">}</span></code></pre>
+<figcaption><a href="#listing-10-24">Listing 10-24</a>: Struct, joka säilyttää viittauksen ja vaatii elinikämerkinnän</figcaption>
 </figure>
-<p>Tällä rakenteella on yksi kenttä <code>part</code>, joka sisältää merkkijonon viipaleen eli viittauksen. Kuten geneeristen datatyyppien kanssa, määrittelemme geneerisen elinikäparametrin nimen kulmasulkeissa rakenteen nimen jälkeen, jotta voimme käyttää elinikäparametria rakenteen rungon määrittelyssä. Tämä annotaatio tarkoittaa, että <code>ImportantExcerpt</code>-instanssi ei voi elää pidempään kuin viittaus, jonka se sisältää <code>part</code>-kentässään.</p>
-<p>Tässä <code>main</code>-funktiossa luodaan <code>ImportantExcerpt</code>-rakenteen instanssi, joka sisältää viittauksen <code>novel</code>-muuttujan omistaman <code>String</code>-arvon ensimmäiseen lauseeseen. <code>novel</code>-muuttujan data on olemassa ennen <code>ImportantExcerpt</code>-instanssin luomista. Lisäksi <code>novel</code> ei poistu alueelta ennen kuin <code>ImportantExcerpt</code> poistuu alueelta, joten <code>ImportantExcerpt</code>-instanssin viittaus on kelvollinen.</p>
-<h3 id="elinikäparametrien-päättely"><a class="header" href="#elinikäparametrien-päättely">Elinikäparametrien päättely</a></h3>
-<p>Olet oppinut, että jokaisella viittauksella on elinikäparametri ja että sinun täytyy määritellä elinikäparametrit funktioille tai rakenteille, jotka käyttävät viittauksia. Meillä oli kuitenkin funktio listauksessa 4-9, joka näytetään uudelleen listauksessa 10-25, ja se kääntyi ilman elinikäannotaatioita.</p>
-<figure class="listing">
+<p>Tällä structilla on yksi kenttä <code>part</code>, joka säilyttää merkkijonoviipaleen,
+joka on viittaus. Kuten geneeristen tietotyyppien kanssa, ilmoitamme geneerisen
+elinikäparametrin nimen kulmasulkeissa structin nimen jälkeen, jotta voimme
+käyttää elinikäparametria struct-määrittelyn rungossa. Tämä merkintä tarkoittaa,
+että <code>ImportantExcerpt</code>-instanssi ei voi elää pidempään kuin viittaus, jonka se
+säilyttää <code>part</code>-kentässään.</p>
+<p>Tässä <code>main</code>-funktio luo <code>ImportantExcerpt</code>-structin instanssin, joka säilyttää
+viittauksen muuttujan <code>novel</code> omistaman <code>String</code>-arvon ensimmäiseen lauseeseen.
+<code>novel</code>-datan on olemassa ennen <code>ImportantExcerpt</code>-instanssin luomista.
+Lisäksi <code>novel</code> ei poistu näkyvyysalueelta ennen kuin <code>ImportantExcerpt</code>
+poistuu näkyvyysalueelta, joten <code>ImportantExcerpt</code>-instanssin viittaus on
+kelvollinen.</p>
+<h3 id="elinikien-poisjättäminen"><a class="header" href="#elinikien-poisjättäminen">Elinikien poisjättäminen</a></h3>
+<p>Olet oppinut, että jokaisella viittauksella on elinikä ja että sinun täytyy
+määrittää elinikäparametrit funktioille tai structeille, jotka käyttävät
+viittauksia. Meillä oli kuitenkin funktio listauksessa 4-9, joka näytetään
+uudelleen listauksessa 10-25, ja se kääntyi ilman elinikämerkintöjä.</p>
+<figure class="listing" id="listing-10-25">
 <span class="file-name">Filename: src/lib.rs</span>
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+<pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>{{#rustdoc_include ../listings/ch10-generic-types-traits-and-lifetimes/listing-10-25/src/main.rs:here}}
-<span class="boring">}</span></code></pre></pre>
-<figcaption>Listing 10-25: Funktio, jonka määrittelimme listauksessa 4-9 ja joka kääntyi ilman elinikäannotaatioita, vaikka parametri ja palautustyyppi ovat viittauksia</figcaption>
+<span class="boring">}</span></code></pre>
+<figcaption><a href="#listing-10-25">Listing 10-25</a>: Funktio, jonka määrittelimme listauksessa 4-9 ja joka kääntyi ilman elinikämerkintöjä, vaikka parametri ja palautustyyppi ovat viittauksia</figcaption>
 </figure>
-<p>Syy siihen, miksi tämä funktio kääntyy ilman elinikäannotaatioita, on historiallinen: Rustin varhaisissa versioissa (ennen 1.0) tämä koodi ei olisi kääntynyt, koska jokainen viittaus tarvitsi eksplisiittisen elinikäparametrin. Silloin funktioallekirjoitus olisi kirjoitettu näin:</p>
+<p>Syy, miksi tämä funktio kääntyy ilman elinikämerkintöjä, on historiallinen:
+Rustin varhaisissa versioissa (ennen 1.0) tämä koodi ei olisi kääntynyt, koska
+jokainen viittaus tarvitsi eksplisiittisen eliniän. Silloin funktion
+allekirjoitus olisi kirjoitettu näin:</p>
 <pre><code class="language-rust ignore">fn first_word&lt;'a&gt;(s: &amp;'a str) -&gt; &amp;'a str {</code></pre>
-<p>Kun Rust-tiimi oli kirjoittanut paljon Rust-koodia, he huomasivat Rust-ohjelmoijien syöttävän samoja elinikäannotaatioita yhä uudelleen tietyissä tilanteissa. Nämä tilanteet olivat ennustettavia ja noudattivat muutamia deterministisiä kaavoja. Kehittäjät ohjelmoivat nämä kaavat kääntäjän koodiin, jotta lainantarkistin voisi päätellä elinikäparametrit näissä tilanteissa eikä tarvitsisi eksplisiittisiä annotaatioita.</p>
-<p>Tämä Rustin historia on relevanttia, koska on mahdollista, että lisää deterministisiä kaavoja löytyy ja lisätään kääntäjään. Tulevaisuudessa elinikäannotaatioita saatetaan tarvita vielä vähemmän.</p>
-<p>Kääntäjän viittausanalyysiin ohjelmoituja kaavoja kutsutaan <em>elinikäparametrien päättelysäännöiksi</em>. Nämä eivät ole sääntöjä ohjelmoijille noudatettavaksi; ne ovat joukko erityistapauksia, joita kääntäjä harkitsee, ja jos koodisi sopii näihin tapauksiin, sinun ei tarvitse kirjoittaa elinikäparametreja eksplisiittisesti.</p>
-<p>Päättelysäännöt eivät tarjoa täyttä päättelyä. Jos viittausten elinikäparametreista on edelleen epäselvyyttä sen jälkeen, kun Rust on soveltanut sääntöjä, kääntäjä ei arvaa jäljellä olevien viittausten elinikäparametreja. Sen sijaan kääntäjä antaa virheen, jonka voit ratkaista lisäämällä elinikäannotaatiot.</p>
-<p>Funktio- tai metodiparametrien elinikäparametreja kutsutaan <em>tuloelinikäparametreiksi</em>, ja palautusarvojen elinikäparametreja <em>tulostuselinikäparametreiksi</em>.</p>
-<p>Kääntäjä käyttää kolmea sääntöä selvittääkseen viittausten elinikäparametrit, kun eksplisiittisiä annotaatioita ei ole. Ensimmäinen sääntö koskee tuloelinikäparametreja, ja toinen ja kolmas sääntö koskevat tulostuselinikäparametreja. Jos kääntäjä pääsee kolmen säännön loppuun ja viittauksia on vielä, joiden elinikäparametreja se ei voi selvittää, kääntäjä pysähtyy virheeseen. Nämä säännöt koskevat <code>fn</code>-määrittelyjä sekä <code>impl</code>-lohkoja.</p>
-<p>Ensimmäinen sääntö on, että kääntäjä määrittää elinikäparametrin jokaiselle viittausparametrille. Toisin sanoen funktio, jolla on yksi parametri, saa yhden elinikäparametrin: <code>fn foo&lt;'a&gt;(x: &amp;'a i32)</code>; funktio, jolla on kaksi parametria, saa kaksi erillistä elinikäparametria: <code>fn foo&lt;'a, 'b&gt;(x: &amp;'a i32, y: &amp;'b i32)</code>; ja niin edelleen.</p>
-<p>Toinen sääntö on, että jos on täsmälleen yksi tuloelinikäparametri, se elinikäparametri määritetään kaikille tulostuselinikäparametreille: <code>fn foo&lt;'a&gt;(x: &amp;'a i32) -&gt; &amp;'a i32</code>.</p>
-<p>Kolmas sääntö on, että jos on useita tuloelinikäparametreja, mutta yksi niistä on <code>&amp;self</code> tai <code>&amp;mut self</code>, koska kyseessä on metodi, <code>self</code>:n elinikäparametri määritetään kaikille tulostuselinikäparametreille. Tämä kolmas sääntö tekee metodeista paljon miellyttävämpiä lukea ja kirjoittaa, koska vähemmän symboleja tarvitaan.</p>
-<p>Oletetaan olevamme kääntäjä. Sovelletaan näitä sääntöjä selvittääksemme viittausten elinikäparametrit <code>first_word</code>-funktion allekirjoituksessa listauksessa 10-25. Allekirjoitus alkaa ilman elinikäparametreja, jotka liittyisivät viittauksiin:</p>
+<p>Kun Rust-tiimi oli kirjoittanut paljon Rust-koodia, he huomasivat, että Rust-
+ohjelmoijat kirjoittivat samoja elinikämerkintöjä yhä uudelleen tietyissä
+tilanteissa. Nämä tilanteet olivat ennustettavia ja noudattivat muutamia
+deterministisiä kuvioita. Kehittäjät ohjelmoivat nämä kuviot kääntäjän koodiin,
+jotta lainauskontrolleri voisi päätellä eliniät näissä tilanteissa eikä
+eksplisiittisiä merkintöjä tarvittaisi.</p>
+<p>Tämä Rustin historia on merkityksellinen, koska on mahdollista, että lisää
+deterministisiä kuvioita ilmestyy ja lisätään kääntäjään. Tulevaisuudessa
+vähemmän elinikämerkintöjä saattaa olla tarpeen.</p>
+<p>Kuviot, jotka on ohjelmoitu Rustin viittausten analyysiin, kutsutaan
+<em>elinikien poisjättämissäännöiksi</em> (<em>lifetime elision rules</em>). Nämä eivät ole
+sääntöjä ohjelmoijille noudatettavaksi; ne ovat joukko erityisiä tapauksia,
+joita kääntäjä harkitsee, ja jos koodisi sopii näihin tapauksiin, sinun ei
+tarvitse kirjoittaa eliniöitä eksplisiittisesti.</p>
+<p>Poisjättämissäännöt eivät tarjoa täyttä päätelmää. Jos viittausten eliniöistä
+on vielä epäselvyyttä Rustin sovellettua sääntöjä, kääntäjä ei arvaa, mikä
+jäljellä olevien viittausten elinikä pitäisi olla. Arvaamisen sijaan kääntäjä
+antaa virheen, jonka voit ratkaista lisäämällä elinikämerkinnät.</p>
+<p>Funktio- tai metodiparametrien eliniöitä kutsutaan <em>syöttöeliniöiksi</em> (<em>input
+lifetimes</em>), ja palautusarvojen eliniöitä <em>tuottoeliniöiksi</em> (<em>output
+lifetimes</em>).</p>
+<p>Kääntäjä käyttää kolmea sääntöä selvittääkseen viittausten eliniöitä, kun
+eksplisiittisiä merkintöjä ei ole. Ensimmäinen sääntö koskee syöttöeliniöitä,
+ja toinen ja kolmas sääntö koskevat tuottoeliniöitä. Jos kääntäjä pääsee kolmen
+säännön loppuun ja viittauksia on vielä, joiden eliniöitä se ei voi selvittää,
+kääntäjä pysähtyy virheeseen. Nämä säännöt koskevat <code>fn</code>-määrittelyjä sekä
+<code>impl</code>-lohkoja.</p>
+<p>Ensimmäinen sääntö on, että kääntäjä määrittää elinikäparametrin jokaiselle
+parametrille, joka on viittaus. Toisin sanoen funktio, jolla on yksi parametri,
+saa yhden elinikäparametrin: <code>fn foo&lt;'a&gt;(x: &amp;'a i32)</code>; funktio, jolla on kaksi
+parametria, saa kaksi erillistä elinikäparametria: <code>fn foo&lt;'a, 'b&gt;(x: &amp;'a i32, y: &amp;'b i32)</code>; ja niin edelleen.</p>
+<p>Toinen sääntö on, että jos on täsmälleen yksi syöttöelinikäparametri, se
+elinikä määritetään kaikille tuottoelinikäparametreille: <code>fn foo&lt;'a&gt;(x: &amp;'a i32) -&gt; &amp;'a i32</code>.</p>
+<p>Kolmas sääntö on, että jos on useita syöttöelinikäparametreja, mutta yksi
+niistä on <code>&amp;self</code> tai <code>&amp;mut self</code>, koska tämä on metodi, <code>self</code>:n elinikä
+määritetään kaikille tuottoelinikäparametreille. Tämä kolmas sääntö tekee
+metodeista paljon miellyttävämpiä lukea ja kirjoittaa, koska vähemmän symboleja
+on tarpeen.</p>
+<p>Olkoon me olemme kääntäjä. Sovelletaan näitä sääntöjä selvittääksemme
+viittausten eliniöt <code>first_word</code>-funktion allekirjoituksessa listauksessa
+10-25. Allekirjoitus alkaa ilman eliniöitä, jotka liittyvät viittauksiin:</p>
 <pre><code class="language-rust ignore">fn first_word(s: &amp;str) -&gt; &amp;str {</code></pre>
-<p>Sitten kääntäjä soveltaa ensimmäistä sääntöä, joka määrittelee, että jokainen parametri saa oman elinikäparametrinsa. Kutsumme sitä tavalliseen tapaan <code>'a</code>:ksi, joten allekirjoitus on nyt tämä:</p>
+<p>Sitten kääntäjä soveltaa ensimmäistä sääntöä, joka määrittää, että jokainen
+parametri saa oman eliniänsä. Kutsumme sitä <code>'a</code>:ksi kuten tavallisesti, joten
+nyt allekirjoitus on tämä:</p>
 <pre><code class="language-rust ignore">fn first_word&lt;'a&gt;(s: &amp;'a str) -&gt; &amp;str {</code></pre>
-<p>Toinen sääntö pätee, koska on täsmälleen yksi tuloelinikäparametri. Toinen sääntö määrittelee, että yhden tuloelinikäparametrin elinikäparametri määritetään tulostuselinikäparametrille, joten allekirjoitus on nyt tämä:</p>
+<p>Toinen sääntö pätee, koska on täsmälleen yksi syöttöelinikä. Toinen sääntö
+määrittää, että yhden syöttöparametrin elinikä määritetään tuottoelinikään,
+joten allekirjoitus on nyt tämä:</p>
 <pre><code class="language-rust ignore">fn first_word&lt;'a&gt;(s: &amp;'a str) -&gt; &amp;'a str {</code></pre>
-<p>Nyt kaikilla viittauksilla tässä funktioallekirjoituksessa on elinikäparametrit, ja kääntäjä voi jatkaa analyysiään ilman, että ohjelmoijan täytyy annotoida elinikäparametreja tässä funktioallekirjoituksessa.</p>
-<p>Katsotaan toista esimerkkiä, tällä kertaa <code>longest</code>-funktiosta, jolla ei ollut elinikäparametreja, kun aloimme työskennellä sen kanssa listauksessa 10-20:</p>
+<p>Nyt kaikilla viittauksilla tässä funktioallekirjoituksessa on eliniät, ja
+kääntäjä voi jatkaa analyysiään ilman, että ohjelmoijan tarvitsee merkitä
+eliniöitä tässä funktioallekirjoituksessa.</p>
+<p>Katsotaan toista esimerkkiä käyttäen <code>longest</code>-funktiota, jolla ei ollut
+elinikäparametreja, kun aloimme työskennellä sen kanssa listauksessa 10-20:</p>
 <pre><code class="language-rust ignore">fn longest(x: &amp;str, y: &amp;str) -&gt; &amp;str {</code></pre>
-<p>Sovelletaan ensimmäistä sääntöä: jokainen parametri saa oman elinikäparametrinsa. Tällä kertaa meillä on kaksi parametria yhden sijaan, joten meillä on kaksi elinikäparametria:</p>
+<p>Sovelletaan ensimmäistä sääntöä: Jokainen parametri saa oman eliniänsä. Tällä
+kertaa meillä on kaksi parametria yhden sijaan, joten meillä on kaksi elinikää:</p>
 <pre><code class="language-rust ignore">fn longest&lt;'a, 'b&gt;(x: &amp;'a str, y: &amp;'b str) -&gt; &amp;str {</code></pre>
-<p>Näet, että toinen sääntö ei päde, koska on useampi kuin yksi tuloelinikäparametri. Kolmas sääntö ei myöskään päde, koska <code>longest</code> on funktio eikä metodi, joten mikään parametreistä ei ole <code>self</code>. Kun olemme käyneet läpi kaikki kolme sääntöä, emme ole vieläkään selvittäneet palautustyypin elinikäparametria. Tämän vuoksi saimme virheen yrittäessämme kääntää listauksen 10-20 koodia: kääntäjä kävi läpi elinikäparametrien päättelysäännöt, mutta ei voinut silti selvittää kaikkia viittausten elinikäparametreja allekirjoituksessa.</p>
-<p>Koska kolmas sääntö pätee todella vain metodien allekirjoituksissa, katsomme elinikäparametreja siinä yhteydessä seuraavaksi nähdäksemme, miksi kolmas sääntö tarkoittaa, ettei meidän tarvitse annotoida elinikäparametreja metodien allekirjoituksissa kovin usein.</p>
-<h3 id="elinikäannotaatiot-metodimäärittelyissä"><a class="header" href="#elinikäannotaatiot-metodimäärittelyissä">Elinikäannotaatiot metodimäärittelyissä</a></h3>
-<p>Kun toteutamme metodeja rakenteelle, jolla on elinikäparametreja, käytämme samaa syntaksia kuin geneeristen tyyppiparametrien kanssa, kuten listauksessa 10-11. Missä määrittelemme ja käytämme elinikäparametreja riippuu siitä, liittyvätkö ne rakenteen kenttiin vai metodin parametreihin ja palautusarvoihin.</p>
-<p>Rakenteen kenttien elinikäparametrien nimet täytyy aina määritellä <code>impl</code>-avainsanan jälkeen ja sitten käyttää rakenteen nimen jälkeen, koska nämä elinikäparametrit ovat osa rakenteen tyyppiä.</p>
-<p><code>impl</code>-lohkon sisällä olevissa metodien allekirjoituksissa viittaukset voivat liittyä rakenteen kenttien viittausten elinikäparametreihin tai olla riippumattomia. Lisäksi elinikäparametrien päättelysäännöt usein tekevät elinikäannotaatiot tarpeettomiksi metodien allekirjoituksissa. Katsotaan esimerkkejä käyttäen <code>ImportantExcerpt</code>-rakennetta, jonka määrittelimme listauksessa 10-24.</p>
-<p>Ensin käytämme metodia nimeltä <code>level</code>, jonka ainoa parametri on viittaus <code>self</code>:ään ja jonka palautusarvo on <code>i32</code>, joka ei ole viittaus mihinkään:</p>
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+<p>Näet, että toinen sääntö ei päde, koska on useampi kuin yksi syöttöelinikä.
+Kolmas sääntö ei myöskään päde, koska <code>longest</code> on funktio eikä metodi, joten
+mikään parametreista ei ole <code>self</code>. Kun olemme käyneet läpi kaikki kolme
+sääntöä, emme ole vieläkään selvittäneet palautustyypin elinikää. Tämän vuoksi
+saimme virheen yrittäessämme kääntää listauksen 10-20 koodia: Kääntäjä kävi
+läpi elinikien poisjättämissäännöt, mutta ei silti voinut selvittää kaikkia
+viittausten eliniöitä allekirjoituksessa.</p>
+<p>Koska kolmas sääntö pätee todella vain metodien allekirjoituksissa, katsomme
+eliniöitä tässä yhteydessä seuraavaksi nähdäksemme, miksi kolmas sääntö
+tarkoittaa, ettei meidän tarvitse merkitä eliniöitä metodien allekirjoituksissa
+usein.</p>
+<!-- Old headings. Do not remove or links may break. -->
+<p><a id="lifetime-annotations-in-method-definitions"></a></p>
+<h3 id="metodimäärittelyissä"><a class="header" href="#metodimäärittelyissä">Metodimäärittelyissä</a></h3>
+<p>Kun toteutamme metodeja structille, jolla on eliniöitä, käytämme samaa syntaksia
+kuin geneeristen tyyppiparametrien kanssa, kuten listauksessa 10-11. Missä
+ilmoitamme ja käytämme elinikäparametreja riippuu siitä, liittyvätkö ne
+structin kenttiin vai metodin parametreihin ja palautusarvoihin.</p>
+<p>Structin kenttien elinikien nimet täytyy aina ilmoittaa <code>impl</code>-avainsanan
+jälkeen ja sitten käyttää structin nimen jälkeen, koska nämä eliniät ovat osa
+structin tyyppiä.</p>
+<p><code>impl</code>-lohkon sisällä olevissa metodien allekirjoituksissa viittaukset voivat
+liittyä structin kenttien viittausten elinikään tai olla riippumattomia.
+Lisäksi elinikien poisjättämissäännöt usein tekevät niin, ettei elinikämerkintöjä
+tarvita metodien allekirjoituksissa. Katsotaan joitakin esimerkkejä käyttäen
+structia nimeltä <code>ImportantExcerpt</code>, jonka määrittelimme listauksessa 10-24.</p>
+<p>Ensin käytämme <code>level</code>-nimistä metodia, jonka ainoa parametri on viittaus
+<code>self</code>:ään ja jonka palautusarvo on <code>i32</code>, joka ei ole viittaus mihinkään:</p>
+<pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>{{#rustdoc_include ../listings/ch10-generic-types-traits-and-lifetimes/no-listing-10-lifetimes-on-methods/src/main.rs:1st}}
-<span class="boring">}</span></code></pre></pre>
-<p>Elinikäparametrin määrittely <code>impl</code>-avainsanan jälkeen ja sen käyttö tyypin nimen jälkeen ovat pakollisia, mutta emme tarvitse annotoida <code>self</code>-viittauksen elinikäparametria ensimmäisen päättelysäännön vuoksi.</p>
-<p>Tässä on esimerkki, jossa kolmas elinikäparametrien päättelysääntö pätee:</p>
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+<span class="boring">}</span></code></pre>
+<p>Elinikäparametrin ilmoitus <code>impl</code>-avainsanan jälkeen ja sen käyttö tyypin nimen
+jälkeen ovat pakollisia, mutta ensimmäisen poisjättämissäännön ansiosta emme
+tarvitse merkitä viittauksen <code>self</code>:n elinikää.</p>
+<p>Tässä on esimerkki, jossa kolmas elinikien poisjättämissääntö pätee:</p>
+<pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>{{#rustdoc_include ../listings/ch10-generic-types-traits-and-lifetimes/no-listing-10-lifetimes-on-methods/src/main.rs:3rd}}
-<span class="boring">}</span></code></pre></pre>
-<p>On kaksi tuloelinikäparametria, joten Rust soveltaa ensimmäistä elinikäparametrien päättelysääntöä ja antaa sekä <code>&amp;self</code>:lle että <code>announcement</code>:ille omat elinikäparametrinsa. Sitten, koska yksi parametreistä on <code>&amp;self</code>, palautustyypille määritetään <code>&amp;self</code>:n elinikäparametri, ja kaikki elinikäparametrit on huomioitu.</p>
-<h3 id="staattinen-elinikäparametri"><a class="header" href="#staattinen-elinikäparametri">Staattinen elinikäparametri</a></h3>
-<p>Yksi erityinen elinikäparametri, josta meidän täytyy puhua, on <code>'static</code>, joka tarkoittaa, että kyseinen viittaus <em>voi</em> elää koko ohjelman keston. Kaikilla merkkijonoliteraaleilla on <code>'static</code>-elinikäparametri, jonka voimme annotoida seuraavasti:</p>
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+<span class="boring">}</span></code></pre>
+<p>On kaksi syöttöelinikää, joten Rust soveltaa ensimmäistä elinikien
+poisjättämissääntöä ja antaa sekä <code>&amp;self</code>:lle että <code>announcement</code>:ille omat
+eliniänsä. Sitten, koska yksi parametreista on <code>&amp;self</code>, palautustyyppi saa
+<code>&amp;self</code>:n eliniän, ja kaikki eliniät on huomioitu.</p>
+<h3 id="staattinen-elinikä"><a class="header" href="#staattinen-elinikä">Staattinen elinikä</a></h3>
+<p>Yksi erityinen elinikä, josta meidän täytyy keskustella, on <code>'static</code>, joka
+merkitsee, että kyseinen viittaus <em>voi</em> elää koko ohjelman keston. Kaikilla
+merkkijonoliteraaleilla on <code>'static</code>-elinikä, jonka voimme merkitä näin:</p>
+<pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>let s: &amp;'static str = "I have a static lifetime.";
-<span class="boring">}</span></code></pre></pre>
-<p>Tämän merkkijonon teksti on tallennettu suoraan ohjelman binaariin, joka on aina saatavilla. Siksi kaikkien merkkijonoliteraalien elinikäparametri on <code>'static</code>.</p>
-<p>Saatat nähdä virheilmoituksissa ehdotuksia käyttää <code>'static</code>-elinikäparametria. Ennen kuin määrittelet <code>'static</code>-elinikäparametrin viittaukselle, mieti, elääkö viittauksesi todella koko ohjelmasi elinikäparametrin ajan ja haluatko sen elävän niin. Useimmiten virheilmoitus, joka ehdottaa <code>'static</code>-elinikäparametria, johtuu roikkuvan viittauksen luomisyrityksestä tai elinikäparametrien yhteensopimattomuudesta. Tällaisissa tapauksissa ratkaisu on korjata nämä ongelmat, ei määritellä <code>'static</code>-elinikäparametria.</p>
-<h2 id="geneeriset-tyyppiparametrit-trait-rajat-ja-elinikäparametrit-yhdessä"><a class="header" href="#geneeriset-tyyppiparametrit-trait-rajat-ja-elinikäparametrit-yhdessä">Geneeriset tyyppiparametrit, trait-rajat ja elinikäparametrit yhdessä</a></h2>
-<p>Katsotaan lyhyesti syntaksia, jolla määritellään geneeriset tyyppiparametrit, trait-rajat ja elinikäparametrit samassa funktiossa!</p>
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+<span class="boring">}</span></code></pre>
+<p>Tämän merkkijonon teksti on tallennettu suoraan ohjelman binääritiedostoon,
+joka on aina käytettävissä. Siksi kaikkien merkkijonoliteraalien elinikä on
+<code>'static</code>.</p>
+<p>Saatat nähdä virheilmoituksissa ehdotuksia käyttää <code>'static</code>-elinikää. Mutta
+ennen kuin määrittelet <code>'static</code>-elinikää viittaukselle, mieti, elääkö
+viittauksesi todella koko ohjelmasi eliniän ja haluatko sen elävän. Useimmiten
+virheilmoitus, joka ehdottaa <code>'static</code>-elinikää, johtuu yrityksestä luoda
+riippuva viittaus tai eliniöjen epäsuhtasta. Tällaisissa tapauksissa ratkaisu
+on korjata nämä ongelmat, ei määrittää <code>'static</code>-elinikää.</p>
+<!-- Old headings. Do not remove or links may break. -->
+<p><a id="generic-type-parameters-trait-bounds-and-lifetimes-together"></a></p>
+<h2 id="geneeriset-tyyppiparametrit-trait-rajat-ja-eliniät-yhdessä"><a class="header" href="#geneeriset-tyyppiparametrit-trait-rajat-ja-eliniät-yhdessä">Geneeriset tyyppiparametrit, trait-rajat ja eliniät yhdessä</a></h2>
+<p>Katsotaan lyhyesti syntaksia geneeristen tyyppiparametrien, trait-rajojen ja
+eliniöiden määrittelyyn yhdessä yhdessä funktiossa!</p>
+<pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>{{#rustdoc_include ../listings/ch10-generic-types-traits-and-lifetimes/no-listing-11-generics-traits-and-lifetimes/src/main.rs:here}}
-<span class="boring">}</span></code></pre></pre>
-<p>Tämä on <code>longest</code>-funktio listauksesta 10-21, joka palauttaa pidemmän kahdesta merkkijonon viipaleesta. Mutta nyt siinä on ylimääräinen parametri nimeltä <code>ann</code> geneerisellä tyypillä <code>T</code>, joka voidaan täyttää millä tahansa tyypillä, joka toteuttaa <code>Display</code>-traitin <code>where</code>-lausekkeen määrittämällä tavalla. Tämä ylimääräinen parametri tulostetaan <code>{}</code>-merkinnällä, minkä vuoksi <code>Display</code>-trait-raja on tarpeen. Koska elinikäparametrit ovat eräänlainen geneerisyys, elinikäparametrin <code>'a</code> ja geneerisen tyyppiparametrin <code>T</code> määrittelyt menevät samaan listaan kulmasulkeissa funktion nimen jälkeen.</p>
+<span class="boring">}</span></code></pre>
+<p>Tämä on <code>longest</code>-funktio listauksesta 10-21, joka palauttaa pidemmän kahdesta
+merkkijonoviipaleesta. Mutta nyt siinä on ylimääräinen parametri nimeltä <code>ann</code>
+geneerisestä tyypistä <code>T</code>, joka voidaan täyttää millä tahansa tyypillä, joka
+toteuttaa <code>Display</code>-traitin <code>where</code>-lausekkeen määrittämällä tavalla. Tämä
+ylimääräinen parametri tulostetaan <code>{}</code>-merkinnällä, minkä vuoksi <code>Display</code>-
+trait-raja on tarpeen. Koska eliniät ovat eräänlaisia geneerisiä tyyppejä,
+elinikäparametrin <code>'a</code> ja geneerisen tyyppiparametrin <code>T</code> ilmoitukset menevät
+samaan listaan kulmasulkeissa funktion nimen jälkeen.</p>
 <h2 id="yhteenveto"><a class="header" href="#yhteenveto">Yhteenveto</a></h2>
-<p>Käsittelimme paljon tässä luvussa! Nyt kun tiedät geneerisistä tyyppiparametreista, traeiteista ja trait-rajoista sekä geneerisistä elinikäparametreista, olet valmis kirjoittamaan toistamatonta koodia, joka toimii monissa eri tilanteissa. Geneeriset tyyppiparametrit antavat sinun soveltaa koodia eri tyyppeihin. Traitit ja trait-rajat varmistavat, että vaikka tyypit ovat geneerisiä, niillä on koodin tarvitsema käyttäytyminen. Opit käyttämään elinikäannotaatioita varmistaaksesi, ettei tämä joustava koodi sisällä roikkuvia viittauksia. Ja kaikki tämä analyysi tapahtuu käännösaikana, mikä ei vaikuta suorituskykyyn!</p>
-<p>Usko tai älä, aiheista, joita käsittelimme tässä luvussa, on vielä paljon opittavaa: luku 18 käsittelee trait-objekteja, jotka ovat toinen tapa käyttää traeiteja. On myös monimutkaisempia tilanteita, joissa tarvitset elinikäannotaatioita vain hyvin edistyneissä skenaarioissa; niitä varten sinun pitäisi lukea <a href="../reference/index.html">Rust Reference</a>. Mutta seuraavaksi opit kirjoittamaan testejä Rustissa varmistaaksesi, että koodisi toimii haluamallasi tavalla.</p>
+<p>Käsittelimme paljon tässä luvussa! Nyt kun tiedät geneerisistä tyyppiparametreista,
+traitteista ja trait-rajoista sekä geneerisistä elinikäparametreista, olet
+valmis kirjoittamaan koodia ilman toistoa, joka toimii monissa eri tilanteissa.
+Geneeriset tyyppiparametrit antavat sinun soveltaa koodia eri tyyppeihin.
+Traitit ja trait-rajat varmistavat, että vaikka tyypit ovat geneerisiä, niillä
+on koodin tarvitsema käyttäytyminen. Opit käyttämään elinikämerkintöjä
+varmistaaksesi, ettei tämä joustava koodi sisällä riippuvia viittauksia. Ja
+kaikki tämä analyysi tapahtuu käännösaikana, mikä ei vaikuta ajonaikaiseen
+suorituskykyyn!</p>
+<p>Usko tai älä, näistä luvussa käsittelemistämme aiheista on vielä paljon
+opittavaa: Luku 18 käsittelee trait-olioita, jotka ovat toinen tapa käyttää
+traitteja. On myös monimutkaisempia skenaarioita, joissa tarvitset elinikämerkintöjä
+vain hyvin edistyneissä tilanteissa; niitä varten sinun kannattaa lukea
+<a href="../reference/trait-bounds.html">Rust Reference</a>. Mutta seuraavaksi opit kirjoittamaan testejä Rustissa,
+jotta voit varmistaa, että koodisi toimii odotetulla tavalla.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                             <a rel="prev" href="ch10-02-traits.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                                <i class="fa fa-angle-left"></i>
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
                             <a rel="next prefetch" href="ch11-00-testing.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
                         <div style="clear: both"></div>
@@ -378,16 +683,21 @@
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                     <a rel="prev" href="ch10-02-traits.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                        <i class="fa fa-angle-left"></i>
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
                     <a rel="next prefetch" href="ch11-00-testing.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>
 
         </div>
 
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
 
 
 
@@ -396,16 +706,17 @@
         </script>
 
 
-        <script src="elasticlunr.min.js"></script>
-        <script src="mark.min.js"></script>
-        <script src="searcher.js"></script>
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-c2a407aa.js"></script>
 
-        <script src="clipboard.min.js"></script>
-        <script src="highlight.js"></script>
-        <script src="book.js"></script>
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-abc7f01d.js"></script>
+        <script src="book-a0b12cfe.js"></script>
 
         <!-- Custom JS scripts -->
-        <script src="ferris.js"></script>
+        <script src="ferris-2317480c.js"></script>
+
 
 
     </div>

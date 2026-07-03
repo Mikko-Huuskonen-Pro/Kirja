@@ -12,44 +12,56 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
 
-        <link rel="icon" href="favicon.svg">
-        <link rel="shortcut icon" href="favicon.png">
-        <link rel="stylesheet" href="css/variables.css">
-        <link rel="stylesheet" href="css/general.css">
-        <link rel="stylesheet" href="css/chrome.css">
-        <link rel="stylesheet" href="css/print.css" media="print">
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-2459343d.css">
+        <link rel="stylesheet" href="css/chrome-ae938929.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
-        <link rel="stylesheet" href="fonts/fonts.css">
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" href="highlight.css">
-        <link rel="stylesheet" href="tomorrow-night.css">
-        <link rel="stylesheet" href="ayu-highlight.css">
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="ferris.css">
-        <link rel="stylesheet" href="theme/2018-edition.css">
-        <link rel="stylesheet" href="theme/semantic-notes.css">
-        <link rel="stylesheet" href="theme/listing.css">
+        <link rel="stylesheet" href="ferris-d33b75bf.css">
+        <link rel="stylesheet" href="theme/2018-edition-4e126c62.css">
+        <link rel="stylesheet" href="theme/semantic-notes-9b5766c0.css">
+        <link rel="stylesheet" href="theme/listing-cab26221.css">
 
 
-        <!-- Provide site root to javascript -->
+        <!-- Provide site root and default themes to javascript -->
         <script>
-            var path_to_root = "";
-            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex-454febf7.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc.js"></script>
+        <script src="toc-7f90d00d.js"></script>
     </head>
     <body>
-    <div id="body-container">
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
             try {
-                var theme = localStorage.getItem('mdbook-theme');
-                var sidebar = localStorage.getItem('mdbook-sidebar');
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
 
                 if (theme.startsWith('"') && theme.endsWith('"')) {
                     localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
@@ -63,7 +75,8 @@
 
         <!-- Set the theme before any content is loaded, prevents flash -->
         <script>
-            var theme;
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
             const html = document.documentElement;
@@ -72,55 +85,59 @@
             html.classList.add("js");
         </script>
 
-        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
-            var sidebar = null;
-            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
             } else {
                 sidebar = 'hidden';
+                sidebar_toggle.checked = false;
             }
-            sidebar_toggle.checked = sidebar === 'visible';
-            html.classList.remove('sidebar-visible');
-            html.classList.add("sidebar-" + sidebar);
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
         </script>
 
-        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
             <!-- populated by js -->
             <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
             <noscript>
                 <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
             </noscript>
-            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
             </div>
         </nav>
 
-        <div id="page-wrapper" class="page-wrapper">
+        <div id="mdbook-page-wrapper" class="page-wrapper">
 
             <div class="page">
-                <div id="menu-bar-hover-placeholder"></div>
-                <div id="menu-bar" class="menu-bar sticky">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
-                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
-                            <i class="fa fa-bars"></i>
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
                         </label>
-                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
-                            <i class="fa fa-paint-brush"></i>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
                         </button>
-                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
-                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
                         </ul>
-                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
-                            <i class="fa fa-search"></i>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
                         </button>
                     </div>
 
@@ -128,397 +145,69 @@
 
                     <div class="right-buttons">
                         <a href="print.html" title="Print this book" aria-label="Print this book">
-                            <i id="print-button" class="fa fa-print"></i>
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
                         </a>
                         <a href="https://github.com/rust-lang/book" title="Git repository" aria-label="Git repository">
-                            <i id="git-repository-button" class="fa fa-github"></i>
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></span>
                         </a>
 
                     </div>
                 </div>
 
-                <div id="search-wrapper" class="hidden">
-                    <form id="searchbar-outer" class="searchbar-outer">
-                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
                     </form>
-                    <div id="searchresults-outer" class="searchresults-outer hidden">
-                        <div id="searchresults-header" class="searchresults-header"></div>
-                        <ul id="searchresults">
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
                         </ul>
                     </div>
                 </div>
 
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
                 <script>
-                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
-                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
-                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
                         link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
                     });
                 </script>
 
-                <div id="content" class="content">
+                <div id="mdbook-content" class="content">
                     <main>
-                        <h2 id="työskentely-minkä-tahansa-määrän-futuresien-kanssa"><a class="header" href="#työskentely-minkä-tahansa-määrän-futuresien-kanssa">Työskentely minkä tahansa määrän futuresien kanssa</a></h2>
-<p>Kun siirryimme käyttämään kolmea futurea kahden sijaan edellisessä osiossa, meidän
-piti myös vaihtaa <code>join</code>-funktiosta <code>join3</code>-funktioon. Olisi ärsyttävää joutua
-kutsumaan eri funktiota aina, kun muutimme yhdistettävien futuresien määrää.
-Onneksi meillä on <code>join</code>-funktion makromuoto, jolle voimme välittää minkä tahansa
-määrän argumentteja. Se myös käsittelee futuresien odottamisen itse.
-Näin voisimme kirjoittaa Listauksen 17-13 koodin uudelleen käyttämään <code>join!</code>-makroa
-<code>join3</code>-funktion sijaan, kuten Listauksessa 17-14.</p>
-<figure class="listing">
+                        <!-- Old headings. Do not remove or links may break. -->
+<p><a id="yielding"></a></p>
+<h3 id="ohjauksen-luovuttaminen-ajoympäristölle"><a class="header" href="#ohjauksen-luovuttaminen-ajoympäristölle">Ohjauksen luovuttaminen ajoympäristölle</a></h3>
+<p>Muista <a href="ch17-01-futures-and-syntax.html#our-first-async-program">”Ensimmäinen async-ohjelmamme”</a><!-- ignore --> -osiosta, että jokaisessa odotuspisteessä Rust antaa ajoympäristölle mahdollisuuden keskeyttää tehtävä ja vaihtaa toiseen, jos odotettava future ei ole valmis. Päinvastoin pätee myös: Rust keskeyttää async-lohkot ja palauttaa ohjauksen ajoympäristölle <em>vain</em> odotuspisteessä. Kaikki odotuspisteiden välillä on synkronista.</p>
+<p>Tämä tarkoittaa, että jos teet paljon työtä async-lohkossa ilman odotuspistettä, kyseinen future estää muita futureja etenemästä. Tätä kutsutaan joskus tilanteeksi, jossa yksi future <em>nälkiinnyttää</em> muita futureja. Joissakin tapauksissa se ei ole suuri ongelma. Jos kuitenkin teet jonkinlaista kallista alustusta tai pitkään kestävää työtä, tai jos sinulla on future, joka jatkaa tiettyä tehtävää loputtomasti, sinun täytyy miettiä, milloin ja missä luovutat ohjauksen takaisin ajoympäristölle.</p>
+<p>Simuloidaan pitkään kestävää operaatiota havainnollistaaksemme nälkiinnytysongelmaa ja tutkitaan sitten, miten se ratkaistaan. Listaus 17-14 esittelee <code>slow</code>-funktion.</p>
+<figure class="listing" id="listing-17-14">
 <span class="file-name">Filename: src/main.rs</span>
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+<pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span>{{#rustdoc_include ../listings/ch17-async-await/listing-17-14/src/main.rs:here}}
-<span class="boring">}</span></code></pre></pre>
-<figcaption>Listing 17-14: <code>join!</code>-makron käyttö useiden futuresien odottamiseen</figcaption>
+</span>{{#rustdoc_include ../listings/ch17-async-await/listing-17-14/src/main.rs:slow}}
+<span class="boring">}</span></code></pre>
+<figcaption><a href="#listing-17-14">Listing 17-14</a>: <code>thread::sleep</code>:in käyttö hitaiden operaatioiden simulointiin</figcaption>
 </figure>
-<p>Tämä on ehdottomasti parannus verrattuna vaihteluun <code>join</code>- ja
-<code>join3</code>- ja <code>join4</code>-funktioiden välillä ja niin edelleen! Tämä makromuoto toimii
-kuitenkin vain, kun tiedämme futuresien määrän etukäteen. Todellisessa Rust-koodissa
-futuresien työntäminen kokoelmaan ja sitten odottaminen, että jokin tai
-kaikki niistä valmistuvat, on yleinen malli.</p>
-<p>Tarkistaaksemme kaikki futuresit jossakin kokoelmassa, meidän täytyy iteroida ja
-yhdistää <em>kaikki</em> ne. <code>trpl::join_all</code>-funktio hyväksyy minkä tahansa tyypin, joka
-toteuttaa <code>Iterator</code>-traitin, josta opit takaisin <a href="ch13-02-iterators.html#the-iterator-trait-and-the-next-method">Iterator-traitissa ja <code>next</code>-metodissa</a><!-- ignore --> Luvussa 13, joten
-se vaikuttaa juuri sopivalta. Kokeillaan laittaa futuresimme vektoriin ja
-korvata <code>join!</code>-makro <code>join_all</code>-funktiolla, kuten Listauksessa 17-15.</p>
-<figure class="listing">
-<pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch17-async-await/listing-17-15/src/main.rs:here}}</code></pre>
-<figcaption>Listing 17-15: Anonyymien futuresien tallentaminen vektoriin ja <code>join_all</code>-funktion kutsuminen</figcaption>
+<p>Tämä koodi käyttää <code>std::thread::sleep</code>:ia <code>trpl::sleep</code>:in sijaan, joten <code>slow</code>:in kutsuminen estää nykyisen säikeen tietyn määrän millisekunteja. Voimme käyttää <code>slow</code>:ia todellisten maailman operaatioiden sijaisena, jotka ovat sekä pitkään kestäviä että estäviä.</p>
+<p>Listauksessa 17-15 käytämme <code>slow</code>:ia emuloimaan tämänkaltaisen CPU-rajoitteisen työn tekemistä parissa futurea.</p>
+<figure class="listing" id="listing-17-15">
+<span class="file-name">Filename: src/main.rs</span>
+<pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch17-async-await/listing-17-15/src/main.rs:slow-futures}}
+<span class="boring">}</span></code></pre>
+<figcaption><a href="#listing-17-15">Listing 17-15</a>: <code>slow</code>-funktion kutsuminen hitaiden operaatioiden simulointiin</figcaption>
 </figure>
-<p>Valitettavasti tämä koodi ei käänny. Sen sijaan saamme tämän virheen:</p>
+<p>Kumpikin future palauttaa ohjauksen ajoympäristölle vasta <em>sen jälkeen</em>, kun se on suorittanut joukon hitaita operaatioita. Jos suoritat tämän koodin, näet tämän tulosteen:</p>
 <!-- manual-regeneration
 cd listings/ch17-async-await/listing-17-15/
-cargo build
-copy just the compiler error
--->
-<pre><code class="language-text">error[E0308]: mismatched types
-  --&gt; src/main.rs:45:37
-   |
-10 |         let tx1_fut = async move {
-   |                       ---------- the expected `async` block
-...
-24 |         let rx_fut = async {
-   |                      ----- the found `async` block
-...
-45 |         let futures = vec![tx1_fut, rx_fut, tx_fut];
-   |                                     ^^^^^^ expected `async` block, found a different `async` block
-   |
-   = note: expected `async` block `{async block@src/main.rs:10:23: 10:33}`
-              found `async` block `{async block@src/main.rs:24:22: 24:27}`
-   = note: no two async blocks, even if identical, have the same type
-   = help: consider pinning your async block and casting it to a trait object
-</code></pre>
-<p>Tämä saattaa olla yllättävää. Loppujen lopuksi mikään async-lohkoista ei palauta mitään,
-joten jokainen tuottaa <code>Future&lt;Output = ()&gt;</code>-tyypin. Muista kuitenkin, että <code>Future</code> on trait,
-ja että kääntäjä luo yksilöllisen enumin jokaiselle async-lohkolle. Et
-voi laittaa kahta eri käsin kirjoitettua rakennetta <code>Vec</code>-kokoelmaan, ja sama sääntö
-pätee kääntäjän luomiin eri enumeihin.</p>
-<p>Jotta tämä toimisi, meidän täytyy käyttää <em>trait-objekteja</em>, aivan kuten teimme <a href="ch12-03-improving-error-handling-and-modularity.html">Luvun 12 “Virheiden palauttaminen run-funktiosta”</a><!-- ignore --> -osiossa. (Käsittelemme
-trait-objekteja yksityiskohtaisesti Luvussa 18.) Trait-objektien käyttö antaa meille mahdollisuuden
-käsitellä jokaisen näiden tyyppien tuottaman anonyymin futuren samana tyyppinä, koska
-kaikki ne toteuttavat <code>Future</code>-traitin.</p>
-<blockquote>
-<p>Huom: Luvun 8 osiossa <a href="ch12-03-improving-error-handling-and-modularity.html#returning-errors-from-the-run-function">Enumin käyttö useiden arvojen tallentamiseen</a><!-- ignore -->, käsittelimme toista tapaa sisällyttää useita
-tyyppejä <code>Vec</code>-kokoelmaan: enumin käyttöä edustamaan jokaista tyyppiä, joka voi esiintyä
-vektorissa. Emme voi tehdä sitä täällä kuitenkaan. Ensinnäkin, meillä ei ole tapaa nimetä
-eri tyyppejä, koska ne ovat anonyymejä. Toiseksi, syy, miksi päädyimme vektoriin ja
-<code>join_all</code>-funktioon alun perin, oli pystyä työskentelemään dynaamisen futuresien kokoelman
-kanssa, jossa meitä kiinnostaa vain, että niillä on sama
-tulostetyyppi.</p>
-</blockquote>
-<p>Aloitamme käärimällä jokaisen futuren <code>vec!</code>-makrossa <code>Box::new</code>-funktiolla, kuten
-Listauksessa 17-16.</p>
-<figure class="listing">
-<span class="file-name">Filename: src/main.rs</span>
-<pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch17-async-await/listing-17-16/src/main.rs:here}}</code></pre>
-<figcaption>Listing 17-16: <code>Box::new</code>-funktion käyttö futuresien tyyppien kohdistamiseen <code>Vec</code>-kokoelmassa</figcaption>
-</figure>
-<p>Valitettavasti tämä koodi ei vieläkään käänny. Itse asiassa saamme saman perusvirheen
-kuin aiemmin sekä toiselle että kolmannelle <code>Box::new</code>-kutsulle, sekä
-uudet virheet, jotka viittaavat <code>Unpin</code>-traitiin. Palaamme <code>Unpin</code>-virheisiin
-hetken kuluttua. Korjataan ensin tyyppivirheet <code>Box::new</code>-kutsuissa
-merkitsemällä nimenomaisesti <code>futures</code>-muuttujan tyyppi (katso Listaus 17-17).</p>
-<figure class="listing">
-<span class="file-name">Filename: src/main.rs</span>
-<pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch17-async-await/listing-17-17/src/main.rs:here}}</code></pre>
-<figcaption>Listing 17-17: Loput tyyppierrosten korjaaminen käyttämällä nimenomaista tyyppimääritystä</figcaption>
-</figure>
-<p>Tämä tyyppimääritys on hieman monimutkainen, joten käydään se läpi:</p>
-<ol>
-<li>Sisimmäinen tyyppi on itse future. Merkitsemme nimenomaisesti, että futuren
-tuloste on yksikkötyyppi <code>()</code> kirjoittamalla <code>Future&lt;Output = ()&gt;</code>.</li>
-<li>Sitten merkitsemme traitin <code>dyn</code>-avainsanalla merkitsemään sen dynaamiseksi.</li>
-<li>Koko trait-viite on kääritty <code>Box</code>-tyyppiin.</li>
-<li>Lopuksi, ilmoitamme nimenomaisesti, että <code>futures</code> on <code>Vec</code>, joka sisältää näitä
-kohteita.</li>
-</ol>
-<p>Se teki jo suuren eron. Nyt kun ajamme kääntäjän, saamme vain
-virheet, jotka mainitsevat <code>Unpin</code>-traitin. Vaikka niitä on kolme, niiden sisältö
-on hyvin samankaltainen.</p>
-<!-- manual-regeneration
-cd listings/ch17-async-await/listing-17-16
-cargo build
-# copy *only* the errors
-# fix the paths
--->
-<pre><code class="language-text">error[E0308]: mismatched types
-   --&gt; src/main.rs:46:46
-    |
-10  |         let tx1_fut = async move {
-    |                       ---------- the expected `async` block
-...
-24  |         let rx_fut = async {
-    |                      ----- the found `async` block
-...
-46  |             vec![Box::new(tx1_fut), Box::new(rx_fut), Box::new(tx_fut)];
-    |                                     -------- ^^^^^^ expected `async` block, found a different `async` block
-    |                                     |
-    |                                     arguments to this function are incorrect
-    |
-    = note: expected `async` block `{async block@src/main.rs:10:23: 10:33}`
-               found `async` block `{async block@src/main.rs:24:22: 24:27}`
-    = note: no two async blocks, even if identical, have the same type
-    = help: consider pinning your async block and casting it to a trait object
-note: associated function defined here
-   --&gt; file:///home/.rustup/toolchains/1.85/lib/rustlib/src/rust/library/alloc/src/boxed.rs:252:12
-    |
-252 |     pub fn new(x: T) -&gt; Self {
-    |            ^^^
-
-error[E0308]: mismatched types
-   --&gt; src/main.rs:46:64
-    |
-10  |         let tx1_fut = async move {
-    |                       ---------- the expected `async` block
-...
-30  |         let tx_fut = async move {
-    |                      ---------- the found `async` block
-...
-46  |             vec![Box::new(tx1_fut), Box::new(rx_fut), Box::new(tx_fut)];
-    |                                                       -------- ^^^^^^ expected `async` block, found a different `async` block
-    |                                                       |
-    |                                                       arguments to this function are incorrect
-    |
-    = note: expected `async` block `{async block@src/main.rs:10:23: 10:33}`
-               found `async` block `{async block@src/main.rs:30:22: 30:32}`
-    = note: no two async blocks, even if identical, have the same type
-    = help: consider pinning your async block and casting it to a trait object
-note: associated function defined here
-   --&gt; file:///home/.rustup/toolchains/1.85/lib/rustlib/src/rust/library/alloc/src/boxed.rs:252:12
-    |
-252 |     pub fn new(x: T) -&gt; Self {
-    |            ^^^
-
-error[E0277]: `{async block@src/main.rs:10:23: 10:33}` cannot be unpinned
-   --&gt; src/main.rs:48:24
-    |
-48  |         trpl::join_all(futures).await;
-    |         -------------- ^^^^^^^ the trait `Unpin` is not implemented for `{async block@src/main.rs:10:23: 10:33}`
-    |         |
-    |         required by a bound introduced by this call
-    |
-    = note: consider using the `pin!` macro
-            consider using `Box::pin` if you need to access the pinned value outside of the current scope
-    = note: required for `Box&lt;{async block@src/main.rs:10:23: 10:33}&gt;` to implement `Future`
-note: required by a bound in `join_all`
-   --&gt; file:///home/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/futures-util-0.3.30/src/future/join_all.rs:105:14
-    |
-102 | pub fn join_all&lt;I&gt;(iter: I) -&gt; JoinAll&lt;I::Item&gt;
-    |        -------- required by a bound in this function
-...
-105 |     I::Item: Future,
-    |              ^^^^^^ required by this bound in `join_all`
-
-error[E0277]: `{async block@src/main.rs:10:23: 10:33}` cannot be unpinned
-  --&gt; src/main.rs:48:9
-   |
-48 |         trpl::join_all(futures).await;
-   |         ^^^^^^^^^^^^^^^^^^^^^^^ the trait `Unpin` is not implemented for `{async block@src/main.rs:10:23: 10:33}`
-   |
-    = note: consider using the `pin!` macro
-           consider using `Box::pin` if you need to access the pinned value outside of the current scope
-    = note: required for `Box&lt;{async block@src/main.rs:10:23: 10:33}&gt;` to implement `Future`
-note: required by a bound in `futures_util::future::join_all::JoinAll`
-  --&gt; file:///home/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/futures-util-0.3.30/src/future/join_all.rs:29:8
-    |
-27 | pub struct JoinAll&lt;F&gt;
-    |            ------- required by a bound in this struct
-28 | where
-29 |     F: Future,
-   |        ^^^^^^ required by this bound in `JoinAll`
-
-error[E0277]: `{async block@src/main.rs:10:23: 10:33}` cannot be unpinned
-  --&gt; src/main.rs:48:33
-   |
-48 |         trpl::join_all(futures).await;
-   |                                 ^^^^^ the trait `Unpin` is not implemented for `{async block@src/main.rs:10:23: 10:33}`
-   |
-    = note: consider using the `pin!` macro
-           consider using `Box::pin` if you need to access the pinned value outside of the current scope
-    = note: required for `Box&lt;{async block@src/main.rs:10:23: 10:33}&gt;` to implement `Future`
-note: required by a bound in `futures_util::future::join_all::JoinAll`
-  --&gt; file:///home/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/futures-util-0.3.30/src/future/join_all.rs:29:8
-    |
-27 | pub struct JoinAll&lt;F&gt;
-    |            ------- required by a bound in this struct
-28 | where
-29 |     F: Future,
-   |        ^^^^^^ required by this bound in `JoinAll`
-</code></pre>
-<p>Se on <em>paljon</em> sulatettavaa, joten puretaan se osiin. Viestin ensimmäinen osa
-kertoo meille, että ensimmäinen async-lohko (<code>src/main.rs:8:23: 20:10</code>) ei
-toteuta <code>Unpin</code>-traitia ja ehdottaa <code>pin!</code>- tai <code>Box::pin</code>-funktion käyttöä sen
-ratkaisemiseksi. Myöhemmin tässä luvussa syvennämme hieman lisää <code>Pin</code>- ja
-<code>Unpin</code>-traitien yksityiskohtiin. Tällä hetkellä voimme kuitenkin vain seurata
-kääntäjän neuvoja päästäksemme eteenpäin. Listauksessa 17-18 aloitamme päivittämällä
-tyyppimerkinnän <code>futures</code>-muuttujalle <code>Pin</code>-tyypillä, joka käärii jokaisen <code>Box</code>-tyypin. Toiseksi, käytämme <code>Box::pin</code>-funktiota kiinnittääksemme
-futuresit itse.</p>
-<figure class="listing">
-<span class="file-name">Filename: src/main.rs</span>
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>{{#rustdoc_include ../listings/ch17-async-await/listing-17-18/src/main.rs:here}}
-<span class="boring">}</span></code></pre></pre>
-<figcaption>Listing 17-18: <code>Pin</code>- ja <code>Box::pin</code>-funktioiden käyttö <code>Vec</code>-tyypin tarkistamiseksi</figcaption>
-</figure>
-<p>Jos kääntämme ja ajamme tämän, saamme vihdoin toivomamme tulosteen:</p>
-<!-- Not extracting output because changes to this output aren't significant;
-the changes are likely to be due to the threads running differently rather than
-changes in the compiler -->
-<pre><code class="language-text">received 'hi'
-received 'more'
-received 'from'
-received 'messages'
-received 'the'
-received 'for'
-received 'future'
-received 'you'
-</code></pre>
-<p>Huh!</p>
-<p>Täällä on vielä hieman tutkittavaa. Ensinnäkin, <code>Pin&lt;Box&lt;T&gt;&gt;</code>-tyypin käyttö lisää
-pienen määrän ylimääräistä työtä laittamalla nämä futuresit pinoon <code>Box</code>-tyypin avulla—ja
-teemme sen vain saadaksemme tyypit kohdistettua. Emme itse asiassa <em>tarvitse</em>
-pinomuistin varausta, loppujen lopuksi: nämä futuresit ovat paikallisia tälle
-erityiselle funktiolle. Kuten aiemmin mainittiin, <code>Pin</code> on itse kääretyyppi, joten voimme saada
-hyödyn siitä, että <code>Vec</code>-kokoelmassa on yksi tyyppi—alkuperäinen syy, miksi
-päädyimme <code>Box</code>-tyyppiin—ilman pinomuistin varausta. Voimme käyttää <code>Pin</code>-tyyppiä
-suoraan jokaisen futuren kanssa käyttämällä <code>std::pin::pin</code>-makroa.</p>
-<p>Meidän täytyy kuitenkin olla vielä nimenomaisia kiinnitetyn viitteen tyypistä;
-muuten Rust ei vieläkään tiedä tulkita näitä dynaamisina trait-objekteina,
-mikä on se, mitä tarvitsemme niiden olevan <code>Vec</code>-kokoelmassa. Kiinnitämme siis jokaisen futuren
-kun määrittelemme sen, ja määrittelemme <code>futures</code>-muuttujan <code>Vec</code>-kokoelmaksi, joka sisältää kiinnitettyjä muuttuvia
-viitteitä dynaamiseen future-tyyppiin, kuten Listauksessa 17-19.</p>
-<figure class="listing">
-<span class="file-name">Filename: src/main.rs</span>
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>{{#rustdoc_include ../listings/ch17-async-await/listing-17-19/src/main.rs:here}}
-<span class="boring">}</span></code></pre></pre>
-<figcaption>Listing 17-19: <code>Pin</code>-tyypin suora käyttö <code>pin!</code>-makron avulla välttääksemme tarpeettomat pinomuistin varaukset</figcaption>
-</figure>
-<p>Pääsimme tähän asti unohtamalla tosiasian, että meillä saattaa olla eri <code>Output</code>
--tyyppejä. Esimerkiksi Listauksessa 17-20 anonyymi future <code>a</code>:lle toteuttaa
-<code>Future&lt;Output = u32&gt;</code>-tyypin, anonyymi future <code>b</code>:lle toteuttaa <code>Future&lt;Output = &amp;str&gt;</code>-tyypin, ja anonyymi future <code>c</code>:lle toteuttaa <code>Future&lt;Output = bool&gt;</code>-tyypin.</p>
-<figure class="listing">
-<span class="file-name">Filename: src/main.rs</span>
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>{{#rustdoc_include ../listings/ch17-async-await/listing-17-20/src/main.rs:here}}
-<span class="boring">}</span></code></pre></pre>
-<figcaption>Listing 17-20: Kolme eri tyyppistä futurea</figcaption>
-</figure>
-<p>Voimme käyttää <code>trpl::join!</code>-makroa odottaaksemme niitä, koska se antaa meille mahdollisuuden
-välittää useita future-tyyppejä ja tuottaa näiden tyyppien tuplen. Emme <em>voi</em> käyttää
-<code>trpl::join_all</code>-funktiota, koska se vaatii, että kaikki välitetyt futuresit ovat
-samaa tyyppiä. Muista, että se virhe sai meidät aloittamaan tämän seikkailun
-<code>Pin</code>-tyypin kanssa!</p>
-<p>Tämä on perustavanlaatuinen kompromissi: voimme joko käsitellä dynaamisen määrän
-futureseja <code>join_all</code>-funktiolla, niin kauan kuin ne kaikki ovat samaa tyyppiä, tai voimme käsitellä
-kiinteän määrän futureseja <code>join</code>-funktioilla tai <code>join!</code>-makrolla,
-vaikka niillä olisi eri tyypit. Tämä on sama skenaario, johon törmäisimme
-työskennellessämme minkä tahansa muiden tyyppien kanssa Rustissa. Futuresit eivät ole erityisiä, vaikka meillä
-on mukava syntaksi työskentelemiseen niiden kanssa, ja se on hyvä asia.</p>
-<h3 id="futuresien-kilpailuttaminen"><a class="header" href="#futuresien-kilpailuttaminen">Futuresien kilpailuttaminen</a></h3>
-<p>Kun “yhdistämme” futuresit <code>join</code>-funktio- ja makroperheen avulla, vaadimme
-<em>kaikkien</em> niiden valmistuvan ennen kuin siirrymme eteenpäin. Joskus tarvitsemme kuitenkin vain
-<em>jonkin</em> futuren joukosta valmistuvan ennen kuin siirrymme eteenpäin—jotain samankaltaista kuin
-kilpailuttamassa yhtä futurea toista vastaan.</p>
-<p>Listauksessa 17-21 käytämme jälleen <code>trpl::race</code>-funktiota suorittaaksemme kaksi futurea, <code>slow</code> ja
-<code>fast</code>, toisiaan vastaan.</p>
-<figure class="listing">
-<span class="file-name">Filename: src/main.rs</span>
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>{{#rustdoc_include ../listings/ch17-async-await/listing-17-21/src/main.rs:here}}
-<span class="boring">}</span></code></pre></pre>
-<figcaption>Listing 17-21: <code>race</code>-funktion käyttö saadaksemme sen futuren tuloksen, joka valmistuu ensin</figcaption>
-</figure>
-<p>Jokainen future tulostaa viestin, kun se alkaa suorittaa, pysähtyy jonkin aikaa
-kutsumalla ja odottamalla <code>sleep</code>-funktiota, ja sitten tulostaa toisen viestin, kun se
-valmistuu. Sitten välitämme sekä <code>slow</code>- että <code>fast</code>-futuren <code>trpl::race</code>-funktiolle ja odotamme, että yksi
-niistä valmistuu. (Tulos ei ole liian yllättävä: <code>fast</code> voittaa.) Toisin kuin
-kun käytimme <code>race</code>-funktiota takaisin <a href="ch17-01-futures-and-syntax.html#our-first-async-program">Ensimmäisessä async-ohjelmassamme</a><!--
-ignore -->, jätämme vain <code>Either</code>-instanssin, jonka se palauttaa, huomiotta, koska kaikki
-mielenkiintoiset toiminnot tapahtuvat async-lohkojen rungoissa.</p>
-<p>Huomaa, että jos vaihdat <code>race</code>-funktion argumenttien järjestyksen, “aloitettu”
--viestien järjestys muuttuu, vaikka <code>fast</code>-future valmistuu aina
-ensimmäisenä. Se johtuu siitä, että tämän erityisen <code>race</code>-funktion toteutus ei
-ole reilu. Se ajaa aina futuresit, jotka välitetään argumentteina, siinä järjestyksessä, jossa
-ne välitetään. Muut toteutukset <em>ovat</em> reiluja ja valitsevat satunnaisesti
-minkä futuren kysellä ensin. Riippumatta siitä, onko käyttämämme <code>race</code>-funktion toteutus
-reilu vai ei, <em>yksi</em> futuresista suoritetaan ensimmäiseen
-<code>await</code>-pisteeseen rungossaan asti ennen kuin toinen tehtävä voi alkaa.</p>
-<p>Muistamme <a href="ch17-01-futures-and-syntax.html#our-first-async-program">Ensimmäisestä async-ohjelmastamme</a><!-- ignore -->, että jokaisessa
-await-pisteessä Rust antaa ajonaikaisjärjestelmälle mahdollisuuden keskeyttää tehtävä ja vaihtaa
-toiseen, jos odotettava future ei ole valmis. Käänteinen on myös totta:
-Rust <em>keskeyttää</em> async-lohkot ja luovuttaa ohjauksen takaisin ajonaikaisjärjestelmälle vain
-await-pisteessä. Kaikki await-pisteiden välillä on synkronista.</p>
-<p>Se tarkoittaa, että jos teet paljon työtä async-lohkossa ilman await-pistettä,
-tuo future estää kaikki muut futuresit edistymästä. Saatat joskus
-kuulla tämän viitattavan siihen, että yksi future <em>näännyttää</em> muita futureseja. Joissakin tapauksissa
-se ei ehkä ole iso juttu. Jos teet kuitenkin jonkinlaista kalliita
-asetuksia tai pitkäkestoista työtä, tai jos sinulla on future, joka jatkaa jonkin
-erityisen tehtävän suorittamista loputtomasti, sinun täytyy miettiä, milloin ja missä luovuttaa
-ohjaus takaisin ajonaikaisjärjestelmälle.</p>
-<p>Samalla tavalla, jos sinulla on pitkäkestoisia estäviä operaatioita, async voi olla
-hyödyllinen työkalu tarjoamaan tapoja eri ohjelman osien suhtautumiseen
-toisiinsa.</p>
-<p>Mutta <em>miten</em> luovuttaisit ohjauksen takaisin ajonaikaisjärjestelmälle näissä tapauksissa?</p>
-<!-- Old headings. Do not remove or links may break. -->
-<p><a id="yielding"></a></p>
-<h3 id="ohjauksen-luovuttaminen-ajonaikaisjärjestelmälle"><a class="header" href="#ohjauksen-luovuttaminen-ajonaikaisjärjestelmälle">Ohjauksen luovuttaminen ajonaikaisjärjestelmälle</a></h3>
-<p>Simuloimme pitkäkestoisen operaation. Listaus 17-22 esittelee <code>slow</code>
--funktion.</p>
-<figure class="listing">
-<span class="file-name">Filename: src/main.rs</span>
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>{{#rustdoc_include ../listings/ch17-async-await/listing-17-22/src/main.rs:slow}}
-<span class="boring">}</span></code></pre></pre>
-<figcaption>Listing 17-22: <code>thread::sleep</code>-funktion käyttö hitaiden operaatioiden simuloimiseen</figcaption>
-</figure>
-<p>Tämä koodi käyttää <code>std::thread::sleep</code>-funktiota <code>trpl::sleep</code>-funktion sijaan, jotta <code>slow</code>
--funktion kutsuminen estää nykyisen säikeen joksikin millisekunneiksi. Voimme käyttää
-<code>slow</code>-funktiota edustamaan todellisia operaatioita, jotka ovat sekä pitkäkestoisia että
-estäviä.</p>
-<p>Listauksessa 17-23 käytämme <code>slow</code>-funktiota jäljittelemään tämän tyyppistä CPU-sidonnaista työtä
-kahdessa futuressa.</p>
-<figure class="listing">
-<span class="file-name">Filename: src/main.rs</span>
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>{{#rustdoc_include ../listings/ch17-async-await/listing-17-23/src/main.rs:slow-futures}}
-<span class="boring">}</span></code></pre></pre>
-<figcaption>Listing 17-23: <code>thread::sleep</code>-funktion käyttö hitaiden operaatioiden simuloimiseen</figcaption>
-</figure>
-<p>Aluksi jokainen future luovuttaa ohjauksen takaisin ajonaikaisjärjestelmälle vasta <em>jälkeen</em>
-suoritettuaan joukon hitaita operaatioita. Jos ajat tämän koodin, näet tämän tulosteen:</p>
-<!-- manual-regeneration
-cd listings/ch17-async-await/listing-17-23/
 cargo run
 copy just the output
 -->
@@ -533,29 +222,19 @@ copy just the output
 'b' ran for 350ms
 'a' finished.
 </code></pre>
-<p>Kuten aiemmassa esimerkissämme, <code>race</code>-funktio valmistuu silti heti, kun <code>a</code> on valmis.
-Näiden kahden futuren välillä ei ole kuitenkaan vuorottelua. <code>a</code>-future tekee kaiken
-työnsä, kunnes <code>trpl::sleep</code>-kutsu odotetaan, sitten <code>b</code>-future tekee
-kaiken työnsä, kunnes sen oma <code>trpl::sleep</code>-kutsu odotetaan, ja lopuksi <code>a</code>
--future valmistuu. Salliaaksemme molempien futuresien edistyä hitaiden
-tehtävien välillä, tarvitsemme await-pisteitä, jotta voimme luovuttaa ohjauksen takaisin ajonaikaisjärjestelmälle. Se
-tarkoittaa, että tarvitsemme jotain, mitä voimme odottaa!</p>
-<p>Näemme jo tämän tyyppisen luovutuksen tapahtuvan Listauksessa 17-23: jos
-poistaisimme <code>trpl::sleep</code>-kutsun <code>a</code>-futuren lopusta, se valmistuisi
-ilman, että <code>b</code>-future suoritetaan <em>ollenkaan</em>. Kokeillaan käyttää <code>sleep</code>-funktiota
-lähtökohtana sallia operaatioiden vaihtaa edistymistä, kuten Listauksessa 17-24.</p>
-<figure class="listing">
+<p>Kuten listauksessa 17-5, jossa kilpailutimme kahta URL-osoitetta hakevia futureja <code>trpl::select</code>:illa, <code>select</code> päättyy edelleen heti, kun <code>a</code> on valmis. <code>slow</code>-kutsujen välillä ei kuitenkaan ole vuorottelua kahden futuren välillä. <code>a</code>-future tekee kaiken työnsä, kunnes <code>trpl::sleep</code>-kutsua odotetaan, sitten <code>b</code>-future tekee kaiken työnsä, kunnes sen oma <code>trpl::sleep</code>-kutsu odotetaan, ja lopuksi <code>a</code>-future valmistuu. Jotta molemmat futuret voisivat edetä hitaiden tehtäviensä välillä, tarvitsemme odotuspisteitä, jotta voimme luovuttaa ohjauksen takaisin ajoympäristölle. Tarvitsemme siis jotain, mitä voimme odottaa!</p>
+<p>Näemme tämänkaltaisen luovutuksen jo listauksessa 17-15: jos poistaisimme <code>a</code>-futuren lopun <code>trpl::sleep</code>:in, se valmistuisi ilman, että <code>b</code>-future suorittuisi <em>lainkaan</em>. Kokeillaan käyttää <code>trpl::sleep</code>-funktiota lähtökohtana operaatioiden vuorottelulle etenemisessä, kuten listauksessa 17-16.</p>
+<figure class="listing" id="listing-17-16">
 <span class="file-name">Filename: src/main.rs</span>
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+<pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span>{{#rustdoc_include ../listings/ch17-async-await/listing-17-24/src/main.rs:here}}
-<span class="boring">}</span></code></pre></pre>
-<figcaption>Listing 17-24: <code>sleep</code>-funktion käyttö sallia operaatioiden vaihtaa edistymistä</figcaption>
+</span>{{#rustdoc_include ../listings/ch17-async-await/listing-17-16/src/main.rs:here}}
+<span class="boring">}</span></code></pre>
+<figcaption><a href="#listing-17-16">Listing 17-16</a>: <code>trpl::sleep</code>:in käyttö operaatioiden vuorottelun sallimiseksi etenemisessä</figcaption>
 </figure>
-<p>Listauksessa 17-24 lisäämme <code>trpl::sleep</code>-kutsuja await-pisteineen jokaisen <code>slow</code>
--funktion kutsun välillä. Nyt näiden kahden futuren työ on vuoroteltu:</p>
+<p>Olemme lisänneet <code>trpl::sleep</code>-kutsuja odotuspisteillä jokaisen <code>slow</code>-kutsun väliin. Nyt kahden futuren työ on vuoroteltua:</p>
 <!-- manual-regeneration
-cd listings/ch17-async-await/listing-17-24
+cd listings/ch17-async-await/listing-17-16
 cargo run
 copy just the output
 -->
@@ -569,151 +248,70 @@ copy just the output
 'b' ran for 15ms
 'a' finished.
 </code></pre>
-<p><code>a</code>-future suoritetaan silti hieman ennen kuin se luovuttaa ohjauksen <code>b</code>:lle, koska
-se kutsuu <code>slow</code>-funktiota ennen kuin koskaan kutsuu <code>trpl::sleep</code>-funktiota, mutta sen jälkeen futuresit
-vaihtavat edestakaisin aina, kun yksi niistä osuu await-pisteeseen. Tässä tapauksessa olemme
-tehneet sen jokaisen <code>slow</code>-funktion kutsun jälkeen, mutta voisimme jakaa työn
-millä tahansa tavalla, joka on meille järkevin.</p>
-<p>Emme kuitenkaan halua <em>nukkua</em> täällä: haluamme edistyä niin nopeasti
-kuin mahdollista. Meidän täytyy vain luovuttaa ohjaus takaisin ajonaikaisjärjestelmälle. Voimme tehdä sen
-suoraan käyttämällä <code>yield_now</code>-funktiota. Listauksessa 17-25 korvaamme kaikki nuo
-<code>sleep</code>-kutsut <code>yield_now</code>-funktiolla.</p>
-<figure class="listing">
+<p><code>a</code>-future suorittaa edelleen hetken ennen ohjauksen luovuttamista <code>b</code>:lle, koska se kutsuu <code>slow</code>:ia ennen kuin koskaan kutsuu <code>trpl::sleep</code>:ia, mutta sen jälkeen futuret vaihtavat vuorotellen aina, kun jompikumpi osuu odotuspisteeseen. Tässä tapauksessa teimme sen jokaisen <code>slow</code>-kutsun jälkeen, mutta voimme jakaa työn millä tavalla meille sopii.</p>
+<p>Emme kuitenkaan todella halua <em>nukkua</em> tässä: haluamme edetä niin nopeasti kuin voimme. Meidän täytyy vain luovuttaa ohjaus takaisin ajoympäristölle. Voimme tehdä sen suoraan käyttämällä <code>trpl::yield_now</code>-funktiota. Listauksessa 17-17 korvaamme kaikki <code>trpl::sleep</code>-kutsut <code>trpl::yield_now</code>:illa.</p>
+<figure class="listing" id="listing-17-17">
 <span class="file-name">Filename: src/main.rs</span>
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+<pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span>{{#rustdoc_include ../listings/ch17-async-await/listing-17-25/src/main.rs:yields}}
-<span class="boring">}</span></code></pre></pre>
-<figcaption>Listing 17-25: <code>yield_now</code>-funktion käyttö sallia operaatioiden vaihtaa edistymistä</figcaption>
+</span>{{#rustdoc_include ../listings/ch17-async-await/listing-17-17/src/main.rs:yields}}
+<span class="boring">}</span></code></pre>
+<figcaption><a href="#listing-17-17">Listing 17-17</a>: <code>yield_now</code>:in käyttö operaatioiden vuorottelun sallimiseksi etenemisessä</figcaption>
 </figure>
-<p>Tämä koodi on sekä selkeämpi todellisesta tarkoituksesta että voi olla merkittävästi
-nopeampi kuin <code>sleep</code>-funktion käyttö, koska ajastimet, kuten <code>sleep</code>-funktiossa käytetty,
-usein rajoittavat, kuinka hienojakoisia ne voivat olla. Käyttämämme <code>sleep</code>-funktion versio
-nukkuu esimerkiksi aina vähintään millisekunnin, vaikka välittäisimme sille
-<code>Duration</code>-tyypin, joka on yksi nanosekunti. Nykyaikaiset tietokoneet ovat <em>nopeita</em>: ne voivat tehdä
-paljon yhdessä millisekunnissa!</p>
-<p>Voit nähdä tämän itse asettamalla pienen suorituskykytestin, kuten Listauksessa 17-26. (Tämä ei ole erityisen tiukka tapa
-tehdä suorituskykytestaus, mutta se riittää osoittamaan eron täällä.)</p>
-<figure class="listing">
+<p>Tämä koodi on sekä selkeämpi todellisesta tarkoituksesta että voi olla merkittävästi nopeampi kuin <code>sleep</code>:in käyttö, koska <code>sleep</code>:in käyttämien ajastimien tarkkuudella on usein rajoja. Käyttämämme <code>sleep</code>-versio nukkuu aina vähintään millisekunnin, vaikka välittäisimme sille yhden nanosekunnin <code>Duration</code>:in. Modernit tietokoneet ovat <em>nopeita</em>: ne voivat tehdä paljon yhdessä millisekunnissa!</p>
+<p>Tämä tarkoittaa, että async voi olla hyödyllinen jopa laskentarajoitteisille tehtäville, riippuen siitä, mitä muuta ohjelmasi tekee, koska se tarjoaa hyödyllisen työkalun ohjelman eri osien välisten suhteiden jäsentämiseen (mutta async-tilakoneen yläkulun hinnalla). Tämä on eräänlaista <em>yhteistoiminnallista moniajoa</em>, jossa jokaisella futurella on valta päättää, milloin se luovuttaa ohjauksen odotuspisteiden kautta. Jokaisella futurella on siten myös vastuu välttää liian pitkää estämistä. Joissakin Rust-pohjaisissa sulautetuissa käyttöjärjestelmissä tämä on <em>ainoa</em> moniajon laji!</p>
+<p>Oikeassa koodissa et yleensä vuorottele funktiokutsuja ja odotuspisteitä jokaisella rivillä, tietenkään. Vaikka ohjauksen luovuttaminen tällä tavalla on suhteellisen edullista, se ei ole ilmaista. Monissa tapauksissa laskentarajoitteisen tehtävän pilkkominen voi hidastaa sitä merkittävästi, joten joskus on parempi <em>kokonaissuorituskyvyn</em> kannalta antaa operaation estää hetkeksi. Mittaa aina nähdäksesi, missä koodisi todelliset suorituskykypullonkaulat ovat. Taustalla oleva dynamiikka on kuitenkin tärkeä pitää mielessä, jos <em>näet</em> paljon työtä tapahtuvan peräkkäin, kun odotit sen tapahtuvan samanaikaisesti!</p>
+<h3 id="omien-async-abstraktioiden-rakentaminen"><a class="header" href="#omien-async-abstraktioiden-rakentaminen">Omien async-abstraktioiden rakentaminen</a></h3>
+<p>Voimme myös yhdistellä futureja luodaksemme uusia malleja. Esimerkiksi voimme rakentaa <code>timeout</code>-funktion async-rakennuspalikoilla, joita meillä jo on. Kun olemme valmiita, tulos on toinen rakennuspalikka, jota voisimme käyttää luomaan vielä lisää async-abstraktioita.</p>
+<p>Listaus 17-18 näyttää, miten odotamme tämän <code>timeout</code>:in toimivan hitaan futuren kanssa.</p>
+<figure class="listing" id="listing-17-18">
 <span class="file-name">Filename: src/main.rs</span>
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>{{#rustdoc_include ../listings/ch17-async-await/listing-17-26/src/main.rs:here}}
-<span class="boring">}</span></code></pre></pre>
-<figcaption>Listing 17-26: <code>sleep</code>- ja <code>yield_now</code>-funktioiden suorituskyvyn vertailu</figcaption>
+<pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch17-async-await/listing-17-18/src/main.rs:here}}</code></pre>
+<figcaption><a href="#listing-17-18">Listing 17-18</a>: Kuvitellun <code>timeout</code>:imme käyttö hitaan operaation suorittamiseen aikarajalla</figcaption>
 </figure>
-<p>Täällä ohitamme kaikki tilatulostukset, välitämme yhden nanosekunnin <code>Duration</code>-tyypin
-<code>trpl::sleep</code>-funktiolle, ja annamme jokaisen futuren suorittaa itsenäisesti, ilman vaihtelua futuresien
-välillä. Sitten ajamme 1000 iteraatiota ja näemme, kuinka kauan <code>trpl::sleep</code>-funktiota käyttävä
-future kestää verrattuna <code>trpl::yield_now</code>-funktiota käyttävään futureen.</p>
-<p>Versio <code>yield_now</code>-funktiolla on <em>paljon</em> nopeampi!</p>
-<p>Se tarkoittaa, että async voi olla hyödyllinen jopa laskentasidonnaisille tehtäville, riippuen
-siitä, mitä muuta ohjelmasi tekee, koska se tarjoaa hyödyllisen työkalun
-rakentamaan suhteita ohjelman eri osien välille. Tämä on
-muoto <em>yhteistyöhön perustuvasta moniajosta</em> (cooperative multitasking), jossa jokaisella futurella on valta määrittää
-milloin se luovuttaa ohjauksen await-pisteiden kautta. Jokaisella futurella on siis myös
-vastuu välttää estäminen liian kauan. Joissakin Rust-pohjaisissa sulautetuissa
-käyttöjärjestelmissä tämä on <em>ainoa</em> moniajon muoto!</p>
-<p>Todellisessa koodissa et yleensä vuorottele funktiokutsuja await-
-pisteillä jokaisella rivillä, tietenkin. Vaikka ohjauksen luovuttaminen tällä tavalla on
-suhteellisen halpaa, se ei ole ilmaista. Monissa tapauksissa laskentasidonnaisen
-tehtävän jakaminen saattaa tehdä siitä merkittävästi hitaamman, joten joskus on parempi
-<em>kokonaisuuden</em> suorituskyvyn kannalta antaa operaation estää lyhyesti. Aina
-mitata nähdäksesi, mitkä ovat koodisi todelliset suorituskyvyn pullonkaulat. Taustalla oleva
-dynamiikka on tärkeää pitää mielessä, jos <em>näet</em>
-paljon työtä tapahtuvan sarjassa, jota odotit tapahtuvan rinnakkain!</p>
-<h3 id="oman-async-abstraktioiden-rakentaminen"><a class="header" href="#oman-async-abstraktioiden-rakentaminen">Oman async-abstraktioiden rakentaminen</a></h3>
-<p>Voimme myös yhdistää futureseja yhteen luodaksemme uusia malleja. Esimerkiksi voimme
-rakentaa <code>timeout</code>-funktion async-rakennuspalikoilla, joita meillä jo on. Kun
-olemme valmiit, tulos on toinen rakennuspalikka, jota voisimme käyttää luodaksemme
-vielä enemmän async-abstraktioita.</p>
-<p>Listaus 17-27 näyttää, miten odotamme tämän <code>timeout</code>-funktion toimivan hitaan
-futuren kanssa.</p>
-<figure class="listing">
-<span class="file-name">Filename: src/main.rs</span>
-<pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch17-async-await/listing-17-27/src/main.rs:here}}</code></pre>
-<figcaption>Listing 17-27: Kuvittelemamme <code>timeout</code>-funktion käyttö hitaan operaation suorittamiseen aikarajalla</figcaption>
-</figure>
-<p>Toteutetaan tämä! Aluksi mietitään <code>timeout</code>-funktion API:</p>
+<p>Toteutetaan tämä! Aloitetaan miettimällä <code>timeout</code>:in API:ta:</p>
 <ul>
 <li>Sen täytyy olla itse async-funktio, jotta voimme odottaa sitä.</li>
-<li>Sen ensimmäisen parametrin pitäisi olla suoritettava future. Voimme tehdä sen geneeriseksi sallia
-sen toimia minkä tahansa futuren kanssa.</li>
-<li>Sen toinen parametri on maksimiaika odottaa. Jos käytämme <code>Duration</code>-tyyppiä,
-se tekee siitä helpon välittää <code>trpl::sleep</code>-funktiolle.</li>
-<li>Sen pitäisi palauttaa <code>Result</code>-tyyppi. Jos future valmistuu onnistuneesti,
-<code>Result</code>-tyyppi on <code>Ok</code> futuren tuottaman arvon kanssa. Jos aikaraja
-kuluu ensin, <code>Result</code>-tyyppi on <code>Err</code> aikarajan odottaman keston kanssa.</li>
+<li>Sen ensimmäisen parametrin pitäisi olla suoritettava future. Voimme tehdä siitä geneerisen, jotta se toimii minkä tahansa futuren kanssa.</li>
+<li>Sen toinen parametri on enimmäisodotusaika. Jos käytämme <code>Duration</code>:ia, sen on helppo välittää eteenpäin <code>trpl::sleep</code>:ille.</li>
+<li>Sen pitäisi palauttaa <code>Result</code>. Jos future valmistuu onnistuneesti, <code>Result</code> on <code>Ok</code> futuren tuottamalla arvolla. Jos aikaraja umpeutuu ensin, <code>Result</code> on <code>Err</code> odotetulla kestolla.</li>
 </ul>
-<p>Listaus 17-28 näyttää tämän määrityksen.</p>
+<p>Listaus 17-19 näyttää tämän määrittelyn.</p>
 <!-- This is not tested because it intentionally does not compile. -->
-<figure class="listing">
+<figure class="listing" id="listing-17-19">
 <span class="file-name">Filename: src/main.rs</span>
-<pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch17-async-await/listing-17-28/src/main.rs:declaration}}</code></pre>
-<figcaption>Listing 17-28: <code>timeout</code>-funktion allekirjoituksen määrittäminen</figcaption>
+<pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch17-async-await/listing-17-19/src/main.rs:declaration}}</code></pre>
+<figcaption><a href="#listing-17-19">Listing 17-19</a>: <code>timeout</code>:in signatuurin määrittely</figcaption>
 </figure>
-<p>Se täyttää tyyppien tavoitteemme. Mietitään nyt <em>käyttäytymistä</em>, jota
-tarvitsemme: haluamme kilpailuttaa välitetyn futuren kestoa vastaan. Voimme käyttää
-<code>trpl::sleep</code>-funktiota tekemään ajastinfuturen kestosta, ja käyttää <code>trpl::race</code>-funktiota
-ajamaan tuon ajastimen futuren kanssa, jonka kutsuja välittää.</p>
-<p>Tiedämme myös, että <code>race</code>-funktio ei ole reilu, kysellen argumentteja siinä järjestyksessä, jossa
-ne välitetään. Välitämme siis <code>future_to_try</code>-futuren <code>race</code>-funktiolle ensin, jotta se saa
-mahdollisuuden valmistua, vaikka <code>max_time</code> olisi hyvin lyhyt kesto. Jos
-<code>future_to_try</code> valmistuu ensin, <code>race</code>-funktio palauttaa <code>Left</code>-arvon <code>future_to_try</code>
-:n tulosteen kanssa. Jos <code>timer</code>-future valmistuu ensin, <code>race</code>-funktio palauttaa <code>Right</code>-arvon
-ajastimen <code>()</code>-tulosteen kanssa.</p>
-<p>Listauksessa 17-29 vastaamme <code>trpl::race</code>-funktion odottamisen tulokseen.</p>
-<figure class="listing">
+<p>Tämä täyttää tyyppitavoitteemme. Mietitään nyt tarvittavaa <em>käyttäytymistä</em>: haluamme kilpailuttaa välitetyn futuren keston kanssa. Voimme käyttää <code>trpl::sleep</code>:ia luodaksemme ajastinfuturen kestosta ja <code>trpl::select</code>:ia suorittaaksemme tämän ajastimen kutsujan välittämän futuren kanssa.</p>
+<p>Listauksessa 17-20 toteutamme <code>timeout</code>:in tekemällä <code>match</code>:in <code>trpl::select</code>:in odottamisen tulokseen.</p>
+<figure class="listing" id="listing-17-20">
 <span class="file-name">Filename: src/main.rs</span>
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+<pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span>{{#rustdoc_include ../listings/ch17-async-await/listing-17-29/src/main.rs:implementation}}
-<span class="boring">}</span></code></pre></pre>
-<figcaption>Listing 17-29: <code>timeout</code>-funktion määrittäminen <code>race</code>- ja <code>sleep</code>-funktioiden avulla</figcaption>
+</span>{{#rustdoc_include ../listings/ch17-async-await/listing-17-20/src/main.rs:implementation}}
+<span class="boring">}</span></code></pre>
+<figcaption><a href="#listing-17-20">Listing 17-20</a>: <code>timeout</code>:in määrittely <code>select</code>:illä ja <code>sleep</code>:illä</figcaption>
 </figure>
-<p>Jos <code>future_to_try</code>-future onnistuu ja saamme <code>Left(output)</code>-arvon, palautamme
-<code>Ok(output)</code>-arvon. Jos nukkumisajastin kuluu sen sijaan ja saamme <code>Right(())</code>-arvon, jätämme
-<code>()</code>-arvon huomiotta <code>_</code>-merkillä ja palautamme <code>Err(max_time)</code>-arvon sen sijaan.</p>
-<p>Sen avulla meillä on toimiva <code>timeout</code>-funktio, joka on rakennettu kahdesta muusta async-apufunktiosta. Jos
-ajamme koodimme, se tulostaa epäonnistumistilan aikarajan jälkeen:</p>
+<p><code>trpl::select</code>:in toteutus ei ole reilu: se pollaa argumentteja aina siinä järjestyksessä, jossa ne välitetään (muut <code>select</code>-toteutukset valitsevat satunnaisesti, mitä argumenttia pollataan ensin). Välitämme siis <code>future_to_try</code>:n <code>select</code>:ille ensin, jotta sillä on mahdollisuus valmistua, vaikka <code>max_time</code> olisi hyvin lyhyt kesto. Jos <code>future_to_try</code> valmistuu ensin, <code>select</code> palauttaa <code>Left</code>:in <code>future_to_try</code>:n tuloksella. Jos <code>timer</code> valmistuu ensin, <code>select</code> palauttaa <code>Right</code>:in ajastimen <code>()</code>-tuloksella.</p>
+<p>Jos <code>future_to_try</code> onnistuu ja saamme <code>Left(output)</code>:in, palautamme <code>Ok(output)</code>:in. Jos <code>sleep</code>-ajastin umpeutuu sen sijaan ja saamme <code>Right(())</code>:in, jätämme <code>()</code>:n huomiotta <code>_</code>:llä ja palautamme sen sijaan <code>Err(max_time)</code>:in.</p>
+<p>Näin meillä on toimiva <code>timeout</code>, joka on rakennettu kahdesta muusta async-apurista. Jos suoritamme koodimme, se tulostaa epäonnistumistilan aikarajan jälkeen:</p>
 <pre><code class="language-text">Failed after 2 seconds
 </code></pre>
-<p>Koska futuresit yhdistyvät muiden futuresien kanssa, voit rakentaa todella tehokkaita työkaluja
-käyttämällä pienempiä async-rakennuspalikoita. Esimerkiksi voit käyttää samaa lähestymistapaa
-yhdistääksesi aikarajat uudelleenyrityksiin, ja puolestaan käyttää niitä operaatioiden, kuten
-verkkokutsujen, kanssa (yksi esimerkeistä luvun alusta).</p>
-<p>Käytännössä työskentelet yleensä suoraan <code>async</code>- ja <code>await</code>-avainsanojen kanssa, ja
-toissijaisesti funktioiden ja makrojen, kuten <code>join</code>, <code>join_all</code>, <code>race</code>, ja niin
-edelleen, kanssa. Tarvitset <code>pin</code>-funktiota vain ajoittain käyttääksesi futureseja näiden
-API:en kanssa.</p>
-<p>Olemme nyt nähneet useita tapoja työskennellä useiden futuresien kanssa samaan
-aikaan. Seuraavaksi tarkastelemme, miten voimme työskennellä useiden futuresien kanssa
-sekvenssissä ajan myötä <em>virtojen</em> (streams) avulla. Tässä on muutama muukin asia, jota saatat haluta
-harkita ensin:</p>
-<ul>
-<li>
-<p>Käytimme <code>Vec</code>-kokoelmaa <code>join_all</code>-funktion kanssa odottaaksemme, että kaikki futuresit jossakin ryhmässä
-valmistuvat. Miten voisit käyttää <code>Vec</code>-kokoelmaa käsittelemään futuresien ryhmän
-sekvenssissä sen sijaan? Mitkä ovat sen tekemisen kompromissit?</p>
-</li>
-<li>
-<p>Tutustu <code>futures::stream::FuturesUnordered</code>-tyyppiin <code>futures</code>
--cratesta. Miten sen käyttö eroaisi <code>Vec</code>-kokoelman käytöstä? (Älä huolehdi
-siitä, että se on craten <code>stream</code>-osiosta; se toimii hyvin
-minkä tahansa futuresien kokoelman kanssa.)</p>
-</li>
-</ul>
+<p>Koska futuret yhdistyvät muihin futureihin, voit rakentaa todella tehokkaita työkaluja pienemmistä async-rakennuspalikoista. Esimerkiksi voit käyttää samaa lähestymistapaa yhdistääksesi aikarajoja uudelleenyrityksiin ja käyttää niitä vuorostaan verkko-operaatioihin (kuten listauksessa 17-5).</p>
+<p>Käytännössä työskentelet yleensä suoraan <code>async</code>:in ja <code>await</code>:in kanssa ja toissijaisesti funktioiden kuten <code>select</code>:in ja makrojen kuten <code>join!</code>:n kanssa hallitaksesi, miten uloimmat futuret suoritetaan.</p>
+<p>Olemme nyt nähneet useita tapoja työskennellä usean futuren kanssa samanaikaisesti. Seuraavaksi katsomme, miten voimme työskennellä usean futuren kanssa peräkkäin ajan kuluessa <em>streamien</em> avulla.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                             <a rel="prev" href="ch17-02-concurrency-with-async.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                                <i class="fa fa-angle-left"></i>
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
                             <a rel="next prefetch" href="ch17-04-streams.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
                         <div style="clear: both"></div>
@@ -723,16 +321,21 @@ minkä tahansa futuresien kokoelman kanssa.)</p>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                     <a rel="prev" href="ch17-02-concurrency-with-async.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                        <i class="fa fa-angle-left"></i>
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
                     <a rel="next prefetch" href="ch17-04-streams.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>
 
         </div>
 
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
 
 
 
@@ -741,16 +344,17 @@ minkä tahansa futuresien kokoelman kanssa.)</p>
         </script>
 
 
-        <script src="elasticlunr.min.js"></script>
-        <script src="mark.min.js"></script>
-        <script src="searcher.js"></script>
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-c2a407aa.js"></script>
 
-        <script src="clipboard.min.js"></script>
-        <script src="highlight.js"></script>
-        <script src="book.js"></script>
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-abc7f01d.js"></script>
+        <script src="book-a0b12cfe.js"></script>
 
         <!-- Custom JS scripts -->
-        <script src="ferris.js"></script>
+        <script src="ferris-2317480c.js"></script>
+
 
 
     </div>

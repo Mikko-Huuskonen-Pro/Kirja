@@ -12,44 +12,56 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
 
-        <link rel="icon" href="favicon.svg">
-        <link rel="shortcut icon" href="favicon.png">
-        <link rel="stylesheet" href="css/variables.css">
-        <link rel="stylesheet" href="css/general.css">
-        <link rel="stylesheet" href="css/chrome.css">
-        <link rel="stylesheet" href="css/print.css" media="print">
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-2459343d.css">
+        <link rel="stylesheet" href="css/chrome-ae938929.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
-        <link rel="stylesheet" href="fonts/fonts.css">
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" href="highlight.css">
-        <link rel="stylesheet" href="tomorrow-night.css">
-        <link rel="stylesheet" href="ayu-highlight.css">
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="ferris.css">
-        <link rel="stylesheet" href="theme/2018-edition.css">
-        <link rel="stylesheet" href="theme/semantic-notes.css">
-        <link rel="stylesheet" href="theme/listing.css">
+        <link rel="stylesheet" href="ferris-d33b75bf.css">
+        <link rel="stylesheet" href="theme/2018-edition-4e126c62.css">
+        <link rel="stylesheet" href="theme/semantic-notes-9b5766c0.css">
+        <link rel="stylesheet" href="theme/listing-cab26221.css">
 
 
-        <!-- Provide site root to javascript -->
+        <!-- Provide site root and default themes to javascript -->
         <script>
-            var path_to_root = "";
-            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex-454febf7.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc.js"></script>
+        <script src="toc-7f90d00d.js"></script>
     </head>
     <body>
-    <div id="body-container">
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
             try {
-                var theme = localStorage.getItem('mdbook-theme');
-                var sidebar = localStorage.getItem('mdbook-sidebar');
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
 
                 if (theme.startsWith('"') && theme.endsWith('"')) {
                     localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
@@ -63,7 +75,8 @@
 
         <!-- Set the theme before any content is loaded, prevents flash -->
         <script>
-            var theme;
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
             const html = document.documentElement;
@@ -72,55 +85,59 @@
             html.classList.add("js");
         </script>
 
-        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
-            var sidebar = null;
-            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
             } else {
                 sidebar = 'hidden';
+                sidebar_toggle.checked = false;
             }
-            sidebar_toggle.checked = sidebar === 'visible';
-            html.classList.remove('sidebar-visible');
-            html.classList.add("sidebar-" + sidebar);
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
         </script>
 
-        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
             <!-- populated by js -->
             <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
             <noscript>
                 <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
             </noscript>
-            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
             </div>
         </nav>
 
-        <div id="page-wrapper" class="page-wrapper">
+        <div id="mdbook-page-wrapper" class="page-wrapper">
 
             <div class="page">
-                <div id="menu-bar-hover-placeholder"></div>
-                <div id="menu-bar" class="menu-bar sticky">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
-                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
-                            <i class="fa fa-bars"></i>
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
                         </label>
-                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
-                            <i class="fa fa-paint-brush"></i>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
                         </button>
-                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
-                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
                         </ul>
-                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
-                            <i class="fa fa-search"></i>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
                         </button>
                     </div>
 
@@ -128,203 +145,434 @@
 
                     <div class="right-buttons">
                         <a href="print.html" title="Print this book" aria-label="Print this book">
-                            <i id="print-button" class="fa fa-print"></i>
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
                         </a>
                         <a href="https://github.com/rust-lang/book" title="Git repository" aria-label="Git repository">
-                            <i id="git-repository-button" class="fa fa-github"></i>
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></span>
                         </a>
 
                     </div>
                 </div>
 
-                <div id="search-wrapper" class="hidden">
-                    <form id="searchbar-outer" class="searchbar-outer">
-                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
                     </form>
-                    <div id="searchresults-outer" class="searchresults-outer hidden">
-                        <div id="searchresults-header" class="searchresults-header"></div>
-                        <ul id="searchresults">
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
                         </ul>
                     </div>
                 </div>
 
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
                 <script>
-                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
-                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
-                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
                         link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
                     });
                 </script>
 
-                <div id="content" class="content">
+                <div id="mdbook-content" class="content">
                     <main>
-                        <h2 id="refaktorointi-modulariteetin-ja-virheenkäsittelyn-parantamiseksi"><a class="header" href="#refaktorointi-modulariteetin-ja-virheenkäsittelyn-parantamiseksi">Refaktorointi modulariteetin ja virheenkäsittelyn parantamiseksi</a></h2>
-<p>Parantaaksemme ohjelmaamme korjaamme neljä ongelmaa, jotka liittyvät ohjelman rakenteeseen ja siihen, miten se käsittelee mahdollisia virheitä. Ensinnäkin <code>main</code>-funktiomme suorittaa nyt kaksi tehtävää: se jäsentää argumentit ja lukee tiedostoja. Ohjelman kasvaessa <code>main</code>-funktion käsittelemien erillisten tehtävien määrä kasvaa. Kun funktio saa lisää vastuita, sitä on vaikeampi ymmärtää, vaikeampi testata ja vaikeampi muuttaa rikkomatta jotakin sen osista. On parasta erottaa toiminnallisuus niin, että jokainen funktio vastaa yhdestä tehtävästä.</p>
-<p>Tämä ongelma liittyy myös toiseen ongelmaan: vaikka <code>query</code> ja <code>file_path</code> ovat ohjelman konfiguraatiomuuttujia, muuttujat kuten <code>contents</code> käytetään ohjelman logiikan suorittamiseen. Mitä pidempi <code>main</code> on, sitä enemmän muuttujia meidän täytyy tuoda näkyvyysalueelle; mitä enemmän muuttujia on näkyvyysalueella, sitä vaikeampaa on pitää kirjaa kunkin tarkoituksesta. On parasta ryhmitellä konfiguraatiomuuttujat yhteen rakenteeseen, jotta niiden tarkoitus on selvä.</p>
-<p>Kolmas ongelma on se, että olemme käyttäneet <code>expect</code>-kutsua tulostaaksemme virheilmoituksen, kun tiedoston lukeminen epäonnistuu, mutta virheilmoitus tulostaa vain <code>Should have been able to read the file</code>. Tiedoston lukeminen voi epäonnistua monella tavalla: esimerkiksi tiedosto voi puuttua tai meillä ei ehkä ole oikeutta avata sitä. Tällä hetkellä tulostaisimme saman virheilmoituksen kaikissa tilanteissa, mikä ei antaisi käyttäjälle mitään hyödyllistä tietoa!</p>
-<p>Neljäs ongelma on se, että käytämme <code>expect</code>-kutsua virheen käsittelyyn, ja jos käyttäjä ajaa ohjelman määrittämättä tarpeeksi argumentteja, hän saa Rustilta <code>index out of bounds</code> -virheen, joka ei selkeästi selitä ongelmaa. Olisi parasta, jos kaikki virheenkäsittelykoodi olisi yhdessä paikassa, jotta tulevat ylläpitäjät voisivat tarvittaessa muuttaa virheenkäsittelylogiikkaa yhdestä paikasta. Kun kaikki virheenkäsittelykoodi on yhdessä paikassa, varmistamme myös, että tulostamme viestejä, jotka ovat merkityksellisiä loppukäyttäjillemme.</p>
+                        <h2 id="refaktorointi-modulaarisuuden-ja-virheenkäsittelyn-parantamiseksi"><a class="header" href="#refaktorointi-modulaarisuuden-ja-virheenkäsittelyn-parantamiseksi">Refaktorointi modulaarisuuden ja virheenkäsittelyn parantamiseksi</a></h2>
+<p>Parantaaksemme ohjelmaamme korjaamme neljä ongelmaa, jotka liittyvät ohjelman
+rakenteeseen ja siihen, miten se käsittelee mahdollisia virheitä. Ensinnäkin
+<code>main</code>-funktiomme suorittaa nyt kaksi tehtävää: se jäsentää argumentit ja lukee
+tiedostoja. Ohjelmamme kasvaessa <code>main</code>-funktion käsittelemien erillisten
+tehtävien määrä kasvaa. Kun funktio saa vastuita, siitä tulee vaikeampi
+ymmärtää, vaikeampi testata ja vaikeampi muuttaa rikkomatta jotakin sen osista.
+On parasta erottaa toiminnallisuus niin, että jokainen funktio on vastuussa
+yhdestä tehtävästä.</p>
+<p>Tämä ongelma liittyy myös toiseen ongelmaan: Vaikka <code>query</code> ja <code>file_path</code> ovat
+ohjelmamme konfiguraatiomuuttujia, muuttujat kuten <code>contents</code> käytetään
+ohjelman logiikan suorittamiseen. Mitä pidempi <code>main</code> tulee, sitä enemmän
+muuttujia meidän täytyy tuoda näkyvyysalueelle; mitä enemmän muuttujia on
+näkyvyysalueella, sitä vaikeampi on seurata kunkin tarkoitusta. On parasta
+ryhmitellä konfiguraatiomuuttujat yhteen structiin selventämään niiden tarkoitusta.</p>
+<p>Kolmas ongelma on, että olemme käyttäneet <code>expect</code>-metodia tulostaaksemme
+virheviestin, kun tiedoston lukeminen epäonnistuu, mutta virheviesti tulostaa
+vain <code>Should have been able to read the file</code>. Tiedoston lukeminen voi epäonnistua
+monella tavalla: Esimerkiksi tiedosto voi puuttua tai meillä ei ehkä ole oikeutta
+avata sitä. Tällä hetkellä tulostaisimme saman virheviestin kaikissa tilanteissa,
+mikä ei antaisi käyttäjälle mitään tietoa!</p>
+<p>Neljäs ongelma on, että käytämme <code>expect</code>-metodia virheen käsittelyyn, ja jos
+käyttäjä ajaa ohjelmamme määrittämättä tarpeeksi argumentteja, hän saa Rustilta
+<code>index out of bounds</code> -virheen, joka ei selitä ongelmaa selkeästi. Olisi parasta,
+jos kaikki virheenkäsittelykoodi olisi yhdessä paikassa, jotta tulevat
+ylläpitäjät voisivat konsultoida vain yhtä paikkaa, jos virheenkäsittelylogiikkaa
+tarvitsee muuttaa. Kaiken virheenkäsittelykoodin pitäminen yhdessä paikassa
+varmistaa myös, että tulostamme viestejä, jotka ovat merkityksellisiä
+loppukäyttäjillemme.</p>
 <p>Korjataan nämä neljä ongelmaa refaktoroimalla projektimme.</p>
-<h3 id="vastuujen-erottelu-binääriprojekteissa"><a class="header" href="#vastuujen-erottelu-binääriprojekteissa">Vastuujen erottelu binääriprojekteissa</a></h3>
-<p>Organisatorinen ongelma useiden tehtävien vastuiden antamisesta <code>main</code>-funktiolle on yleinen monissa binääriprojekteissa. Tämän vuoksi Rust-yhteisö on kehittänyt ohjeita binääriohjelman erillisten huolenaiheiden jakamiseen, kun <code>main</code> alkaa kasvaa liian suureksi. Tämä prosessi sisältää seuraavat vaiheet:</p>
+<!-- Old headings. Do not remove or links may break. -->
+<p><a id="separation-of-concerns-for-binary-projects"></a></p>
+<h3 id="huolenaiheiden-erottaminen-binääriprojekteissa"><a class="header" href="#huolenaiheiden-erottaminen-binääriprojekteissa">Huolenaiheiden erottaminen binääriprojekteissa</a></h3>
+<p>Useiden tehtävien vastuun jakaminen <code>main</code>-funktiolle on yleinen organisointiongelma
+monissa binääriprojekteissa. Siksi monet Rust-ohjelmoijat pitävät hyödyllisenä
+jakaa binääriohjelman erilliset huolenaiheet, kun <code>main</code>-funktio alkaa kasvaa
+suureksi. Tämä prosessi sisältää seuraavat vaiheet:</p>
 <ul>
-<li>Jaa ohjelmasi <em>main.rs</em>- ja <em>lib.rs</em>-tiedostoihin ja siirrä ohjelman logiikka <em>lib.rs</em>-tiedostoon.</li>
-<li>Niin kauan kuin komentoriviargumenttien jäsentämislogiikka on pieni, se voi pysyä <em>main.rs</em>-tiedostossa.</li>
-<li>Kun komentoriviargumenttien jäsentämislogiikka alkaa monimutkaistua, erota se <em>main.rs</em>-tiedostosta ja siirrä se <em>lib.rs</em>-tiedostoon.</li>
+<li>Jaa ohjelmasi <em>main.rs</em>- ja <em>lib.rs</em>-tiedostoihin ja siirrä ohjelmasi logiikka
+<em>lib.rs</em>-tiedostoon.</li>
+<li>Niin kauan kuin komentorivin jäsentämislogiikka on pieni, se voi pysyä
+<code>main</code>-funktiossa.</li>
+<li>Kun komentorivin jäsentämislogiikka alkaa monimutkaistua, erota se <code>main</code>-
+funktiosta muihin funktioihin tai tyyppeihin.</li>
 </ul>
-<p><code>main</code>-funktiossa jäljelle jäävät vastuut tämän prosessin jälkeen pitäisi rajoittua seuraaviin:</p>
+<p>Tämän prosessin jälkeen <code>main</code>-funktiossa jäljellä olevat vastuut tulisi rajoittaa
+seuraaviin:</p>
 <ul>
-<li>Komentoriviargumenttien jäsentämislogiikan kutsuminen argumenttiarvoilla</li>
+<li>Komentorivin jäsentämislogiikan kutsuminen argumenttiarvoilla</li>
 <li>Muun konfiguraation asettaminen</li>
 <li><code>run</code>-funktion kutsuminen <em>lib.rs</em>-tiedostossa</li>
 <li>Virheen käsittely, jos <code>run</code> palauttaa virheen</li>
 </ul>
-<p>Tämä malli koskee huolenaiheiden erottamista: <em>main.rs</em> hoitaa ohjelman ajamisen ja <em>lib.rs</em> hoitaa kaiken käsiteltävän tehtävän logiikan. Koska et voi testata <code>main</code>-funktiota suoraan, tämä rakenne antaa sinun testata kaiken ohjelman logiikan siirtämällä sen funktioihin <em>lib.rs</em>-tiedostossa. <em>main.rs</em>-tiedostoon jäävä koodi on tarpeeksi pieni sen oikeellisuuden varmistamiseksi lukemalla. Muokataan ohjelmaamme noudattamalla tätä prosessia.</p>
-<h4 id="argumenttien-jäsentäjän-erottaminen"><a class="header" href="#argumenttien-jäsentäjän-erottaminen">Argumenttien jäsentäjän erottaminen</a></h4>
-<p>Erotamme argumenttien jäsentämiseen liittyvän toiminnallisuuden funktioon, jota <code>main</code> kutsuu valmistautuakseen siirtämään komentoriviargumenttien jäsentämislogiikan <em>src/lib.rs</em>-tiedostoon. Listausta 12-5 näyttää uuden <code>main</code>-funktion alun, joka kutsuu uutta <code>parse_config</code>-funktiota, jonka määrittelemme toistaiseksi <em>src/main.rs</em>-tiedostossa.</p>
-<figure class="listing">
+<p>Tämä kuvio koskee huolenaiheiden erottamista: <em>main.rs</em> hoitaa ohjelman ajamisen
+ja <em>lib.rs</em> hoitaa kaiken tehtävän logiikan. Koska et voi testata <code>main</code>-funktiota
+suoraan, tämä rakenne antaa sinun testata kaiken ohjelmasi logiikan siirtämällä
+sen pois <code>main</code>-funktiosta. <code>main</code>-funktiossa jäljelle jäävä koodi on tarpeeksi
+pieni sen oikeellisuuden varmistamiseksi lukemalla. Työstetään ohjelmaamme
+seuraamalla tätä prosessia.</p>
+<h4 id="argumenttijäsentimen-erottaminen"><a class="header" href="#argumenttijäsentimen-erottaminen">Argumenttijäsentimen erottaminen</a></h4>
+<p>Erotamme argumenttien jäsentämiseen liittyvän toiminnallisuuden funktioon,
+jonka <code>main</code> kutsuu. Listaus 12-5 näyttää uuden <code>main</code>-funktion alun, joka
+kutsuu uutta <code>parse_config</code>-funktiota, jonka määrittelemme <em>src/main.rs</em>-tiedostossa.</p>
+<figure class="listing" id="listing-12-5">
 <span class="file-name">Filename: src/main.rs</span>
 <pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch12-an-io-project/listing-12-05/src/main.rs:here}}</code></pre>
-<figcaption>Listing 12-5: <code>parse_config</code>-funktion erottaminen <code>main</code>-funktiosta</figcaption>
+<figcaption><a href="#listing-12-5">Listing 12-5</a>: <code>parse_config</code>-funktion erottaminen <code>main</code>-funktiosta</figcaption>
 </figure>
-<p>Keräämme edelleen komentoriviargumentit vektoriin, mutta sen sijaan, että määrittäisimme indeksin 1 argumenttiarvon muuttujalle <code>query</code> ja indeksin 2 argumenttiarvon muuttujalle <code>file_path</code> <code>main</code>-funktiossa, välitämme koko vektorin <code>parse_config</code>-funktiolle. <code>parse_config</code>-funktio sisältää sitten logiikan, joka määrittää, mikä argumentti menee mihinkin muuttujaan, ja palauttaa arvot takaisin <code>main</code>-funktiolle. Luomme edelleen <code>query</code>- ja <code>file_path</code>-muuttujat <code>main</code>-funktiossa, mutta <code>main</code> ei enää vastaa siitä, miten komentoriviargumentit ja muuttujat vastaavat toisiaan.</p>
-<p>Tämä refaktorointi saattaa tuntua liialliselta pienelle ohjelmallemme, mutta refaktoroimme pienin, inkrementaalisin askelin. Tämän muutoksen jälkeen aja ohjelma uudelleen varmistaaksesi, että argumenttien jäsentäminen toimii edelleen. On hyvä tarkistaa edistymisesi usein, jotta ongelmien syy on helpompi tunnistaa, kun ne ilmenevät.</p>
+<p>Keräämme edelleen komentoriviargumentit vektoriin, mutta sen sijaan, että
+määrittäisimme indeksin 1 argumenttiarvon muuttujalle <code>query</code> ja indeksin 2
+argumenttiarvon muuttujalle <code>file_path</code> <code>main</code>-funktiossa, välitämme koko
+vektorin <code>parse_config</code>-funktiolle. <code>parse_config</code>-funktio sisältää logiikan,
+joka määrittää, mikä argumentti menee mihinkin muuttujaan, ja palauttaa arvot
+takaisin <code>main</code>-funktiolle. Luomme edelleen <code>query</code>- ja <code>file_path</code>-muuttujat
+<code>main</code>-funktiossa, mutta <code>main</code>-funktiolla ei ole enää vastuuta määrittää,
+miten komentoriviargumentit ja muuttujat vastaavat toisiaan.</p>
+<p>Tämä refaktorointi saattaa vaikuttaa liialliselta pienelle ohjelmallemme, mutta
+refaktoroimme pienin, inkrementaalisin askelin. Tämän muutoksen jälkeen aja
+ohjelma uudelleen varmistaaksesi, että argumenttien jäsentäminen toimii edelleen.
+On hyvä tarkistaa edistyminen usein auttaaksesi tunnistamaan ongelmien syyn,
+kun ne ilmenevät.</p>
 <h4 id="konfiguraatioarvojen-ryhmittely"><a class="header" href="#konfiguraatioarvojen-ryhmittely">Konfiguraatioarvojen ryhmittely</a></h4>
-<p>Voimme tehdä vielä yhden pienen parannuksen <code>parse_config</code>-funktioon. Tällä hetkellä palautamme monikon, mutta hajotamme sen heti uudelleen erillisiin osiin. Tämä on merkki siitä, että meillä ei ehkä ole vielä oikeaa abstraktiota.</p>
-<p>Toinen merkki siitä, että parannettavaa on, on <code>parse_config</code>-nimen <code>config</code>-osa, joka viittaa siihen, että palauttamamme kaksi arvoa liittyvät toisiinsa ja ovat molemmat osa yhtä konfiguraatioarvoa. Emme tällä hetkellä välitä tätä merkitystä datan rakenteessa muuten kuin ryhmittelemällä kaksi arvoa monikkoon; sijoitamme sen sijaan kaksi arvoa yhteen struct-rakenteeseen ja annamme jokaiselle struct-kentälle merkityksellisen nimen. Näin tulevien tämän koodin ylläpitäjien on helpompi ymmärtää, miten eri arvot liittyvät toisiinsa ja mikä niiden tarkoitus on.</p>
-<p>Listausta 12-6 näyttää parannukset <code>parse_config</code>-funktioon.</p>
-<figure class="listing">
+<p>Voimme tehdä vielä yhden pienen askeleen parantaaksemme <code>parse_config</code>-funktiota
+edelleen. Tällä hetkellä palautamme monikon, mutta sitten hajotamme sen heti
+uudelleen yksittäisiin osiin. Tämä on merkki siitä, että meillä ei ehkä ole
+vielä oikeaa abstraktiota.</p>
+<p>Toinen indikaattori, joka osoittaa parannettavaa tilaa, on <code>parse_config</code>-funktion
+<code>config</code>-osa, joka viittaa siihen, että kaksi palauttamaamme arvoa liittyvät
+toisiinsa ja ovat molemmat osa yhtä konfiguraatioarvoa. Emme tällä hetkellä
+välittäne tätä merkitystä datan rakenteessa muuten kuin ryhmittelemällä kaksi
+arvoa monikkoon; sijoitamme sen sijaan kaksi arvoa yhteen structiin ja annamme
+kullekin structin kentälle merkityksellisen nimen. Näin tuleville tämän koodin
+ylläpitäjille on helpompi ymmärtää, miten eri arvot liittyvät toisiinsa ja mikä
+niiden tarkoitus on.</p>
+<p>Listaus 12-6 näyttää parannukset <code>parse_config</code>-funktioon.</p>
+<figure class="listing" id="listing-12-6">
 <span class="file-name">Filename: src/main.rs</span>
 <pre><code class="language-rust should_panic noplayground">{{#rustdoc_include ../listings/ch12-an-io-project/listing-12-06/src/main.rs:here}}</code></pre>
-<figcaption>Listing 12-6: <code>parse_config</code>-funktion refaktorointi palauttamaan <code>Config</code>-structin instanssi</figcaption>
+<figcaption><a href="#listing-12-6">Listing 12-6</a>: <code>parse_config</code>-funktion refaktorointi palauttamaan <code>Config</code>-structin instanssi</figcaption>
 </figure>
-<p>Olemme lisänneet <code>Config</code>-nimisen struct-rakenteen, jolla on kentät <code>query</code> ja <code>file_path</code>. <code>parse_config</code>-funktion signatuuri ilmaisee nyt, että se palauttaa <code>Config</code>-arvon. <code>parse_config</code>-funktion rungossa, jossa aiemmin palautimme merkkijonoviipaleita, jotka viittasivat <code>String</code>-arvoihin <code>args</code>-vektorissa, määrittelemme nyt <code>Config</code>-rakenteen sisältämään omistettuja <code>String</code>-arvoja. <code>args</code>-muuttuja <code>main</code>-funktiossa omistaa argumenttiarvot ja antaa <code>parse_config</code>-funktion vain lainata niitä, mikä tarkoittaa, että rikkoisimme Rustin lainaussääntöjä, jos <code>Config</code> yrittäisi ottaa omistajuuden <code>args</code>-vektorin arvoista.</p>
-<p>On useita tapoja hallita <code>String</code>-dataa; helpoin, vaikkakin hieman tehottomampi tapa on kutsua <code>clone</code>-metodia arvoilla. Tämä tekee täydellisen kopion datasta <code>Config</code>-instanssin omistettavaksi, mikä vie enemmän aikaa ja muistia kuin viitteen tallentaminen merkkijonodataan. Datan kloonaaminen tekee koodistamme kuitenkin hyvin suoraviivaisen, koska meidän ei tarvitse hallita viitteiden elinaikoja; tässä tilanteessa hieman suorituskyvyn uhraaminen yksinkertaisuuden vuoksi on kannattava kompromissi.</p>
+<p>Olemme lisänneet <code>Config</code>-nimisen structin, jolla on kentät nimeltä <code>query</code> ja
+<code>file_path</code>. <code>parse_config</code>-funktion allekirjoitus ilmaisee nyt, että se palauttaa
+<code>Config</code>-arvon. <code>parse_config</code>-funktion rungossa, jossa aiemmin palautimme
+merkkijonoviipaleita, jotka viittaavat <code>String</code>-arvoihin <code>args</code>-vektorissa,
+määrittelemme nyt <code>Config</code>-structin sisältämään omistettuja <code>String</code>-arvoja.
+<code>args</code>-muuttuja <code>main</code>-funktiossa omistaa argumenttiarvot ja antaa vain
+<code>parse_config</code>-funktion lainata niitä, mikä tarkoittaa, että rikkoisimme Rustin
+lainaussääntöjä, jos <code>Config</code> yrittäisi ottaa <code>args</code>-vektorin arvojen omistajuuden.</p>
+<p>On useita tapoja hallita <code>String</code>-dataa; helpoin, vaikkakin hieman tehoton tapa
+on kutsua <code>clone</code>-metodia arvoille. Tämä tekee täyden kopion datasta <code>Config</code>-
+instanssin omistettavaksi, mikä vie enemmän aikaa ja muistia kuin merkkijonodatan
+viittauksen säilyttäminen. Datan kloonaaminen tekee kuitenkin koodistamme hyvin
+suoraviivaisen, koska emme tarvitse hallita viittausten eliniöitä; tässä tilanteessa
+pienen suorituskyvyn uhraaminen yksinkertaisuuden saavuttamiseksi on kannattava
+kompromissi.</p>
 <section class="note" aria-role="note">
-<h3 id="clone-käytön-kompromissit"><a class="header" href="#clone-käytön-kompromissit"><code>clone</code>-käytön kompromissit</a></h3>
-<p>Monilla rustaceaneilla on taipumus välttää <code>clone</code>-käyttöä omistajuusongelmien korjaamiseen sen ajonaikaisen kustannuksen vuoksi. <a href="ch13-00-functional-features.html">Luvussa 13</a><!-- ignore --> opit tehokkaampia tapoja tämänkaltaisissa tilanteissa. Mutta toistaiseksi on ihan ok kopioida muutama merkkijono jatkaaksesi edistymistä, koska teet nämä kopiot vain kerran ja tiedostopolku- ja hakumerkkijonosi ovat hyvin pieniä. On parempi olla toimiva ohjelma, joka on hieman tehoton, kuin yrittää hyperoptimoida koodia ensimmäisellä yrityksellä. Kun saat enemmän kokemusta Rustista, on helpompaa aloittaa tehokkaimmalla ratkaisulla, mutta toistaiseksi on täysin hyväksyttävää kutsua <code>clone</code>-metodia.</p>
+<h3 id="clone-metodin-kompromissit"><a class="header" href="#clone-metodin-kompromissit"><code>clone</code>-metodin kompromissit</a></h3>
+<p>Monilla Rustaceaneilla on taipumus välttää <code>clone</code>-metodin käyttöä omistajuusongelmien
+korjaamiseen sen ajonaikaisen kustannuksen vuoksi. Luvussa 13 opit käyttämään
+tehokkaampia menetelmiä tämän tyyppisissä tilanteissa. Mutta toistaiseksi on
+ok kopioida muutama merkkijono jatkaaksesi edistymistä, koska teet nämä kopiot
+vain kerran ja tiedostopolku- ja hakumerkkijonosi ovat hyvin pieniä. On
+parempi olla hieman tehoton mutta toimiva ohjelma kuin yrittää hyperoptimoida
+koodia ensimmäisellä läpimenolla. Kun saat enemmän kokemusta Rustista, on
+helpompaa aloittaa tehokkaimmalla ratkaisulla, mutta toistaiseksi on täysin
+hyväksyttävää kutsua <code>clone</code>.</p>
 </section>
-<p>Olemme päivittäneet <code>main</code>-funktion niin, että se sijoittaa <code>parse_config</code>-funktion palauttaman <code>Config</code>-instanssin muuttujaan nimeltä <code>config</code>, ja olemme päivittäneet koodin, joka aiemmin käytti erillisiä <code>query</code>- ja <code>file_path</code>-muuttujia, käyttämään nyt <code>Config</code>-structin kenttiä.</p>
-<p>Nyt koodimme välittää selkeämmin, että <code>query</code> ja <code>file_path</code> liittyvät toisiinsa ja että niiden tarkoitus on määrittää, miten ohjelma toimii. Kaikki koodi, joka käyttää näitä arvoja, tietää etsiä ne <code>config</code>-instanssista kentistä, jotka on nimetty niiden tarkoituksen mukaan.</p>
-<h4 id="config-rakenteen-konstruktorin-luominen"><a class="header" href="#config-rakenteen-konstruktorin-luominen"><code>Config</code>-rakenteen konstruktorin luominen</a></h4>
-<p>Tähän asti olemme erottaneet komentoriviargumenttien jäsentämiseen liittyvän logiikan <code>main</code>-funktiosta ja sijoittaneet sen <code>parse_config</code>-funktioon. Tämä auttoi meitä näkemään, että <code>query</code>- ja <code>file_path</code>-arvot liittyivät toisiinsa, ja tämän suhteen pitäisi näkyä koodissamme. Lisäsimme sitten <code>Config</code>-struct-rakenteen nimeämään <code>query</code>- ja <code>file_path</code>-arvojen yhteisen tarkoituksen ja voidaksemme palauttaa arvojen nimet struct-kenttien niminä <code>parse_config</code>-funktiosta.</p>
-<p>Nyt kun <code>parse_config</code>-funktion tarkoitus on luoda <code>Config</code>-instanssi, voimme muuttaa <code>parse_config</code>-funktion tavallisesta funktiosta <code>new</code>-nimiseksi funktioksi, joka liittyy <code>Config</code>-struct-rakenteeseen. Tämä muutos tekee koodista idiomaattisemman. Voimme luoda tyyppien instansseja standardikirjastossa, kuten <code>String</code>, kutsumalla <code>String::new</code>-metodia. Vastaavasti muuttamalla <code>parse_config</code>-funktion <code>new</code>-funktioksi, joka liittyy <code>Config</code>-rakenteeseen, voimme luoda <code>Config</code>-instansseja kutsumalla <code>Config::new</code>-metodia. Listausta 12-7 näyttää tarvittavat muutokset.</p>
-<figure class="listing">
+<p>Olemme päivittäneet <code>main</code>-funktion niin, että se asettaa <code>parse_config</code>-funktion
+palauttaman <code>Config</code>-instanssin muuttujaan nimeltä <code>config</code>, ja olemme päivittäneet
+koodin, joka aiemmin käytti erillisiä <code>query</code>- ja <code>file_path</code>-muuttujia, käyttämään
+sen sijaan <code>Config</code>-structin kenttiä.</p>
+<p>Nyt koodimme välittää selkeämmin, että <code>query</code> ja <code>file_path</code> liittyvät toisiinsa
+ja että niiden tarkoitus on määrittää, miten ohjelma toimii. Kaikki koodi, joka
+käyttää näitä arvoja, tietää etsiä ne <code>config</code>-instanssista kentistä, jotka on
+nimetty niiden tarkoituksen mukaan.</p>
+<h4 id="config-structin-konstruktorin-luominen"><a class="header" href="#config-structin-konstruktorin-luominen"><code>Config</code>-structin konstruktorin luominen</a></h4>
+<p>Tähän asti olemme erottaneet komentoriviargumenttien jäsentämiseen liittyvän
+logiikan <code>main</code>-funktiosta ja sijoittaneet sen <code>parse_config</code>-funktioon. Tämä
+auttoi meitä näkemään, että <code>query</code>- ja <code>file_path</code>-arvot liittyivät toisiinsa,
+ja tämän suhteen tulisi näkyä koodissamme. Lisäsimme sitten <code>Config</code>-structin
+nimeämään <code>query</code>- ja <code>file_path</code>-arvojen liittyvän tarkoituksen ja pystyäksemme
+palauttamaan arvojen nimet structin kenttien niminä <code>parse_config</code>-funktiosta.</p>
+<p>Nyt kun <code>parse_config</code>-funktion tarkoitus on luoda <code>Config</code>-instanssi, voimme
+muuttaa <code>parse_config</code>-funktion tavallisesta funktiosta <code>new</code>-nimiseksi funktioksi,
+joka liittyy <code>Config</code>-structiin. Tämä muutos tekee koodista idiomaattisempaa.
+Voimme luoda tyyppien instansseja standardikirjastossa, kuten <code>String</code>, kutsumalla
+<code>String::new</code>. Vastaavasti muuttamalla <code>parse_config</code>-funktion <code>new</code>-funktioksi,
+joka liittyy <code>Config</code>-structiin, voimme luoda <code>Config</code>-instansseja kutsumalla
+<code>Config::new</code>. Listaus 12-7 näyttää tarvittavat muutokset.</p>
+<figure class="listing" id="listing-12-7">
 <span class="file-name">Filename: src/main.rs</span>
 <pre><code class="language-rust should_panic noplayground">{{#rustdoc_include ../listings/ch12-an-io-project/listing-12-07/src/main.rs:here}}</code></pre>
-<figcaption>Listing 12-7: <code>parse_config</code>-funktion muuttaminen <code>Config::new</code>-metodiksi</figcaption>
+<figcaption><a href="#listing-12-7">Listing 12-7</a>: <code>parse_config</code>-funktion muuttaminen <code>Config::new</code>-funktioksi</figcaption>
 </figure>
-<p>Olemme päivittäneet <code>main</code>-funktion kohdassa, jossa kutsuimme <code>parse_config</code>-funktiota, kutsumaan sen sijaan <code>Config::new</code>-metodia. Olemme muuttaneet <code>parse_config</code>-funktion nimen <code>new</code>-nimeksi ja siirtäneet sen <code>impl</code>-lohkoon, joka liittää <code>new</code>-funktion <code>Config</code>-rakenteeseen. Kokeile kääntää tämä koodi uudelleen varmistaaksesi, että se toimii.</p>
+<p>Olemme päivittäneet <code>main</code>-funktion niin, että se kutsuu <code>parse_config</code>-funktion
+sijaan <code>Config::new</code>-funktiota. Olemme muuttaneet <code>parse_config</code>-funktion nimen
+<code>new</code>:ksi ja siirtäneet sen <code>impl</code>-lohkoon, joka liittää <code>new</code>-funktion <code>Config</code>-
+structiin. Kokeile kääntää tämä koodi uudelleen varmistaaksesi, että se toimii.</p>
 <h3 id="virheenkäsittelyn-korjaaminen"><a class="header" href="#virheenkäsittelyn-korjaaminen">Virheenkäsittelyn korjaaminen</a></h3>
-<p>Nyt työskentelemme virheenkäsittelyn korjaamiseksi. Muista, että <code>args</code>-vektorin arvojen käyttäminen indeksissä 1 tai 2 aiheuttaa ohjelman paniikin, jos vektorissa on alle kolme kohdetta. Kokeile ajaa ohjelma ilman argumentteja; se näyttää suunnilleen tältä:</p>
+<p>Työstetään nyt virheenkäsittelyn korjaamista. Muista, että yrittäminen käyttää
+<code>args</code>-vektorin arvoja indeksissä 1 tai 2 aiheuttaa ohjelman paniikin, jos
+vektori sisältää alle kolme kohdetta. Kokeile ajaa ohjelma ilman argumentteja;
+se näyttää tältä:</p>
 <pre><code class="language-console">{{#include ../listings/ch12-an-io-project/listing-12-07/output.txt}}
 </code></pre>
-<p>Rivi <code>index out of bounds: the len is 1 but the index is 1</code> on ohjelmoijille tarkoitettu virheilmoitus. Se ei auta loppukäyttäjiämme ymmärtämään, mitä heidän pitäisi tehdä sen sijaan. Korjataan se nyt.</p>
-<h4 id="virheilmoituksen-parantaminen"><a class="header" href="#virheilmoituksen-parantaminen">Virheilmoituksen parantaminen</a></h4>
-<p>Listauksessa 12-8 lisäämme <code>new</code>-funktioon tarkistuksen, joka varmistaa, että viipale on tarpeeksi pitkä ennen indeksien 1 ja 2 käyttöä. Jos viipale ei ole tarpeeksi pitkä, ohjelma panikoi ja näyttää paremman virheilmoituksen.</p>
-<figure class="listing">
+<p>Rivi <code>index out of bounds: the len is 1 but the index is 1</code> on ohjelmoijille
+tarkoitettu virheilmoitus. Se ei auta loppukäyttäjiämme ymmärtämään, mitä heidän
+pitäisi tehdä sen sijaan. Korjataan se nyt.</p>
+<h4 id="virheviestin-parantaminen"><a class="header" href="#virheviestin-parantaminen">Virheviestin parantaminen</a></h4>
+<p>Listauksessa 12-8 lisäämme tarkistuksen <code>new</code>-funktioon, joka varmistaa, että
+viipale on tarpeeksi pitkä ennen kuin käytämme indeksejä 1 ja 2. Jos viipale ei
+ole tarpeeksi pitkä, ohjelma paniikkiutuu ja näyttää paremman virheviestin.</p>
+<figure class="listing" id="listing-12-8">
 <span class="file-name">Filename: src/main.rs</span>
 <pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch12-an-io-project/listing-12-08/src/main.rs:here}}</code></pre>
-<figcaption>Listing 12-8: Tarkistuksen lisääminen argumenttien määrälle</figcaption>
+<figcaption><a href="#listing-12-8">Listing 12-8</a>: Tarkistuksen lisääminen argumenttien määrälle</figcaption>
 </figure>
-<p>Tämä koodi on samankaltainen kuin <a href="ch09-03-to-panic-or-not-to-panic.html#creating-custom-types-for-validation">listauksessa 9-13 kirjoittamamme <code>Guess::new</code>-funktio</a><!-- ignore -->, jossa kutsuimme <code>panic!</code>-makroa, kun <code>value</code>-argumentti oli kelvollisten arvojen alueen ulkopuolella. Sen sijaan, että tarkistaisimme arvoalueen täällä, tarkistamme, että <code>args</code>-vektorin pituus on vähintään <code>3</code>, ja funktion loppuosa voi toimia olettaen, että tämä ehto on täyttynyt. Jos <code>args</code>-vektorissa on alle kolme kohdetta, tämä ehto on tosi ja kutsumme <code>panic!</code>-makroa lopettaaksemme ohjelman välittömästi.</p>
-<p>Näillä muutamilla lisärivillä <code>new</code>-funktiossa ajetaan ohjelma uudelleen ilman argumentteja ja katsotaan, miltä virhe näyttää nyt:</p>
+<p>Tämä koodi on samanlainen kuin <code>Guess::new</code>-funktio, jonka kirjoitimme listauksessa
+9-13, jossa kutsuimme <code>panic!</code>-makroa, kun <code>value</code>-argumentti oli kelvollisten
+arvojen alueen ulkopuolella. Sen sijaan, että tarkistaisimme arvojen alueen
+tässä, tarkistamme, että <code>args</code>-vektorin pituus on vähintään <code>3</code>, ja loput
+funktiosta voivat toimia olettaen, että tämä ehto on täyttynyt. Jos <code>args</code>-
+vektorissa on alle kolme kohdetta, tämä ehto on tosi, ja kutsumme <code>panic!</code>-
+makroa lopettaaksemme ohjelman välittömästi.</p>
+<p>Näillä muutamalla lisärivillä <code>new</code>-funktiossa ajetaan ohjelma uudelleen ilman
+argumentteja nähdäksemme, miltä virhe näyttää nyt:</p>
 <pre><code class="language-console">{{#include ../listings/ch12-an-io-project/listing-12-08/output.txt}}
 </code></pre>
-<p>Tämä tuloste on parempi: meillä on nyt järkevä virheilmoitus. Meillä on kuitenkin myös ylimääräistä tietoa, jota emme halua antaa käyttäjillemme. Ehkä listauksessa 9-13 käyttämämme tekniikka ei ole paras tähän: <code>panic!</code>-kutsu sopii paremmin ohjelmointiongelmaan kuin käyttöongelmaan, <a href="ch09-03-to-panic-or-not-to-panic.html#guidelines-for-error-handling">kuten luvussa 9 keskusteltiin</a><!-- ignore -->. Sen sijaan käytämme toista luvussa 9 oppimaasi tekniikkaa — <a href="ch09-02-recoverable-errors-with-result.html">palautamme <code>Result</code>-arvon</a><!-- ignore -->, joka ilmaisee joko onnistumisen tai virheen.</p>
+<p>Tämä tuloste on parempi: Meillä on nyt järkevä virheilmoitus. Meillä on kuitenkin
+myös ylimääräistä tietoa, jota emme halua antaa käyttäjillemme. Ehkä listauksessa
+9-13 käyttämämme tekniikka ei ole paras käytettäväksi tässä: <code>panic!</code>-kutsu on
+sopivampi ohjelmointiongelmaan kuin käyttöongelmaan, <a href="ch09-03-to-panic-or-not-to-panic.html#guidelines-for-error-handling">kuten käsiteltiin luvussa
+9</a><!-- ignore -->. Sen sijaan käytämme toista luvussa 9
+oppimaamme tekniikkaa — <a href="ch09-02-recoverable-errors-with-result.html">palautamme <code>Result</code>-arvon</a><!-- ignore -->,
+joka ilmaisee joko onnistumisen tai virheen.</p>
 <!-- Old headings. Do not remove or links may break. -->
 <p><a id="returning-a-result-from-new-instead-of-calling-panic"></a></p>
 <h4 id="result-arvon-palauttaminen-panic-kutsun-sijaan"><a class="header" href="#result-arvon-palauttaminen-panic-kutsun-sijaan"><code>Result</code>-arvon palauttaminen <code>panic!</code>-kutsun sijaan</a></h4>
-<p>Voimme sen sijaan palauttaa <code>Result</code>-arvon, joka sisältää <code>Config</code>-instanssin onnistumistapauksessa ja kuvaa ongelman virhetapauksessa. Muutamme myös funktion nimen <code>new</code>-nimestä <code>build</code>-nimeksi, koska monet ohjelmoijat odottavat <code>new</code>-funktioiden eivät koskaan epäonnistuvan. Kun <code>Config::build</code> kommunikoi <code>main</code>-funktion kanssa, voimme käyttää <code>Result</code>-tyyppiä ilmaisemaan, että ongelma ilmeni. Sitten voimme muuttaa <code>main</code>-funktion muuntamaan <code>Err</code>-variantin käytännöllisemmäksi virheeksi käyttäjillemme ilman <code>thread 'main'</code>- ja <code>RUST_BACKTRACE</code>-tekstiä, jonka <code>panic!</code>-kutsu aiheuttaa.</p>
-<p>Listausta 12-9 näyttää muutokset, jotka meidän täytyy tehdä funktion, jota kutsumme nyt <code>Config::build</code>-metodiksi, paluuarvoon ja funktion runkoon, jotta se palauttaa <code>Result</code>-arvon. Huomaa, että tämä ei käänny ennen kuin päivitämme myös <code>main</code>-funktion, minkä teemme seuraavassa listauksessa.</p>
-<figure class="listing">
+<p>Voimme sen sijaan palauttaa <code>Result</code>-arvon, joka sisältää <code>Config</code>-instanssin
+onnistumistapauksessa ja kuvaa ongelman virhetapauksessa. Muutamme myös funktion
+nimen <code>new</code>:stä <code>build</code>:ksi, koska monet ohjelmoijat odottavat <code>new</code>-funktioiden
+eivän koskaan epäonnistuvan. Kun <code>Config::build</code> kommunikoi <code>main</code>-funktion
+kanssa, voimme käyttää <code>Result</code>-tyyppiä ilmaisemaan, että ongelma oli. Sitten
+voimme muuttaa <code>main</code>-funktion muuntamaan <code>Err</code>-variantin käytännöllisemmäksi
+virheeksi käyttäjillemme ilman ympäröivää tekstiä <code>thread 'main'</code> ja
+<code>RUST_BACKTRACE</code> <code>panic!</code>-kutsun aiheuttamasta.</p>
+<p>Listaus 12-9 näyttää muutokset, jotka meidän täytyy tehdä funktion palautusarvoon,
+jota kutsumme nyt <code>Config::build</code>, ja funktion runkoon, joka tarvitaan <code>Result</code>-
+arvon palauttamiseen. Huomaa, että tämä ei käänny ennen kuin päivitämme myös
+<code>main</code>-funktion, minkä teemme seuraavassa listauksessa.</p>
+<figure class="listing" id="listing-12-9">
 <span class="file-name">Filename: src/main.rs</span>
 <pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch12-an-io-project/listing-12-09/src/main.rs:here}}</code></pre>
-<figcaption>Listing 12-9: <code>Result</code>-arvon palauttaminen <code>Config::build</code>-metodista</figcaption>
+<figcaption><a href="#listing-12-9">Listing 12-9</a>: <code>Result</code>-arvon palauttaminen <code>Config::build</code>-funktiosta</figcaption>
 </figure>
-<p><code>build</code>-funktiomme palauttaa <code>Result</code>-arvon, jossa on <code>Config</code>-instanssi onnistumistapauksessa ja merkkijonoliteraali virhetapauksessa. Virhearvomme ovat aina <code>'static</code>-elinaikaisia merkkijonoliteraaleja.</p>
-<p>Olemme tehneet kaksi muutosta funktion rungossa: sen sijaan, että kutsuisimme <code>panic!</code>-makroa, kun käyttäjä ei anna tarpeeksi argumentteja, palautamme nyt <code>Err</code>-arvon, ja olemme käärineet <code>Config</code>-paluuarvon <code>Ok</code>-arvoon. Nämä muutokset saavat funktion vastaamaan uutta tyyppisignatuuriaan.</p>
-<p><code>Err</code>-arvon palauttaminen <code>Config::build</code>-metodista antaa <code>main</code>-funktion käsitellä <code>build</code>-funktion palauttaman <code>Result</code>-arvon ja lopettaa prosessin siistimmin virhetapauksessa.</p>
+<p><code>build</code>-funktiomme palauttaa <code>Result</code>-arvon, jossa on <code>Config</code>-instanssi
+onnistumistapauksessa ja merkkijonoliteraali virhetapauksessa. Virhearvomme
+ovat aina merkkijonoliteraaleja, joilla on <code>'static</code>-elinikä.</p>
+<p>Olemme tehneet kaksi muutosta funktion rungossa: Sen sijaan, että kutsuisimme
+<code>panic!</code>-makroa, kun käyttäjä ei anna tarpeeksi argumentteja, palautamme nyt
+<code>Err</code>-arvon, ja olemme käärittäneet <code>Config</code>-palautusarvon <code>Ok</code>-arvoon. Nämä
+muutokset saavat funktion vastaamaan uutta tyyppiallekirjoitustaan.</p>
+<p><code>Err</code>-arvon palauttaminen <code>Config::build</code>-funktiosta antaa <code>main</code>-funktion
+käsitellä <code>build</code>-funktion palauttaman <code>Result</code>-arvon ja lopettaa prosessin
+siistimmin virhetapauksessa.</p>
 <!-- Old headings. Do not remove or links may break. -->
 <p><a id="calling-confignew-and-handling-errors"></a></p>
-<h4 id="configbuild-metodin-kutsuminen-ja-virheiden-käsittely"><a class="header" href="#configbuild-metodin-kutsuminen-ja-virheiden-käsittely"><code>Config::build</code>-metodin kutsuminen ja virheiden käsittely</a></h4>
-<p>Käsitelläksemme virhetapauksen ja tulostaaksemme käyttäjäystävällisen viestin, meidän täytyy päivittää <code>main</code>-funktio käsittelemään <code>Config::build</code>-metodin palauttama <code>Result</code>-arvo, kuten listauksessa 12-10. Otamme myös vastuun komentorivityökalun lopettamisesta nollasta poikkeavalla virhekoodilla pois <code>panic!</code>-kutsulta ja toteutamme sen itse. Nollasta poikkeava poistumistila on käytäntö, jolla ilmoitetaan prosessille, joka kutsui ohjelmaamme, että ohjelma lopetti virhetilassa.</p>
-<figure class="listing">
+<h4 id="configbuild-funktion-kutsuminen-ja-virheiden-käsittely"><a class="header" href="#configbuild-funktion-kutsuminen-ja-virheiden-käsittely"><code>Config::build</code>-funktion kutsuminen ja virheiden käsittely</a></h4>
+<p>Käsitelläksemme virhetapauksen ja tulostaaksemme käyttäjäystävällisen viestin,
+meidän täytyy päivittää <code>main</code> käsittelemään <code>Config::build</code>-funktion palauttama
+<code>Result</code>, kuten listauksessa 12-10. Otamme myös vastuun komentorivityökalun
+lopettamisesta nollasta poikkeavalla virhekoodilla pois <code>panic!</code>-makrosta ja
+toteutamme sen käsin. Nollasta poikkeava poistumistila on käytäntö, jolla
+signaaloidaan prosessille, joka kutsui ohjelmaamme, että ohjelma lopetti
+virhetilassa.</p>
+<figure class="listing" id="listing-12-10">
 <span class="file-name">Filename: src/main.rs</span>
 <pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch12-an-io-project/listing-12-10/src/main.rs:here}}</code></pre>
-<figcaption>Listing 12-10: Poistuminen virhekoodilla, jos <code>Config</code>-rakenteen luominen epäonnistuu</figcaption>
+<figcaption><a href="#listing-12-10">Listing 12-10</a>: Poistuminen virhekoodilla, jos <code>Config</code>-instanssin rakentaminen epäonnistuu</figcaption>
 </figure>
-<p>Tässä listauksessa olemme käyttäneet metodia, jota emme ole käsitelleet yksityiskohtaisesti: <code>unwrap_or_else</code>, joka on määritelty <code>Result&lt;T, E&gt;</code>-tyypille standardikirjastossa. <code>unwrap_or_else</code>-käyttö antaa meille mahdollisuuden määritellä mukautetun, ei-<code>panic!</code>-pohjaisen virheenkäsittelyn. Jos <code>Result</code> on <code>Ok</code>-arvo, tämän metodin käyttäytyminen on samankaltaista kuin <code>unwrap</code>: se palauttaa <code>Ok</code>-arvon sisältämän sisäisen arvon. Jos arvo on kuitenkin <code>Err</code>-arvo, tämä metodi kutsuu <em>sulkeen</em> koodia, joka on anonyymi funktio, jonka määrittelemme ja välitämme argumenttina <code>unwrap_or_else</code>-metodille. Käsittelemme sulkeita tarkemmin <a href="ch13-00-functional-features.html">luvussa 13</a><!-- ignore -->. Toistaiseksi sinun tarvitsee vain tietää, että <code>unwrap_or_else</code> välittää <code>Err</code>-arvon sisäisen arvon, joka tässä tapauksessa on listauksessa 12-9 lisäämämme staattinen merkkijono <code>"not enough arguments"</code>, sulkeellemme argumentissa <code>err</code>, joka esiintyy pystyviivojen välissä. Sulkeen koodi voi sitten käyttää <code>err</code>-arvoa suorittaessaan.</p>
-<p>Olemme lisänneet uuden <code>use</code>-rivin tuomaan <code>process</code>-moduulin standardikirjastosta näkyvyysalueelle. Sulkeessa ajettava koodi virhetapauksessa on vain kaksi riviä: tulostamme <code>err</code>-arvon ja kutsumme sitten <code>process::exit</code>-funktiota. <code>process::exit</code>-funktio lopettaa ohjelman välittömästi ja palauttaa argumenttina annetun poistumistilakoodin. Tämä on samankaltaista kuin listauksessa 12-8 käyttämämme <code>panic!</code>-pohjainen käsittely, mutta emme enää saa kaikkea ylimääräistä tulostetta. Kokeillaan:</p>
+<p>Tässä listauksessa olemme käyttäneet metodia, jota emme ole käsitelleet
+yksityiskohtaisesti: <code>unwrap_or_else</code>, joka on määritelty <code>Result&lt;T, E&gt;</code>-tyypille
+standardikirjastossa. <code>unwrap_or_else</code>-metodin käyttö antaa meille määritellä
+mukautetun, ei-<code>panic!</code>-virheenkäsittelyn. Jos <code>Result</code> on <code>Ok</code>-arvo, tämän
+metodin käyttäytyminen on samanlainen kuin <code>unwrap</code>: Se palauttaa <code>Ok</code>-arvon
+sisältämän sisäisen arvon. Jos arvo on kuitenkin <code>Err</code>-arvo, tämä metodi kutsuu
+sulkeuman koodia, joka on anonyymi funktio, jonka määrittelemme ja välitämme
+argumenttina <code>unwrap_or_else</code>-metodille. Käsittelemme sulkeumia yksityiskohtaisemmin
+luvussa 13. Toistaiseksi sinun tarvitsee vain tietää, että <code>unwrap_or_else</code> välittää
+<code>Err</code>-arvon sisäisen arvon, joka tässä tapauksessa on staattinen merkkijono
+<code>"not enough arguments"</code>, jonka lisäsimme listauksessa 12-9, sulkeumaamme
+argumentissa <code>err</code>, joka esiintyy pystyviivojen välissä. Sulkeuman koodi voi
+sitten käyttää <code>err</code>-arvoa suorittaessaan.</p>
+<p>Olemme lisänneet uuden <code>use</code>-rivin tuodaksemme <code>process</code>-moduulin standardikirjastosta
+näkyviin. Sulkeuman koodi, joka suoritetaan virhetapauksessa, on vain kaksi
+riviä: Tulostamme <code>err</code>-arvon ja kutsumme sitten <code>process::exit</code>. <code>process::exit</code>-
+funktio pysäyttää ohjelman välittömästi ja palauttaa numeron, joka annettiin
+poistumistilakoodina. Tämä on samanlaista kuin listauksessa 12-8 käyttämämme
+<code>panic!</code>-pohjainen käsittely, mutta emme enää saa kaikkea ylimääräistä tulostetta.
+Kokeillaan:</p>
 <pre><code class="language-console">{{#include ../listings/ch12-an-io-project/listing-12-10/output.txt}}
 </code></pre>
 <p>Hienoa! Tämä tuloste on paljon ystävällisempi käyttäjillemme.</p>
+<!-- Old headings. Do not remove or links may break. -->
+<p><a id="extracting-logic-from-the-main-function"></a></p>
 <h3 id="logiikan-erottaminen-main-funktiosta"><a class="header" href="#logiikan-erottaminen-main-funktiosta">Logiikan erottaminen <code>main</code>-funktiosta</a></h3>
-<p>Nyt kun olemme saaneet konfiguraation jäsentämisen refaktoroinnin valmiiksi, käännymme ohjelman logiikan pariin. Kuten totesimme <a href="#separation-of-concerns-for-binary-projects">”Vastuujen erottelu binääriprojekteissa”</a><!-- ignore --> -osiossa, erotamme <code>run</code>-nimisen funktion, joka sisältää kaiken logiikan, joka on tällä hetkellä <code>main</code>-funktiossa mutta ei liity konfiguraation asettamiseen tai virheiden käsittelyyn. Kun olemme valmiit, <code>main</code> on ytimekäs ja helppo tarkistaa lukemalla, ja voimme kirjoittaa testejä kaikelle muulle logiikalle.</p>
-<p>Listausta 12-11 näyttää erotetun <code>run</code>-funktion. Toistaiseksi teemme vain pienen, inkrementaalisen parannuksen erottamalla funktion. Määrittelemme funktion edelleen <em>src/main.rs</em>-tiedostossa.</p>
-<figure class="listing">
+<p>Nyt kun olemme lopettaneet konfiguraation jäsentämisen refaktoroinnin, käännymme
+ohjelman logiikan pariin. Kuten totesimme osiossa <a href="#separation-of-concerns-for-binary-projects">”Huolenaiheiden erottaminen
+binääriprojekteissa”</a><!-- ignore -->,
+erotamme <code>run</code>-nimisen funktion, joka sisältää kaiken logiikan, joka on tällä
+hetkellä <code>main</code>-funktiossa eikä liity konfiguraation asettamiseen tai virheiden
+käsittelyyn. Kun olemme valmiit, <code>main</code>-funktio on tiivis ja helppo varmistaa
+tarkastelemalla, ja voimme kirjoittaa testejä kaikelle muulle logiikalle.</p>
+<p>Listaus 12-11 näyttää pienen, inkrementaalisen parannuksen <code>run</code>-funktion
+erottamisesta.</p>
+<figure class="listing" id="listing-12-11">
 <span class="file-name">Filename: src/main.rs</span>
 <pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch12-an-io-project/listing-12-11/src/main.rs:here}}</code></pre>
-<figcaption>Listing 12-11: <code>run</code>-funktion erottaminen, joka sisältää loput ohjelman logiikasta</figcaption>
+<figcaption><a href="#listing-12-11">Listing 12-11</a>: <code>run</code>-funktion erottaminen, joka sisältää loput ohjelman logiikasta</figcaption>
 </figure>
-<p><code>run</code>-funktio sisältää nyt kaiken jäljellä olevan logiikan <code>main</code>-funktiosta alkaen tiedoston lukemisesta. <code>run</code>-funktio ottaa <code>Config</code>-instanssin argumenttina.</p>
+<p><code>run</code>-funktio sisältää nyt kaiken jäljellä olevan logiikan <code>main</code>-funktiosta
+alkaen tiedoston lukemisesta. <code>run</code>-funktio ottaa <code>Config</code>-instanssin argumenttina.</p>
+<!-- Old headings. Do not remove or links may break. -->
+<p><a id="returning-errors-from-the-run-function"></a></p>
 <h4 id="virheiden-palauttaminen-run-funktiosta"><a class="header" href="#virheiden-palauttaminen-run-funktiosta">Virheiden palauttaminen <code>run</code>-funktiosta</a></h4>
-<p>Kun jäljellä oleva ohjelman logiikka on erotettu <code>run</code>-funktioon, voimme parantaa virheenkäsittelyä, kuten teimme <code>Config::build</code>-metodilla listauksessa 12-9. Sen sijaan, että antaisimme ohjelman panikoida kutsumalla <code>expect</code>-metodia, <code>run</code>-funktio palauttaa <code>Result&lt;T, E&gt;</code>-arvon, kun jokin menee pieleen. Tämä antaa meille mahdollisuuden koota virheenkäsittelylogiikkaa edelleen <code>main</code>-funktioon käyttäjäystävällisellä tavalla. Listausta 12-12 näyttää muutokset, jotka meidän täytyy tehdä <code>run</code>-funktion signatuuriin ja runkoon.</p>
-<figure class="listing">
+<p>Kun jäljellä oleva ohjelman logiikka on erotettu <code>run</code>-funktioon, voimme
+parantaa virheenkäsittelyä, kuten teimme <code>Config::build</code>-funktiossa listauksessa
+12-9. Sen sijaan, että sallisimme ohjelman paniikin kutsumalla <code>expect</code>-metodia,
+<code>run</code>-funktio palauttaa <code>Result&lt;T, E&gt;</code>-arvon, kun jokin menee pieleen. Tämä
+antaa meille mahdollisuuden koota virheenkäsittelylogiikkaa edelleen <code>main</code>-
+funktioon käyttäjäystävällisellä tavalla. Listaus 12-12 näyttää muutokset,
+jotka meidän täytyy tehdä <code>run</code>-funktion allekirjoitukseen ja runkoon.</p>
+<figure class="listing" id="listing-12-12">
 <span class="file-name">Filename: src/main.rs</span>
 <pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch12-an-io-project/listing-12-12/src/main.rs:here}}</code></pre>
-<figcaption>Listing 12-12: <code>run</code>-funktion muuttaminen palauttamaan <code>Result</code>-arvo</figcaption>
+<figcaption><a href="#listing-12-12">Listing 12-12</a>: <code>run</code>-funktion muuttaminen palauttamaan <code>Result</code></figcaption>
 </figure>
-<p>Olemme tehneet kolme merkittävää muutosta. Ensinnäkin olemme muuttaneet <code>run</code>-funktion paluutyypin <code>Result&lt;(), Box&lt;dyn Error&gt;&gt;</code>-tyypiksi. Tämä funktio palautti aiemmin yksikkötyypin <code>()</code>, ja pidämme sen <code>Ok</code>-tapauksen palautusarvona.</p>
-<p>Virhetyypiksi käytimme <em>trait-objektia</em> <code>Box&lt;dyn Error&gt;</code> (ja olemme tuoneet <code>std::error::Error</code>-traitin näkyvyysalueelle <code>use</code>-lauseella tiedoston alussa). Käsittelemme trait-objekteja <a href="ch18-00-oop.html">luvussa 18</a><!-- ignore -->. Toistaiseksi riittää tietää, että <code>Box&lt;dyn Error&gt;</code> tarkoittaa, että funktio palauttaa tyypin, joka toteuttaa <code>Error</code>-traitin, mutta meidän ei tarvitse määrittää, mikä tietty tyyppi palautusarvo on. Tämä antaa meille joustavuutta palauttaa eri tyyppisiä virhearvoja eri virhetapauksissa. <code>dyn</code>-avainsana on lyhenne sanasta <em>dynamic</em>.</p>
-<p>Toiseksi olemme poistaneet <code>expect</code>-kutsun ja käyttäneet sen sijaan <code>?</code>-operaattoria, kuten <a href="ch09-02-recoverable-errors-with-result.html#a-shortcut-for-propagating-errors-the--operator">luvussa 9</a><!-- ignore --> käsiteltiin. Sen sijaan, että <code>panic!</code> virheen sattuessa, <code>?</code> palauttaa virhearvon nykyisestä funktiosta kutsujan käsiteltäväksi.</p>
-<p>Kolmanneksi <code>run</code>-funktio palauttaa nyt <code>Ok</code>-arvon onnistumistapauksessa. Olemme määritelleet <code>run</code>-funktion onnistumistyypiksi <code>()</code> signatuurissa, mikä tarkoittaa, että meidän täytyy kääriä yksikkötyyppiarvo <code>Ok</code>-arvoon. Tämä <code>Ok(())</code>-syntaksi saattaa aluksi näyttää hieman oudolta, mutta <code>()</code>-tyypin käyttö tällä tavalla on idiomaattinen tapa ilmaista, että kutsumme <code>run</code>-funktiota vain sen sivuvaikutuksia varten; se ei palauta arvoa, jota tarvitsemme.</p>
+<p>Olemme tehneet kolme merkittävää muutosta. Ensinnäkin muutimme <code>run</code>-funktion
+palautustyypiksi <code>Result&lt;(), Box&lt;dyn Error&gt;&gt;</code>. Tämä funktio palautti aiemmin
+yksikkötyypin <code>()</code>, ja säilytämme sen <code>Ok</code>-tapauksen palautusarvona.</p>
+<p>Virhetyypiksi käytimme trait-oliota <code>Box&lt;dyn Error&gt;</code> (ja toimme <code>std::error::Error</code>-
+moduulin näkyviin <code>use</code>-lauseella tiedoston alussa). Käsittelemme trait-olioita
+luvussa 18. Toistaiseksi tiedä vain, että <code>Box&lt;dyn Error&gt;</code> tarkoittaa, että
+funktio palauttaa tyypin, joka toteuttaa <code>Error</code>-traitin, mutta emme tarvitse
+määrittää, mikä tietty tyyppi palautusarvo on. Tämä antaa meille joustavuutta
+palauttaa virhearvoja, jotka voivat olla eri tyyppejä eri virhetapauksissa.
+<code>dyn</code>-avainsana on lyhenne sanasta <em>dynamic</em>.</p>
+<p>Toiseksi olemme poistaneet <code>expect</code>-kutsun <code>?</code>-operaattorin hyväksi, kuten
+puhuimme luvussa 9. Sen sijaan, että <code>panic!</code> virheessä, <code>?</code> palauttaa virhearvon
+nykyisestä funktiosta kutsujan käsiteltäväksi.</p>
+<p>Kolmanneksi <code>run</code>-funktio palauttaa nyt <code>Ok</code>-arvon onnistumistapauksessa.
+Olemme ilmoittaneet <code>run</code>-funktion onnistumistyypiksi <code>()</code> allekirjoituksessa,
+mikä tarkoittaa, että meidän täytyy kääriä yksikkötyypin arvo <code>Ok</code>-arvoon. Tämä
+<code>Ok(())</code>-syntaksi saattaa aluksi näyttää hieman oudolta. Mutta <code>()</code>-tyypin
+käyttö tällä tavalla on idiomaattinen tapa ilmaista, että kutsumme <code>run</code>-funktiota
+vain sen sivuvaikutuksia varten; se ei palauta arvoa, jota tarvitsemme.</p>
 <p>Kun ajat tämän koodin, se kääntyy mutta näyttää varoituksen:</p>
 <pre><code class="language-console">{{#include ../listings/ch12-an-io-project/listing-12-12/output.txt}}
 </code></pre>
-<p>Rust kertoo meille, että koodimme jätti huomiotta <code>Result</code>-arvon ja <code>Result</code>-arvo saattaa ilmaista, että virhe tapahtui. Mutta emme tarkista, tapahtuiko virhe, ja kääntäjä muistuttaa meitä, että meidän piti todennäköisesti olla virheenkäsittelykoodia täällä! Korjataan tämä ongelma nyt.</p>
+<p>Rust kertoo, että koodimme ohitti <code>Result</code>-arvon ja <code>Result</code>-arvo saattaa
+ilmaista, että virhe tapahtui. Mutta emme tarkista, tapahtuiko virhe, ja
+kääntäjä muistuttaa, että meillä oli todennäköisesti tarkoitus olla virheenkäsittelykoodia
+tässä! Korjataan tämä ongelma nyt.</p>
 <h4 id="run-funktion-palauttamien-virheiden-käsittely-main-funktiossa"><a class="header" href="#run-funktion-palauttamien-virheiden-käsittely-main-funktiossa"><code>run</code>-funktion palauttamien virheiden käsittely <code>main</code>-funktiossa</a></h4>
-<p>Tarkistamme virheet ja käsittelemme ne tekniikalla, joka on samankaltainen kuin <code>Config::build</code>-metodilla listauksessa 12-10, mutta pienellä erolla:</p>
+<p>Tarkistamme virheet ja käsittelemme ne tekniikalla, joka on samanlainen kuin
+<code>Config::build</code>-funktion kanssa listauksessa 12-10, mutta pienellä erolla:</p>
 <p><span class="filename">Filename: src/main.rs</span></p>
 <pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch12-an-io-project/no-listing-01-handling-errors-in-main/src/main.rs:here}}</code></pre>
-<p>Käytämme <code>if let</code>-lausetta <code>unwrap_or_else</code>-metodin sijaan tarkistaaksemme, palauttaako <code>run</code> <code>Err</code>-arvon, ja kutsumme <code>process::exit(1)</code>-funktiota, jos se palauttaa. <code>run</code>-funktio ei palauta arvoa, jota haluaisimme <code>unwrap</code>-metodilla purkaa samalla tavalla kuin <code>Config::build</code> palauttaa <code>Config</code>-instanssin. Koska <code>run</code> palauttaa <code>()</code> onnistumistapauksessa, välitämme vain virheen havaitsemisesta, joten emme tarvitse <code>unwrap_or_else</code>-metodia palauttamaan purettua arvoa, joka olisi vain <code>()</code>.</p>
-<p><code>if let</code>-lausekkeen ja <code>unwrap_or_else</code>-funktioiden rungot ovat molemmissa tapauksissa samat: tulostamme virheen ja lopetamme.</p>
-<h3 id="koodin-jakaminen-kirjastokrateiksi"><a class="header" href="#koodin-jakaminen-kirjastokrateiksi">Koodin jakaminen kirjastokrateiksi</a></h3>
-<p><code>minigrep</code>-projektimme näyttää hyvältä tähän asti! Nyt jaamme <em>src/main.rs</em>-tiedoston ja siirrämme osan koodista <em>src/lib.rs</em>-tiedostoon. Näin voimme testata koodia ja meillä on <em>src/main.rs</em>-tiedosto, jolla on vähemmän vastuita.</p>
-<p>Siirretään kaikki koodi, joka ei ole <code>main</code>-funktiossa, <em>src/main.rs</em>-tiedostosta <em>src/lib.rs</em>-tiedostoon:</p>
-<ul>
-<li><code>run</code>-funktion määritelmä</li>
-<li>Asiaankuuluvat <code>use</code>-lauseet</li>
-<li><code>Config</code>-rakenteen määritelmä</li>
-<li><code>Config::build</code>-funktion määritelmä</li>
-</ul>
-<p><em>src/lib.rs</em>-tiedoston sisällössä pitäisi olla listauksessa 12-13 näytetyt signatuurit (olemme jättäneet funktioiden rungot pois lyhyyden vuoksi). Huomaa, että tämä ei käänny ennen kuin muokkaamme <em>src/main.rs</em>-tiedostoa listauksessa 12-14.</p>
-<figure class="listing">
+<p>Käytämme <code>if let</code> -lausetta <code>unwrap_or_else</code>-metodin sijaan tarkistaaksemme,
+palauttaako <code>run</code> <code>Err</code>-arvon, ja kutsumme <code>process::exit(1)</code>, jos se palauttaa.
+<code>run</code>-funktio ei palauta arvoa, jota haluamme <code>unwrap</code>-metodilla purkaa samalla
+tavalla kuin <code>Config::build</code> palauttaa <code>Config</code>-instanssin. Koska <code>run</code> palauttaa
+<code>()</code> onnistumistapauksessa, välitämme vain virheen havaitsemisesta, joten emme
+tarvitse <code>unwrap_or_else</code>-metodia palauttamaan purettua arvoa, joka olisi vain
+<code>()</code>.</p>
+<p><code>if let</code> - ja <code>unwrap_or_else</code>-funktioiden rungot ovat samat molemmissa
+tapauksissa: Tulostamme virheen ja poistumme.</p>
+<h3 id="koodin-jakaminen-kirjastocrateen"><a class="header" href="#koodin-jakaminen-kirjastocrateen">Koodin jakaminen kirjastocrateen</a></h3>
+<p><code>minigrep</code>-projektimme näyttää hyvältä tähän asti! Jaamme nyt <em>src/main.rs</em>-
+tiedoston ja siirrämme osan koodista <em>src/lib.rs</em>-tiedostoon. Näin voimme testata
+koodia ja meillä on <em>src/main.rs</em>-tiedosto, jolla on vähemmän vastuita.</p>
+<p>Määritellään tekstin hakemiseen liittyvä koodi <em>src/lib.rs</em>-tiedostossa
+<em>src/main.rs</em>-tiedoston sijaan, jolloin voimme (tai kuka tahansa <code>minigrep</code>-
+kirjastomme käyttäjä) kutsua hakufunktiota useammissa konteksteissa kuin
+<code>minigrep</code>-binäärimme.</p>
+<p>Ensin määritellään <code>search</code>-funktion allekirjoitus <em>src/lib.rs</em>-tiedostossa,
+kuten listauksessa 12-13, rungolla, joka kutsuu <code>unimplemented!</code>-makroa. Selitämme
+allekirjoituksen yksityiskohtaisemmin, kun täytämme toteutuksen.</p>
+<figure class="listing" id="listing-12-13">
 <span class="file-name">Filename: src/lib.rs</span>
-<pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch12-an-io-project/listing-12-13/src/lib.rs:here}}</code></pre>
-<figcaption>Listing 12-13: <code>Config</code>- ja <code>run</code>-siirto <em>src/lib.rs</em>-tiedostoon</figcaption>
+<pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch12-an-io-project/listing-12-13/src/lib.rs}}</code></pre>
+<figcaption><a href="#listing-12-13">Listing 12-13</a>: <code>search</code>-funktion määrittely <em>src/lib.rs</em>-tiedostossa</figcaption>
 </figure>
-<p>Olemme käyttäneet runsaasti <code>pub</code>-avainsanaa: <code>Config</code>-rakenteessa, sen kentissä ja <code>build</code>-metodissa sekä <code>run</code>-funktiossa. Meillä on nyt kirjastokrate, jolla on julkinen API, jota voimme testata!</p>
-<p>Nyt meidän täytyy tuoda koodi, jonka siirsimme <em>src/lib.rs</em>-tiedostoon, binäärikrateen näkyvyysalueelle <em>src/main.rs</em>-tiedostossa, kuten listauksessa 12-14.</p>
-<figure class="listing">
+<p>Olemme käyttäneet <code>pub</code>-avainsanaa funktiomäärittelyssä merkitsemään <code>search</code>-
+funktion osaksi kirjastocratemme julkista API:a. Meillä on nyt kirjastocrate,
+jota voimme käyttää binääricratestamme ja jota voimme testata!</p>
+<p>Meidän täytyy nyt tuoda <em>src/lib.rs</em>-tiedostossa määritelty koodi binääricraten
+näkyvyysalueelle <em>src/main.rs</em>-tiedostossa ja kutsua sitä, kuten listauksessa 12-14.</p>
+<figure class="listing" id="listing-12-14">
 <span class="file-name">Filename: src/main.rs</span>
 <pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch12-an-io-project/listing-12-14/src/main.rs:here}}</code></pre>
-<figcaption>Listing 12-14: <code>minigrep</code>-kirjastokrateen käyttö <em>src/main.rs</em>-tiedostossa</figcaption>
+<figcaption><a href="#listing-12-14">Listing 12-14</a>: <code>minigrep</code>-kirjastocraten <code>search</code>-funktion käyttö <em>src/main.rs</em>-tiedostossa</figcaption>
 </figure>
-<p>Lisäämme <code>use minigrep::Config</code>-rivin tuomaan <code>Config</code>-tyypin kirjastokrateesta binäärikrateen näkyvyysalueelle, ja etuliitämme <code>run</code>-funktion crate-nimellämme. Nyt kaiken toiminnallisuuden pitäisi olla yhdistetty ja toimia. Aja ohjelma <code>cargo run</code> -komennolla ja varmista, että kaikki toimii oikein.</p>
-<p>Huh! Sitä oli paljon työtä, mutta olemme asettaneet itsellemme pohjan tulevaisuuden menestykseen. Nyt virheiden käsittely on paljon helpompaa, ja olemme tehneet koodista modulaarisempaa. Lähes kaikki työmme tehdään tästä lähtien <em>src/lib.rs</em>-tiedostossa.</p>
-<p>Hyödynnetään tätä uutta modulaarisuutta tekemällä jotain, mikä olisi ollut vaikeaa vanhalla koodilla mutta on helppoa uudella koodilla: kirjoitamme testejä!</p>
+<p>Lisäämme <code>use minigrep::search</code> -rivin tuodaksemme <code>search</code>-funktion kirjastocratesta
+binääricraten näkyvyysalueelle. Sitten <code>run</code>-funktiossa tiedoston sisällön
+tulostamisen sijaan kutsumme <code>search</code>-funktiota ja välitämme <code>config.query</code>-
+arvon ja <code>contents</code>-arvon argumentteina. Sitten <code>run</code> käyttää <code>for</code>-silmukkaa
+tulostaakseen jokaisen <code>search</code>-funktion palauttaman rivin, joka vastasi
+hakua. Tämä on myös hyvä hetki poistaa <code>println!</code>-kutsut <code>main</code>-funktiosta,
+jotka näyttivät haun ja tiedostopolun, jotta ohjelmamme tulostaa vain
+hakutulokset (jos virheitä ei tapahdu).</p>
+<p>Huomaa, että hakufunktio kerää kaikki tulokset vektoriin, jonka se palauttaa
+ennen kuin mitään tulostusta tapahtuu. Tämä toteutus voi olla hidas näyttämään
+tuloksia suurten tiedostojen haussa, koska tuloksia ei tulosteta niiden
+löytyessä; käsittelemme mahdollisen korjauksen iteraattoreiden avulla luvussa 13.</p>
+<p>Huh! Sitä oli paljon työtä, mutta olemme asettaneet itsellemme pohjan menestykseen
+tulevaisuudessa. Nyt on paljon helpompaa käsitellä virheitä, ja olemme tehneet
+koodista modulaarisempaa. Lähes kaikki työmme tehdään tästä eteenpäin <em>src/lib.rs</em>-
+tiedostossa.</p>
+<p>Hyödynnetään tätä uutta modulaarisuutta tekemällä jotain, mikä olisi ollut
+vaikeaa vanhalla koodilla mutta on helppoa uudella koodilla: Kirjoitamme testejä!</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                             <a rel="prev" href="ch12-02-reading-a-file.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                                <i class="fa fa-angle-left"></i>
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
                             <a rel="next prefetch" href="ch12-04-testing-the-librarys-functionality.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
                         <div style="clear: both"></div>
@@ -334,16 +582,21 @@
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                     <a rel="prev" href="ch12-02-reading-a-file.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                        <i class="fa fa-angle-left"></i>
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
                     <a rel="next prefetch" href="ch12-04-testing-the-librarys-functionality.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>
 
         </div>
 
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
 
 
 
@@ -352,16 +605,17 @@
         </script>
 
 
-        <script src="elasticlunr.min.js"></script>
-        <script src="mark.min.js"></script>
-        <script src="searcher.js"></script>
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-c2a407aa.js"></script>
 
-        <script src="clipboard.min.js"></script>
-        <script src="highlight.js"></script>
-        <script src="book.js"></script>
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-abc7f01d.js"></script>
+        <script src="book-a0b12cfe.js"></script>
 
         <!-- Custom JS scripts -->
-        <script src="ferris.js"></script>
+        <script src="ferris-2317480c.js"></script>
+
 
 
     </div>

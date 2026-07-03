@@ -12,44 +12,56 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
 
-        <link rel="icon" href="favicon.svg">
-        <link rel="shortcut icon" href="favicon.png">
-        <link rel="stylesheet" href="css/variables.css">
-        <link rel="stylesheet" href="css/general.css">
-        <link rel="stylesheet" href="css/chrome.css">
-        <link rel="stylesheet" href="css/print.css" media="print">
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-2459343d.css">
+        <link rel="stylesheet" href="css/chrome-ae938929.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
-        <link rel="stylesheet" href="fonts/fonts.css">
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" href="highlight.css">
-        <link rel="stylesheet" href="tomorrow-night.css">
-        <link rel="stylesheet" href="ayu-highlight.css">
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="ferris.css">
-        <link rel="stylesheet" href="theme/2018-edition.css">
-        <link rel="stylesheet" href="theme/semantic-notes.css">
-        <link rel="stylesheet" href="theme/listing.css">
+        <link rel="stylesheet" href="ferris-d33b75bf.css">
+        <link rel="stylesheet" href="theme/2018-edition-4e126c62.css">
+        <link rel="stylesheet" href="theme/semantic-notes-9b5766c0.css">
+        <link rel="stylesheet" href="theme/listing-cab26221.css">
 
 
-        <!-- Provide site root to javascript -->
+        <!-- Provide site root and default themes to javascript -->
         <script>
-            var path_to_root = "";
-            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex-454febf7.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc.js"></script>
+        <script src="toc-7f90d00d.js"></script>
     </head>
     <body>
-    <div id="body-container">
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
             try {
-                var theme = localStorage.getItem('mdbook-theme');
-                var sidebar = localStorage.getItem('mdbook-sidebar');
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
 
                 if (theme.startsWith('"') && theme.endsWith('"')) {
                     localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
@@ -63,7 +75,8 @@
 
         <!-- Set the theme before any content is loaded, prevents flash -->
         <script>
-            var theme;
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
             const html = document.documentElement;
@@ -72,55 +85,59 @@
             html.classList.add("js");
         </script>
 
-        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
-            var sidebar = null;
-            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
             } else {
                 sidebar = 'hidden';
+                sidebar_toggle.checked = false;
             }
-            sidebar_toggle.checked = sidebar === 'visible';
-            html.classList.remove('sidebar-visible');
-            html.classList.add("sidebar-" + sidebar);
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
         </script>
 
-        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
             <!-- populated by js -->
             <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
             <noscript>
                 <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
             </noscript>
-            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
             </div>
         </nav>
 
-        <div id="page-wrapper" class="page-wrapper">
+        <div id="mdbook-page-wrapper" class="page-wrapper">
 
             <div class="page">
-                <div id="menu-bar-hover-placeholder"></div>
-                <div id="menu-bar" class="menu-bar sticky">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
-                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
-                            <i class="fa fa-bars"></i>
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
                         </label>
-                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
-                            <i class="fa fa-paint-brush"></i>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
                         </button>
-                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
-                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
                         </ul>
-                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
-                            <i class="fa fa-search"></i>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
                         </button>
                     </div>
 
@@ -128,90 +145,150 @@
 
                     <div class="right-buttons">
                         <a href="print.html" title="Print this book" aria-label="Print this book">
-                            <i id="print-button" class="fa fa-print"></i>
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
                         </a>
                         <a href="https://github.com/rust-lang/book" title="Git repository" aria-label="Git repository">
-                            <i id="git-repository-button" class="fa fa-github"></i>
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></span>
                         </a>
 
                     </div>
                 </div>
 
-                <div id="search-wrapper" class="hidden">
-                    <form id="searchbar-outer" class="searchbar-outer">
-                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
                     </form>
-                    <div id="searchresults-outer" class="searchresults-outer hidden">
-                        <div id="searchresults-header" class="searchresults-header"></div>
-                        <ul id="searchresults">
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
                         </ul>
                     </div>
                 </div>
 
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
                 <script>
-                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
-                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
-                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
                         link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
                     });
                 </script>
 
-                <div id="content" class="content">
+                <div id="mdbook-content" class="content">
                     <main>
-                        <h2 id="boxt-tyypin-käyttäminen-keolle-sijoitettavan-datan-osoittamiseen"><a class="header" href="#boxt-tyypin-käyttäminen-keolle-sijoitettavan-datan-osoittamiseen"><code>Box&lt;T&gt;</code>-tyypin käyttäminen keolle sijoitettavan datan osoittamiseen</a></h2>
-<p>Yksi yksinkertaisimmista älykkäistä osoittimista on <em>box</em>, jonka tyyppi on <code>Box&lt;T&gt;</code>. Box mahdollistaa datan tallentamisen keolle sen sijaan, että se sijaitsee pinossa. Pinoon jää vain osoitin keolla olevaan dataan. Luvussa 4 käsiteltiin pinon ja keon eroa, joten voit palata siihen tarvittaessa.</p>
-<p>Box ei aiheuta suorituskykyhaittaa, lukuun ottamatta sitä, että sen data tallennetaan keolle pinoon sijaan. Se ei myöskään tarjoa erityisiä lisäominaisuuksia. Useimmiten käytät boxia seuraavissa tilanteissa:</p>
+                        <h2 id="boxt-tyypin-käyttö-keolla-olevan-datan-osoittamiseen"><a class="header" href="#boxt-tyypin-käyttö-keolla-olevan-datan-osoittamiseen"><code>Box&lt;T&gt;</code>-tyypin käyttö keolla olevan datan osoittamiseen</a></h2>
+<p>Yksinkertaisin älykäs osoitin on <em>box</em>, jonka tyyppi kirjoitetaan <code>Box&lt;T&gt;</code>. <em>Boxien</em> avulla voit tallentaa datan keolle pinon sijaan. Pinossa säilyy osoitin keolla olevaan dataan. Katso luku 4, jos haluat kerrata pinon ja keon eron.</p>
+<p>Boxeilla ei ole suorituskykyhaittaa muuta kuin se, että niiden data tallennetaan keolle pinon sijaan. Niillä ei myöskään ole juuri muita erityisominaisuuksia. Käytät niitä useimmiten seuraavissa tilanteissa:</p>
 <ul>
-<li>Kun sinulla on tyyppi, jonka kokoa ei voida määrittää käännösaikana, mutta haluat käyttää sitä kontekstissa, jossa tarvitaan tarkka koko.</li>
-<li>Kun sinulla on suuri määrä dataa ja haluat siirtää omistajuuden ilman, että dataa kopioidaan.</li>
-<li>Kun haluat omistaa arvon ja tarvitset vain sen toteuttavan tietyn traitin, etkä välitä sen tarkasta tyypistä.</li>
+<li>Kun sinulla on tyyppi, jonka kokoa ei voida tietää käännösaikana, ja haluat käyttää kyseisen tyypin arvoa kontekstissa, joka vaatii tarkan koon</li>
+<li>Kun sinulla on suuri määrä dataa ja haluat siirtää omistajuuden varmistaen, ettei dataa kopioida siirron yhteydessä</li>
+<li>Kun haluat omistaa arvon ja sinulle riittää, että se on tietyn traitin toteuttava tyyppi, etkä välitä sen tarkasta tyypistä</li>
 </ul>
-<p>Ensimmäistä tapausta käsitellään osiossa <a href="#rekursiivisten-tyyppien-mahdollistaminen-boxilla">“Rekursiivisten tyyppien mahdollistaminen Boxilla”</a>. Toisessa tapauksessa suuren tietomäärän omistajuuden siirtäminen voi olla hidasta, koska data kopioidaan pinoon. Voit parantaa suorituskykyä sijoittamalla tiedon keolle boxiin, jolloin vain osoitin kopioidaan, mutta varsinainen data pysyy paikallaan. Kolmas tapaus tunnetaan <em>trait-oliona</em>, jota käsitellään tarkemmin luvussa 18.</p>
-<h3 id="boxt-tyypin-käyttäminen-keolle-tallennettavaan-dataan"><a class="header" href="#boxt-tyypin-käyttäminen-keolle-tallennettavaan-dataan"><code>Box&lt;T&gt;</code>-tyypin käyttäminen keolle tallennettavaan dataan</a></h3>
-<p>Ennen kuin käsittelemme <code>Box&lt;T&gt;</code>:n käyttöä keon hyödyntämisessä, käydään läpi sen syntaksi ja kuinka sen sisältämää dataa käytetään.</p>
-<p>Seuraavassa esimerkissä (Listing 15-1) tallennetaan <code>i32</code>-tyyppinen arvo keolle käyttäen boxia:</p>
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+<p>Ensimmäistä tilannetta käsitellään osiossa <a href="#enabling-recursive-types-with-boxes">”Rekursiivisten tyyppien mahdollistaminen boxeilla”</a><!-- ignore -->. Toisessa tapauksessa suuren datamäärän omistajuuden siirtäminen voi kestää kauan, koska dataa kopioidaan pinossa. Tämän tilanteen suorituskyvyn parantamiseksi voimme tallentaa suuren datamäärän keolle boxiin. Tällöin pinossa kopioidaan vain pieni määrä osoitindataa, kun taas sen viittaama data pysyy yhdessä paikassa keolla. Kolmatta tapausta kutsutaan <em>trait-olioksi</em>, ja <a href="ch18-02-trait-objects.html#using-trait-objects-to-abstract-over-shared-behavior">”Trait-objektien käyttö jaettuun käyttäytymiseen abstrahoimiseen”</a><!-- ignore --> luvussa 18 on omistettu juuri tälle aiheelle. Siis tässä oppimasi soveltuu uudelleen siinä osiossa!</p>
+<!-- Old headings. Do not remove or links may break. -->
+<p><a id="using-boxt-to-store-data-on-the-heap"></a></p>
+<h3 id="datan-tallentaminen-keolle"><a class="header" href="#datan-tallentaminen-keolle">Datan tallentaminen keolle</a></h3>
+<p>Ennen kuin käsittelemme <code>Box&lt;T&gt;</code>:n käyttötapaa keon tallennukseen, käymme läpi syntaksin ja sen, miten <code>Box&lt;T&gt;</code>:n sisällä oleviin arvoihin viitataan.</p>
+<p>Listauksessa 15-1 näytetään, miten boxilla tallennetaan <code>i32</code>-arvo keolle.</p>
+<figure class="listing" id="listing-15-1">
+<span class="file-name">Filename: src/main.rs</span>
+<pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>{{#rustdoc_include ../listings/ch15-smart-pointers/listing-15-01/src/main.rs}}
-<span class="boring">}</span></code></pre></pre>
-<p>Tässä määritetään muuttuja <code>b</code>, joka on <code>Box</code>, joka osoittaa arvoon <code>5</code>, joka on sijoitettu keolle. Ohjelma tulostaa <code>b = 5</code>. Boxin sisältöä voidaan käyttää samalla tavalla kuin pinossa olevaa arvoa. Kun <code>b</code> poistuu laajuudesta, sekä box (pinoon tallennettu osoitin) että keolla oleva data vapautetaan.</p>
-<p>Yksittäisen arvon sijoittaminen keolle ei yleensä ole hyödyllistä, joten tätä tapaa ei käytetä usein. Useimmissa tapauksissa on parempi pitää yksittäiset arvot pinossa. Katsotaan seuraavaksi tapaus, jossa box mahdollistaa tyypin määrittelyn, jota ei muuten voisi tehdä.</p>
-<h3 id="rekursiivisten-tyyppien-mahdollistaminen-boxilla"><a class="header" href="#rekursiivisten-tyyppien-mahdollistaminen-boxilla">Rekursiivisten tyyppien mahdollistaminen Boxilla</a></h3>
-<p><em>Rekursiivinen tyyppi</em> sisältää arvon, joka on samaa tyyppiä kuin itse tyyppi. Rekursiiviset tyypit aiheuttavat ongelman, koska Rustin on tiedettävä tyypin koko käännösaikana. Koska rekursiivinen tyyppi voi periaatteessa jatkua äärettömästi, Rust ei voi määrittää sen vaatimaa muistimäärää. Koska boxilla on aina tunnettu koko, voimme ratkaista tämän sijoittamalla rekursiivisen tyypin sisään boxin.</p>
-<p>Esimerkkinä tarkastellaan <em>cons-listaa</em>, joka on yleinen tietorakenne funktionaalisissa ohjelmointikielissä.</p>
-<h4 id="cons-listan-taustaa"><a class="header" href="#cons-listan-taustaa">Cons-listan taustaa</a></h4>
-<p><em>Cons-lista</em> tulee Lisp-ohjelmointikielestä ja sen muunnelmista. Se koostuu sisäkkäisistä pareista ja toimii linkitetyn listan tapaan. Sen nimi tulee Lispin <code>cons</code>-funktiosta, joka luo uuden parin kahdesta argumentistaan. Esimerkiksi seuraava pseudokoodi kuvaa cons-listaa, joka sisältää luvut 1, 2 ja 3:</p>
+<span class="boring">}</span></code></pre>
+<figcaption><a href="#listing-15-1">Listing 15-1</a>: <code>i32</code>-arvon tallentaminen keolle boxin avulla</figcaption>
+</figure>
+<p>Määrittelemme muuttujan <code>b</code> siten, että sen arvo on <code>Box</code>, joka osoittaa arvoon <code>5</code>, joka on allokoitu keolle. Tämä ohjelma tulostaa <code>b = 5</code>; tässä tapauksessa pääsemme boxin dataan käsiksi samalla tavalla kuin jos data olisi pinossa. Kuten minkä tahansa omistetun arvon kohdalla, kun box poistuu näkyvyysalueeltaan — kuten <code>b</code> tekee <code>main</code>-funktion lopussa — se vapautetaan. Vapautus koskee sekä boxia (joka on pinossa) että sen osoittamaa dataa (joka on keolla).</p>
+<p>Yhden arvon sijoittaminen keolle ei ole kovin hyödyllistä, joten et käytä boxeja yksinään tällä tavalla usein. Arvojen, kuten yksittäisen <code>i32</code>:n, pitäminen pinossa, missä ne oletusarvoisesti tallennetaan, on sopivampaa useimmissa tilanteissa. Katsotaan seuraavaksi tapausta, jossa boxien avulla voimme määritellä tyyppejä, joita emme voisi määritellä ilman boxeja.</p>
+<h3 id="rekursiivisten-tyyppien-mahdollistaminen-boxeilla"><a class="header" href="#rekursiivisten-tyyppien-mahdollistaminen-boxeilla">Rekursiivisten tyyppien mahdollistaminen boxeilla</a></h3>
+<p><em>Rekursiivisen tyypin</em> arvo voi sisältää osanaan toisen saman tyypin arvon. Rekursiiviset tyypit aiheuttavat ongelman, koska Rustin on tiedettävä käännösaikana, kuinka paljon tilaa tyyppi vie. Rekursiivisten tyyppien arvojen sisäkkäisyys voisi kuitenkin teoriassa jatkua äärettömästi, joten Rust ei voi tietää, kuinka paljon tilaa arvo tarvitsee. Koska boxeilla on tunnettu koko, voimme mahdollistaa rekursiiviset tyypit lisäämällä boxin rekursiivisen tyypin määrittelyyn.</p>
+<p>Esimerkkinä rekursiivisesta tyypistä tutustutaan cons-listaan. Tämä on funktionaalisten ohjelmointikielten yleinen tietorakenne. Määrittelemämme cons-listatyyppi on yksinkertainen paitsi rekursion osalta; siksi tässä esimerkissä käsiteltävät käsitteet ovat hyödyllisiä aina, kun kohtaat monimutkaisempia tilanteita, joissa on rekursiivisia tyyppejä.</p>
+<!-- Old headings. Do not remove or links may break. -->
+<p><a id="more-information-about-the-cons-list"></a></p>
+<h4 id="cons-listan-ymmärtäminen"><a class="header" href="#cons-listan-ymmärtäminen">Cons-listan ymmärtäminen</a></h4>
+<p><em>Cons-lista</em> on Lisp-ohjelmointikielestä ja sen murreista peräisin oleva tietorakenne, joka koostuu sisäkkäisistä pareista ja on Lispin versio linkitetystä listasta. Sen nimi tulee Lispin <code>cons</code>-funktiosta (lyhenne sanasta <em>construct function</em>, rakennusfunktio), joka muodostaa uuden parin kahdesta argumentistaan. Kutsumalla <code>cons</code>:ia parille, joka koostuu arvosta ja toisesta parista, voimme rakentaa rekursiivisista pareista koostuvia cons-listoja.</p>
+<p>Esimerkiksi tässä on pseudokoodiesitys cons-listasta, joka sisältää listan <code>1, 2, 3</code> siten, että jokainen pari on sulkeissa:</p>
 <pre><code class="language-text">(1, (2, (3, Nil)))
 </code></pre>
-<p>Jokainen alkio sisältää kaksi elementtiä: nykyisen arvon ja seuraavan alkion. Viimeinen alkio sisältää vain arvon <code>Nil</code>, joka merkitsee listan loppua.</p>
-<h3 id="boxtn-käyttäminen-rekursiivisten-tyyppien-kanssa"><a class="header" href="#boxtn-käyttäminen-rekursiivisten-tyyppien-kanssa"><code>Box&lt;T&gt;</code>:n käyttäminen rekursiivisten tyyppien kanssa</a></h3>
-<p>Rust ei osaa määrittää, kuinka paljon muistia rekursiivinen tyyppi tarvitsee. Seuraava käännösvirhe kertoo tästä:</p>
+<p>Jokainen cons-listan alkio sisältää kaksi elementtiä: nykyisen alkion arvon ja seuraavan alkion. Listan viimeinen alkio sisältää vain arvon nimeltä <code>Nil</code> ilman seuraavaa alkioita. Cons-lista syntyy kutsumalla <code>cons</code>-funktiota rekursiivisesti. Rekursion perustapauksen vakiintunut nimi on <code>Nil</code>. Huomaa, että tämä ei ole sama kuin luvussa 6 käsitelty ”null”- tai ”nil”-käsite, joka tarkoittaa virheellistä tai puuttuvaa arvoa.</p>
+<p>Cons-lista ei ole Rustissa yleisesti käytetty tietorakenne. Useimmiten, kun Rustissa on lista alkioita, <code>Vec&lt;T&gt;</code> on parempi valinta. Muut, monimutkaisemmat rekursiiviset tietotyypit <em>ovat</em> hyödyllisiä eri tilanteissa, mutta aloittamalla cons-listasta tässä luvussa voimme tutkia, miten boxien avulla voidaan määritellä rekursiivinen tietotyyppi ilman liikaa häiriötekijöitä.</p>
+<p>Listauksessa 15-2 on enum-määrittely cons-listalle. Huomaa, että tämä koodi ei vielä käänny, koska <code>List</code>-tyypillä ei ole tunnettua kokoa, kuten demonstroimme.</p>
+<figure class="listing" id="listing-15-2">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch15-smart-pointers/listing-15-02/src/main.rs:here}}</code></pre>
+<figcaption><a href="#listing-15-2">Listing 15-2</a>: Ensimmäinen yritys määritellä enum, joka edustaa <code>i32</code>-arvojen cons-listatietorakennetta</figcaption>
+</figure>
+<blockquote>
+<p>Huom: Toteutamme tässä esimerkissä cons-listan, joka sisältää vain <code>i32</code>-arvoja. Olisimme voineet toteuttaa sen geneerisesti, kuten käsittelimme luvussa 10, ja määritellä cons-listatyypin, joka voi tallentaa minkä tahansa tyyppisiä arvoja.</p>
+</blockquote>
+<p><code>List</code>-tyypin käyttö listan <code>1, 2, 3</code> tallentamiseen näyttäisi listauksen 15-3 koodilta.</p>
+<figure class="listing" id="listing-15-3">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch15-smart-pointers/listing-15-03/src/main.rs:here}}</code></pre>
+<figcaption><a href="#listing-15-3">Listing 15-3</a>: <code>List</code>-enumin käyttö listan <code>1, 2, 3</code> tallentamiseen</figcaption>
+</figure>
+<p>Ensimmäinen <code>Cons</code>-arvo sisältää <code>1</code>:n ja toisen <code>List</code>-arvon. Tämä <code>List</code>-arvo on toinen <code>Cons</code>-arvo, joka sisältää <code>2</code>:n ja toisen <code>List</code>-arvon. Tämä <code>List</code>-arvo on vielä yksi <code>Cons</code>-arvo, joka sisältää <code>3</code>:n ja <code>List</code>-arvon, joka on lopulta <code>Nil</code>, ei-rekursiivinen variantti, joka merkitsee listan loppua.</p>
+<p>Jos yritämme kääntää listauksen 15-3 koodin, saamme listauksessa 15-4 näytetyn virheen.</p>
+<figure class="listing" id="listing-15-4">
+<pre><code class="language-console">{{#include ../listings/ch15-smart-pointers/listing-15-03/output.txt}}
+</code></pre>
+<figcaption><a href="#listing-15-4">Listing 15-4</a>: Virhe, jonka saamme yrittäessämme määritellä rekursiivisen enumin</figcaption>
+</figure>
+<p>Virhe kertoo, että tällä tyypillä on ”ääretön koko”. Syy on, että olemme määritelleet <code>List</code>:in variantilla, joka on rekursiivinen: se sisältää suoraan toisen saman tyypin arvon. Tämän vuoksi Rust ei pysty selvittämään, kuinka paljon tilaa <code>List</code>-arvon tallentaminen vaatii. Puretaan seuraavaksi, miksi saamme tämän virheen. Ensin katsomme, miten Rust päättää, kuinka paljon tilaa ei-rekursiivisen tyypin arvo tarvitsee.</p>
+<h4 id="ei-rekursiivisen-tyypin-koon-laskeminen"><a class="header" href="#ei-rekursiivisen-tyypin-koon-laskeminen">Ei-rekursiivisen tyypin koon laskeminen</a></h4>
+<p>Muista <code>Message</code>-enum, jonka määrittelimme listauksessa 6-2, kun käsittelimme enum-määrittelyjä luvussa 6:</p>
+<pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch06-enums-and-pattern-matching/listing-06-02/src/main.rs:here}}
+<span class="boring">}</span></code></pre>
+<p>Selvittääkseen, kuinka paljon tilaa <code>Message</code>-arvon varaamiseen tarvitaan, Rust käy läpi jokaisen variantin ja katsoo, mikä niistä tarvitsee eniten tilaa. Rust näkee, että <code>Message::Quit</code> ei tarvitse lainkaan tilaa, <code>Message::Move</code> tarvitsee tilaa kahdelle <code>i32</code>-arvolle, ja niin edelleen. Koska vain yhtä varianttia käytetään kerrallaan, enimmäistila, jota <code>Message</code>-arvo tarvitsee, on suurimman variantin vaatima tila.</p>
+<p>Vertaa tätä siihen, mitä tapahtuu, kun Rust yrittää selvittää, kuinka paljon tilaa rekursiivinen tyyppi, kuten listauksen 15-2 <code>List</code>-enum, tarvitsee. Kääntäjä aloittaa <code>Cons</code>-variantista, joka sisältää <code>i32</code>-tyyppisen arvon ja <code>List</code>-tyyppisen arvon. Siksi <code>Cons</code> tarvitsee tilaa, joka on yhtä suuri kuin <code>i32</code>:n koko plus <code>List</code>:in koko. Selvittääkseen, kuinka paljon muistia <code>List</code>-tyyppi tarvitsee, kääntäjä katsoo variantteja alkaen <code>Cons</code>-variantista. <code>Cons</code>-variantti sisältää <code>i32</code>-tyyppisen arvon ja <code>List</code>-tyyppisen arvon, ja tämä prosessi jatkuu äärettömästi, kuten kuvassa 15-1.</p>
+<img alt="Ääretön Cons-lista: suorakulmio, jossa lukee &#39;Cons&#39; ja joka on jaettu kahteen pienempään suorakulmioon. Ensimmäisessä pienemmässä suorakulmiossa lukee &#39;i32&#39;, ja toisessa pienemmässä suorakulmiossa lukee &#39;Cons&#39; sekä pienempi versio ulomman &#39;Cons&#39;-suorakulmion sisällä. &#39;Cons&#39;-suorakulmiot sisältävät yhä pienempiä versioita itsestään, kunnes pienin mukavasti kokoinen suorakulmio sisältää äärettömyyssymbolin, mikä osoittaa, että toisto jatkuu ikuisesti." src="img/trpl15-01.svg" class="center" style="width: 50%;" />
+<p><span class="caption">Kuva 15-1: Ääretön <code>List</code>, joka koostuu äärettömistä <code>Cons</code>-varianteista</span></p>
+<!-- Old headings. Do not remove or links may break. -->
+<p><a id="using-boxt-to-get-a-recursive-type-with-a-known-size"></a></p>
+<h4 id="rekursiivisen-tyypin-saaminen-tunnetulla-koolla"><a class="header" href="#rekursiivisen-tyypin-saaminen-tunnetulla-koolla">Rekursiivisen tyypin saaminen tunnetulla koolla</a></h4>
+<p>Koska Rust ei pysty selvittämään, kuinka paljon tilaa rekursiivisesti määritellyille tyypeille varataan, kääntäjä antaa virheen ja tämän hyödyllisen ehdotuksen:</p>
+<!-- manual-regeneration
+after doing automatic regeneration, look at listings/ch15-smart-pointers/listing-15-03/output.txt and copy the relevant line
+-->
 <pre><code class="language-text">help: insert some indirection (e.g., a `Box`, `Rc`, or `&amp;`) to break the cycle
   |
 2 |     Cons(i32, Box&lt;List&gt;),
   |               ++++    +
 </code></pre>
-<p>Tästä saamme vinkin käyttää <code>Box&lt;T&gt;</code>:tä. Koska <code>Box&lt;T&gt;</code> on osoitin, sen koko on aina tiedossa. Voimme siis sijoittaa <code>Box&lt;T&gt;</code>:n <code>Cons</code>-variantin sisään estääksemme rekursion aiheuttaman ongelman.</p>
-<p>Seuraavassa on korjattu <code>List</code>-enum, joka käyttää <code>Box&lt;T&gt;</code>:tä:</p>
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+<p>Tässä ehdotuksessa <em>epäsuora viittaus</em> tarkoittaa, että arvon sijaan meidän pitäisi muuttaa tietorakennetta siten, että arvo tallennetaan epäsuorasti osoittamalla arvoon sen sijaan, että tallennettaisiin arvo suoraan.</p>
+<p>Koska <code>Box&lt;T&gt;</code> on osoitin, Rust tietää aina, kuinka paljon tilaa <code>Box&lt;T&gt;</code> tarvitsee: osoittimen koko ei muutu sen mukaan, kuinka paljon dataa se osoittaa. Tämä tarkoittaa, että voimme laittaa <code>Box&lt;T&gt;</code>:n <code>Cons</code>-variantin sisään toisen <code>List</code>-arvon sijaan. <code>Box&lt;T&gt;</code> osoittaa seuraavaan <code>List</code>-arvoon, joka on keolla <code>Cons</code>-variantin sisällä olevan arvon sijaan. Käsitteellisesti meillä on edelleen lista, joka on luotu listoista, jotka sisältävät muita listoja, mutta tämä toteutus on nyt enemmän kuin alkioiden asettaminen vierekkäin toistensa sisään sijaan.</p>
+<p>Voimme muuttaa listauksen 15-2 <code>List</code>-enumin määrittelyn ja listauksen 15-3 <code>List</code>:in käytön listauksen 15-5 koodiksi, joka kääntyy.</p>
+<figure class="listing" id="listing-15-5">
+<span class="file-name">Filename: src/main.rs</span>
+<pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>{{#rustdoc_include ../listings/ch15-smart-pointers/listing-15-05/src/main.rs}}
-<span class="boring">}</span></code></pre></pre>
-<p>Tässä <code>Cons</code>-variantti sisältää <code>i32</code>-arvon sekä osoittimen seuraavaan listan alkioon, joka sijaitsee keolla. Tällä tavoin vältämme äärettömän rekursion ja Rust pystyy määrittämään muistin koon.</p>
-<p>Box tarjoaa vain osoittimen ja keolle allokoinnin, mutta ei muita erityisominaisuuksia. Se ei tuo suorituskykyhaittaa, ja sen avulla voidaan käsitellä tietorakenteita, joissa tarvitaan viittausta itsenäisesti sijaitsevaan dataan. <code>Box&lt;T&gt;</code> on älykäs osoitin, koska se toteuttaa <code>Deref</code>-traitin, jonka avulla <code>Box&lt;T&gt;</code>:tä voidaan käsitellä kuten viitteitä. Kun <code>Box&lt;T&gt;</code> poistuu laajuudesta, sen osoittama data keolla vapautetaan <code>Drop</code>-traitin ansiosta.</p>
-<p>Näitä kahta traitia (<code>Deref</code> ja <code>Drop</code>) käytetään myös muissa älykkäissä osoittimissa, joita käsittelemme myöhemmin tässä luvussa. Jatketaan seuraavaksi niiden tarkastelua!</p>
+<span class="boring">}</span></code></pre>
+<figcaption><a href="#listing-15-5">Listing 15-5</a>: <code>List</code>-määrittely, joka käyttää <code>Box&lt;T&gt;</code>:tä tunnetun koon saamiseksi</figcaption>
+</figure>
+<p><code>Cons</code>-variantti tarvitsee <code>i32</code>:n koon plus tilan boxin osoitindatan tallentamiseen. <code>Nil</code>-variantti ei tallenna arvoja, joten se tarvitsee pinosta vähemmän tilaa kuin <code>Cons</code>-variantti. Nyt tiedämme, että mikä tahansa <code>List</code>-arvo vie <code>i32</code>:n koon plus boxin osoitindatan koon. Käyttämällä boxia olemme katkaisseet äärettömän rekursiivisen ketjun, joten kääntäjä pystyy selvittämään tarvitsemansa koon <code>List</code>-arvon tallentamiseen. Kuva 15-2 näyttää, miltä <code>Cons</code>-variantti näyttää nyt.</p>
+<img alt="Suorakulmio, jossa lukee &#39;Cons&#39; ja joka on jaettu kahteen pienempään suorakulmioon. Ensimmäisessä pienemmässä suorakulmiossa lukee &#39;i32&#39;, ja toisessa pienemmässä suorakulmiossa lukee &#39;Box&#39; sekä yksi sisäinen suorakulmio, jossa lukee &#39;usize&#39; ja joka edustaa boxin osoittimen äärellistä kokoa." src="img/trpl15-02.svg" class="center" />
+<p><span class="caption">Kuva 15-2: <code>List</code>, joka ei ole äärettömän kokoinen, koska <code>Cons</code> sisältää <code>Box</code>:in</span></p>
+<p>Boxit tarjoavat vain epäsuoran viittauksen ja keolle allokoinnin; niillä ei ole muita erityisominaisuuksia, kuten muilla älykkäillä osoittimilla, joihin tutustumme. Niillä ei myöskään ole niiden erityisominaisuuksien aiheuttamaa suorituskykyhaittaa, joten ne voivat olla hyödyllisiä cons-listan kaltaisissa tapauksissa, joissa epäsuora viittaus on ainoa tarvittava ominaisuus. Katsomme lisää boxien käyttötapauksia luvussa 18.</p>
+<p><code>Box&lt;T&gt;</code>-tyyppi on älykäs osoitin, koska se toteuttaa <code>Deref</code>-traitin, jonka ansiosta <code>Box&lt;T&gt;</code>-arvoja voidaan käsitellä viitteiden tavoin. Kun <code>Box&lt;T&gt;</code>-arvo poistuu näkyvyysalueeltaan, myös boxin osoittama keon data siivotaan <code>Drop</code>-traitin toteutuksen ansiosta. Nämä kaksi traitia ovat vielä tärkeämpiä muille älykkäille osoitintyypeille, joita käsittelemme loppuosassa tätä lukua. Tutustutaan seuraavaksi näihin kahteen traitiin tarkemmin.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                             <a rel="prev" href="ch15-00-smart-pointers.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                                <i class="fa fa-angle-left"></i>
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
                             <a rel="next prefetch" href="ch15-02-deref.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
                         <div style="clear: both"></div>
@@ -221,16 +298,21 @@
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                     <a rel="prev" href="ch15-00-smart-pointers.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                        <i class="fa fa-angle-left"></i>
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
                     <a rel="next prefetch" href="ch15-02-deref.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>
 
         </div>
 
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
 
 
 
@@ -239,16 +321,17 @@
         </script>
 
 
-        <script src="elasticlunr.min.js"></script>
-        <script src="mark.min.js"></script>
-        <script src="searcher.js"></script>
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-c2a407aa.js"></script>
 
-        <script src="clipboard.min.js"></script>
-        <script src="highlight.js"></script>
-        <script src="book.js"></script>
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-abc7f01d.js"></script>
+        <script src="book-a0b12cfe.js"></script>
 
         <!-- Custom JS scripts -->
-        <script src="ferris.js"></script>
+        <script src="ferris-2317480c.js"></script>
+
 
 
     </div>

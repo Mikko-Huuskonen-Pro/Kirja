@@ -12,44 +12,56 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
 
-        <link rel="icon" href="favicon.svg">
-        <link rel="shortcut icon" href="favicon.png">
-        <link rel="stylesheet" href="css/variables.css">
-        <link rel="stylesheet" href="css/general.css">
-        <link rel="stylesheet" href="css/chrome.css">
-        <link rel="stylesheet" href="css/print.css" media="print">
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-2459343d.css">
+        <link rel="stylesheet" href="css/chrome-ae938929.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
-        <link rel="stylesheet" href="fonts/fonts.css">
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" href="highlight.css">
-        <link rel="stylesheet" href="tomorrow-night.css">
-        <link rel="stylesheet" href="ayu-highlight.css">
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="ferris.css">
-        <link rel="stylesheet" href="theme/2018-edition.css">
-        <link rel="stylesheet" href="theme/semantic-notes.css">
-        <link rel="stylesheet" href="theme/listing.css">
+        <link rel="stylesheet" href="ferris-d33b75bf.css">
+        <link rel="stylesheet" href="theme/2018-edition-4e126c62.css">
+        <link rel="stylesheet" href="theme/semantic-notes-9b5766c0.css">
+        <link rel="stylesheet" href="theme/listing-cab26221.css">
 
 
-        <!-- Provide site root to javascript -->
+        <!-- Provide site root and default themes to javascript -->
         <script>
-            var path_to_root = "";
-            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex-454febf7.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc.js"></script>
+        <script src="toc-7f90d00d.js"></script>
     </head>
     <body>
-    <div id="body-container">
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
             try {
-                var theme = localStorage.getItem('mdbook-theme');
-                var sidebar = localStorage.getItem('mdbook-sidebar');
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
 
                 if (theme.startsWith('"') && theme.endsWith('"')) {
                     localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
@@ -63,7 +75,8 @@
 
         <!-- Set the theme before any content is loaded, prevents flash -->
         <script>
-            var theme;
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
             const html = document.documentElement;
@@ -72,55 +85,59 @@
             html.classList.add("js");
         </script>
 
-        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
-            var sidebar = null;
-            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
             } else {
                 sidebar = 'hidden';
+                sidebar_toggle.checked = false;
             }
-            sidebar_toggle.checked = sidebar === 'visible';
-            html.classList.remove('sidebar-visible');
-            html.classList.add("sidebar-" + sidebar);
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
         </script>
 
-        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
             <!-- populated by js -->
             <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
             <noscript>
                 <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
             </noscript>
-            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
             </div>
         </nav>
 
-        <div id="page-wrapper" class="page-wrapper">
+        <div id="mdbook-page-wrapper" class="page-wrapper">
 
             <div class="page">
-                <div id="menu-bar-hover-placeholder"></div>
-                <div id="menu-bar" class="menu-bar sticky">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
-                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
-                            <i class="fa fa-bars"></i>
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
                         </label>
-                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
-                            <i class="fa fa-paint-brush"></i>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
                         </button>
-                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
-                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
                         </ul>
-                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
-                            <i class="fa fa-search"></i>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
                         </button>
                     </div>
 
@@ -128,290 +145,159 @@
 
                     <div class="right-buttons">
                         <a href="print.html" title="Print this book" aria-label="Print this book">
-                            <i id="print-button" class="fa fa-print"></i>
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
                         </a>
                         <a href="https://github.com/rust-lang/book" title="Git repository" aria-label="Git repository">
-                            <i id="git-repository-button" class="fa fa-github"></i>
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></span>
                         </a>
 
                     </div>
                 </div>
 
-                <div id="search-wrapper" class="hidden">
-                    <form id="searchbar-outer" class="searchbar-outer">
-                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
                     </form>
-                    <div id="searchresults-outer" class="searchresults-outer hidden">
-                        <div id="searchresults-header" class="searchresults-header"></div>
-                        <ul id="searchresults">
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
                         </ul>
                     </div>
                 </div>
 
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
                 <script>
-                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
-                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
-                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
                         link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
                     });
                 </script>
 
-                <div id="content" class="content">
+                <div id="mdbook-content" class="content">
                     <main>
-                        <h2 id="refcellt-ja-sisäisen-mutabiliteetin-malli"><a class="header" href="#refcellt-ja-sisäisen-mutabiliteetin-malli"><code>RefCell&lt;T&gt;</code> ja sisäisen mutabiliteetin malli</a></h2>
-<p><em>Sisäinen mutabiliteetti</em> on Rustin suunnittelumalli, joka sallii datan muuttamisen
-vaikka dataan olisi muuttumattomia viittauksia; normaalisti lainaussäännöt kieltävät
-tämän. Datan muuttamiseksi malli käyttää <code>unsafe</code>-koodia tietorakenteen sisällä
-taivuttaakseen Rustin tavanomaisia sääntöjä, jotka hallitsevat muuttamista ja lainaamista.
-Unsafe-koodi kertoo kääntäjälle, että tarkistamme säännöt käsin sen sijaan, että
-luottaisimme kääntäjään niiden tarkistamisessa; käsittelemme unsafe-koodia tarkemmin
-Luvussa 20.</p>
-<p>Voimme käyttää sisäisen mutabiliteetin mallia käyttäviä tyyppejä vain, kun voimme
-varmistaa, että lainaussääntöjä noudatetaan ajonaikana, vaikka kääntäjä ei voi sitä
-taata. Mukana oleva <code>unsafe</code>-koodi kääritään sitten turvalliseen API:in, ja ulompi
-tyyppi on silti muuttumaton.</p>
-<p>Tutkitaan tätä käsitettä katsomalla <code>RefCell&lt;T&gt;</code>-tyyppiä, joka noudattaa sisäisen
-mutabiliteetin mallia.</p>
-<h3 id="lainaussääntöjen-pakottaminen-ajonaikana-refcelltllä"><a class="header" href="#lainaussääntöjen-pakottaminen-ajonaikana-refcelltllä">Lainaussääntöjen pakottaminen ajonaikana <code>RefCell&lt;T&gt;</code>:llä</a></h3>
-<p>Toisin kuin <code>Rc&lt;T&gt;</code>, <code>RefCell&lt;T&gt;</code>-tyyppi edustaa yksittäistä omistajuutta sen sisältämään
-dataan. Mikä siis tekee <code>RefCell&lt;T&gt;</code>:stä erilaisen kuin esimerkiksi <code>Box&lt;T&gt;</code>? Muista
-Luvussa 4 opitut lainaussäännöt:</p>
+                        <h2 id="refcellt-ja-sisäisen-muuttuvuuden-malli"><a class="header" href="#refcellt-ja-sisäisen-muuttuvuuden-malli"><code>RefCell&lt;T&gt;</code> ja sisäisen muuttuvuuden malli</a></h2>
+<p><em>Sisäinen muuttuvuus</em> on Rustissa suunnittelumalli, joka sallii datan muuttamisen, vaikka dataan olisi muuttumattomia viittauksia; normaalisti lainausperiaatteet kieltävät tämän toiminnon. Datan muuttamiseksi malli käyttää <code>unsafe</code>-koodia tietorakenteen sisällä taivuttaakseen Rustin tavallisia sääntöjä, jotka hallitsevat muuttamista ja lainaamista. <code>Unsafe</code>-koodi ilmaisee kääntäjälle, että tarkistamme säännöt käsin sen sijaan, että luottaisimme kääntäjään niiden tarkistamisessa; käsittelemme <code>unsafe</code>-koodia tarkemmin luvussa 20.</p>
+<p>Voimme käyttää sisäisen muuttuvuuden mallia noudattavia tyyppejä vain, kun voimme varmistaa, että lainausperiaatteita noudatetaan ajonaikana, vaikka kääntäjä ei voi sitä taata. Mukana oleva <code>unsafe</code>-koodi kääritään sitten turvalliseen API:in, ja ulompi tyyppi on edelleen muuttumaton.</p>
+<p>Tutustutaan tähän käsitteeseen tarkastelemalla <code>RefCell&lt;T&gt;</code>-tyyppiä, joka noudattaa sisäisen muuttuvuuden mallia.</p>
+<!-- Old headings. Do not remove or links may break. -->
+<p><a id="enforcing-borrowing-rules-at-runtime-with-refcellt"></a></p>
+<h3 id="lainausperiaatteiden-pakottaminen-ajonaikana"><a class="header" href="#lainausperiaatteiden-pakottaminen-ajonaikana">Lainausperiaatteiden pakottaminen ajonaikana</a></h3>
+<p>Toisin kuin <code>Rc&lt;T&gt;</code>, <code>RefCell&lt;T&gt;</code>-tyyppi edustaa yksittäistä omistajuutta pitämänsä datan yli. Mikä siis tekee <code>RefCell&lt;T&gt;</code>:stä erilaisen kuin esimerkiksi <code>Box&lt;T&gt;</code>? Muistathan luvussa 4 opitut lainausperiaatteet:</p>
 <ul>
-<li>Milloin tahansa sinulla voi olla <em>joko</em> (mutta ei molempia) yksi muuttuva viite
-tai mikä tahansa määrä muuttumattomia viitteitä.</li>
-<li>Viitteiden on aina oltava kelvollisia.</li>
+<li>Milloin tahansa sinulla voi olla <em>joko</em> yksi muuttuva viittaus <em>tai</em> mikä tahansa määrä muuttumattomia viittauksia (mutta ei molempia).</li>
+<li>Viittausten täytyy aina olla voimassa.</li>
 </ul>
-<p>Viitteillä ja <code>Box&lt;T&gt;</code>:llä lainaussääntöjen invariantit pakotetaan käännösaikana.
-<code>RefCell&lt;T&gt;</code>:llä nämä invariantit pakotetaan <em>ajonaikana</em>. Viitteillä, jos rikot nämä
-säännöt, saat käännösvirheen. <code>RefCell&lt;T&gt;</code>:llä, jos rikot nämä säännöt, ohjelmasi
-kaatuu paniikkiin ja päättyy.</p>
-<p>Käännösaikaisen lainaussääntöjen tarkistuksen etuja ovat, että virheet havaitaan
-aikaisemmin kehitysprosessissa, eikä suorituskykyyn ole vaikutusta, koska kaikki
-analyysi tehdään etukäteen. Näistä syistä lainaussääntöjen tarkistaminen käännösaikana
-on paras valinta useimmissa tapauksissa, minkä vuoksi se on Rustin oletus.</p>
-<p>Ajonaikaisen lainaussääntöjen tarkistuksen etu on, että tiettyjä muistiturvallisia
-tilanteita sallitaan, joissa käännösaikaiset tarkistukset olisivat kieltäneet ne.
-Staattinen analyysi, kuten Rustin kääntäjä, on luonnostaan konservatiivinen. Joitakin
-koodin ominaisuuksia on mahdotonta havaita analysoimalla koodia: kuuluisin esimerkki
-on pysähtymisongelma (Halting Problem), joka on tämän kirjan ulkopuolella mutta on
-mielenkiintoinen tutkimuskohde.</p>
-<p>Koska jotkin analyysit ovat mahdottomia, jos Rustin kääntäjä ei voi olla varma, että
-koodi noudattaa omistajuussääntöjä, se saattaa hylätä oikean ohjelman; tällä tavalla
-se on konservatiivinen. Jos Rust hyväksyisi virheellisen ohjelman, käyttäjät eivät
-voisi luottaa Rustin antamiin takuisiin. Jos Rust kuitenkin hylkää oikean ohjelman,
-ohjelmoijaa vaivataan, mutta mitään katastrofaalista ei voi tapahtua. <code>RefCell&lt;T&gt;</code>-tyyppi
-on hyödyllinen, kun olet varma, että koodisi noudattaa lainaussääntöjä, mutta kääntäjä
-ei pysty ymmärtämään ja takaamaan sitä.</p>
-<p>Samoin kuin <code>Rc&lt;T&gt;</code>, <code>RefCell&lt;T&gt;</code> on vain yksisäikeisiin tilanteisiin, ja se antaa
-käännösaikaisen virheen, jos yrität käyttää sitä monisäikeisessä kontekstissa. Puhumme
-siitä, miten saada <code>RefCell&lt;T&gt;</code>:n toiminnallisuus monisäikeisessä ohjelmassa Luvussa 16.</p>
-<p>Tässä yhteenveto syistä valita <code>Box&lt;T&gt;</code>, <code>Rc&lt;T&gt;</code> tai <code>RefCell&lt;T&gt;</code>:</p>
+<p>Viittausten ja <code>Box&lt;T&gt;</code>:n kanssa lainausperiaatteiden invariantit pakotetaan käännösaikana. <code>RefCell&lt;T&gt;</code>:n kanssa nämä invariantit pakotetaan <em>ajonaikana</em>. Viittausten kanssa sääntöjen rikkominen tuottaa kääntäjävirheen. <code>RefCell&lt;T&gt;</code>:n kanssa sääntöjen rikkominen saa ohjelman panikoimaan ja päättymään.</p>
+<p>Lainausperiaatteiden tarkistamisen käännösaikana etuja ovat, että virheet havaitaan aikaisemmin kehitysprosessissa eikä ajonaikaisella suorituskyvyllä ole vaikutusta, koska kaikki analyysi tehdään etukäteen. Näistä syistä lainausperiaatteiden tarkistaminen käännösaikana on paras valinta useimmissa tapauksissa, minkä vuoksi se on Rustin oletus.</p>
+<p>Lainausperiaatteiden tarkistamisen ajonaikana etuna on, että tietyt muistiturvalliset skenaariot sallitaan, vaikka käännösaikaiset tarkistukset olisivat kieltäneet ne. Staattinen analyysi, kuten Rustin kääntäjä, on luonnostaan konservatiivinen. Joitakin koodin ominaisuuksia on mahdotonta havaita analysoimalla koodia: tunnetuin esimerkki on pysähtymisongelma, joka on tämän kirjan ulkopuolella mutta mielenkiintoinen tutkimuskohde.</p>
+<p>Koska osa analyysistä on mahdotonta, jos Rustin kääntäjä ei voi olla varma, että koodi noudattaa omistajuussääntöjä, se saattaa hylätä oikean ohjelman; tällä tavalla se on konservatiivinen. Jos Rust hyväksyisi virheellisen ohjelman, käyttäjät eivät voisi luottaa Rustin antamiin takuisiin. Jos Rust hylkää oikean ohjelman, ohjelmoijaa haitataan, mutta mitään katastrofaalista ei voi tapahtua. <code>RefCell&lt;T&gt;</code>-tyyppi on hyödyllinen, kun olet varma, että koodisi noudattaa lainausperiaatteita, mutta kääntäjä ei pysty ymmärtämään ja takaamaan sitä.</p>
+<p>Samoin kuin <code>Rc&lt;T&gt;</code>, <code>RefCell&lt;T&gt;</code> on tarkoitettu vain yksisäikeisiin skenaarioihin ja antaa kääntäjävirheen, jos yrität käyttää sitä monisäikeisessä kontekstissa. Käsittelemme, miten <code>RefCell&lt;T&gt;</code>:n toiminnallisuus saadaan monisäikeisessä ohjelmassa luvussa 16.</p>
+<p>Tässä on yhteenveto syistä valita <code>Box&lt;T&gt;</code>, <code>Rc&lt;T&gt;</code> tai <code>RefCell&lt;T&gt;</code>:</p>
 <ul>
-<li><code>Rc&lt;T&gt;</code> mahdollistaa useita omistajia samalle datalle; <code>Box&lt;T&gt;</code>:llä ja <code>RefCell&lt;T&gt;</code>:llä
-on yksittäiset omistajat.</li>
-<li><code>Box&lt;T&gt;</code> sallii muuttumattomat tai muuttuvat lainaukset, jotka tarkistetaan käännösaikana;
-<code>Rc&lt;T&gt;</code> sallii vain muuttumattomat lainaukset, jotka tarkistetaan käännösaikana;
-<code>RefCell&lt;T&gt;</code> sallii muuttumattomat tai muuttuvat lainaukset, jotka tarkistetaan ajonaikana.</li>
-<li>Koska <code>RefCell&lt;T&gt;</code> sallii muuttuvat lainaukset, jotka tarkistetaan ajonaikana, voit
-muuttaa <code>RefCell&lt;T&gt;</code>:n sisällä olevaa arvoa vaikka <code>RefCell&lt;T&gt;</code> olisi muuttumaton.</li>
+<li><code>Rc&lt;T&gt;</code> mahdollistaa saman datan usean omistajan; <code>Box&lt;T&gt;</code>:llä ja <code>RefCell&lt;T&gt;</code>:llä on yksi omistaja.</li>
+<li><code>Box&lt;T&gt;</code> sallii muuttumattomat tai muuttuvat lainaukset, jotka tarkistetaan käännösaikana; <code>Rc&lt;T&gt;</code> sallii vain muuttumattomat lainaukset, jotka tarkistetaan käännösaikana; <code>RefCell&lt;T&gt;</code> sallii muuttumattomat tai muuttuvat lainaukset, jotka tarkistetaan ajonaikana.</li>
+<li>Koska <code>RefCell&lt;T&gt;</code> sallii muuttuvat lainaukset, jotka tarkistetaan ajonaikana, voit muuttaa <code>RefCell&lt;T&gt;</code>:n sisällä olevaa arvoa, vaikka <code>RefCell&lt;T&gt;</code> itse olisi muuttumaton.</li>
 </ul>
-<p>Arvon sisällä olevan arvon muuttaminen muuttumattomassa arvossa on <em>sisäisen mutabiliteetin</em>
-malli. Katsotaan tilannetta, jossa sisäinen mutabiliteetti on hyödyllinen, ja tutkitaan,
-miten se on mahdollista.</p>
-<h3 id="sisäinen-mutabiliteetti-muuttuva-lainaus-muuttumattomaan-arvoon"><a class="header" href="#sisäinen-mutabiliteetti-muuttuva-lainaus-muuttumattomaan-arvoon">Sisäinen mutabiliteetti: muuttuva lainaus muuttumattomaan arvoon</a></h3>
-<p>Lainaussääntöjen seuraus on, että kun sinulla on muuttumaton arvo, et voi lainata sitä
-muuttuvasti. Esimerkiksi tämä koodi ei käänny:</p>
+<p>Arvon muuttaminen muuttumattoman arvon sisällä on sisäisen muuttuvuuden malli. Katsotaan tilannetta, jossa sisäinen muuttuvuus on hyödyllinen, ja tarkastellaan, miten se on mahdollista.</p>
+<!-- Old headings. Do not remove or links may break. -->
+<p><a id="interior-mutability-a-mutable-borrow-to-an-immutable-value"></a></p>
+<h3 id="sisäisen-muuttuvuuden-käyttö"><a class="header" href="#sisäisen-muuttuvuuden-käyttö">Sisäisen muuttuvuuden käyttö</a></h3>
+<p>Lainausperiaatteiden seuraauksena, kun sinulla on muuttumaton arvo, et voi lainata sitä muuttuvasti. Esimerkiksi tämä koodi ei käännä:</p>
 <pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch15-smart-pointers/no-listing-01-cant-borrow-immutable-as-mutable/src/main.rs}}</code></pre>
 <p>Jos yrittäisit kääntää tämän koodin, saisit seuraavan virheen:</p>
 <pre><code class="language-console">{{#include ../listings/ch15-smart-pointers/no-listing-01-cant-borrow-immutable-as-mutable/output.txt}}
 </code></pre>
-<p>On kuitenkin tilanteita, joissa olisi hyödyllistä, että arvo muuttaisi itseään metodeissaan
-mutta näyttäisi muuttumattomalta muulle koodille. Arvon metodien ulkopuolella oleva koodi
-ei voisi muuttaa arvoa. <code>RefCell&lt;T&gt;</code>:n käyttö on yksi tapa saada sisäinen mutabiliteetti,
-mutta <code>RefCell&lt;T&gt;</code> ei kierrä lainaussääntöjä kokonaan: kääntäjän lainaustarkistin sallii
-tämän sisäisen mutabiliteetin, ja lainaussäännöt tarkistetaan ajonaikana käännösaian sijaan.
-Jos rikot sääntöjä, saat <code>panic!</code>:n käännösvirheen sijaan.</p>
-<p>Käydään läpi käytännön esimerkki, jossa voimme käyttää <code>RefCell&lt;T&gt;</code>:tä muuttamaan
-muuttumatonta arvoa, ja katsotaan, miksi se on hyödyllistä.</p>
-<h4 id="sisäisen-mutabiliteetin-käyttötapaus-mock-oliot"><a class="header" href="#sisäisen-mutabiliteetin-käyttötapaus-mock-oliot">Sisäisen mutabiliteetin käyttötapaus: mock-oliot</a></h4>
-<p>Joskus testauksen aikana ohjelmoija käyttää yhtä tyyppiä toisen tilalla havaitakseen
-tiettyä käyttäytymistä ja varmistaakseen, että se on toteutettu oikein. Tätä paikkamerkkityyppiä
-kutsutaan <em>testikakaksi</em> (<code>test double</code>). Ajattele sitä elokuvan ”sijaisnäyttelijän”
-(<code>stunt double</code>) merkityksessä, jossa henkilö astuu esiin ja korvaa näyttelijän tekemään
-tietyn hankalan kohtauksen. Testikakut korvaavat muita tyyppejä testejä ajettaessa.
-<em>Mock-oliot</em> ovat erityisiä testikakkujen tyyppejä, jotka tallentavat testin aikana
-tapahtuvat asiat, jotta voit varmistaa, että oikeat toiminnot tapahtuivat.</p>
-<p>Rustissa ei ole olioita samassa merkityksessä kuin muissa kielissä, eikä Rustissa ole
-mock-olioiden toiminnallisuutta sisäänrakennettuna standardikirjastoon kuten joissakin
-muissa kielissä. Voit kuitenkin ehdottomasti luoda structin, joka palvelee samoja tarkoituksia
-kuin mock-olio.</p>
-<p>Tässä on skenaario, jota testaamme: luomme kirjaston, joka seuraa arvoa suhteessa
-enimmäisarvoon ja lähettää viestejä sen mukaan, kuinka lähellä enimmäisarvoa nykyinen
-arvo on. Tätä kirjastoa voitaisiin käyttää esimerkiksi seuraamaan käyttäjän kiintiötä
-sallittujen API-kutsujen määrälle.</p>
-<p>Kirjastomme tarjoaa vain toiminnallisuuden seurata, kuinka lähellä enimmäisarvoa arvo
-on ja mitä viestejä pitäisi lähettää milloinkin. Kirjastoamme käyttäviltä sovelluksilta
-odotetaan viestien lähetysmekanismin tarjoamista: sovellus voisi näyttää viestin sovelluksessa,
-lähettää sähköpostin, lähettää tekstiviestin tai tehdä jotain muuta. Kirjaston ei tarvitse
-tietää tuota yksityiskohtaa. Sen tarvitsee vain jotain, joka toteuttaa tarjoamamme
-traitin nimeltä <code>Messenger</code>. Listauksessa 15-20 on kirjaston koodi:</p>
-<figure class="listing">
+<p>On kuitenkin tilanteita, joissa olisi hyödyllistä, että arvo muuttaisi itseään metodeissaan mutta näyttäisi muuttumattomalta muulle koodille. Arvon metodien ulkopuolella oleva koodi ei voisi muuttaa arvoa. <code>RefCell&lt;T&gt;</code>:n käyttö on yksi tapa saada sisäinen muuttuvuus, mutta <code>RefCell&lt;T&gt;</code> ei kierrä lainausperiaatteita kokonaan: kääntäjän lainaustarkistin sallii tämän sisäisen muuttuvuuden, ja lainausperiaatteet tarkistetaan ajonaikana käännösaikaan sijaan. Jos rikot säännöt, saat <code>panic!</code>:n kääntäjävirheen sijaan.</p>
+<p>Käydään läpi käytännön esimerkki, jossa voimme käyttää <code>RefCell&lt;T&gt;</code>:tä muuttamaan muuttumatonta arvoa, ja katsotaan, miksi se on hyödyllistä.</p>
+<!-- Old headings. Do not remove or links may break. -->
+<p><a id="a-use-case-for-interior-mutability-mock-objects"></a></p>
+<h4 id="testaus-mock-olioilla"><a class="header" href="#testaus-mock-olioilla">Testaus mock-olioilla</a></h4>
+<p>Joskus testauksen aikana ohjelmoija käyttää yhtä tyyppiä toisen tilalla havaitakseen tiettyä käyttäytymistä ja varmistaakseen, että se on toteutettu oikein. Tätä paikkamerkkityyppiä kutsutaan <em>test double</em>:ksi. Ajattele sitä elokuvatuotannon stunt-tuplana, jossa henkilö astuu esiin ja korvaa näyttelijän tekemään erityisen hankalan kohtauksen. Test double:t korvaavat muita tyyppejä testejä ajettaessa. <em>Mock-oliot</em> ovat erityisiä test double -tyyppejä, jotka tallentavat testin aikana tapahtuneet asiat, jotta voit varmistaa, että oikeat toiminnot tapahtuivat.</p>
+<p>Rustissa ei ole olioita samassa mielessä kuin muissa kielissä, eikä Rustissa ole mock-olioiden toiminnallisuutta sisäänrakennettuna standardikirjastoon kuten joissakin muissa kielissä. Voit kuitenkin ehdottomasti luoda structin, joka palvelee samoja tarkoituksia kuin mock-olio.</p>
+<p>Tässä on skenaario, jota testaamme: luomme kirjaston, joka seuraa arvoa suhteessa enimmäisarvoon ja lähettää viestejä sen mukaan, kuinka lähellä enimmäisarvoa nykyinen arvo on. Tätä kirjastoa voitaisiin käyttää esimerkiksi seuraamaan käyttäjän API-kutsukiintiötä.</p>
+<p>Kirjastomme tarjoaa vain toiminnallisuuden seurata, kuinka lähellä enimmäisarvoa arvo on, ja mitä viestejä pitäisi lähettää milloin. Kirjastoa käyttävien sovellusten odotetaan tarjoavan viestien lähetysmekanismin: sovellus voisi näyttää viestin käyttäjälle suoraan, lähettää sähköpostin, tekstiviestin tai tehdä jotain muuta. Kirjaston ei tarvitse tietää yksityiskohtia. Sille riittää jokin, joka toteuttaa tarjoamamme traitin nimeltä <code>Messenger</code>. Listauksessa 15-20 on kirjaston koodi.</p>
+<figure class="listing" id="listing-15-20">
 <span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch15-smart-pointers/listing-15-20/src/lib.rs}}</code></pre>
-<figcaption>Listing 15-20: Kirjasto, joka seuraa kuinka lähellä arvo on enimmäisarvoa ja varoittaa, kun arvo on tietyillä tasoilla</figcaption>
+<figcaption><a href="#listing-15-20">Listing 15-20</a>: Kirjasto, joka seuraa kuinka lähellä arvo on enimmäisarvoa ja varoittaa, kun arvo on tietyillä tasoilla</figcaption>
 </figure>
-<p>Yksi tärkeä osa tässä koodissa on, että <code>Messenger</code>-traitilla on yksi metodi nimeltä
-<code>send</code>, joka ottaa muuttumattoman viitteen <code>self</code>:ään ja viestin tekstin. Tämä trait
-on rajapinta, jonka mock-oliomme täytyy toteuttaa, jotta mockia voidaan käyttää samalla
-tavalla kuin oikeaa oliota. Toinen tärkeä osa on, että haluamme testata <code>LimitTracker</code>:n
-<code>set_value</code>-metodin käyttäytymistä. Voimme muuttaa <code>value</code>-parametrille välittämäämme
-arvoa, mutta <code>set_value</code> ei palauta mitään, josta voisimme tehdä väittämiä. Haluamme
-voida sanoa, että jos luomme <code>LimitTracker</code>:in jollain, joka toteuttaa <code>Messenger</code>-traitin,
-ja tietyllä <code>max</code>-arvolla, kun välitämme eri lukuja <code>value</code>:lle, messengerille kerrotaan
-lähettää sopivat viestit.</p>
-<p>Tarvitsemme mock-olion, joka <code>send</code>-kutsun sijaan ei lähetä sähköpostia tai tekstiviestiä,
-vaan vain seuraa viestejä, joita sille kerrotaan lähettää. Voimme luoda uuden mock-olioinstanssin,
-luoda <code>LimitTracker</code>:in, joka käyttää mock-oliota, kutsua <code>set_value</code>-metodia <code>LimitTracker</code>:lla
-ja tarkistaa, että mock-oliolla on odottamamme viestit. Listauksessa 15-21 on yritys
-toteuttaa mock-olio juuri tätä varten, mutta lainaustarkistin ei salli sitä:</p>
-<figure class="listing">
+<p>Yksi tärkeä osa tässä koodissa on, että <code>Messenger</code>-traitilla on yksi metodi nimeltä <code>send</code>, joka ottaa muuttumattoman viittauksen <code>self</code>:iin ja viestin tekstin. Tämä trait on rajapinta, jonka mock-oliomme täytyy toteuttaa, jotta mockia voidaan käyttää samalla tavalla kuin oikeaa oliota. Toinen tärkeä osa on, että haluamme testata <code>LimitTracker</code>:in <code>set_value</code>-metodin käyttäytymistä. Voimme muuttaa <code>value</code>-parametrille välittämäämme arvoa, mutta <code>set_value</code> ei palauta mitään, josta voisimme tehdä väitteitä. Haluamme voida sanoa, että jos luomme <code>LimitTracker</code>:in jollakin, joka toteuttaa <code>Messenger</code>-traitin, ja tietyllä <code>max</code>-arvolla, messengerille kerrotaan lähettämään asianmukaiset viestit, kun välitämme eri lukuja <code>value</code>:lle.</p>
+<p>Tarvitsemme mock-olion, joka sähköpostin tai tekstiviestin lähettämisen sijaan, kun kutsumme <code>send</code>:iä, vain seuraa sille kerrottuja viestejä. Voimme luoda uuden mock-olioinstanssin, luoda <code>LimitTracker</code>:in, joka käyttää mock-oliota, kutsua <code>LimitTracker</code>:in <code>set_value</code>-metodia ja tarkistaa sitten, että mock-oliolla on odottamamme viestit. Listauksessa 15-21 on yritys toteuttaa mock-olio juuri tätä varten, mutta lainaustarkistin ei salli sitä.</p>
+<figure class="listing" id="listing-15-21">
 <span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch15-smart-pointers/listing-15-21/src/lib.rs:here}}</code></pre>
-<figcaption>Listing 15-21: Yritys toteuttaa <code>MockMessenger</code>, jota lainaustarkistin ei salli</figcaption>
+<figcaption><a href="#listing-15-21">Listing 15-21</a>: Yritys toteuttaa <code>MockMessenger</code>, jota lainaustarkistin ei salli</figcaption>
 </figure>
-<p>Tämä testikoodi määrittelee <code>MockMessenger</code>-structin, jolla on <code>sent_messages</code>-kenttä
-<code>Vec&lt;String&gt;</code>-arvojen kanssa seuratakseen viestejä, joita sille kerrotaan lähettää.
-Määrittelemme myös assosioituneen funktion <code>new</code>, jotta uusien <code>MockMessenger</code>-arvojen
-luominen tyhjällä viestiluettelolla on kätevää. Toteutamme sitten <code>Messenger</code>-traitin
-<code>MockMessenger</code>:lle, jotta voimme antaa <code>MockMessenger</code>:in <code>LimitTracker</code>:ille. <code>send</code>-metodin
-määrittelyssä otamme parametrina välitetyn viestin ja tallennamme sen <code>MockMessenger</code>:in
-<code>sent_messages</code>-luetteloon.</p>
-<p>Testissä testaamme, mitä tapahtuu, kun <code>LimitTracker</code>:lle kerrotaan asettamaan <code>value</code>
-joksikin, joka on yli 75 prosenttia <code>max</code>-arvosta. Ensin luomme uuden <code>MockMessenger</code>:in,
-joka alkaa tyhjällä viestiluettelolla. Sitten luomme uuden <code>LimitTracker</code>:in ja annamme
-sille viitteen uuteen <code>MockMessenger</code>:iin ja <code>max</code>-arvon 100. Kutsumme <code>set_value</code>-metodia
-<code>LimitTracker</code>:lla arvolla 80, joka on yli 75 prosenttia luvusta 100. Sitten varmistamme,
-että <code>MockMessenger</code>:in seuraamassa viestiluettelossa pitäisi nyt olla yksi viesti.</p>
+<p>Tämä testikoodi määrittelee <code>MockMessenger</code>-structin, jolla on <code>sent_messages</code>-kenttä <code>Vec&lt;String&gt;</code>-arvolla seuratakseen sille kerrottuja viestejä. Määrittelemme myös assosioituneen funktion <code>new</code>, jotta uusien <code>MockMessenger</code>-arvojen luominen tyhjällä viestilistalla on kätevää. Toteutamme sitten <code>Messenger</code>-traitin <code>MockMessenger</code>:lle, jotta voimme antaa <code>MockMessenger</code>:in <code>LimitTracker</code>:ille. <code>send</code>-metodin määrittelyssä otamme parametrina välitetyn viestin ja tallennamme sen <code>MockMessenger</code>:in <code>sent_messages</code>-listaan.</p>
+<p>Testissä testaamme, mitä tapahtuu, kun <code>LimitTracker</code>:ille kerrotaan asettamaan <code>value</code> joksikin, joka on yli 75 prosenttia <code>max</code>-arvosta. Ensin luomme uuden <code>MockMessenger</code>:in, joka alkaa tyhjällä viestilistalla. Sitten luomme uuden <code>LimitTracker</code>:in ja annamme sille viittauksen uuteen <code>MockMessenger</code>:iin ja <code>max</code>-arvon <code>100</code>. Kutsumme <code>LimitTracker</code>:in <code>set_value</code>-metodia arvolla <code>80</code>, joka on yli 75 prosenttia luvusta 100. Sitten väitämme, että <code>MockMessenger</code>:in seuraamalla viestilistalla pitäisi nyt olla yksi viesti.</p>
 <p>Tässä testissä on kuitenkin yksi ongelma, kuten tässä näytetään:</p>
 <pre><code class="language-console">{{#include ../listings/ch15-smart-pointers/listing-15-21/output.txt}}
 </code></pre>
-<p>Emme voi muokata <code>MockMessenger</code>:ia seurataksemme viestejä, koska <code>send</code>-metodi ottaa
-muuttumattoman viitteen <code>self</code>:ään. Emme myöskään voi noudattaa virhetekstin ehdotusta
-käyttää <code>&amp;mut self</code>:ää sekä <code>impl</code>-metodissa että <code>trait</code>-määrittelyssä. Emme halua
-muuttaa <code>Messenger</code>-traitia pelkästään testauksen vuoksi. Sen sijaan meidän täytyy löytää
-tapa saada testikoodimme toimimaan oikein olemassa olevan suunnittelumme kanssa.</p>
-<p>Tämä on tilanne, jossa sisäinen mutabiliteetti voi auttaa! Tallennamme <code>sent_messages</code>:in
-<code>RefCell&lt;T&gt;</code>:n sisään, ja sitten <code>send</code>-metodi voi muokata <code>sent_messages</code>:ia tallentaakseen
-näkemämme viestit. Listauksessa 15-22 näkyy, miltä se näyttää:</p>
-<figure class="listing">
+<p>Emme voi muokata <code>MockMessenger</code>:ia seurataksemme viestejä, koska <code>send</code>-metodi ottaa muuttumattoman viittauksen <code>self</code>:iin. Emme myöskään voi noudattaa virheilmoituksen ehdotusta käyttää <code>&amp;mut self</code>:iä sekä <code>impl</code>-metodissa että traitin määrittelyssä. Emme halua muuttaa <code>Messenger</code>-traitia pelkästään testauksen vuoksi. Sen sijaan meidän täytyy löytää tapa saada testikoodimme toimimaan oikein olemassa olevan suunnittelumme kanssa.</p>
+<p>Tämä on tilanne, jossa sisäinen muuttuvuus voi auttaa! Tallennamme <code>sent_messages</code>:in <code>RefCell&lt;T&gt;</code>:n sisään, ja sitten <code>send</code>-metodi voi muokata <code>sent_messages</code>:ia tallentaakseen näkemämme viestit. Listauksessa 15-22 näytetään, miltä se näyttää.</p>
+<figure class="listing" id="listing-15-22">
 <span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch15-smart-pointers/listing-15-22/src/lib.rs:here}}</code></pre>
-<figcaption>Listing 15-22: <code>RefCell&lt;T&gt;</code>:n käyttö sisäisen arvon muuttamiseen, kun ulompi arvo katsotaan muuttumattomaksi</figcaption>
+<figcaption><a href="#listing-15-22">Listing 15-22</a>: <code>RefCell&lt;T&gt;</code>:n käyttö sisäisen arvon muuttamiseen, vaikka ulompi arvo katsotaan muuttumattomaksi</figcaption>
 </figure>
-<p><code>sent_messages</code>-kenttä on nyt tyyppiä <code>RefCell&lt;Vec&lt;String&gt;&gt;</code> <code>Vec&lt;String&gt;</code>:n sijaan.
-<code>new</code>-funktiossa luomme uuden <code>RefCell&lt;Vec&lt;String&gt;&gt;</code>-instanssin tyhjän vektorin ympärille.</p>
-<p><code>send</code>-metodin toteutuksessa ensimmäinen parametri on silti muuttumaton lainaus <code>self</code>:stä,
-mikä vastaa trait-määrittelyä. Kutsumme <code>borrow_mut</code>:ia <code>RefCell&lt;Vec&lt;String&gt;&gt;</code>:ssa
-<code>self.sent_messages</code>:issa saadaksemme muuttuvan viitteen <code>RefCell&lt;Vec&lt;String&gt;&gt;</code>:n sisällä
-olevaan arvoon, joka on vektori. Sitten voimme kutsua <code>push</code>:ia vektorin muuttuvalla
-viitteellä seurataksemme testin aikana lähetettyjä viestejä.</p>
-<p>Viimeinen muutos, jonka meidän täytyy tehdä, on väittämässä: nähdäksemme, kuinka monta
-alkiota sisäisessä vektorissa on, kutsumme <code>borrow</code>:ia <code>RefCell&lt;Vec&lt;String&gt;&gt;</code>:ssa saadaksemme
-muuttumattoman viitteen vektoriin.</p>
-<p>Nyt kun olet nähnyt, miten <code>RefCell&lt;T&gt;</code>:tä käytetään, kaivaudutaan siihen, miten se toimii!</p>
-<h4 id="lainausten-seuranta-ajonaikana-refcelltllä"><a class="header" href="#lainausten-seuranta-ajonaikana-refcelltllä">Lainausten seuranta ajonaikana <code>RefCell&lt;T&gt;</code>:llä</a></h4>
-<p>Kun luomme muuttumattomia ja muuttuvia viitteitä, käytämme <code>&amp;</code>- ja <code>&amp;mut</code>-syntaksia.
-<code>RefCell&lt;T&gt;</code>:llä käytämme <code>borrow</code>- ja <code>borrow_mut</code>-metodeja, jotka kuuluvat <code>RefCell&lt;T&gt;</code>:n
-turvalliseen API:in. <code>borrow</code>-metodi palauttaa älykkään osoittimen tyypin <code>Ref&lt;T&gt;</code>, ja
-<code>borrow_mut</code> palauttaa älykkään osoittimen tyypin <code>RefMut&lt;T&gt;</code>. Molemmat tyypit toteuttavat
-<code>Deref</code>:in, joten voimme käsitellä niitä kuten tavallisia viitteitä.</p>
-<p><code>RefCell&lt;T&gt;</code> seuraa, kuinka monta <code>Ref&lt;T&gt;</code>- ja <code>RefMut&lt;T&gt;</code>-älykästä osoitinta on tällä
-hetkellä aktiivisia. Joka kerta kun kutsumme <code>borrow</code>:ia, <code>RefCell&lt;T&gt;</code> kasvattaa laskuriaan
-siitä, kuinka monta muuttumatonta lainausta on aktiivisia. Kun <code>Ref&lt;T&gt;</code>-arvo poistuu
-laajuudesta, muuttumattomien lainausten määrä vähenee yhdellä. Aivan kuten käännösaikaiset
-lainaussäännöt, <code>RefCell&lt;T&gt;</code> sallii meidän olla monta muuttumatonta lainausta tai yksi
-muuttuva lainaus milloin tahansa.</p>
-<p>Jos yritämme rikkoa näitä sääntöjä, sen sijaan että saisimme käännösvirheen kuten viitteillä,
-<code>RefCell&lt;T&gt;</code>:n toteutus kaatuu ajonaikana. Listauksessa 15-23 on muokattu <code>send</code>-toteutus
-Listauksesta 15-22. Yritämme tarkoituksella luoda kaksi muuttuvaa lainausta aktiivisiksi
-samaan laajuuteen havainnollistaaksemme, että <code>RefCell&lt;T&gt;</code> estää meitä tekemästä tätä
-ajonaikana.</p>
-<figure class="listing">
+<p><code>sent_messages</code>-kenttä on nyt tyyppiä <code>RefCell&lt;Vec&lt;String&gt;&gt;</code> <code>Vec&lt;String&gt;</code>:n sijaan. <code>new</code>-funktiossa luomme uuden <code>RefCell&lt;Vec&lt;String&gt;&gt;</code>-instanssin tyhjän vektorin ympärille.</p>
+<p><code>send</code>-metodin toteutuksessa ensimmäinen parametri on edelleen muuttumaton lainaus <code>self</code>:stä, mikä vastaa traitin määrittelyä. Kutsumme <code>borrow_mut</code>:ia <code>self.sent_messages</code>:in <code>RefCell&lt;Vec&lt;String&gt;&gt;</code>:ssa saadaksemme muuttuvan viittauksen <code>RefCell&lt;Vec&lt;String&gt;&gt;</code>:n sisällä olevaan arvoon, joka on vektori. Sitten voimme kutsua <code>push</code>:ia vektorin muuttuvalla viittauksella seurataksemme testin aikana lähetettyjä viestejä.</p>
+<p>Viimeinen muutos, jonka meidän täytyy tehdä, on väitteessä: nähdäksemme, kuinka monta kohdetta sisäisessä vektorissa on, kutsumme <code>borrow</code>:ia <code>RefCell&lt;Vec&lt;String&gt;&gt;</code>:ssa saadaksemme muuttumattoman viittauksen vektoriin.</p>
+<p>Nyt kun olet nähnyt, miten <code>RefCell&lt;T&gt;</code>:tä käytetään, syvennytään siihen, miten se toimii!</p>
+<!-- Old headings. Do not remove or links may break. -->
+<p><a id="keeping-track-of-borrows-at-runtime-with-refcellt"></a></p>
+<h4 id="lainausten-seuranta-ajonaikana"><a class="header" href="#lainausten-seuranta-ajonaikana">Lainausten seuranta ajonaikana</a></h4>
+<p>Kun luomme muuttumattomia ja muuttuvia viittauksia, käytämme vastaavasti <code>&amp;</code>- ja <code>&amp;mut</code>-syntaksia. <code>RefCell&lt;T&gt;</code>:n kanssa käytämme <code>borrow</code>- ja <code>borrow_mut</code>-metodeja, jotka kuuluvat <code>RefCell&lt;T&gt;</code>:n turvalliseen API:in. <code>borrow</code>-metodi palauttaa älykkään osoittimen tyypin <code>Ref&lt;T&gt;</code>, ja <code>borrow_mut</code> palauttaa älykkään osoittimen tyypin <code>RefMut&lt;T&gt;</code>. Molemmat tyypit toteuttavat <code>Deref</code>:in, joten voimme käsitellä niitä kuin tavallisia viittauksia.</p>
+<p><code>RefCell&lt;T&gt;</code> seuraa, kuinka monta <code>Ref&lt;T&gt;</code>- ja <code>RefMut&lt;T&gt;</code>-älykästä osoitinta on parhaillaan aktiivisia. Joka kerta kun kutsumme <code>borrow</code>:ia, <code>RefCell&lt;T&gt;</code> kasvattaa aktiivisten muuttumattomien lainausten määrää. Kun <code>Ref&lt;T&gt;</code>-arvo poistuu näkyvyysalueelta, muuttumattomien lainausten määrä pienenee yhdellä. Aivan kuten käännösaikaiset lainausperiaatteet, <code>RefCell&lt;T&gt;</code> sallii useita muuttumattomia lainauksia tai yhden muuttuvan lainauksen milloin tahansa.</p>
+<p>Jos yritämme rikkoa näitä sääntöjä, <code>RefCell&lt;T&gt;</code>:n toteutus panikoi ajonaikana sen sijaan, että saisimme kääntäjävirheen kuten viittausten kanssa. Listauksessa 15-23 on muutos listauksen 15-22 <code>send</code>-toteutukseen. Yritämme tarkoituksella luoda kaksi aktiivista muuttuvaa lainausta samaan näkyvyysalueeseen havainnollistaaksemme, että <code>RefCell&lt;T&gt;</code> estää meitä tekemästä tätä ajonaikana.</p>
+<figure class="listing" id="listing-15-23">
 <span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust ignore panics">{{#rustdoc_include ../listings/ch15-smart-pointers/listing-15-23/src/lib.rs:here}}</code></pre>
-<figcaption>Listing 15-23: Kahden muuttuvan viitteen luominen samaan laajuuteen nähdäksemme, että <code>RefCell&lt;T&gt;</code> kaatuu paniikkiin</figcaption>
+<figcaption><a href="#listing-15-23">Listing 15-23</a>: Kahden muuttuvan viittauksen luominen samaan näkyvyysalueeseen nähdäksemme, että <code>RefCell&lt;T&gt;</code> panikoi</figcaption>
 </figure>
-<p>Luomme muuttujan <code>one_borrow</code> <code>borrow_mut</code>:ista palautetulle <code>RefMut&lt;T&gt;</code>-älykkäälle osoittimelle.
-Sitten luomme toisen muuttuvan lainauksen samalla tavalla muuttujaan <code>two_borrow</code>. Tämä
-tekee kaksi muuttuvaa viitettä samaan laajuuteen, mikä ei ole sallittua. Kun ajamme
-kirjastomme testit, Listauksen 15-23 koodi kääntyy ilman virheitä, mutta testi epäonnistuu:</p>
+<p>Luomme muuttujan <code>one_borrow</code> <code>borrow_mut</code>:ista palautetulle <code>RefMut&lt;T&gt;</code>-älykkäälle osoittimelle. Sitten luomme toisen muuttuvan lainauksen samalla tavalla muuttujaan <code>two_borrow</code>. Tämä tekee kaksi muuttuvaa viittausta samaan näkyvyysalueeseen, mikä ei ole sallittua. Kun ajamme kirjastomme testit, listauksen 15-23 koodi kääntyy ilman virheitä, mutta testi epäonnistuu:</p>
 <pre><code class="language-console">{{#include ../listings/ch15-smart-pointers/listing-15-23/output.txt}}
 </code></pre>
-<p>Huomaa, että koodi kaatui viestillä <code>already borrowed: BorrowMutError</code>. Näin <code>RefCell&lt;T&gt;</code>
-käsittelee lainaussääntöjen rikkomukset ajonaikana.</p>
-<p>Valinta lainausvirheiden havaitsemisesta ajonaikana käännösaian sijaan, kuten teimme
-tässä, tarkoittaa, että virheet saatetaan löytää myöhemmin kehitysprosessissa: mahdollisesti
-vasta kun koodi on otettu tuotantoon. Lisäksi koodiin tulee pieni suorituskykyrangaistus
-lainausten seurannasta ajonaikana käännösaian sijaan. <code>RefCell&lt;T&gt;</code>:n käyttö mahdollistaa
-kuitenkin mock-olion kirjoittamisen, joka voi muokata itseään seuratakseen näkemiään
-viestejä kontekstissa, jossa vain muuttumattomat arvot ovat sallittuja. Voit käyttää
-<code>RefCell&lt;T&gt;</code>:tä sen kompromisseista huolimatta saadaksesi enemmän toiminnallisuutta kuin
-tavalliset viitteet tarjoavat.</p>
-<h3 id="useita-omistajia-muuttuvalla-datalle-yhdistämällä-rct-ja-refcellt"><a class="header" href="#useita-omistajia-muuttuvalla-datalle-yhdistämällä-rct-ja-refcellt">Useita omistajia muuttuvalla datalle yhdistämällä <code>Rc&lt;T&gt;</code> ja <code>RefCell&lt;T&gt;</code></a></h3>
-<p>Yleinen tapa käyttää <code>RefCell&lt;T&gt;</code>:tä on yhdistelmässä <code>Rc&lt;T&gt;</code>:n kanssa. Muista, että
-<code>Rc&lt;T&gt;</code> antaa sinulle useita omistajia jollekin datalle, mutta se antaa vain muuttumattoman
-pääsyn kyseiseen dataan. Jos sinulla on <code>Rc&lt;T&gt;</code>, joka sisältää <code>RefCell&lt;T&gt;</code>:n, voit
-saada arvon, jolla voi olla useita omistajia <em>ja</em> jota voit muuttaa!</p>
-<p>Esimerkiksi muista cons-listan esimerkki Listauksessa 15-18, jossa käytimme <code>Rc&lt;T&gt;</code>:tä
-salliaksemme useiden listojen jakaa toisen listan omistajuuden. Koska <code>Rc&lt;T&gt;</code> sisältää
-vain muuttumattomia arvoja, emme voi muuttaa mitään listojen arvoista, kun olemme luoneet
-ne. Lisätään <code>RefCell&lt;T&gt;</code> saadaksemme kyky muuttaa listojen arvoja. Listauksessa 15-24
-näytetään, että käyttämällä <code>RefCell&lt;T&gt;</code>:tä <code>Cons</code>-määrittelyssä voimme muokata kaikissa
-listoissa tallennettua arvoa:</p>
-<figure class="listing">
+<p>Huomaa, että koodi panikoi viestillä <code>already borrowed: BorrowMutError</code>. Näin <code>RefCell&lt;T&gt;</code> käsittelee lainausperiaatteiden rikkomukset ajonaikana.</p>
+<p>Valinta lainausvirheiden havaitsemiseen ajonaikana käännösaikaan sijaan, kuten tässä teimme, tarkoittaa, että saatat löytää virheitä koodissasi myöhemmin kehitysprosessissa: mahdollisesti vasta kun koodi on otettu tuotantoon. Lisäksi koodisi kärsii pienestä ajonaikaisesta suorituskykyrangaistuksesta lainausten seurannan vuoksi ajonaikana käännösaikaan sijaan. <code>RefCell&lt;T&gt;</code>:n käyttö mahdollistaa kuitenkin mock-olion kirjoittamisen, joka voi muokata itseään seuratakseen näkemiään viestejä kontekstissa, jossa vain muuttumattomat arvot ovat sallittuja. Voit käyttää <code>RefCell&lt;T&gt;</code>:tä sen kompromissien huolimatta saadaksesi enemmän toiminnallisuutta kuin tavalliset viittaukset tarjoavat.</p>
+<!-- Old headings. Do not remove or links may break. -->
+<p><a id="having-multiple-owners-of-mutable-data-by-combining-rc-t-and-ref-cell-t"></a>
+<a id="allowing-multiple-owners-of-mutable-data-with-rct-and-refcellt"></a></p>
+<h3 id="muuttuvan-datan-usean-omistajan-salliminen"><a class="header" href="#muuttuvan-datan-usean-omistajan-salliminen">Muuttuvan datan usean omistajan salliminen</a></h3>
+<p>Yleinen tapa käyttää <code>RefCell&lt;T&gt;</code>:tä on yhdessä <code>Rc&lt;T&gt;</code>:n kanssa. Muistathan, että <code>Rc&lt;T&gt;</code> sallii usean omistajan datalle, mutta antaa vain muuttumattoman pääsyn kyseiseen dataan. Jos sinulla on <code>Rc&lt;T&gt;</code>, joka pitää <code>RefCell&lt;T&gt;</code>:tä, voit saada arvon, jolla voi olla useita omistajia <em>ja</em> jota voit muuttaa!</p>
+<p>Muistathan esimerkiksi listauksen 15-18 cons-listan esimerkin, jossa käytimme <code>Rc&lt;T&gt;</code>:tä salliaksemme useiden listojen jakaa toisen listan omistajuuden. Koska <code>Rc&lt;T&gt;</code> pitää vain muuttumattomia arvoja, emme voi muuttaa mitään listojen arvoista, kun olemme luoneet ne. Lisätään <code>RefCell&lt;T&gt;</code> sen kykyä muuttaa listojen arvoja. Listauksessa 15-24 näytetään, että käyttämällä <code>RefCell&lt;T&gt;</code>:tä <code>Cons</code>-määrittelyssä voimme muokata kaikissa listoissa tallennettua arvoa.</p>
+<figure class="listing" id="listing-15-24">
 <span class="file-name">Filename: src/main.rs</span>
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+<pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>{{#rustdoc_include ../listings/ch15-smart-pointers/listing-15-24/src/main.rs}}
-<span class="boring">}</span></code></pre></pre>
-<figcaption>Listing 15-24: <code>Rc&lt;RefCell&lt;i32&gt;&gt;</code>:n käyttö muokattavan <code>List</code>:n luomiseen</figcaption>
+<span class="boring">}</span></code></pre>
+<figcaption><a href="#listing-15-24">Listing 15-24</a>: <code>Rc&lt;RefCell&lt;i32&gt;&gt;</code>:n käyttö muokattavan <code>List</code>:in luomiseen</figcaption>
 </figure>
-<p>Luomme arvon, joka on <code>Rc&lt;RefCell&lt;i32&gt;&gt;</code>-instanssi, ja tallennamme sen muuttujaan
-<code>value</code>, jotta pääsemme siihen suoraan myöhemmin. Sitten luomme <code>List</code>:n <code>a</code>:ssa
-<code>Cons</code>-variantilla, joka sisältää <code>value</code>:n. Meidän täytyy kloonata <code>value</code>, jotta sekä
-<code>a</code> että <code>value</code> omistavat sisäisen arvon <code>5</code> sen sijaan, että omistajuus siirtyisi
-<code>value</code>:sta <code>a</code>:han tai <code>a</code> lainaisi <code>value</code>:sta.</p>
-<p>Käärimme listan <code>a</code> <code>Rc&lt;T&gt;</code>:hen, jotta kun luomme listat <code>b</code> ja <code>c</code>, ne voivat molemmat
-viitata <code>a</code>:han, kuten teimme Listauksessa 15-18.</p>
-<p>Kun olemme luoneet listat <code>a</code>:ssa, <code>b</code>:ssä ja <code>c</code>:ssä, haluamme lisätä 10 arvoon <code>value</code>:ssa.
-Teemme tämän kutsumalla <code>borrow_mut</code>:ia <code>value</code>:lla, joka käyttää automaattista dereferointiominaisuutta,
-josta puhuimme Luvussa 5 (katso <a href="ch05-03-method-syntax.html#wheres-the---operator">”Missä on <code>-&gt;</code>-operaattori?”</a><!-- ignore -->)
-dereferoidakseen <code>Rc&lt;T&gt;</code>:n sisäiseen <code>RefCell&lt;T&gt;</code>-arvoon. <code>borrow_mut</code>-metodi palauttaa
-<code>RefMut&lt;T&gt;</code>-älykkään osoittimen, ja käytämme dereferenssioperaattoria sen päällä ja
-muutamme sisäistä arvoa.</p>
-<p>Kun tulostamme <code>a</code>:n, <code>b</code>:n ja <code>c</code>:n, näemme, että niillä kaikilla on muokattu arvo
-15 eikä 5:</p>
+<p>Luomme arvon, joka on <code>Rc&lt;RefCell&lt;i32&gt;&gt;</code>-instanssi, ja tallennamme sen muuttujaan nimeltä <code>value</code>, jotta voimme käyttää sitä suoraan myöhemmin. Sitten luomme <code>List</code>:in <code>a</code>:ssa <code>Cons</code>-variantilla, joka pitää <code>value</code>:a. Meidän täytyy kloonata <code>value</code>, jotta sekä <code>a</code> että <code>value</code> omistavat sisäisen arvon <code>5</code> sen sijaan, että siirtäisimme omistajuuden <code>value</code>:sta <code>a</code>:han tai että <code>a</code> lainaisi <code>value</code>:sta.</p>
+<p>Käärimme listan <code>a</code> <code>Rc&lt;T&gt;</code>:hen, jotta kun luomme listat <code>b</code> ja <code>c</code>, ne voivat molemmat viitata <code>a</code>:han, kuten teimme listauksessa 15-18.</p>
+<p>Kun olemme luoneet listat <code>a</code>:ssa, <code>b</code>:ssä ja <code>c</code>:ssä, haluamme lisätä <code>value</code>:n arvoon 10. Teemme tämän kutsumalla <code>borrow_mut</code>:ia <code>value</code>:lla, joka käyttää automaattista dereferointiominaisuutta, josta puhuimme kohdassa <a href="ch05-03-method-syntax.html#wheres-the---operator">„Missä on <code>-&gt;</code>-operaattori?”</a><!-- ignore --> luvussa 5, dereferoidakseen <code>Rc&lt;T&gt;</code>:n sisäiseen <code>RefCell&lt;T&gt;</code>-arvoon. <code>borrow_mut</code>-metodi palauttaa <code>RefMut&lt;T&gt;</code>-älykkään osoittimen, ja käytämme dereferointioperaattoria sen päällä ja muutamme sisäistä arvoa.</p>
+<p>Kun tulostamme <code>a</code>:n, <code>b</code>:n ja <code>c</code>:n, näemme, että niillä kaikilla on muokattu arvo <code>15</code> arvon <code>5</code> sijaan:</p>
 <pre><code class="language-console">{{#include ../listings/ch15-smart-pointers/listing-15-24/output.txt}}
 </code></pre>
-<p>Tämä tekniikka on melko siisti! Käyttämällä <code>RefCell&lt;T&gt;</code>:tä meillä on ulospäin muuttumaton
-<code>List</code>-arvo. Mutta voimme käyttää <code>RefCell&lt;T&gt;</code>:n metodeja, jotka tarjoavat pääsyn sen
-sisäiseen mutabiliteettiin, jotta voimme muokata dataamme tarvittaessa. Lainaussääntöjen
-ajonaikaiset tarkistukset suojaavat meitä datakilpailuilta, ja joskus on syytä vaihtaa
-hieman nopeutta tämän joustavuuden vuoksi tietorakenteissamme. Huomaa, että <code>RefCell&lt;T&gt;</code>
-ei toimi monisäikeisessä koodissa! <code>Mutex&lt;T&gt;</code> on <code>RefCell&lt;T&gt;</code>:n säieystävällinen versio,
-ja käsittelemme <code>Mutex&lt;T&gt;</code>:tä Luvussa 16.</p>
+<p>Tämä tekniikka on melko näppärä! <code>RefCell&lt;T&gt;</code>:n avulla meillä on ulospäin muuttumaton <code>List</code>-arvo. Mutta voimme käyttää <code>RefCell&lt;T&gt;</code>:n metodeja, jotka tarjoavat pääsyn sen sisäiseen muuttuvuuteen, jotta voimme muokata dataamme tarvittaessa. Lainausperiaatteiden ajonaikaiset tarkistukset suojaavat meitä datakilpailuilta, ja joskus on syytä vaihtaa hieman nopeutta tämän joustavuuden vuoksi tietorakenteissamme. Huomaa, että <code>RefCell&lt;T&gt;</code> ei toimi monisäikeisessä koodissa! <code>Mutex&lt;T&gt;</code> on <code>RefCell&lt;T&gt;</code>:n säieturvallinen versio, ja käsittelemme <code>Mutex&lt;T&gt;</code>:tä luvussa 16.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                             <a rel="prev" href="ch15-04-rc.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                                <i class="fa fa-angle-left"></i>
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
                             <a rel="next prefetch" href="ch15-06-reference-cycles.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
                         <div style="clear: both"></div>
@@ -421,16 +307,21 @@ ja käsittelemme <code>Mutex&lt;T&gt;</code>:tä Luvussa 16.</p>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                     <a rel="prev" href="ch15-04-rc.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                        <i class="fa fa-angle-left"></i>
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
                     <a rel="next prefetch" href="ch15-06-reference-cycles.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>
 
         </div>
 
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
 
 
 
@@ -439,16 +330,17 @@ ja käsittelemme <code>Mutex&lt;T&gt;</code>:tä Luvussa 16.</p>
         </script>
 
 
-        <script src="elasticlunr.min.js"></script>
-        <script src="mark.min.js"></script>
-        <script src="searcher.js"></script>
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-c2a407aa.js"></script>
 
-        <script src="clipboard.min.js"></script>
-        <script src="highlight.js"></script>
-        <script src="book.js"></script>
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-abc7f01d.js"></script>
+        <script src="book-a0b12cfe.js"></script>
 
         <!-- Custom JS scripts -->
-        <script src="ferris.js"></script>
+        <script src="ferris-2317480c.js"></script>
+
 
 
     </div>

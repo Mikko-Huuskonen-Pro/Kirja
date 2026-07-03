@@ -12,44 +12,56 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
 
-        <link rel="icon" href="favicon.svg">
-        <link rel="shortcut icon" href="favicon.png">
-        <link rel="stylesheet" href="css/variables.css">
-        <link rel="stylesheet" href="css/general.css">
-        <link rel="stylesheet" href="css/chrome.css">
-        <link rel="stylesheet" href="css/print.css" media="print">
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-2459343d.css">
+        <link rel="stylesheet" href="css/chrome-ae938929.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
-        <link rel="stylesheet" href="fonts/fonts.css">
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" href="highlight.css">
-        <link rel="stylesheet" href="tomorrow-night.css">
-        <link rel="stylesheet" href="ayu-highlight.css">
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="ferris.css">
-        <link rel="stylesheet" href="theme/2018-edition.css">
-        <link rel="stylesheet" href="theme/semantic-notes.css">
-        <link rel="stylesheet" href="theme/listing.css">
+        <link rel="stylesheet" href="ferris-d33b75bf.css">
+        <link rel="stylesheet" href="theme/2018-edition-4e126c62.css">
+        <link rel="stylesheet" href="theme/semantic-notes-9b5766c0.css">
+        <link rel="stylesheet" href="theme/listing-cab26221.css">
 
 
-        <!-- Provide site root to javascript -->
+        <!-- Provide site root and default themes to javascript -->
         <script>
-            var path_to_root = "";
-            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex-454febf7.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc.js"></script>
+        <script src="toc-7f90d00d.js"></script>
     </head>
     <body>
-    <div id="body-container">
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
             try {
-                var theme = localStorage.getItem('mdbook-theme');
-                var sidebar = localStorage.getItem('mdbook-sidebar');
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
 
                 if (theme.startsWith('"') && theme.endsWith('"')) {
                     localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
@@ -63,7 +75,8 @@
 
         <!-- Set the theme before any content is loaded, prevents flash -->
         <script>
-            var theme;
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
             const html = document.documentElement;
@@ -72,55 +85,59 @@
             html.classList.add("js");
         </script>
 
-        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
-            var sidebar = null;
-            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
             } else {
                 sidebar = 'hidden';
+                sidebar_toggle.checked = false;
             }
-            sidebar_toggle.checked = sidebar === 'visible';
-            html.classList.remove('sidebar-visible');
-            html.classList.add("sidebar-" + sidebar);
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
         </script>
 
-        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
             <!-- populated by js -->
             <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
             <noscript>
                 <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
             </noscript>
-            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
             </div>
         </nav>
 
-        <div id="page-wrapper" class="page-wrapper">
+        <div id="mdbook-page-wrapper" class="page-wrapper">
 
             <div class="page">
-                <div id="menu-bar-hover-placeholder"></div>
-                <div id="menu-bar" class="menu-bar sticky">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
-                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
-                            <i class="fa fa-bars"></i>
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
                         </label>
-                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
-                            <i class="fa fa-paint-brush"></i>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
                         </button>
-                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
-                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
                         </ul>
-                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
-                            <i class="fa fa-search"></i>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
                         </button>
                     </div>
 
@@ -128,134 +145,139 @@
 
                     <div class="right-buttons">
                         <a href="print.html" title="Print this book" aria-label="Print this book">
-                            <i id="print-button" class="fa fa-print"></i>
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
                         </a>
                         <a href="https://github.com/rust-lang/book" title="Git repository" aria-label="Git repository">
-                            <i id="git-repository-button" class="fa fa-github"></i>
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></span>
                         </a>
 
                     </div>
                 </div>
 
-                <div id="search-wrapper" class="hidden">
-                    <form id="searchbar-outer" class="searchbar-outer">
-                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
                     </form>
-                    <div id="searchresults-outer" class="searchresults-outer hidden">
-                        <div id="searchresults-header" class="searchresults-header"></div>
-                        <ul id="searchresults">
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
                         </ul>
                     </div>
                 </div>
 
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
                 <script>
-                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
-                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
-                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
                         link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
                     });
                 </script>
 
-                <div id="content" class="content">
+                <div id="mdbook-content" class="content">
                     <main>
                         <h2 id="polut-kohteen-viittaamiseen-moduulipuussa"><a class="header" href="#polut-kohteen-viittaamiseen-moduulipuussa">Polut kohteen viittaamiseen moduulipuussa</a></h2>
-<p>Näyttääksemme Rustille, mistä kohde löytyy moduulipuussa, käytämme polkua samalla tavalla kuin käytämme polkua tiedostojärjestelmässä navigoidessamme. Kutsuaksemme funktiota meidän täytyy tietää sen polku.</p>
-<p>Polulla voi olla kaksi muotoa:</p>
+<p>Näyttääksemme Rustille, mistä kohteen moduulipuussa löytyy, käytämme polkua samalla tavalla kuin käytämme polkua navigoidessamme tiedostojärjestelmässä. Kutsuaksemme funktiota meidän on tiedettävä sen polku.</p>
+<p>Polku voi olla kahdessa muodossa:</p>
 <ul>
-<li><em>Absoluuttinen polku</em> on täysi polku, joka alkaa crate-juuresta; ulkoisen craten koodille absoluuttinen polku alkaa craten nimellä, ja nykyisen craten koodille se alkaa literaalilla <code>crate</code>.</li>
-<li><em>Suhteellinen polku</em> alkaa nykyisestä moduulista ja käyttää <code>self</code>:ää, <code>super</code>:ia tai tunnistetta nykyisessä moduulissa.</li>
+<li><em>Absoluuttinen polku</em> on täydellinen polku, joka alkaa crate-juuresta; ulkoisen crate:n koodille absoluuttinen polku alkaa crate:n nimellä, ja nykyisen crate:n koodille se alkaa literaalilla <code>crate</code>.</li>
+<li><em>Suhteellinen polku</em> alkaa nykyisestä moduulista ja käyttää <code>self</code>-, <code>super</code>- tai nykyisen moduulin tunnistetta.</li>
 </ul>
-<p>Molempia absoluuttisia ja suhteellisia polkuja seuraa yksi tai useampi tunniste, jotka on erotettu kaksoispisteillä (<code>::</code>).</p>
-<p>Palatkaamme Listaukseen 7-1 ja sanokaamme, että haluamme kutsua <code>add_to_waitlist</code>-funktiota. Tämä on sama kuin kysyisi: mikä on <code>add_to_waitlist</code>-funktion polku? Listausta 7-3 sisältää Listauksen 7-1, josta on poistettu joitakin moduuleja ja funktioita.</p>
-<p>Näytämme kaksi tapaa kutsua <code>add_to_waitlist</code>-funktiota uudesta funktiosta, <code>eat_at_restaurant</code>, joka on määritelty crate-juuressa. Nämä polut ovat oikein, mutta on jäljellä toinen ongelma, joka estää tämän esimerkin kääntymisen sellaisenaan. Selitämme miksi hetken kuluttua.</p>
-<p><code>eat_at_restaurant</code>-funktio on osa kirjastocratemme julkista API:a, joten merkitsemme sen <code>pub</code>-avainsanalla. <a href="ch07-03-paths-for-referring-to-an-item-in-the-module-tree.html#exposing-paths-with-the-pub-keyword">”Polkujen paljastaminen <code>pub</code>-avainsanalla”</a><!-- ignore --> -osiossa käsittelemme <code>pub</code>:ia tarkemmin.</p>
-<figure class="listing">
+<p>Sekä absoluuttisia että suhteellisia polkuja seuraa yksi tai useampi tunniste, jotka on erotettu kaksoispisteillä (<code>::</code>).</p>
+<p>Palataan listaukseen 7-1 ja oletetaan, että haluamme kutsua <code>add_to_waitlist</code>-funktiota. Tämä on sama kuin kysyisi: Mikä on <code>add_to_waitlist</code>-funktion polku? Listaus 7-3 sisältää listauksen 7-1, josta on poistettu joitakin moduuleja ja funktioita.</p>
+<p>Näytämme kaksi tapaa kutsua <code>add_to_waitlist</code>-funktiota uudesta funktiosta <code>eat_at_restaurant</code>, joka on määritelty crate-juuressa. Nämä polut ovat oikein, mutta on vielä toinen ongelma, joka estää tämän esimerkin kääntymisen sellaisenaan. Selitämme syyn hetken kuluttua.</p>
+<p><code>eat_at_restaurant</code>-funktio on osa kirjastocrate:amme julkista API:a, joten merkitsemme sen <code>pub</code>-avainsanalla. Kohdassa <a href="ch07-03-paths-for-referring-to-an-item-in-the-module-tree.html#exposing-paths-with-the-pub-keyword">”Polkujen paljastaminen <code>pub</code>-avainsanalla”</a><!-- ignore --> käsittelemme <code>pub</code>:ia tarkemmin.</p>
+<figure class="listing" id="listing-7-3">
 <span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch07-managing-growing-projects/listing-07-03/src/lib.rs}}</code></pre>
-<figcaption>Listing 7-3: <code>add_to_waitlist</code>-funktion kutsuminen absoluuttisia ja suhteellisia polkuja käyttäen</figcaption>
+<figcaption><a href="#listing-7-3">Listing 7-3</a>: <code>add_to_waitlist</code>-funktion kutsuminen absoluuttisilla ja suhteellisilla poluilla</figcaption>
 </figure>
-<p>Ensimmäisellä kerralla kun kutsumme <code>add_to_waitlist</code>-funktiota <code>eat_at_restaurant</code>:ssa, käytämme absoluuttista polkua. <code>add_to_waitlist</code>-funktio on määritelty samassa cratessa kuin <code>eat_at_restaurant</code>, mikä tarkoittaa, että voimme käyttää <code>crate</code>-avainsanaa aloittaaksemme absoluuttisen polun. Sisällytämme sitten jokaisen peräkkäisen moduulin, kunnes pääsemme <code>add_to_waitlist</code>:iin. Voit kuvitella tiedostojärjestelmän samalla rakenteella: määrittäisimme polun <code>/front_of_house/hosting/add_to_waitlist</code> suorittaaksemme <code>add_to_waitlist</code>-ohjelman; <code>crate</code>-nimen käyttö aloittaaksemme crate-juuresta on kuin <code>/</code>:n käyttö aloittaaksemme tiedostojärjestelmän juuresta komentorivilläsi.</p>
-<p>Toisella kerralla kun kutsumme <code>add_to_waitlist</code>:ia <code>eat_at_restaurant</code>:ssa, käytämme suhteellista polkua. Polku alkaa <code>front_of_house</code>:sta, moduulin nimestä, joka on määritelty samalla tasolla moduulipuussa kuin <code>eat_at_restaurant</code>. Tässä tiedostojärjestelmän vastine olisi polun <code>front_of_house/hosting/add_to_waitlist</code> käyttö. Moduulin nimellä aloittaminen tarkoittaa, että polku on suhteellinen.</p>
-<p>Valinta suhteellisen tai absoluuttisen polun käytöstä on päätös, jonka teet projektisi perusteella, ja se riippuu siitä, siirrätkö todennäköisemmin kohteen määrittelykoodia erillään vai yhdessä koodin kanssa, joka käyttää kohdetta. Esimerkiksi, jos siirtäisimme <code>front_of_house</code>-moduulin ja <code>eat_at_restaurant</code>-funktion moduuliin nimeltä <code>customer_experience</code>, meidän täytyisi päivittää absoluuttinen polku <code>add_to_waitlist</code>:iin, mutta suhteellinen polku olisi edelleen kelvollinen. Jos kuitenkin siirtäisimme <code>eat_at_restaurant</code>-funktion erillään moduuliin nimeltä <code>dining</code>, absoluuttinen polku <code>add_to_waitlist</code>-kutsuun pysyisi samana, mutta suhteellinen polku täytyisi päivittää. Yleinen mieltymyksemme on määrittää absoluuttiset polut, koska on todennäköisempää, että haluamme siirtää koodimäärittelyjä ja kohteen kutsuja toisistaan riippumatta.</p>
-<p>Yritetään kääntää Listausta 7-3 ja selvitetään, miksi se ei vielä käänny! Virheet, jotka saamme, on esitetty Listauksessa 7-4.</p>
-<figure class="listing">
+<p>Ensimmäisellä kerralla kun kutsumme <code>add_to_waitlist</code>-funktiota funktiossa <code>eat_at_restaurant</code>, käytämme absoluuttista polkua. <code>add_to_waitlist</code>-funktio on määritelty samassa crate:ssa kuin <code>eat_at_restaurant</code>, mikä tarkoittaa, että voimme käyttää <code>crate</code>-avainsanaa absoluuttisen polun aloittamiseen. Sisällytämme sitten jokaisen peräkkäisen moduulin, kunnes pääsemme <code>add_to_waitlist</code>-funktioon. Voit kuvitella tiedostojärjestelmän, jolla on sama rakenne: Määrittäisimme polun <code>/front_of_house/hosting/add_to_waitlist</code> suorittaaksemme <code>add_to_waitlist</code>-ohjelman; <code>crate</code>-nimen käyttäminen crate-juuresta aloittamiseen on kuin <code>/</code>-merkin käyttäminen tiedostojärjestelmän juuresta aloittamiseen komentorivilläsi.</p>
+<p>Toisella kerralla kun kutsumme <code>add_to_waitlist</code>-funktiota funktiossa <code>eat_at_restaurant</code>, käytämme suhteellista polkua. Polku alkaa <code>front_of_house</code>-moduulin nimellä, joka on määritelty samalla tasolla moduulipuussa kuin <code>eat_at_restaurant</code>. Tässä tiedostojärjestelmän vastine olisi polun <code>front_of_house/hosting/add_to_waitlist</code> käyttäminen. Moduulin nimellä aloittaminen tarkoittaa, että polku on suhteellinen.</p>
+<p>Valinta suhteellisen tai absoluuttisen polun käytöstä on päätös, jonka teet projektisi perusteella, ja se riippuu siitä, siirrätkö todennäköisemmin kohteen määrittelykoodia erikseen vai yhdessä koodin kanssa, joka käyttää kohdetta. Esimerkiksi jos siirtäisimme <code>front_of_house</code>-moduulin ja <code>eat_at_restaurant</code>-funktion moduuliin nimeltä <code>customer_experience</code>, meidän pitäisi päivittää absoluuttinen polku <code>add_to_waitlist</code>-funktioon, mutta suhteellinen polku olisi edelleen kelvollinen. Jos kuitenkin siirtäisimme <code>eat_at_restaurant</code>-funktion erikseen moduuliin nimeltä <code>dining</code>, absoluuttinen polku <code>add_to_waitlist</code>-kutsuun pysyisi samana, mutta suhteellinen polku pitäisi päivittää. Yleinen mieltymyksemme on määrittää absoluuttiset polut, koska on todennäköisempää, että haluamme siirtää koodin määrittelyjä ja kohteiden kutsuja toisistaan riippumatta.</p>
+<p>Yritetään kääntää listaus 7-3 ja selvitetään, miksi se ei vielä käänny! Virheet, jotka saamme, on näytetty listauksessa 7-4.</p>
+<figure class="listing" id="listing-7-4">
 <pre><code class="language-console">{{#include ../listings/ch07-managing-growing-projects/listing-07-03/output.txt}}
 </code></pre>
-<figcaption>Listing 7-4: Kääntäjävirheet Listauksen 7-3 koodin kääntämisestä</figcaption>
+<figcaption><a href="#listing-7-4">Listing 7-4</a>: Kääntäjän virheet listauksen 7-3 koodin rakentamisesta</figcaption>
 </figure>
-<p>Virheilmoitukset sanovat, että moduuli <code>hosting</code> on yksityinen. Toisin sanoen meillä on oikeat polut <code>hosting</code>-moduulille ja <code>add_to_waitlist</code>-funktiolle, mutta Rust ei anna meidän käyttää niitä, koska sillä ei ole pääsyä yksityisiin osiin. Rustissa kaikki kohteet (funktiot, metodit, rakenteet, enumit, moduulit ja vakiot) ovat oletuksena yksityisiä emomoduuleilleen. Jos haluat tehdä kohteesta kuten funktiosta tai rakenteesta yksityisen, laitat sen moduuliin.</p>
-<p>Emomoduulin kohteet eivät voi käyttää lapsimoduulien yksityisiä kohteita, mutta lapsimoduulien kohteet voivat käyttää esi-isämoduuliensa kohteita. Tämä johtuu siitä, että lapsimoduulit käärivät ja piilottavat toteutuksensa yksityiskohdat, mutta lapsimoduulit näkevät kontekstin, jossa ne on määritelty. Jatkaaksemme metaforaamme, ajattele yksityisyyssääntöjä kuin ravintolan takaosastoa: siellä tapahtuva on yksityistä ravintolan asiakkaille, mutta toimistopäälliköt näkevät ja voivat tehdä kaiken ravintolassa, jota he operoivat.</p>
-<p>Rust valitsi moduulijärjestelmän toimivan näin, jotta sisäisten toteutuksen yksityiskohtien piilottaminen on oletus. Näin tiedät, mitä sisäisen koodin osia voit muuttaa rikkomatta ulkoista koodia. Rust antaa kuitenkin mahdollisuuden paljastaa lapsimoduulien koodin sisäisiä osia ulkoisille esi-isämoduuleille käyttämällä <code>pub</code>-avainsanaa tehdäksesi kohteen julkiseksi.</p>
+<p>Virheilmoitukset sanovat, että moduuli <code>hosting</code> on yksityinen. Toisin sanoen meillä on oikeat polut <code>hosting</code>-moduuliin ja <code>add_to_waitlist</code>-funktioon, mutta Rust ei anna meidän käyttää niitä, koska sillä ei ole pääsyä yksityisiin osiin. Rustissa kaikki kohteet (funktiot, metodit, structit, enumit, moduulit ja vakiot) ovat oletuksena yksityisiä emomoduuleilleen. Jos haluat tehdä kohteen, kuten funktion tai structin, yksityiseksi, laitat sen moduuliin.</p>
+<p>Emomoduulin kohteet eivät voi käyttää alimoduuulien yksityisiä kohteita, mutta alimoduuulien kohteet voivat käyttää esi-isämoduuliensa kohteita. Tämä johtuu siitä, että alimoduuulit käärivät ja piilottavat toteutustietonsa, mutta alimoduuulit näkevät kontekstin, jossa ne on määritelty. Jatkaaksemme metaforaamme, ajattele yksityisyyssääntöjä kuin ravintolan takaosaa: Siellä tapahtuva on yksityistä ravintolan asiakkaille, mutta toimistopäälliköt näkevät ja voivat tehdä kaiken ravintolassa, jota he hallinnoivat.</p>
+<p>Rust päätti, että moduulijärjestelmä toimii tällä tavalla, jotta sisäisten toteutustietojen piilottaminen on oletus. Näin tiedät, mitä sisäisen koodin osia voit muuttaa rikkomatta ulkoista koodia. Rust antaa kuitenkin mahdollisuuden paljastaa alimoduuulien koodin sisäisiä osia ulommille esi-isämoduuleille käyttämällä <code>pub</code>-avainsanaa kohteen tekemiseksi julkiseksi.</p>
 <h3 id="polkujen-paljastaminen-pub-avainsanalla"><a class="header" href="#polkujen-paljastaminen-pub-avainsanalla">Polkujen paljastaminen <code>pub</code>-avainsanalla</a></h3>
-<p>Palataan Listauksen 7-4 virheeseen, joka kertoi, että <code>hosting</code>-moduuli on yksityinen. Haluamme, että emomoduulin <code>eat_at_restaurant</code>-funktiolla on pääsy <code>add_to_waitlist</code>-funktioon lapsimoduulissa, joten merkitsemme <code>hosting</code>-moduulin <code>pub</code>-avainsanalla, kuten Listauksessa 7-5 on esitetty.</p>
-<figure class="listing">
+<p>Palataan listauksen 7-4 virheeseen, joka kertoi, että <code>hosting</code>-moduuli on yksityinen. Haluamme, että emomoduulin <code>eat_at_restaurant</code>-funktiolla on pääsy alimoduuulin <code>add_to_waitlist</code>-funktioon, joten merkitsemme <code>hosting</code>-moduulin <code>pub</code>-avainsanalla, kuten listauksessa 7-5.</p>
+<figure class="listing" id="listing-7-5">
 <span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch07-managing-growing-projects/listing-07-05/src/lib.rs:here}}</code></pre>
-<figcaption>Listing 7-5: <code>hosting</code>-moduulin julistaminen <code>pub</code>:iksi sen käyttämiseksi <code>eat_at_restaurant</code>:sta</figcaption>
+<figcaption><a href="#listing-7-5">Listing 7-5</a>: <code>hosting</code>-moduulin määrittely <code>pub</code>:ksi sen käyttämiseksi funktiosta <code>eat_at_restaurant</code></figcaption>
 </figure>
-<p>Valitettavasti Listauksen 7-5 koodi tuottaa edelleen kääntäjävirheitä, kuten Listauksessa 7-6 on esitetty.</p>
-<figure class="listing">
+<p>Valitettavasti listauksen 7-5 koodi tuottaa edelleen kääntäjän virheitä, kuten listauksessa 7-6.</p>
+<figure class="listing" id="listing-7-6">
 <pre><code class="language-console">{{#include ../listings/ch07-managing-growing-projects/listing-07-05/output.txt}}
 </code></pre>
-<figcaption>Listing 7-6: Kääntäjävirheet Listauksen 7-5 koodin kääntämisestä</figcaption>
+<figcaption><a href="#listing-7-6">Listing 7-6</a>: Kääntäjän virheet listauksen 7-5 koodin rakentamisesta</figcaption>
 </figure>
-<p>Mitä tapahtui? <code>pub</code>-avainsanan lisääminen <code>mod hosting</code>:n eteen tekee moduulista julkisen. Tämän muutoksen jälkeen, jos pääsemme <code>front_of_house</code>:iin, pääsemme <code>hosting</code>:iin. Mutta <code>hosting</code>:in <em>sisältö</em> on edelleen yksityistä; moduulin tekeminen julkiseksi ei tee sen sisällöstä julkista. <code>pub</code>-avainsana moduulissa antaa vain sen esi-isämoduulien koodin viitata siihen, ei käyttää sen sisäistä koodia. Koska moduulit ovat säiliöitä, emme voi tehdä paljon pelkällä moduulin tekemisellä julkiseksi; meidän täytyy mennä pidemmälle ja valita tehdä yhdestä tai useammasta moduulin sisällä olevasta kohteesta julkisia.</p>
-<p>Listauksen 7-6 virheet sanovat, että <code>add_to_waitlist</code>-funktio on yksityinen. Yksityisyyssäännöt pätevät rakenteisiin, enumeihin, funktioihin ja metodeihin sekä moduuleihin.</p>
-<p>Tehdään myös <code>add_to_waitlist</code>-funktiosta julkinen lisäämällä <code>pub</code>-avainsana sen määrittelyn eteen, kuten Listauksessa 7-7.</p>
-<figure class="listing">
+<p>Mitä tapahtui? <code>pub</code>-avainsanan lisääminen <code>mod hosting</code> -lauseen eteen tekee moduulista julkisen. Tämän muutoksen jälkeen, jos pääsemme <code>front_of_house</code>-moduuliin, pääsemme <code>hosting</code>-moduuliin. Mutta <code>hosting</code>-moduulin <em>sisältö</em> on edelleen yksityistä; moduulin tekeminen julkiseksi ei tee sen sisällöstä julkista. <code>pub</code>-avainsana moduulissa sallii vain sen esi-isämoduulien koodin viitata siihen, ei päästä sen sisäiseen koodiin. Koska moduulit ovat säiliöitä, pelkällä moduulin tekemisellä julkiseksi emme voi tehdä paljon; meidän on mentävä pidemmälle ja valittava tehdä yksi tai useampi moduulin sisällä olevista kohteista julkisiksi.</p>
+<p>Listauksen 7-6 virheet sanovat, että <code>add_to_waitlist</code>-funktio on yksityinen. Yksityisyyssäännöt koskevat structeja, enumeja, funktioita ja metodeja sekä moduuleja.</p>
+<p>Tehdään myös <code>add_to_waitlist</code>-funktiosta julkinen lisäämällä <code>pub</code>-avainsana sen määrittelyn eteen, kuten listauksessa 7-7.</p>
+<figure class="listing" id="listing-7-7">
 <span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust noplayground test_harness">{{#rustdoc_include ../listings/ch07-managing-growing-projects/listing-07-07/src/lib.rs:here}}</code></pre>
-<figcaption>Listing 7-7: <code>pub</code>-avainsanan lisääminen <code>mod hosting</code>:iin ja <code>fn add_to_waitlist</code>:iin antaa meille mahdollisuuden kutsua funktiota <code>eat_at_restaurant</code>:sta</figcaption>
+<figcaption><a href="#listing-7-7">Listing 7-7</a>: <code>pub</code>-avainsanan lisääminen <code>mod hosting</code> - ja <code>fn add_to_waitlist</code> -lauseisiin sallii funktion kutsumisen funktiosta <code>eat_at_restaurant</code>.</figcaption>
 </figure>
-<p>Nyt koodi kääntyy! Nähdäksemme, miksi <code>pub</code>-avainsanan lisääminen antaa meidän käyttää näitä polkuja <code>eat_at_restaurant</code>:ssa yksityisyyssääntöjen suhteen, katsotaan absoluuttista ja suhteellista polkua.</p>
-<p>Absoluuttisessa polussa aloitamme <code>crate</code>:sta, cratemme moduulipuun juuresta. <code>front_of_house</code>-moduuli on määritelty crate-juuressa. Vaikka <code>front_of_house</code> ei ole julkinen, koska <code>eat_at_restaurant</code>-funktio on määritelty samassa moduulissa kuin <code>front_of_house</code> (eli <code>eat_at_restaurant</code> ja <code>front_of_house</code> ovat sisaruksia), voimme viitata <code>front_of_house</code>:iin <code>eat_at_restaurant</code>:sta. Seuraavaksi on <code>hosting</code>-moduuli, joka on merkitty <code>pub</code>:illa. Pääsemme <code>hosting</code>:in emomoduuliin, joten pääsemme <code>hosting</code>:iin. Lopuksi <code>add_to_waitlist</code>-funktio on merkitty <code>pub</code>:illa ja pääsemme sen emomoduuliin, joten tämä funktiokutsu toimii!</p>
-<p>Suhteellisessa polussa logiikka on sama kuin absoluuttisessa polussa paitsi ensimmäinen askel: sen sijaan, että aloittaisimme crate-juuresta, polku alkaa <code>front_of_house</code>:sta. <code>front_of_house</code>-moduuli on määritelty samassa moduulissa kuin <code>eat_at_restaurant</code>, joten suhteellinen polku, joka alkaa moduulista, jossa <code>eat_at_restaurant</code> on määritelty, toimii. Sitten, koska <code>hosting</code> ja <code>add_to_waitlist</code> on merkitty <code>pub</code>:illa, loppu polusta toimii, ja tämä funktiokutsu on kelvollinen!</p>
-<p>Jos aiot jakaa kirjastocratesi, jotta muut projektit voivat käyttää koodiasi, julkinen API on sopimuksesi craten käyttäjien kanssa, joka määrittää, miten he voivat olla vuorovaikutuksessa koodisi kanssa. Julkisen API:n muutosten hallintaan liittyy monia näkökohtia, jotta craten käyttäminen olisi helpompaa. Nämä näkökohdat ovat tämän kirjan laajuuden ulkopuolella; jos olet kiinnostunut tästä aiheesta, katso <a href="https://rust-lang.github.io/api-guidelines/">The Rust API Guidelines</a>.</p>
+<p>Nyt koodi kääntyy! Nähdäksemme, miksi <code>pub</code>-avainsanan lisääminen sallii näiden polkujen käytön funktiossa <code>eat_at_restaurant</code> yksityisyyssääntöjen suhteen, tarkastellaan absoluuttista ja suhteellista polkua.</p>
+<p>Absoluuttisessa polussa aloitamme <code>crate</code>:sta, crate:amme moduulipuun juuresta. <code>front_of_house</code>-moduuli on määritelty crate-juuressa. Vaikka <code>front_of_house</code> ei ole julkinen, koska <code>eat_at_restaurant</code>-funktio on määritelty samassa moduulissa kuin <code>front_of_house</code> (eli <code>eat_at_restaurant</code> ja <code>front_of_house</code> ovat sisaruksia), voimme viitata <code>front_of_house</code>-moduuliin funktiosta <code>eat_at_restaurant</code>. Seuraavaksi on <code>hosting</code>-moduuli, joka on merkitty <code>pub</code>:lla. Pääsemme <code>hosting</code>-moduulin emomoduuliin, joten pääsemme <code>hosting</code>-moduuliin. Lopuksi <code>add_to_waitlist</code>-funktio on merkitty <code>pub</code>:lla, ja pääsemme sen emomoduuliin, joten tämä funktiokutsu toimii!</p>
+<p>Suhteellisessa polussa logiikka on sama kuin absoluuttisessa polussa paitsi ensimmäisessä vaiheessa: Sen sijaan, että aloittaisimme crate-juuresta, polku alkaa <code>front_of_house</code>-moduulista. <code>front_of_house</code>-moduuli on määritelty samassa moduulissa kuin <code>eat_at_restaurant</code>, joten suhteellinen polku, joka alkaa moduulista, jossa <code>eat_at_restaurant</code> on määritelty, toimii. Sitten, koska <code>hosting</code> ja <code>add_to_waitlist</code> on merkitty <code>pub</code>:lla, polun loppuosa toimii, ja tämä funktiokutsu on kelvollinen!</p>
+<p>Jos aiot jakaa kirjastocrate:asi, jotta muut projektit voivat käyttää koodiasi, julkinen API:si on sopimus crate:si käyttäjien kanssa, joka määrittää, miten he voivat olla vuorovaikutuksessa koodisi kanssa. Julkisen API:n muutosten hallintaan liittyy monia näkökohtia, jotka helpottavat ihmisten riippuvuutta crate:stasi. Nämä näkökohdat ylittävät tämän kirjan laajuuden; jos olet kiinnostunut tästä aiheesta, katso <a href="https://rust-lang.github.io/api-guidelines/">Rust API Guidelines -ohjeet</a>.</p>
 <section class="note" aria-role="note">
 <h4 id="parhaat-käytännöt-paketeille-joissa-on-binääri-ja-kirjasto"><a class="header" href="#parhaat-käytännöt-paketeille-joissa-on-binääri-ja-kirjasto">Parhaat käytännöt paketeille, joissa on binääri ja kirjasto</a></h4>
-<p>Mainitsimme, että paketti voi sisältää sekä <em>src/main.rs</em>-binääricrate-juuren että <em>src/lib.rs</em>-kirjastocrate-juuren, ja molemmilla crateilla on oletuksena paketin nimi. Tyypillisesti paketit, joissa on tämä malli sisältäen sekä kirjasto- että binääricraten, sisältävät binääricratessa vain tarpeeksi koodia käynnistääkseen suoritettavan, joka kutsuu kirjastocraten koodia. Tämä antaa muiden projektien hyötyä suurimmasta osasta paketin tarjoamaa toiminnallisuutta, koska kirjastocraten koodia voidaan jakaa.</p>
-<p>Moduulipuu pitäisi määritellä <em>src/lib.rs</em>:ssä. Sitten mitkä tahansa julkiset kohteet voidaan käyttää binääricratessa aloittamalla polut paketin nimellä. Binääricratesta tulee kirjastocraten käyttäjä aivan kuten täysin ulkoinen crate käyttäisi kirjastocratetta: se voi käyttää vain julkista API:a. Tämä auttaa sinua suunnittelemaan hyvän API:n; et ole vain tekijä, olet myös asiakas!</p>
-<p>Luvussa 12<!-- ignore --> demonstroimme tätä organisointikäytäntöä komentorivi-ohjelmalla, joka sisältää sekä binääri- että kirjastocraten.</p>
+<p>Mainitsimme, että paketti voi sisältää sekä <em>src/main.rs</em> binääricrate-juuren että <em>src/lib.rs</em> kirjastocrate-juuren, ja molemmilla crate:illa on oletuksena paketin nimi. Tyypillisesti paketit, joissa on tämä malli sisältäen sekä kirjasto- että binääricrate:n, sisältävät binääricrate:ssa vain tarpeeksi koodia käynnistääkseen suoritettavan, joka kutsuu kirjastocrate:ssa määriteltyä koodia. Tämä antaa muiden projektien hyötyä suurimmasta osasta paketin tarjoamaa toiminnallisuutta, koska kirjastocrate:n koodia voidaan jakaa.</p>
+<p>Moduulipuu tulisi määritellä tiedostossa <em>src/lib.rs</em>. Sitten mitä tahansa julkisia kohteita voidaan käyttää binääricrate:ssa aloittamalla polut paketin nimellä. Binääricrate:sta tulee kirjastocrate:n käyttäjä aivan kuten täysin ulkoinen crate käyttäisi kirjastocrate:a: se voi käyttää vain julkista API:a. Tämä auttaa suunnittelemaan hyvän API:n; et ole vain kirjoittaja, vaan myös asiakas!</p>
+<p><a href="ch12-00-an-io-project.html">Luvussa 12</a><!-- ignore --> havainnollistamme tätä organisointikäytäntöä komentoriviohjelmalla, joka sisältää sekä binääri- että kirjastocrate:n.</p>
 </section>
 <h3 id="suhteellisten-polkujen-aloittaminen-superlla"><a class="header" href="#suhteellisten-polkujen-aloittaminen-superlla">Suhteellisten polkujen aloittaminen <code>super</code>:lla</a></h3>
-<p>Voimme rakentaa suhteellisia polkuja, jotka alkavat emomoduulista nykyisen moduulin tai crate-juuren sijaan, käyttämällä <code>super</code>:ia polun alussa. Tämä on kuin tiedostojärjestelmäpolun aloittaminen <code>..</code>-syntaksilla. <code>super</code>:n käyttö antaa meille mahdollisuuden viitata kohteeseen, jonka tiedämme olevan emomoduulissa, mikä voi helpottaa moduulipuun uudelleenjärjestelyä, kun moduuli liittyy läheisesti emomoduuliin, mutta emomoduuli saatetaan siirtää muualle moduulipuussa jonain päivänä.</p>
-<p>Harkitse Listauksen 7-8 koodia, joka mallintaa tilannetta, jossa kokki korjaa virheellisen tilauksen ja tuo sen henkilökohtaisesti asiakkaalle. <code>back_of_house</code>-moduulissa määritelty <code>fix_incorrect_order</code>-funktio kutsuu emomoduulissa määriteltyä <code>deliver_order</code>-funktiota määrittämällä polun <code>deliver_order</code>:iin aloittaen <code>super</code>:lla.</p>
-<figure class="listing">
+<p>Voimme rakentaa suhteellisia polkuja, jotka alkavat emomoduulista nykyisen moduulin tai crate-juuren sijaan käyttämällä <code>super</code>-avainsanaa polun alussa. Tämä on kuin tiedostojärjestelmän polun aloittaminen <code>..</code>-syntaksilla, joka tarkoittaa siirtymistä emohakemistoon. <code>super</code>:n käyttäminen sallii meidän viitata kohteeseen, jonka tiedämme olevan emomoduulissa, mikä voi helpottaa moduulipuun uudelleenjärjestelyä, kun moduuli on läheisesti liittynyt emomoduuliin, mutta emomoduuli saatetaan joskus siirtää muualle moduulipuussa.</p>
+<p>Harkitse listauksen 7-8 koodia, joka mallintaa tilannetta, jossa keittiömestari korjaa virheellisen tilauksen ja tuo sen henkilökohtaisesti asiakkaalle. <code>back_of_house</code>-moduulissa määritelty <code>fix_incorrect_order</code>-funktio kutsuu emomoduulissa määriteltyä <code>deliver_order</code>-funktiota määrittämällä polun <code>deliver_order</code>-funktioon aloittaen <code>super</code>:lla.</p>
+<figure class="listing" id="listing-7-8">
 <span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust noplayground test_harness">{{#rustdoc_include ../listings/ch07-managing-growing-projects/listing-07-08/src/lib.rs}}</code></pre>
-<figcaption>Listing 7-8: Funktion kutsuminen suhteellisella polulla, joka alkaa <code>super</code>:lla</figcaption>
+<figcaption><a href="#listing-7-8">Listing 7-8</a>: Funktion kutsuminen suhteellisella polulla, joka alkaa <code>super</code>:lla</figcaption>
 </figure>
-<p><code>fix_incorrect_order</code>-funktio on <code>back_of_house</code>-moduulissa, joten voimme käyttää <code>super</code>:ia siirtyäksemme <code>back_of_house</code>:n emomoduuliin, joka tässä tapauksessa on <code>crate</code>, juuri. Sieltä etsimme <code>deliver_order</code>:ia ja löydämme sen. Onnistui! Uskomme, että <code>back_of_house</code>-moduuli ja <code>deliver_order</code>-funktio pysyvät todennäköisesti samassa suhteessa toisiinsa ja siirretään yhdessä, jos päätämme järjestellä craten moduulipuuta uudelleen. Siksi käytimme <code>super</code>:ia, jotta meillä olisi vähemmän paikkoja päivittää koodia tulevaisuudessa, jos tämä koodi siirretään eri moduuliin.</p>
-<h3 id="rakenteiden-ja-enumien-tekeminen-julkisiksi"><a class="header" href="#rakenteiden-ja-enumien-tekeminen-julkisiksi">Rakenteiden ja enumien tekeminen julkisiksi</a></h3>
-<p>Voimme myös käyttää <code>pub</code>:ia merkitsemään rakenteet ja enumit julkisiksi, mutta <code>pub</code>:in käytössä rakenteiden ja enumien kanssa on muutamia ylimääräisiä yksityiskohtia. Jos käytämme <code>pub</code>:ia ennen rakennemäärittelyä, teemme rakenteesta julkisen, mutta rakenteen kentät ovat edelleen yksityisiä. Voimme tehdä jokaisesta kentästä julkisen tai ei tapauskohtaisesti. Listauksessa 7-9 olemme määritelleet julkisen <code>back_of_house::Breakfast</code>-rakenteen julkisella <code>toast</code>-kentällä mutta yksityisellä <code>seasonal_fruit</code>-kentällä. Tämä mallintaa ravintolatilannetta, jossa asiakas voi valita aterian kanssa tulevan leivän tyypin, mutta kokki päättää, mikä hedelmä seuraa ateriaa sen perusteella, mikä on sesongissa ja varastossa. Saatavilla olevat hedelmät vaihtuvat nopeasti, joten asiakkaat eivät voi valita hedelmää tai edes nähdä, minkä hedelmän he saavat.</p>
-<figure class="listing">
+<p><code>fix_incorrect_order</code>-funktio on <code>back_of_house</code>-moduulissa, joten voimme käyttää <code>super</code>:a siirtyäksemme <code>back_of_house</code>-moduulin emomoduuliin, joka tässä tapauksessa on <code>crate</code>, juuri. Sieltä etsimme <code>deliver_order</code>-funktiota ja löydämme sen. Onnistui! Uskomme, että <code>back_of_house</code>-moduuli ja <code>deliver_order</code>-funktio pysyvät todennäköisesti samassa suhteessa toisiinsa ja siirtyvät yhdessä, jos päättäisimme järjestää crate:n moduulipuun uudelleen. Siksi käytimme <code>super</code>:a, jotta meillä olisi vähemmän paikkoja päivitettäväksi tulevaisuudessa, jos tämä koodi siirretään eri moduuliin.</p>
+<h3 id="structien-ja-enumien-tekeminen-julkisiksi"><a class="header" href="#structien-ja-enumien-tekeminen-julkisiksi">Structien ja enumien tekeminen julkisiksi</a></h3>
+<p>Voimme myös käyttää <code>pub</code>:ia structien ja enumien merkitsemiseen julkisiksi, mutta <code>pub</code>:n käytössä structien ja enumien kanssa on muutamia lisätietoja. Jos käytämme <code>pub</code>:ia struct-määrittelyn edessä, teemme structista julkisen, mutta structin kentät ovat edelleen yksityisiä. Voimme tehdä jokaisesta kentästä julkisen tai yksityisen tapauskohtaisesti. Listauksessa 7-9 olemme määritelleet julkisen <code>back_of_house::Breakfast</code>-structin, jossa on julkinen <code>toast</code>-kenttä mutta yksityinen <code>seasonal_fruit</code>-kenttä. Tämä mallintaa ravintolatilannetta, jossa asiakas voi valita aterian kanssa tulevan leivän tyypin, mutta keittiömestari päättää, mikä hedelmä seuraa ateriaa sen perusteella, mikä on sesongissa ja varastossa. Saatavilla olevat hedelmät vaihtuvat nopeasti, joten asiakkaat eivät voi valita hedelmää tai edes nähdä, minkä hedelmän he saavat.</p>
+<figure class="listing" id="listing-7-9">
 <span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch07-managing-growing-projects/listing-07-09/src/lib.rs}}</code></pre>
-<figcaption>Listing 7-9: Rakenne, jossa on joitakin julkisia ja joitakin yksityisiä kenttiä</figcaption>
+<figcaption><a href="#listing-7-9">Listing 7-9</a>: Struct, jossa on joitakin julkisia ja joitakin yksityisiä kenttiä</figcaption>
 </figure>
-<p>Koska <code>toast</code>-kenttä <code>back_of_house::Breakfast</code>-rakenteessa on julkinen, <code>eat_at_restaurant</code>:ssa voimme kirjoittaa ja lukea <code>toast</code>-kenttää käyttämällä pistesyntaksia. Huomaa, ettemme voi käyttää <code>seasonal_fruit</code>-kenttää <code>eat_at_restaurant</code>:ssa, koska <code>seasonal_fruit</code> on yksityinen. Kokeile poistaa kommentti riviltä, joka muokkaa <code>seasonal_fruit</code>-kentän arvoa, nähdäksesi minkä virheen saat!</p>
-<p>Huomaa myös, että koska <code>back_of_house::Breakfast</code>:lla on yksityinen kenttä, rakenteen täytyy tarjota julkinen liittyvä funktio, joka rakentaa <code>Breakfast</code>-instanssin (olemme nimenneet sen tässä <code>summer</code>:iksi). Jos <code>Breakfast</code>:lla ei olisi tällaista funktiota, emme voisi luoda <code>Breakfast</code>-instanssia <code>eat_at_restaurant</code>:ssa, koska emme voisi asettaa yksityisen <code>seasonal_fruit</code>-kentän arvoa <code>eat_at_restaurant</code>:ssa.</p>
-<p>Sitä vastoin, jos teemme enumista julkisen, kaikki sen variantit ovat sitten julkisia. Tarvitsemme vain <code>pub</code>:in <code>enum</code>-avainsanan eteen, kuten Listauksessa 7-10 on esitetty.</p>
-<figure class="listing">
+<p>Koska <code>back_of_house::Breakfast</code>-structin <code>toast</code>-kenttä on julkinen, funktiossa <code>eat_at_restaurant</code> voimme kirjoittaa ja lukea <code>toast</code>-kenttää käyttämällä pistesyntaksia. Huomaa, ettemme voi käyttää <code>seasonal_fruit</code>-kenttää funktiossa <code>eat_at_restaurant</code>, koska <code>seasonal_fruit</code> on yksityinen. Kokeile poistaa kommentti riviltä, joka muuttaa <code>seasonal_fruit</code>-kentän arvoa, nähdäksesi minkä virheen saat!</p>
+<p>Huomaa myös, että koska <code>back_of_house::Breakfast</code>-structilla on yksityinen kenttä, structin on tarjottava julkinen assosioitu funktio, joka luo <code>Breakfast</code>-instanssin (olemme nimenneet sen tässä <code>summer</code>). Jos <code>Breakfast</code>-structilla ei olisi tällaista funktiota, emme voisi luoda <code>Breakfast</code>-instanssia funktiossa <code>eat_at_restaurant</code>, koska emme voisi asettaa yksityisen <code>seasonal_fruit</code>-kentän arvoa funktiossa <code>eat_at_restaurant</code>.</p>
+<p>Sitä vastoin, jos teemme enumista julkisen, kaikista sen varianteista tulee julkisia. Tarvitsemme vain <code>pub</code>-avainsanan <code>enum</code>-avainsanan edessä, kuten listauksessa 7-10.</p>
+<figure class="listing" id="listing-7-10">
 <span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch07-managing-growing-projects/listing-07-10/src/lib.rs}}</code></pre>
-<figcaption>Listing 7-10: Enumin merkitseminen julkiseksi tekee kaikista sen varianteista julkisia.</figcaption>
+<figcaption><a href="#listing-7-10">Listing 7-10</a>: Enumin määrittely julkiseksi tekee kaikista sen varianteista julkisia.</figcaption>
 </figure>
-<p>Koska teimme <code>Appetizer</code>-enumista julkisen, voimme käyttää <code>Soup</code>- ja <code>Salad</code>-variantteja <code>eat_at_restaurant</code>:ssa.</p>
-<p>Enumit eivät ole kovin hyödyllisiä, elleivät niiden variantit ole julkisia; olisi ärsyttävää joutua merkitsemään kaikki enum-variantit <code>pub</code>:illa joka tapauksessa, joten enum-varianttien oletus on olla julkisia. Rakenteet ovat usein hyödyllisiä ilman, että niiden kentät ovat julkisia, joten rakennekentät noudattavat yleistä sääntöä, että kaikki on oletuksena yksityistä, ellei niitä ole merkitty <code>pub</code>:illa.</p>
-<p>On vielä yksi tilanne, jossa <code>pub</code> on mukana, jota emme ole käsitelleet, ja se on viimeinen moduulijärjestelmämme ominaisuus: <code>use</code>-avainsana. Käsittelemme <code>use</code>:n erikseen ensin, ja sitten näytämme, miten yhdistää <code>pub</code> ja <code>use</code>.</p>
+<p>Koska teimme <code>Appetizer</code>-enumista julkisen, voimme käyttää <code>Soup</code>- ja <code>Salad</code>-variantteja funktiossa <code>eat_at_restaurant</code>.</p>
+<p>Enumit eivät ole kovin hyödyllisiä, elleivät niiden variantit ole julkisia; olisi ärsyttävää joutua merkitsemään kaikki enum-variantit <code>pub</code>:lla joka tapauksessa, joten enum-varianttien oletus on olla julkisia. Structit ovat usein hyödyllisiä ilman, että niiden kentät olisivat julkisia, joten struct-kentät noudattavat yleistä sääntöä, että kaikki on oletuksena yksityistä, ellei niitä ole merkitty <code>pub</code>:lla.</p>
+<p>On vielä yksi tilanne, jossa <code>pub</code>:ia käytetään, jota emme ole käsitelleet, ja se on viimeinen moduulijärjestelmämme ominaisuus: <code>use</code>-avainsana. Käsittelemme <code>use</code>:a ensin erikseen, ja sitten näytämme, miten <code>pub</code> ja <code>use</code> yhdistetään.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                             <a rel="prev" href="ch07-02-defining-modules-to-control-scope-and-privacy.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                                <i class="fa fa-angle-left"></i>
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
                             <a rel="next prefetch" href="ch07-04-bringing-paths-into-scope-with-the-use-keyword.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
                         <div style="clear: both"></div>
@@ -265,16 +287,21 @@
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                     <a rel="prev" href="ch07-02-defining-modules-to-control-scope-and-privacy.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                        <i class="fa fa-angle-left"></i>
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
                     <a rel="next prefetch" href="ch07-04-bringing-paths-into-scope-with-the-use-keyword.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>
 
         </div>
 
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
 
 
 
@@ -283,16 +310,17 @@
         </script>
 
 
-        <script src="elasticlunr.min.js"></script>
-        <script src="mark.min.js"></script>
-        <script src="searcher.js"></script>
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-c2a407aa.js"></script>
 
-        <script src="clipboard.min.js"></script>
-        <script src="highlight.js"></script>
-        <script src="book.js"></script>
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-abc7f01d.js"></script>
+        <script src="book-a0b12cfe.js"></script>
 
         <!-- Custom JS scripts -->
-        <script src="ferris.js"></script>
+        <script src="ferris-2317480c.js"></script>
+
 
 
     </div>

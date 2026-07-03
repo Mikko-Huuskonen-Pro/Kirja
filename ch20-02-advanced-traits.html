@@ -12,44 +12,56 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
 
-        <link rel="icon" href="favicon.svg">
-        <link rel="shortcut icon" href="favicon.png">
-        <link rel="stylesheet" href="css/variables.css">
-        <link rel="stylesheet" href="css/general.css">
-        <link rel="stylesheet" href="css/chrome.css">
-        <link rel="stylesheet" href="css/print.css" media="print">
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-2459343d.css">
+        <link rel="stylesheet" href="css/chrome-ae938929.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
-        <link rel="stylesheet" href="fonts/fonts.css">
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" href="highlight.css">
-        <link rel="stylesheet" href="tomorrow-night.css">
-        <link rel="stylesheet" href="ayu-highlight.css">
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="ferris.css">
-        <link rel="stylesheet" href="theme/2018-edition.css">
-        <link rel="stylesheet" href="theme/semantic-notes.css">
-        <link rel="stylesheet" href="theme/listing.css">
+        <link rel="stylesheet" href="ferris-d33b75bf.css">
+        <link rel="stylesheet" href="theme/2018-edition-4e126c62.css">
+        <link rel="stylesheet" href="theme/semantic-notes-9b5766c0.css">
+        <link rel="stylesheet" href="theme/listing-cab26221.css">
 
 
-        <!-- Provide site root to javascript -->
+        <!-- Provide site root and default themes to javascript -->
         <script>
-            var path_to_root = "";
-            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex-454febf7.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc.js"></script>
+        <script src="toc-7f90d00d.js"></script>
     </head>
     <body>
-    <div id="body-container">
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
             try {
-                var theme = localStorage.getItem('mdbook-theme');
-                var sidebar = localStorage.getItem('mdbook-sidebar');
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
 
                 if (theme.startsWith('"') && theme.endsWith('"')) {
                     localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
@@ -63,7 +75,8 @@
 
         <!-- Set the theme before any content is loaded, prevents flash -->
         <script>
-            var theme;
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
             const html = document.documentElement;
@@ -72,55 +85,59 @@
             html.classList.add("js");
         </script>
 
-        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
-            var sidebar = null;
-            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
             } else {
                 sidebar = 'hidden';
+                sidebar_toggle.checked = false;
             }
-            sidebar_toggle.checked = sidebar === 'visible';
-            html.classList.remove('sidebar-visible');
-            html.classList.add("sidebar-" + sidebar);
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
         </script>
 
-        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
             <!-- populated by js -->
             <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
             <noscript>
                 <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
             </noscript>
-            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
             </div>
         </nav>
 
-        <div id="page-wrapper" class="page-wrapper">
+        <div id="mdbook-page-wrapper" class="page-wrapper">
 
             <div class="page">
-                <div id="menu-bar-hover-placeholder"></div>
-                <div id="menu-bar" class="menu-bar sticky">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
-                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
-                            <i class="fa fa-bars"></i>
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
                         </label>
-                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
-                            <i class="fa fa-paint-brush"></i>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
                         </button>
-                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
-                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
                         </ul>
-                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
-                            <i class="fa fa-search"></i>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
                         </button>
                     </div>
 
@@ -128,232 +145,250 @@
 
                     <div class="right-buttons">
                         <a href="print.html" title="Print this book" aria-label="Print this book">
-                            <i id="print-button" class="fa fa-print"></i>
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
                         </a>
                         <a href="https://github.com/rust-lang/book" title="Git repository" aria-label="Git repository">
-                            <i id="git-repository-button" class="fa fa-github"></i>
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></span>
                         </a>
 
                     </div>
                 </div>
 
-                <div id="search-wrapper" class="hidden">
-                    <form id="searchbar-outer" class="searchbar-outer">
-                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
                     </form>
-                    <div id="searchresults-outer" class="searchresults-outer hidden">
-                        <div id="searchresults-header" class="searchresults-header"></div>
-                        <ul id="searchresults">
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
                         </ul>
                     </div>
                 </div>
 
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
                 <script>
-                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
-                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
-                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
                         link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
                     });
                 </script>
 
-                <div id="content" class="content">
+                <div id="mdbook-content" class="content">
                     <main>
-                        <h2 id="kehittyneet-trait-ominaisuudet"><a class="header" href="#kehittyneet-trait-ominaisuudet">Kehittyneet trait-ominaisuudet</a></h2>
-<p>Käsittelimme traitit ensin <a href="ch10-02-traits.html#traits-defining-shared-behavior">”Traitit: jaetun käyttäytymisen määrittely”</a><!-- ignore --> -osiossa Luvussa 10, mutta emme käsitelleet kehittyneempiä yksityiskohtia. Nyt kun tiedät enemmän Rustista, voimme syventyä yksityiskohtiin.</p>
-<h3 id="assosioitujen-tyyppien-paikanpitäjien-määrittäminen-trait-määrittelyissä"><a class="header" href="#assosioitujen-tyyppien-paikanpitäjien-määrittäminen-trait-määrittelyissä">Assosioitujen tyyppien paikanpitäjien määrittäminen trait-määrittelyissä</a></h3>
-<p><em>Assosioidut tyypit</em> yhdistävät tyypin paikanpitäjän traitiin siten, että traitin metodimäärittelyt voivat käyttää näitä paikanpitäjiä signatuureissaan. Traitin toteuttaja määrittää konkreettisen tyypin, jota käytetään paikanpitäjän sijaan kyseisessä toteutuksessa. Näin voimme määritellä traitin, joka käyttää joitakin tyyppejä, ilman että meidän tarvitsee tietää tarkalleen, mitä nämä tyypit ovat, ennen kuin trait toteutetaan.</p>
-<p>Olemme kuvanneet useimmat tämän luvun kehittyneistä ominaisuuksista harvoin tarvittaviksi. Assosioidut tyypit ovat jossain välissä: niitä käytetään harvemmin kuin muun kirjan käsittelemiä ominaisuuksia, mutta yleisemmin kuin monia tämän luvun muita ominaisuuksia.</p>
-<p>Yksi esimerkki traitista, jolla on assosioitu tyyppi, on standardikirjaston tarjoama <code>Iterator</code>-trait. Assosioitu tyyppi on nimeltään <code>Item</code>, ja se edustaa niiden arvojen tyyppiä, joita <code>Iterator</code>-traitin toteuttava tyyppi iteroi. <code>Iterator</code>-traitin määrittely on esitetty Listauksessa 20-13.</p>
-<figure class="listing">
+                        <h2 id="edistyneet-traitit"><a class="header" href="#edistyneet-traitit">Edistyneet traitit</a></h2>
+<p>Käsittelimme traitit ensimmäisen kerran luvun 10 <a href="ch10-02-traits.html">”Jaetun käyttäytymisen määrittely traitien avulla”</a><!-- ignore --> -kohdassa, mutta emme käsitelleet edistyneempiä yksityiskohtia. Nyt kun tiedät Rustista enemmän, voimme syventyä yksityiskohtiin.</p>
+<!-- Old headings. Do not remove or links may break. -->
+<p><a id="specifying-placeholder-types-in-trait-definitions-with-associated-types"></a>
+<a id="associated-types"></a></p>
+<h3 id="traitien-määrittely-assosioituneilla-tyypeillä"><a class="header" href="#traitien-määrittely-assosioituneilla-tyypeillä">Traitien määrittely assosioituneilla tyypeillä</a></h3>
+<p><em>Assosioituneet tyypit</em> yhdistävät tyyppipaikkamerkin traitiin siten, että traitin metodimääritelmissä voidaan käyttää näitä paikkamerkkityyppejä signatuureissa. Traitin toteuttaja määrittää konkreettisen tyypin paikkamerkkityypin sijaan tietylle toteutukselle. Näin voimme määritellä traitin, joka käyttää tyyppejä, tietämättä tarkalleen mitä tyyppejä ne ovat ennen traitin toteutusta.</p>
+<p>Olemme kuvanneet useimmat tämän luvun edistyneet ominaisuudet harvoin tarvittaviksi. Assosioituneet tyypit ovat välimaastossa: niitä käytetään harvemmin kuin kirjan muissa osissa selitettyjä ominaisuuksia, mutta yleisemmin kuin monia tämän luvun muita ominaisuuksia.</p>
+<p>Esimerkki traitista assosioituneella tyypillä on standardikirjaston tarjoama <code>Iterator</code>-trait. Assosioitu tyyppi on nimeltään <code>Item</code> ja edustaa niiden arvojen tyyppiä, joita <code>Iterator</code>-traitin toteuttava tyyppi iteroi. <code>Iterator</code>-traitin määritelmä on listauksessa 20-13.</p>
+<figure class="listing" id="listing-20-13">
 <pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-13/src/lib.rs}}</code></pre>
-<figcaption>Listing 20-13: <code>Iterator</code>-traitin määrittely, jossa on assosioitu tyyppi <code>Item</code></figcaption>
+<figcaption><a href="#listing-20-13">Listing 20-13</a>: <code>Iterator</code>-traitin määritelmä, jossa on assosioitu tyyppi <code>Item</code></figcaption>
 </figure>
-<p>Tyyppi <code>Item</code> on paikanpitäjä, ja <code>next</code>-metodin määrittely osoittaa, että se palauttaa arvoja tyypillä <code>Option&lt;Self::Item&gt;</code>. <code>Iterator</code>-traitin toteuttajat määrittävät konkreettisen tyypin <code>Item</code>-tyypille, ja <code>next</code>-metodi palauttaa <code>Option</code>-arvon, joka sisältää kyseisen konkreettisen tyypin arvon.</p>
-<p>Assosioidut tyypit saattavat vaikuttaa samankaltaiselta käsitteeltä kuin geneeriset tyypit, koska jälkimmäiset antavat meidän määritellä funktion ilman, että määrittelemme, mitä tyyppejä se voi käsitellä. Tarkastellaksemme näiden kahden käsitteen eroa, katsomme <code>Iterator</code>-traitin toteutusta tyypille nimeltä <code>Counter</code>, joka määrittää <code>Item</code>-tyypin olevan <code>u32</code>:</p>
+<p>Tyyppi <code>Item</code> on paikkamerkki, ja <code>next</code>-metodin määritelmä näyttää, että se palauttaa arvoja tyypillä <code>Option&lt;Self::Item&gt;</code>. <code>Iterator</code>-traitin toteuttajat määrittävät konkreettisen tyypin <code>Item</code>-tyypille, ja <code>next</code>-metodi palauttaa <code>Option</code>-arvon, joka sisältää kyseisen konkreettisen tyypin arvon.</p>
+<p>Assosioituneet tyypit saattavat vaikuttaa samankaltaiselta käsitteeltä kuin geneerisyys, koska geneerisyyden avulla voidaan määritellä funktio ilman tietoa siitä, mitä tyyppejä se käsittelee. Tarkastellaksemme näiden kahden käsitteen eroa, katsomme <code>Iterator</code>-traitin toteutusta tyypille nimeltä <code>Counter</code>, jossa <code>Item</code>-tyypiksi määritetään <code>u32</code>:</p>
 <figure class="listing">
 <span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch20-advanced-features/no-listing-22-iterator-on-counter/src/lib.rs:ch19}}</code></pre>
 </figure>
-<p>Tämä syntaksi vaikuttaa verrattavalta geneeristen tyyppien syntaksiin. Miksi emme siis vain määrittele <code>Iterator</code>-traitia geneerisillä tyypeillä, kuten Listauksessa 20-14 on esitetty?</p>
-<figure class="listing">
+<p>Tämä syntaksi näyttää verrattavissa geneerisyyden syntaksiin. Miksi emme siis määrittelisi <code>Iterator</code>-traitia geneerisesti, kuten listauksessa 20-14?</p>
+<figure class="listing" id="listing-20-14">
 <pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-14/src/lib.rs}}</code></pre>
-<figcaption>Listing 20-14: Hypoteettinen <code>Iterator</code>-traitin määrittely geneeristen tyyppien avulla</figcaption>
+<figcaption><a href="#listing-20-14">Listing 20-14</a>: Hypoteettinen <code>Iterator</code>-traitin määritelmä geneerisyyttä käyttäen</figcaption>
 </figure>
-<p>Ero on siinä, että kun käytämme geneerisiä tyyppejä, kuten Listauksessa 20-14, meidän täytyy merkitä tyypit jokaisessa toteutuksessa; koska voimme myös toteuttaa <code>Iterator&lt;String&gt; for Counter</code> tai minkä tahansa muun tyypin, voisimme olla useita <code>Iterator</code>-toteutuksia tyypille <code>Counter</code>. Toisin sanoen, kun traitilla on geneerinen parametri, se voidaan toteuttaa tyypille useita kertoja, vaihtamalla geneeristen tyyppiparametrien konkreettisia tyyppejä joka kerta. Kun käytämme <code>next</code>-metodia tyypillä <code>Counter</code>, meidän täytyisi antaa tyyppimerkinnät osoittaaksemme, mitä <code>Iterator</code>-toteutusta haluamme käyttää.</p>
-<p>Assosioitujen tyyppien kanssa emme tarvitse merkitä tyyppejä, koska emme voi toteuttaa traitia tyypille useita kertoja. Listauksessa 20-13 assosioituja tyyppejä käyttävällä määrittelyllä voimme valita <code>Item</code>-tyypin vain kerran, koska voi olla vain yksi <code>impl Iterator for Counter</code>. Emme tarvitse määrittää, että haluamme <code>u32</code>-arvojen iteraattorin, joka kerta kun kutsumme <code>next</code>-metodia tyypillä <code>Counter</code>.</p>
-<p>Assosioidut tyypit tulevat myös osaksi traitin sopimusta: traitin toteuttajien täytyy tarjota tyyppi assosioitua tyyppipaikanpitäjää varten. Assosioituilla tyypeillä on usein nimi, joka kuvaa, miten tyyppiä käytetään, ja assosioitujen tyyppien dokumentointi API-dokumentaatiossa on hyvä käytäntö.</p>
-<h3 id="oletusarvoiset-geneeriset-tyyppiparametrit-ja-operaatioiden-ylikuormitus"><a class="header" href="#oletusarvoiset-geneeriset-tyyppiparametrit-ja-operaatioiden-ylikuormitus">Oletusarvoiset geneeriset tyyppiparametrit ja operaatioiden ylikuormitus</a></h3>
-<p>Kun käytämme geneerisiä tyyppiparametreja, voimme määrittää geneeriselle tyypille oletusarvoisen konkreettisen tyypin. Tämä poistaa tarpeen traitin toteuttajien määrittää konkreettinen tyyppi, jos oletustyyppi toimii. Määrität oletustyypin, kun ilmoitat geneerisen tyypin <code>&lt;PaikanpitäjäTyyppi=KonkreettinenTyyppi&gt;</code>-syntaksilla.</p>
-<p>Erinomainen esimerkki tilanteesta, jossa tämä tekniikka on hyödyllinen, on <em>operaatioiden ylikuormitus</em>, jossa mukautat operaattorin (kuten <code>+</code>) käyttäytymistä tietyissä tilanteissa.</p>
-<p>Rust ei salli omien operaattorien luomista tai mielivaltaisten operaattorien ylikuormittamista. Voit kuitenkin ylikuormittaa operaatiot ja niihin liittyvät traitit, jotka on lueteltu <code>std::ops</code>-moduulissa, toteuttamalla operaattoriin liittyvät traitit. Esimerkiksi Listauksessa 20-15 ylikuormitamme <code>+</code>-operaattorin kahden <code>Point</code>-instanssin yhteenlaskemiseksi. Teemme tämän toteuttamalla <code>Add</code>-traitin <code>Point</code>-rakenteelle:</p>
-<figure class="listing">
+<p>Ero on siinä, että geneerisyyttä käytettäessä, kuten listauksessa 20-14, meidän täytyy merkitä tyypit jokaisessa toteutuksessa; koska voimme toteuttaa myös <code>Iterator&lt;String&gt; for Counter</code> tai minkä tahansa muun tyypin, <code>Counter</code>-tyypille voi olla useita <code>Iterator</code>-toteutuksia. Toisin sanoen, kun traitilla on geneerinen parametri, sen voi toteuttaa tyypille useita kertoja vaihtamalla geneerisen tyyppiparametrin konkreettista tyyppiä joka kerta. Kun käytämme <code>next</code>-metodia <code>Counter</code>-tyypillä, meidän täytyisi antaa tyyppimerkinnät kertomaan, mitä <code>Iterator</code>-toteutusta haluamme käyttää.</p>
+<p>Assosioituneilla tyypeillä emme tarvitse tyyppimerkintöjä, koska emme voi toteuttaa traitia tyypille useita kertoja. Listauksessa 20-13 assosioituneita tyyppejä käyttävällä määritelmällä voimme valita <code>Item</code>-tyypin vain kerran, koska voi olla vain yksi <code>impl Iterator for Counter</code>. Emme joudu määrittämään, että haluamme <code>u32</code>-arvojen iteraattorin, joka kerta kun kutsumme <code>next</code>-metodia <code>Counter</code>-tyypillä.</p>
+<p>Assosioituneet tyypit ovat myös osa traitin sopimusta: traitin toteuttajien täytyy tarjota tyyppi assosioituneen tyypin paikkamerkin tilalle. Assosioituilla tyypeillä on usein nimi, joka kuvaa tyypin käyttöä, ja assosioituneen tyypin dokumentointi API-dokumentaatiossa on hyvä käytäntö.</p>
+<!-- Old headings. Do not remove or links may break. -->
+<p><a id="default-generic-type-parameters-and-operator-overloading"></a></p>
+<h3 id="oletusarvoiset-geneeriset-parametrit-ja-operaattorin-ylikuormitus"><a class="header" href="#oletusarvoiset-geneeriset-parametrit-ja-operaattorin-ylikuormitus">Oletusarvoiset geneeriset parametrit ja operaattorin ylikuormitus</a></h3>
+<p>Kun käytämme geneerisiä tyyppiparametreja, voimme määrittää geneeriselle tyypille oletusarvoisen konkreettisen tyypin. Tämä poistaa tarpeen, että traitin toteuttajien täytyy määrittää konkreettinen tyyppi, jos oletustyyppi toimii. Oletustyypin määrittelet geneeristä tyyppiä julistaessasi syntaksilla <code>&lt;PlaceholderType=ConcreteType&gt;</code>.</p>
+<p>Hyvä esimerkki tilanteesta, jossa tämä tekniikka on hyödyllinen, on <em>operaattorin ylikuormitus</em>, jossa mukautat operaattorin (kuten <code>+</code>) käyttäytymistä tietyissä tilanteissa.</p>
+<p>Rust ei salli omien operaattorien luomista tai mielivaltaisten operaattorien ylikuormitusta. Voit kuitenkin ylikuormittaa <code>std::ops</code>-moduulissa listattuja operaatioita ja niihin liittyviä traitteja toteuttamalla operaattoriin liittyvät traitit. Esimerkiksi listauksessa 20-15 ylikuormitamme <code>+</code>-operaattorin kahden <code>Point</code>-instanssin yhteenlaskuun toteuttamalla <code>Add</code>-traitin <code>Point</code>-rakenteelle.</p>
+<figure class="listing" id="listing-20-15">
 <span class="file-name">Filename: src/main.rs</span>
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+<pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-15/src/main.rs}}
-<span class="boring">}</span></code></pre></pre>
-<figcaption>Listing 20-15: <code>Add</code>-traitin toteuttaminen <code>+</code>-operaattorin ylikuormittamiseksi <code>Point</code>-instansseille</figcaption>
+<span class="boring">}</span></code></pre>
+<figcaption><a href="#listing-20-15">Listing 20-15</a>: <code>Add</code>-traitin toteutus <code>+</code>-operaattorin ylikuormittamiseksi <code>Point</code>-instansseille</figcaption>
 </figure>
-<p><code>add</code>-metodi laskee yhteen kahden <code>Point</code>-instanssin <code>x</code>-arvot ja kahden <code>Point</code>-instanssin <code>y</code>-arvot luodakseen uuden <code>Point</code>-instanssin. <code>Add</code>-traitilla on assosioitu tyyppi nimeltä <code>Output</code>, joka määrittää <code>add</code>-metodin palauttaman tyypin.</p>
-<p>Oletusarvoinen geneerinen tyyppi tässä koodissa on <code>Add</code>-traitin sisällä. Tässä on sen määrittely:</p>
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+<p><code>add</code>-metodi laskee kahden <code>Point</code>-instanssin <code>x</code>-arvot ja kahden <code>Point</code>-instanssin <code>y</code>-arvot yhteen luodakseen uuden <code>Point</code>-instanssin. <code>Add</code>-traitilla on assosioitu tyyppi nimeltä <code>Output</code>, joka määrittää <code>add</code>-metodin palauttaman tyypin.</p>
+<p>Tässä koodissa oletusarvoinen geneerinen tyyppi on <code>Add</code>-traitin sisällä. Tässä on sen määritelmä:</p>
+<pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>trait Add&lt;Rhs=Self&gt; {
     type Output;
 
     fn add(self, rhs: Rhs) -&gt; Self::Output;
 }
-<span class="boring">}</span></code></pre></pre>
-<p>Tämän koodin pitäisi näyttää yleisesti tutulta: trait, jolla on yksi metodi ja assosioitu tyyppi. Uusi osa on <code>Rhs=Self</code>: tätä syntaksia kutsutaan <em>oletusarvoisiksi tyyppiparametreiksi</em>. <code>Rhs</code>-geneerinen tyyppiparametri (lyhenne sanasta ”right hand side”, oikea puoli) määrittää <code>rhs</code>-parametrin tyypin <code>add</code>-metodissa. Jos emme määritä konkreettista tyyppiä <code>Rhs</code>-parametrille, kun toteutamme <code>Add</code>-traitin, <code>Rhs</code>-tyypin oletusarvo on <code>Self</code>, joka on tyyppi, jolle toteutamme <code>Add</code>-traitin.</p>
-<p>Kun toteutimme <code>Add</code>-traitin tyypille <code>Point</code>, käytimme oletusarvoa <code>Rhs</code>-parametrille, koska halusimme laskea yhteen kaksi <code>Point</code>-instanssia. Katsotaan esimerkkiä <code>Add</code>-traitin toteutuksesta, jossa haluamme mukauttaa <code>Rhs</code>-tyypin oletusarvon sijaan.</p>
-<p>Meillä on kaksi rakennetta, <code>Millimeters</code> ja <code>Meters</code>, jotka pitävät arvoja eri yksiköissä. Tämä olemassa olevan tyypin ohut käärintä toiseen rakenteeseen tunnetaan <em>newtype-mallina</em>, jota käsittelemme tarkemmin <a href="ch20-02-advanced-traits.html#using-the-newtype-pattern-to-implement-external-traits-on-external-types">”Newtype-mallin käyttö ulkoisten traitien toteuttamiseen ulkoisille tyypeille”</a><!-- ignore --> -osiossa. Haluamme laskea yhteen millimetreissä olevia arvoja metreissä olevien arvojen kanssa, ja <code>Add</code>-toteutuksen pitää tehdä muunnos oikein. Voimme toteuttaa <code>Add</code>-traitin tyypille <code>Millimeters</code> siten, että <code>Rhs</code> on <code>Meters</code>, kuten Listauksessa 20-16 on esitetty.</p>
-<figure class="listing">
+<span class="boring">}</span></code></pre>
+<p>Tämän koodin pitäisi näyttää yleisesti tutulta: trait yhdellä metodilla ja assosioidulla tyypillä. Uutta on <code>Rhs=Self</code>: tätä syntaksia kutsutaan <em>oletusarvoisiksi tyyppiparametreiksi</em>. Geneerinen tyyppiparametri <code>Rhs</code> (lyhenne ”right-hand side”, oikea puoli) määrittää <code>add</code>-metodin <code>rhs</code>-parametrin tyypin. Jos emme määritä konkreettista tyyppiä <code>Rhs</code>-parametrille toteuttaessamme <code>Add</code>-traitia, <code>Rhs</code>-tyypiksi tulee oletuksena <code>Self</code>, eli tyyppi, jolle toteutamme <code>Add</code>-traitin.</p>
+<p>Kun toteutimme <code>Add</code>-traitin <code>Point</code>-tyypille, käytimme oletusta <code>Rhs</code>-parametrille, koska halusimme laskea yhteen kaksi <code>Point</code>-instanssia. Katsotaan esimerkkiä, jossa haluamme mukauttaa <code>Rhs</code>-tyypin oletuksen sijaan.</p>
+<p>Meillä on kaksi rakennetta, <code>Millimeters</code> ja <code>Meters</code>, jotka tallentavat arvoja eri yksiköissä. Tämä olemassa olevan tyypin ohut kääriminen toiseen rakenteeseen tunnetaan <em>newtype-kuviona</em>, jota käsittelemme tarkemmin <a href="ch20-02-advanced-traits.html#implementing-external-traits-with-the-newtype-pattern">”Ulkoisten traitien toteuttaminen newtype-kuviolla”</a><!-- ignore --> -kohdassa. Haluamme laskea yhteen millimetreissä olevia arvoja metreissä olevien arvojen kanssa ja <code>Add</code>-toteutuksen tekemän muunnoksen oikein. Voimme toteuttaa <code>Add</code>-traitin <code>Millimeters</code>-tyypille asettaen <code>Rhs</code>-tyypiksi <code>Meters</code>, kuten listauksessa 20-16.</p>
+<figure class="listing" id="listing-20-16">
 <span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-16/src/lib.rs}}</code></pre>
-<figcaption>Listing 20-16: <code>Add</code>-traitin toteuttaminen tyypille <code>Millimeters</code> lisätäksemme <code>Millimeters</code>-arvoja <code>Meters</code>-arvoihin</figcaption>
+<figcaption><a href="#listing-20-16">Listing 20-16</a>: <code>Add</code>-traitin toteutus <code>Millimeters</code>-tyypille <code>Millimeters</code>- ja <code>Meters</code>-arvojen yhteenlaskuun</figcaption>
 </figure>
-<p>Lisätäksemme yhteen <code>Millimeters</code>- ja <code>Meters</code>-arvoja, määritämme <code>impl Add&lt;Meters&gt;</code> asettaaksemme <code>Rhs</code>-tyyppiparametrin arvon oletusarvon <code>Self</code> sijaan.</p>
-<p>Käytät oletusarvoisia tyyppiparametreja kahdella pääasiallisella tavalla:</p>
+<p>Lisätäksemme <code>Millimeters</code>- ja <code>Meters</code>-arvoja määrittelemme <code>impl Add&lt;Meters&gt;</code> asettaaksemme <code>Rhs</code>-tyyppiparametrin arvon oletuksen <code>Self</code> sijaan.</p>
+<p>Käytät oletusarvoisia tyyppiparametreja pääasiassa kahdella tavalla:</p>
 <ol>
 <li>Laajentaaksesi tyyppiä rikkomatta olemassa olevaa koodia</li>
-<li>Salliaksesi mukautuksen tietyissä tapauksissa, joita useimmat käyttäjät eivät tarvitse</li>
+<li>Salliaksesi mukautuksen tapauksissa, joita useimmat käyttäjät eivät tarvitse</li>
 </ol>
-<p>Standardikirjaston <code>Add</code>-trait on esimerkki toisesta tarkoituksesta: yleensä lasket yhteen samanlaisia tyyppejä, mutta <code>Add</code>-trait tarjoaa mahdollisuuden mukauttaa tämän lisäksi. Oletusarvoisen tyyppiparametrin käyttö <code>Add</code>-traitin määrittelyssä tarkoittaa, ettei sinun tarvitse määrittää ylimääräistä parametria useimmiten. Toisin sanoen, hieman toteutusboilerplatea ei tarvita, mikä helpottaa traitin käyttöä.</p>
-<p>Ensimmäinen tarkoitus on samanlainen kuin toinen, mutta päinvastoin: jos haluat lisätä tyyppiparametrin olemassa olevaan traitiin, voit antaa sille oletusarvon, jotta voit laajentaa traitin toiminnallisuutta rikkomatta olemassa olevaa toteutuskoodia.</p>
-<h3 id="tarkasti-määritetty-syntaksi-epäselvyyden-poistamiseksi-saman-nimisten-metodien-kutsuminen"><a class="header" href="#tarkasti-määritetty-syntaksi-epäselvyyden-poistamiseksi-saman-nimisten-metodien-kutsuminen">Tarkasti määritetty syntaksi epäselvyyden poistamiseksi: saman nimisten metodien kutsuminen</a></h3>
-<p>Mikään Rustissa ei estä traitia sisältämästä metodia, jolla on sama nimi kuin toisen traitin metodilla, eikä Rust estä sinua toteuttamasta molempia traitteja samalle tyypille. On myös mahdollista toteuttaa metodi suoraan tyypille samalla nimellä kuin traitien metodeilla.</p>
-<p>Kun kutsut metodeja, joilla on sama nimi, sinun täytyy kertoa Rustille, mitä haluat käyttää. Harkitse Listauksen 20-17 koodia, jossa olemme määritelleet kaksi traitia, <code>Pilot</code> ja <code>Wizard</code>, joilla molemmilla on metodi nimeltä <code>fly</code>. Toteutamme sitten molemmat traitit tyypille <code>Human</code>, jolla on jo suoraan toteutettu metodi nimeltä <code>fly</code>. Jokainen <code>fly</code>-metodi tekee jotain erilaista.</p>
-<figure class="listing">
+<p>Standardikirjaston <code>Add</code>-trait on esimerkki toisesta tarkoituksesta: yleensä lasket yhteen samanlaisia tyyppejä, mutta <code>Add</code>-trait tarjoaa mahdollisuuden mukauttaa tätä. Oletusarvoisen tyyppiparametrin käyttö <code>Add</code>-traitin määritelmässä tarkoittaa, että ylimääräistä parametria ei tarvitse määrittää useimmiten. Toisin sanoen, toteutusboilerplatea ei tarvita, mikä helpottaa traitin käyttöä.</p>
+<p>Ensimmäinen tarkoitus on samanlainen kuin toinen, mutta päinvastoin: jos haluat lisätä tyyppiparametrin olemassa olevaan traitiin, voit antaa sille oletusarvon laajentaaksesi traitin toiminnallisuutta rikkomatta olemassa olevaa toteutuskoodia.</p>
+<!-- Old headings. Do not remove or links may break. -->
+<p><a id="fully-qualified-syntax-for-disambiguation-calling-methods-with-the-same-name"></a>
+<a id="disambiguating-between-methods-with-the-same-name"></a></p>
+<h3 id="samannimisten-metodien-erottelu"><a class="header" href="#samannimisten-metodien-erottelu">Samannimisten metodien erottelu</a></h3>
+<p>Mikään Rustissa ei estä traitia sisältämästä metodia, jolla on sama nimi kuin toisen traitin metodilla, eikä Rust estä molempien traitien toteuttamista samalle tyypille. On myös mahdollista toteuttaa metodi suoraan tyypille samalla nimellä kuin trait-metodeilla.</p>
+<p>Kun kutsut samannimisiä metodeja, sinun täytyy kertoa Rustille, kumpaa haluat käyttää. Harkitse listauksen 20-17 koodia, jossa olemme määritelleet kaksi traitia, <code>Pilot</code> ja <code>Wizard</code>, joilla molemmilla on metodi nimeltä <code>fly</code>. Toteutamme molemmat traitit tyypille <code>Human</code>, jolla on jo suoraan toteutettu metodi nimeltä <code>fly</code>. Jokainen <code>fly</code>-metodi tekee jotain eri.</p>
+<figure class="listing" id="listing-20-17">
 <span class="file-name">Filename: src/main.rs</span>
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+<pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-17/src/main.rs:here}}
-<span class="boring">}</span></code></pre></pre>
-<figcaption>Listing 20-17: Kaksi traitia on määritelty sisältämään <code>fly</code>-metodin, ja ne on toteutettu tyypille <code>Human</code>, jolle on myös toteutettu <code>fly</code>-metodi suoraan</figcaption>
+<span class="boring">}</span></code></pre>
+<figcaption><a href="#listing-20-17">Listing 20-17</a>: Kaksi traitia, joilla on <code>fly</code>-metodi, toteutetaan <code>Human</code>-tyypille, ja <code>fly</code>-metodi toteutetaan suoraan <code>Human</code>-tyypille.</figcaption>
 </figure>
-<p>Kun kutsumme <code>fly</code>-metodia <code>Human</code>-instanssilla, kääntäjä oletuksena kutsuu suoraan tyypille toteutettua metodia, kuten Listauksessa 20-18 on esitetty.</p>
-<figure class="listing">
+<p>Kun kutsumme <code>fly</code>-metodia <code>Human</code>-instanssilla, kääntäjä oletuksena kutsuu tyypille suoraan toteutettua metodia, kuten listauksessa 20-18.</p>
+<figure class="listing" id="listing-20-18">
 <span class="file-name">Filename: src/main.rs</span>
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+<pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-18/src/main.rs:here}}
-<span class="boring">}</span></code></pre></pre>
-<figcaption>Listing 20-18: <code>fly</code>-metodin kutsuminen <code>Human</code>-instanssilla</figcaption>
+<span class="boring">}</span></code></pre>
+<figcaption><a href="#listing-20-18">Listing 20-18</a>: <code>fly</code>-metodin kutsuminen <code>Human</code>-instanssilla</figcaption>
 </figure>
-<p>Tämän koodin suorittaminen tulostaa <code>*waving arms furiously*</code>, mikä osoittaa, että Rust kutsui suoraan tyypille <code>Human</code> toteutettua <code>fly</code>-metodia.</p>
-<p>Kutsuaksemme <code>fly</code>-metodeja joko <code>Pilot</code>- tai <code>Wizard</code>-traitista, meidän täytyy käyttää eksplisiittisempää syntaksia määrittääksemme, mitä <code>fly</code>-metodia tarkoitamme. Listausta 20-19 demonstroi tätä syntaksia.</p>
-<figure class="listing">
+<p>Tämän koodin ajaminen tulostaa <code>*waving arms furiously*</code>, mikä osoittaa, että Rust kutsui <code>Human</code>-tyypille suoraan toteutettua <code>fly</code>-metodia.</p>
+<p>Kutsuaksemme <code>fly</code>-metodeja joko <code>Pilot</code>- tai <code>Wizard</code>-traitista, tarvitsemme eksplisittisemmän syntaksin määrittääksemme, mitä <code>fly</code>-metodia tarkoitamme. Listaus 20-19 demonstroi tätä syntaksia.</p>
+<figure class="listing" id="listing-20-19">
 <span class="file-name">Filename: src/main.rs</span>
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+<pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-19/src/main.rs:here}}
-<span class="boring">}</span></code></pre></pre>
-<figcaption>Listing 20-19: Sen määrittäminen, minkä traitin <code>fly</code>-metodia haluamme kutsua</figcaption>
+<span class="boring">}</span></code></pre>
+<figcaption><a href="#listing-20-19">Listing 20-19</a>: Sen määrittäminen, kumman traitin <code>fly</code>-metodia haluamme kutsua</figcaption>
 </figure>
-<p>Traitin nimen määrittäminen ennen metodin nimeä selventää Rustille, mitä <code>fly</code>-toteutusta haluamme kutsua. Voisimme myös kirjoittaa <code>Human::fly(&amp;person)</code>, mikä on vastaava kuin <code>person.fly()</code>, jota käytimme Listauksessa 20-19, mutta tämä on hieman pidempi kirjoittaa, jos emme tarvitse epäselvyyden poistamista.</p>
-<p>Tämän koodin suorittaminen tulostaa seuraavan:</p>
+<p>Trait-nimen kirjoittaminen ennen metodin nimeä selventää Rustille, mitä <code>fly</code>-toteutusta haluamme kutsua. Voisimme myös kirjoittaa <code>Human::fly(&amp;person)</code>, mikä on vastaava kuin listauksessa 20-19 käyttämämme <code>person.fly()</code>, mutta tämä on hieman pidempi kirjoittaa, jos erottelua ei tarvita.</p>
+<p>Tämän koodin ajaminen tulostaa seuraavan:</p>
 <pre><code class="language-console">{{#include ../listings/ch20-advanced-features/listing-20-19/output.txt}}
 </code></pre>
-<p>Koska <code>fly</code>-metodilla on <code>self</code>-parametri, jos meillä olisi kaksi <em>tyyppiä</em>, jotka molemmat toteuttavat yhden <em>traitin</em>, Rust voisi selvittää, mitä traitin toteutusta käyttää <code>self</code>-parametrin tyypin perusteella.</p>
-<p>Assosioituilla funktioilla, jotka eivät ole metodeja, ei kuitenkaan ole <code>self</code>-parametria. Kun useat tyypit tai traitit määrittelevät ei-metodifunktioita samalla funktionimellä, Rust ei aina tiedä, mitä tyyppiä tarkoitat, ellet käytä <em>tarkasti määriteltyä syntaksia</em>. Esimerkiksi Listauksessa 20-20 luomme traitin eläinsuojalle, joka haluaa nimetä kaikki pentukoirat nimellä <em>Spot</em>. Teemme <code>Animal</code>-traitin assosioitulla ei-metodifunktiolla <code>baby_name</code>. <code>Animal</code>-trait on toteutettu rakenteelle <code>Dog</code>, jolle tarjoamme myös assosioitua ei-metodifunktiota <code>baby_name</code> suoraan.</p>
-<figure class="listing">
+<p>Koska <code>fly</code>-metodilla on <code>self</code>-parametri, jos meillä olisi kaksi <em>tyyppiä</em>, jotka molemmat toteuttavat yhden <em>traitin</em>, Rust voisi päätellä, mitä trait-toteutusta käyttää <code>self</code>-parametrin tyypin perusteella.</p>
+<p>Assosioiduilla funktioilla, jotka eivät ole metodeja, ei kuitenkaan ole <code>self</code>-parametria. Kun useilla tyypeillä tai traitilla on samannimisiä ei-metodifunktioita, Rust ei aina tiedä, mitä tyyppiä tarkoitat, ellet käytä täysin pätevää syntaksia. Esimerkiksi listauksessa 20-20 luomme traitin eläintarhaa varten, joka haluaa nimetä kaikki pentukoirat Spotiksi. Teemme <code>Animal</code>-traitin assosioidulla ei-metodifunktiolla <code>baby_name</code>. <code>Animal</code>-trait toteutetaan rakenteelle <code>Dog</code>, jolle tarjoamme myös suoraan assosioituneen ei-metodifunktion <code>baby_name</code>.</p>
+<figure class="listing" id="listing-20-20">
 <span class="file-name">Filename: src/main.rs</span>
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+<pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-20/src/main.rs}}
-<span class="boring">}</span></code></pre></pre>
-<figcaption>Listing 20-20: Trait assosioitulla funktiolla ja tyyppi assosioitulla samannimisellä funktiolla, joka toteuttaa myös traitin</figcaption>
+<span class="boring">}</span></code></pre>
+<figcaption><a href="#listing-20-20">Listing 20-20</a>: Trait assosioituneella funktiolla ja tyyppi samannimisellä assosioituneella funktiolla, joka toteuttaa myös traitin</figcaption>
 </figure>
-<p>Toteutamme koodin kaikkien pentujen nimeämiseksi Spot-nimellä <code>baby_name</code>-assosioitufunktiossa, joka on määritelty tyypille <code>Dog</code>. Tyyppi <code>Dog</code> toteuttaa myös <code>Animal</code>-traitin, joka kuvaa ominaisuuksia, joita kaikilla eläimillä on. Vauvakoirat kutsutaan pentuiksi, ja tämä ilmaistaan <code>Animal</code>-traitin toteutuksessa tyypille <code>Dog</code> <code>baby_name</code>-funktiossa, joka liittyy <code>Animal</code>-traitiin.</p>
-<p><code>main</code>-funktiossa kutsumme <code>Dog::baby_name</code>-funktiota, joka kutsuu suoraan tyypille <code>Dog</code> määriteltyä assosioitua funktiota. Tämä koodi tulostaa seuraavan:</p>
+<p>Toteutamme koodin, joka nimeää kaikki pennut Spotiksi, <code>Dog</code>-tyypille määritellyssä <code>baby_name</code>-assosioituneessa funktiossa. <code>Dog</code>-tyyppi toteuttaa myös <code>Animal</code>-traitin, joka kuvaa kaikkien eläinten ominaisuuksia. Koiranpennuja kutsutaan puppies-nimellä, ja tämä ilmaistaan <code>Animal</code>-traitin <code>Dog</code>-toteutuksessa <code>Animal</code>-traitiin liittyvässä <code>baby_name</code>-funktiossa.</p>
+<p><code>main</code>-funktiossa kutsumme <code>Dog::baby_name</code>-funktiota, joka kutsuu suoraan <code>Dog</code>-tyypille määriteltyä assosioitunutta funktiota. Tämä koodi tulostaa seuraavan:</p>
 <pre><code class="language-console">{{#include ../listings/ch20-advanced-features/listing-20-20/output.txt}}
 </code></pre>
-<p>Tämä tuloste ei ole se, mitä halusimme. Haluamme kutsua <code>baby_name</code>-funktiota, joka on osa <code>Animal</code>-traitia, jonka toteutimme tyypille <code>Dog</code>, jotta koodi tulostaisi <code>A baby dog is called a puppy</code>. Listauksessa 20-19 käyttämämme traitin nimen määrittämisen tekniikka ei auta tässä; jos muutamme <code>main</code>-funktion Listauksen 20-21 koodiksi, saamme käännösvirheen.</p>
-<figure class="listing">
+<p>Tämä tuloste ei ole haluamamme. Haluamme kutsua <code>baby_name</code>-funktiota, joka on osa <code>Animal</code>-traitia, jonka toteutimme <code>Dog</code>-tyypille, jotta koodi tulostaisi <code>A baby dog is called a puppy</code>. Listauksessa 20-19 käyttämämme trait-nimen määrittämisen tekniikka ei auta tässä; jos muutamme <code>main</code>-funktion listauksen 20-21 koodiksi, saamme käännösvirheen.</p>
+<figure class="listing" id="listing-20-21">
 <span class="file-name">Filename: src/main.rs</span>
 <pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-21/src/main.rs:here}}</code></pre>
-<figcaption>Listing 20-21: Yritys kutsua <code>baby_name</code>-funktiota <code>Animal</code>-traitista, mutta Rust ei tiedä, mitä toteutusta käyttää</figcaption>
+<figcaption><a href="#listing-20-21">Listing 20-21</a>: Yritys kutsua <code>baby_name</code>-funktiota <code>Animal</code>-traitista, mutta Rust ei tiedä mitä toteutusta käyttää</figcaption>
 </figure>
-<p>Koska <code>Animal::baby_name</code>-funktiolla ei ole <code>self</code>-parametria, ja muita tyyppejä voi toteuttaa <code>Animal</code>-traitin, Rust ei voi selvittää, mitä <code>Animal::baby_name</code>-toteutusta haluamme. Saamme tämän kääntäjävirheen:</p>
+<p>Koska <code>Animal::baby_name</code>-funktiolla ei ole <code>self</code>-parametria ja muitakin tyyppejä voi toteuttaa <code>Animal</code>-traitin, Rust ei voi päätellä, mitä <code>Animal::baby_name</code>-toteutusta haluamme. Saamme tämän kääntäjävirheen:</p>
 <pre><code class="language-console">{{#include ../listings/ch20-advanced-features/listing-20-21/output.txt}}
 </code></pre>
-<p>Poistaaksemme epäselvyyden ja kertoaksemme Rustille, että haluamme käyttää <code>Animal</code>-traitin toteutusta tyypille <code>Dog</code> toisen tyypin <code>Animal</code>-toteutuksen sijaan, meidän täytyy käyttää tarkasti määriteltyä syntaksia. Listausta 20-22 demonstroi tarkasti määritellyn syntaksin käyttöä.</p>
-<figure class="listing">
+<p>Erottellaksemme ja kertoaksemme Rustille, että haluamme käyttää <code>Animal</code>-traitin <code>Dog</code>-toteutusta toisen tyypin <code>Animal</code>-toteutuksen sijaan, meidän täytyy käyttää täysin pätevää syntaksia. Listaus 20-22 näyttää, miten täysin pätevää syntaksia käytetään.</p>
+<figure class="listing" id="listing-20-22">
 <span class="file-name">Filename: src/main.rs</span>
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+<pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-22/src/main.rs:here}}
-<span class="boring">}</span></code></pre></pre>
-<figcaption>Listing 20-22: Tarkasti määritellyn syntaksin käyttö määrittääksemme, että haluamme kutsua <code>baby_name</code>-funktiota <code>Animal</code>-traitista tyypille <code>Dog</code> toteutettuna</figcaption>
+<span class="boring">}</span></code></pre>
+<figcaption><a href="#listing-20-22">Listing 20-22</a>: Täysin pätevän syntaksin käyttö määrittämään, että haluamme kutsua <code>Animal</code>-traitin <code>baby_name</code>-funktiota <code>Dog</code>-toteutuksena</figcaption>
 </figure>
-<p>Annamme Rustille tyyppimerkinnän kulmasulkeiden sisällä, mikä osoittaa, että haluamme kutsua <code>baby_name</code>-metodia <code>Animal</code>-traitista tyypille <code>Dog</code> toteutettuna sanomalla, että haluamme käsitellä tyyppiä <code>Dog</code> tyypinä <code>Animal</code> tässä funktiokutsussa. Tämä koodi tulostaa nyt haluamamme:</p>
+<p>Annamme Rustille tyyppimerkinnän kulmasulkeissa, joka osoittaa, että haluamme kutsua <code>Animal</code>-traitin <code>baby_name</code>-metodia <code>Dog</code>-toteutuksena käsittelemällä <code>Dog</code>-tyyppiä <code>Animal</code>-tyyppinä tässä funktiokutsussa. Tämä koodi tulostaa nyt haluamamme:</p>
 <pre><code class="language-console">{{#include ../listings/ch20-advanced-features/listing-20-22/output.txt}}
 </code></pre>
-<p>Yleisesti ottaen tarkasti määritelty syntaksi määritellään seuraavasti:</p>
-<pre><code class="language-rust ignore">&lt;Tyyppi trait Trait&gt;::funktio(vastaanotin_jos_metodi, seuraava_arg, ...);</code></pre>
-<p>Assosioituille funktioille, jotka eivät ole metodeja, ei olisi vastaanottajaa: olisi vain muiden argumenttien lista. Voisit käyttää tarkasti määriteltyä syntaksia kaikkialla, missä kutsut funktioita tai metodeja. Sinun on kuitenkin sallittua jättää pois mikä tahansa osa tästä syntaksista, jonka Rust voi selvittää muista tiedoista ohjelmassa. Sinun täytyy käyttää tätä puheliasempaa syntaksia vain tapauksissa, joissa on useita samannimisiä toteutuksia ja Rust tarvitsee apua tunnistaakseen, mitä toteutusta haluat kutsua.</p>
-<h3 id="ylitraitien-käyttö-vaatimaan-yhden-traitin-toiminnallisuutta-toisessa-traitissa"><a class="header" href="#ylitraitien-käyttö-vaatimaan-yhden-traitin-toiminnallisuutta-toisessa-traitissa">Ylitraitien käyttö vaatimaan yhden traitin toiminnallisuutta toisessa traitissa</a></h3>
-<p>Joskus saatat kirjoittaa trait-määrittelyn, joka riippuu toisesta traitista: jotta tyyppi toteuttaisi ensimmäisen traitin, haluat vaatia, että tyyppi toteuttaa myös toisen traitin. Tekisit näin, jotta trait-määrittelysi voisi käyttää toisen traitin assosioituja kohteita. Trait, johon trait-määrittelysi luottaa, kutsutaan traitisi <em>ylitraiksi</em>.</p>
-<p>Esimerkiksi sanotaan, että haluamme tehdä <code>OutlinePrint</code>-traitin, jolla on <code>outline_print</code>-metodi, joka tulostaa annetun arvon muotoiltuna niin, että se on kehystetty tähtimerkeillä. Toisin sanoen, annettuna <code>Point</code>-rakenteelle, joka toteuttaa standardikirjaston <code>Display</code>-traitin tuottaakseen <code>(x, y)</code>, kun kutsumme <code>outline_print</code>-metodia <code>Point</code>-instanssilla, jolla on <code>1</code> arvolle <code>x</code> ja <code>3</code> arvolle <code>y</code>, sen pitäisi tulostaa seuraava:</p>
+<p>Yleisesti täysin pätevä syntaksi määritellään seuraavasti:</p>
+<pre><code class="language-rust ignore">&lt;Type as Trait&gt;::function(receiver_if_method, next_arg, ...);</code></pre>
+<p>Assosioiduille funktioille, jotka eivät ole metodeja, ei olisi vastaanottajaa: olisi vain muiden argumenttien lista. Voit käyttää täysin pätevää syntaksia kaikkialla, missä kutsut funktioita tai metodeja. Voit kuitenkin jättää pois kaiken osan tästä syntaksista, jonka Rust voi päätellä muusta ohjelman tiedosta. Tarvitset tämän monimutkaisemman syntaksin vain tapauksissa, joissa on useita samannimisiä toteutuksia ja Rust tarvitsee apua tunnistamaan, mitä toteutusta haluat kutsua.</p>
+<!-- Old headings. Do not remove or links may break. -->
+<p><a id="using-supertraits-to-require-one-traits-functionality-within-another-trait"></a></p>
+<h3 id="supertraitien-käyttö"><a class="header" href="#supertraitien-käyttö">Supertraitien käyttö</a></h3>
+<p>Joskus saatat kirjoittaa trait-määritelmän, joka riippuu toisesta traitista: jotta tyyppi toteuttaisi ensimmäisen traitin, haluat vaatia sen toteuttavan myös toisen traitin. Teet näin, jotta trait-määritelmäsi voi käyttää toisen traitin assosioituja kohteita. Trait, johon trait-määritelmäsi nojaa, on traitisi <em>supertrait</em>.</p>
+<p>Esimerkiksi haluamme tehdä <code>OutlinePrint</code>-traitin, jolla on <code>outline_print</code>-metodi, joka tulostaa annetun arvon muotoiltuna niin, että se on kehystetty tähtimerkeillä. Eli kun <code>Point</code>-rakenteella, joka toteuttaa standardikirjaston <code>Display</code>-traitin tulostaakseen <code>(x, y)</code>, kutsumme <code>outline_print</code>-metodia <code>Point</code>-instanssilla, jossa <code>x</code> on <code>1</code> ja <code>y</code> on <code>3</code>, sen pitäisi tulostaa seuraava:</p>
 <pre><code class="language-text">**********
 *        *
 * (1, 3) *
 *        *
 **********
 </code></pre>
-<p><code>outline_print</code>-metodin toteutuksessa haluamme käyttää <code>Display</code>-traitin toiminnallisuutta. Siksi meidän täytyy määrittää, että <code>OutlinePrint</code>-trait toimii vain tyypeille, jotka myös toteuttavat <code>Display</code>-traitin ja tarjoavat <code>OutlinePrint</code>-traitin tarvitseman toiminnallisuuden. Voimme tehdä tämän trait-määrittelyssä määrittämällä <code>OutlinePrint: Display</code>. Tämä tekniikka on samanlainen kuin trait-rajoitteen lisääminen traitiin. Listausta 20-23 demonstroi <code>OutlinePrint</code>-traitin toteutusta.</p>
-<figure class="listing">
+<p><code>outline_print</code>-metodin toteutuksessa haluamme käyttää <code>Display</code>-traitin toiminnallisuutta. Siksi meidän täytyy määrittää, että <code>OutlinePrint</code>-trait toimii vain tyypeille, jotka myös toteuttavat <code>Display</code>-traitin ja tarjoavat <code>OutlinePrint</code>-traitin tarvitseman toiminnallisuuden. Voimme tehdä sen trait-määritelmässä määrittämällä <code>OutlinePrint: Display</code>. Tämä tekniikka muistuttaa trait-sidontojen lisäämistä traitiin. Listaus 20-23 näyttää <code>OutlinePrint</code>-traitin toteutuksen.</p>
+<figure class="listing" id="listing-20-23">
 <span class="file-name">Filename: src/main.rs</span>
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+<pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-23/src/main.rs:here}}
-<span class="boring">}</span></code></pre></pre>
-<figcaption>Listing 20-23: <code>OutlinePrint</code>-traitin toteuttaminen, joka vaatii toiminnallisuutta <code>Display</code>-traitista</figcaption>
+<span class="boring">}</span></code></pre>
+<figcaption><a href="#listing-20-23">Listing 20-23</a>: <code>OutlinePrint</code>-traitin toteutus, joka vaatii toiminnallisuutta <code>Display</code>-traitista</figcaption>
 </figure>
-<p>Koska olemme määrittäneet, että <code>OutlinePrint</code> vaatii <code>Display</code>-traitin, voimme käyttää <code>to_string</code>-funktiota, joka toteutetaan automaattisesti kaikille tyypeille, jotka toteuttavat <code>Display</code>-traitin. Jos yrittäisimme käyttää <code>to_string</code>-funktiota lisäämättä kaksoispistettä ja määrittämättä <code>Display</code>-traitia traitin nimen jälkeen, saisimme virheen, joka sanoo, ettei tyypille <code>&amp;Self</code> löydy metodia nimeltä <code>to_string</code> nykyisestä näkyvyysalueesta.</p>
+<p>Koska olemme määrittäneet, että <code>OutlinePrint</code> vaatii <code>Display</code>-traitin, voimme käyttää <code>to_string</code>-funktiota, joka toteutetaan automaattisesti kaikille <code>Display</code>-traitin toteuttaville tyypeille. Jos yrittäisimme käyttää <code>to_string</code>-funktiota lisäämättä kaksoispistettä ja <code>Display</code>-traitia trait-nimen jälkeen, saisimme virheen, jossa sanotaan, ettei tyypille <code>&amp;Self</code> löydy metodia nimeltä <code>to_string</code> nykyisestä näkyvyysalueesta.</p>
 <p>Katsotaan, mitä tapahtuu, kun yritämme toteuttaa <code>OutlinePrint</code>-traitin tyypille, joka ei toteuta <code>Display</code>-traitia, kuten <code>Point</code>-rakenteelle:</p>
 <figure class="listing">
 <span class="file-name">Filename: src/main.rs</span>
 <pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch20-advanced-features/no-listing-02-impl-outlineprint-for-point/src/main.rs:here}}</code></pre>
 </figure>
-<p>Saamme virheen, joka sanoo, että <code>Display</code> vaaditaan mutta sitä ei ole toteutettu:</p>
+<p>Saamme virheen, jossa sanotaan, että <code>Display</code> vaaditaan mutta sitä ei ole toteutettu:</p>
 <pre><code class="language-console">{{#include ../listings/ch20-advanced-features/no-listing-02-impl-outlineprint-for-point/output.txt}}
 </code></pre>
-<p>Korjataksemme tämän, toteutamme <code>Display</code>-traitin tyypille <code>Point</code> ja täytämme <code>OutlinePrint</code>-traitin vaatiman rajoitteen, näin:</p>
+<p>Korjataksemme tämän toteutamme <code>Display</code>-traitin <code>Point</code>-tyypille ja täytämme <code>OutlinePrint</code>-traitin vaatiman rajoitteen näin:</p>
 <figure class="listing">
 <span class="file-name">Filename: src/main.rs</span>
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+<pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>{{#rustdoc_include ../listings/ch20-advanced-features/no-listing-03-impl-display-for-point/src/main.rs:here}}
-<span class="boring">}</span></code></pre></pre>
+<span class="boring">}</span></code></pre>
 </figure>
-<p>Tämän jälkeen <code>OutlinePrint</code>-traitin toteuttaminen tyypille <code>Point</code> kääntyy onnistuneesti, ja voimme kutsua <code>outline_print</code>-metodia <code>Point</code>-instanssilla näyttääksemme sen tähtimerkkikehyksessä.</p>
-<h3 id="newtype-mallin-käyttö-ulkoisten-traitien-toteuttamiseen-ulkoisille-tyypeille"><a class="header" href="#newtype-mallin-käyttö-ulkoisten-traitien-toteuttamiseen-ulkoisille-tyypeille">Newtype-mallin käyttö ulkoisten traitien toteuttamiseen ulkoisille tyypeille</a></h3>
-<p><a href="ch10-02-traits.html#implementing-a-trait-on-a-type">”Traitin toteuttaminen tyypille”</a><!-- ignore --> -osiossa Luvussa 10 mainitsimme orpopelisäännön, joka sanoo, että saamme toteuttaa traitin tyypille vain, jos joko trait tai tyyppi on paikallinen crateemme. On mahdollista kiertää tämä rajoitus käyttämällä <em>newtype-mallia</em>, joka sisältää uuden tyypin tuple-rakenteessa. (Käsittelimme tuple-rakenteita <a href="ch05-01-defining-structs.html#using-tuple-structs-without-named-fields-to-create-different-types">”Tuple-rakenteiden käyttö nimeämättömillä kentillä eri tyyppien luomiseksi”</a><!-- ignore --> -osiossa Luvussa 5.) Tuple-rakenteella on yksi kenttä, ja se on ohut kääre tyypin ympärillä, jolle haluamme toteuttaa traitin. Sitten kääretyyppi on paikallinen crateemme, ja voimme toteuttaa traitin kääreelle. <em>Newtype</em> on termi, joka on peräisin Haskell-ohjelmointikielestä. Tämän mallin käytöstä ei ole suorituskykyrangaistusta ajonaikana, ja kääretyyppi poistetaan käännösaikana.</p>
-<p>Esimerkkinä sanotaan, että haluamme toteuttaa <code>Display</code>-traitin tyypille <code>Vec&lt;T&gt;</code>, mitä orpopelisääntö estää meitä tekemästä suoraan, koska <code>Display</code>-trait ja <code>Vec&lt;T&gt;</code>-tyyppi on määritelty crateemme ulkopuolella. Voimme tehdä <code>Wrapper</code>-rakenteen, joka pitää <code>Vec&lt;T&gt;</code>-instanssin; sitten voimme toteuttaa <code>Display</code>-traitin tyypille <code>Wrapper</code> ja käyttää <code>Vec&lt;T&gt;</code>-arvoa, kuten Listauksessa 20-24 on esitetty.</p>
-<figure class="listing">
+<p>Sitten <code>OutlinePrint</code>-traitin toteuttaminen <code>Point</code>-tyypille kääntyy onnistuneesti, ja voimme kutsua <code>outline_print</code>-metodia <code>Point</code>-instanssilla näyttääksemme sen tähtimerkkikehyksessä.</p>
+<!-- Old headings. Do not remove or links may break. -->
+<p><a id="using-the-newtype-pattern-to-implement-external-traits-on-external-types"></a>
+<a id="using-the-newtype-pattern-to-implement-external-traits"></a></p>
+<h3 id="ulkoisten-traitien-toteuttaminen-newtype-kuviolla"><a class="header" href="#ulkoisten-traitien-toteuttaminen-newtype-kuviolla">Ulkoisten traitien toteuttaminen newtype-kuviolla</a></h3>
+<p>Luvun 10 <a href="ch10-02-traits.html#implementing-a-trait-on-a-type">”Traitin toteuttaminen tyypille”</a><!-- ignore --> -kohdassa mainitsimme orporoolin, jonka mukaan saamme toteuttaa traitin tyypille vain, jos trait tai tyyppi, tai molemmat, ovat paikallisia kratellemme. Tämän rajoituksen voi kiertää newtype-kuviolla, jossa luodaan uusi tyyppi monikkorakenteessa. (Käsittelimme monikkorakenteita luvun 5 <a href="ch05-01-defining-structs.html#creating-different-types-with-tuple-structs">”Eri tyyppien luominen monikkorakenteilla”</a><!-- ignore --> -kohdassa.) Monikkorakenteella on yksi kenttä, ja se on ohut kääre tyypin ympärillä, jolle haluamme toteuttaa traitin. Kääretyyppi on sitten paikallinen kratellemme, ja voimme toteuttaa traitin kääretyypille. <em>Newtype</em> on termi, joka on peräisin Haskell-ohjelmointikielestä. Tämän kuvion käytöstä ei ole ajonaikaisen suorituskyvyn rangaistusta, ja kääretyyppi häviää käännösaikana.</p>
+<p>Esimerkkinä haluamme toteuttaa <code>Display</code>-traitin tyypille <code>Vec&lt;T&gt;</code>, mitä orporooli estää tekemästä suoraan, koska <code>Display</code>-trait ja <code>Vec&lt;T&gt;</code>-tyyppi on määritelty kratellemme ulkopuolella. Voimme tehdä <code>Wrapper</code>-rakenteen, joka pitää <code>Vec&lt;T&gt;</code>-instanssin; sitten voimme toteuttaa <code>Display</code>-traitin <code>Wrapper</code>-tyypille ja käyttää <code>Vec&lt;T&gt;</code>-arvoa, kuten listauksessa 20-24.</p>
+<figure class="listing" id="listing-20-24">
 <span class="file-name">Filename: src/main.rs</span>
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+<pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-24/src/main.rs}}
-<span class="boring">}</span></code></pre></pre>
-<figcaption>Listing 20-24: <code>Wrapper</code>-tyypin luominen <code>Vec&lt;String&gt;</code>-tyypin ympärille <code>Display</code>-traitin toteuttamiseksi</figcaption>
+<span class="boring">}</span></code></pre>
+<figcaption><a href="#listing-20-24">Listing 20-24</a>: <code>Wrapper</code>-tyypin luominen <code>Vec&lt;String&gt;</code>-tyypin ympärille <code>Display</code>-traitin toteuttamiseksi</figcaption>
 </figure>
-<p><code>Display</code>-toteutus käyttää <code>self.0</code> päästäkseen sisäiseen <code>Vec&lt;T&gt;</code>-arvoon, koska <code>Wrapper</code> on tuple-rakenne ja <code>Vec&lt;T&gt;</code> on tuple-indeksin 0 kohdassa oleva kohde. Sitten voimme käyttää <code>Display</code>-traitin toiminnallisuutta tyypillä <code>Wrapper</code>.</p>
-<p>Tämän tekniikan haittapuoli on, että <code>Wrapper</code> on uusi tyyppi, joten sillä ei ole sen pitämän arvon metodeja. Meidän täytyisi toteuttaa kaikki <code>Vec&lt;T&gt;</code>-tyypin metodit suoraan tyypille <code>Wrapper</code> siten, että metodit delegoivat <code>self.0</code>:lle, mikä antaisi meille mahdollisuuden käsitellä tyyppiä <code>Wrapper</code> täsmälleen kuten <code>Vec&lt;T&gt;</code>:tä. Jos haluaisimme, että uudella tyypillä on jokainen sisäisen tyypin metodi, <code>Deref</code>-traitin toteuttaminen (käsitelty <a href="ch15-02-deref.html#treating-smart-pointers-like-regular-references-with-the-deref-trait">”Älykkäiden osoittimien käsittely tavallisten viittausten tavoin <code>Deref</code>-traitin avulla”</a><!-- ignore --> -osiossa Luvussa 15) tyypille <code>Wrapper</code> palauttaakseen sisäisen tyypin olisi ratkaisu. Jos emme halua, että <code>Wrapper</code>-tyypillä on kaikki sisäisen tyypin metodit — esimerkiksi rajoittaaksemme <code>Wrapper</code>-tyypin käyttäytymistä — meidän täytyisi toteuttaa vain haluamamme metodit manuaalisesti.</p>
-<p>Tämä newtype-malli on hyödyllinen myös silloin, kun traitit eivät ole mukana. Vaihdetaan fokusta ja katsotaan joitakin kehittyneitä tapoja olla vuorovaikutuksessa Rustin tyyppijärjestelmän kanssa.</p>
+<p><code>Display</code>-toteutus käyttää <code>self.0</code> päästäkseen sisäiseen <code>Vec&lt;T&gt;</code>-arvoon, koska <code>Wrapper</code> on monikkorakenne ja <code>Vec&lt;T&gt;</code> on monikon indeksin 0 kohde. Sitten voimme käyttää <code>Display</code>-traitin toiminnallisuutta <code>Wrapper</code>-tyypillä.</p>
+<p>Tämän tekniikan haittapuoli on, että <code>Wrapper</code> on uusi tyyppi, joten sillä ei ole sen pitämän arvon metodeja. Meidän täytyisi toteuttaa kaikki <code>Vec&lt;T&gt;</code>-metodit suoraan <code>Wrapper</code>-tyypille niin, että metodit delegoivat <code>self.0</code>:lle, jotta voisimme käsitellä <code>Wrapper</code>-tyyppiä täsmälleen kuten <code>Vec&lt;T&gt;</code>-tyyppiä. Jos haluaisimme uudella tyypillä kaikki sisäisen tyypin metodit, ratkaisu olisi toteuttaa <code>Deref</code>-trait <code>Wrapper</code>-tyypille palauttaakseen sisäisen tyypin (käsittelimme <code>Deref</code>-traitin toteutusta luvun 15 <a href="ch15-02-deref.html#treating-smart-pointers-like-regular-references">”Älyosoittimien käyttely tavallisten viitteiden tavoin”</a><!-- ignore --> -kohdassa). Jos emme haluaisi <code>Wrapper</code>-tyypillä kaikkia sisäisen tyypin metodeja — esimerkiksi rajoittaaksemme <code>Wrapper</code>-tyypin käyttäytymistä — meidän täytyisi toteuttaa manuaalisesti vain haluamamme metodit.</p>
+<p>Tämä newtype-kuvio on hyödyllinen myös silloin, kun traitteja ei ole mukana. Siirrytään seuraavaksi tarkastelemaan edistyneitä tapoja vuorovaikuttaa Rustin tyyppijärjestelmän kanssa.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                             <a rel="prev" href="ch20-01-unsafe-rust.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                                <i class="fa fa-angle-left"></i>
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
                             <a rel="next prefetch" href="ch20-03-advanced-types.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
                         <div style="clear: both"></div>
@@ -363,16 +398,21 @@
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                     <a rel="prev" href="ch20-01-unsafe-rust.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                        <i class="fa fa-angle-left"></i>
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
                     <a rel="next prefetch" href="ch20-03-advanced-types.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>
 
         </div>
 
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
 
 
 
@@ -381,16 +421,17 @@
         </script>
 
 
-        <script src="elasticlunr.min.js"></script>
-        <script src="mark.min.js"></script>
-        <script src="searcher.js"></script>
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-c2a407aa.js"></script>
 
-        <script src="clipboard.min.js"></script>
-        <script src="highlight.js"></script>
-        <script src="book.js"></script>
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-abc7f01d.js"></script>
+        <script src="book-a0b12cfe.js"></script>
 
         <!-- Custom JS scripts -->
-        <script src="ferris.js"></script>
+        <script src="ferris-2317480c.js"></script>
+
 
 
     </div>

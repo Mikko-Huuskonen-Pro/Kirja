@@ -12,44 +12,56 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
 
-        <link rel="icon" href="favicon.svg">
-        <link rel="shortcut icon" href="favicon.png">
-        <link rel="stylesheet" href="css/variables.css">
-        <link rel="stylesheet" href="css/general.css">
-        <link rel="stylesheet" href="css/chrome.css">
-        <link rel="stylesheet" href="css/print.css" media="print">
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-2459343d.css">
+        <link rel="stylesheet" href="css/chrome-ae938929.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
-        <link rel="stylesheet" href="fonts/fonts.css">
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" href="highlight.css">
-        <link rel="stylesheet" href="tomorrow-night.css">
-        <link rel="stylesheet" href="ayu-highlight.css">
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="ferris.css">
-        <link rel="stylesheet" href="theme/2018-edition.css">
-        <link rel="stylesheet" href="theme/semantic-notes.css">
-        <link rel="stylesheet" href="theme/listing.css">
+        <link rel="stylesheet" href="ferris-d33b75bf.css">
+        <link rel="stylesheet" href="theme/2018-edition-4e126c62.css">
+        <link rel="stylesheet" href="theme/semantic-notes-9b5766c0.css">
+        <link rel="stylesheet" href="theme/listing-cab26221.css">
 
 
-        <!-- Provide site root to javascript -->
+        <!-- Provide site root and default themes to javascript -->
         <script>
-            var path_to_root = "";
-            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex-454febf7.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc.js"></script>
+        <script src="toc-7f90d00d.js"></script>
     </head>
     <body>
-    <div id="body-container">
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
             try {
-                var theme = localStorage.getItem('mdbook-theme');
-                var sidebar = localStorage.getItem('mdbook-sidebar');
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
 
                 if (theme.startsWith('"') && theme.endsWith('"')) {
                     localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
@@ -63,7 +75,8 @@
 
         <!-- Set the theme before any content is loaded, prevents flash -->
         <script>
-            var theme;
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
             const html = document.documentElement;
@@ -72,55 +85,59 @@
             html.classList.add("js");
         </script>
 
-        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
-            var sidebar = null;
-            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
             } else {
                 sidebar = 'hidden';
+                sidebar_toggle.checked = false;
             }
-            sidebar_toggle.checked = sidebar === 'visible';
-            html.classList.remove('sidebar-visible');
-            html.classList.add("sidebar-" + sidebar);
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
         </script>
 
-        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
             <!-- populated by js -->
             <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
             <noscript>
                 <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
             </noscript>
-            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
             </div>
         </nav>
 
-        <div id="page-wrapper" class="page-wrapper">
+        <div id="mdbook-page-wrapper" class="page-wrapper">
 
             <div class="page">
-                <div id="menu-bar-hover-placeholder"></div>
-                <div id="menu-bar" class="menu-bar sticky">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
-                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
-                            <i class="fa fa-bars"></i>
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
                         </label>
-                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
-                            <i class="fa fa-paint-brush"></i>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
                         </button>
-                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
-                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
                         </ul>
-                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
-                            <i class="fa fa-search"></i>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
                         </button>
                     </div>
 
@@ -128,50 +145,55 @@
 
                     <div class="right-buttons">
                         <a href="print.html" title="Print this book" aria-label="Print this book">
-                            <i id="print-button" class="fa fa-print"></i>
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
                         </a>
                         <a href="https://github.com/rust-lang/book" title="Git repository" aria-label="Git repository">
-                            <i id="git-repository-button" class="fa fa-github"></i>
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></span>
                         </a>
 
                     </div>
                 </div>
 
-                <div id="search-wrapper" class="hidden">
-                    <form id="searchbar-outer" class="searchbar-outer">
-                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
                     </form>
-                    <div id="searchresults-outer" class="searchresults-outer hidden">
-                        <div id="searchresults-header" class="searchresults-header"></div>
-                        <ul id="searchresults">
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
                         </ul>
                     </div>
                 </div>
 
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
                 <script>
-                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
-                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
-                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
                         link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
                     });
                 </script>
 
-                <div id="content" class="content">
+                <div id="mdbook-content" class="content">
                     <main>
                         <h2 id="kirjaston-julkaiseminen-cratesio-palveluun"><a class="header" href="#kirjaston-julkaiseminen-cratesio-palveluun">Kirjaston julkaiseminen Crates.io-palveluun</a></h2>
-<p>Olemme käyttäneet <a href="https://crates.io/">crates.io</a><!-- ignore --> -palvelun paketteja projektiemme riippuvuuksina, mutta voit myös jakaa koodiasi muiden kanssa julkaisemalla omat pakettisi. <a href="https://crates.io/">crates.io</a><!-- ignore --> -palvelun crate-rekisteri jakaa pakettiesi lähdekoodin, joten se isännöi pääasiassa avoimen lähdekoodin koodia.</p>
-<p>Rustilla ja Cargolla on ominaisuuksia, jotka tekevät julkaistusta paketistasi helpomman löytää ja käyttää. Käsittelemme seuraavaksi joitakin näistä ominaisuuksista ja selitämme sitten, miten paketti julkaistaan.</p>
+<p>Olemme käyttäneet <a href="https://crates.io/">crates.io</a><!-- ignore --> -palvelun paketteja projektiemme riippuvuuksina, mutta voitte myös jakaa koodianne muiden kanssa julkaisemalla omat pakettinne. <a href="https://crates.io/">crates.io</a><!-- ignore --> -palvelun crate-rekisteri jakaa pakettienne lähdekoodin, joten se isännöi pääasiassa avoimen lähdekoodin koodia.</p>
+<p>Rustilla ja Cargolla on ominaisuuksia, jotka tekevät julkaistusta paketistanne helpomman löytää ja käyttää. Käsittelemme seuraavaksi joitakin näistä ominaisuuksista ja selitämme sitten, miten paketti julkaistaan.</p>
 <h3 id="hyödyllisten-dokumentaatiokommenttien-kirjoittaminen"><a class="header" href="#hyödyllisten-dokumentaatiokommenttien-kirjoittaminen">Hyödyllisten dokumentaatiokommenttien kirjoittaminen</a></h3>
-<p>Pakettiesi tarkka dokumentointi auttaa muita käyttäjiä tietämään, miten ja milloin niitä käytetään, joten dokumentaation kirjoittamiseen kannattaa panostaa aikaa. Luvussa 3 käsittelimme, miten Rust-koodia kommentoidaan kahdella kauttaviivalla <code>//</code>. Rustissa on myös erityinen kommenttityyppi dokumentaatiota varten, jota kutsutaan kätevästi <em>dokumentaatiokommentiksi</em> (<em>documentation comment</em>), ja joka tuottaa HTML-dokumentaation. HTML näyttää dokumentaatiokommenttien sisällön julkisille API-kohteille, jotka on tarkoitettu ohjelmoijille, jotka haluavat tietää, miten <em>käyttää</em> crateasi, ei sitä, miten crateasi <em>toteutetaan</em>.</p>
-<p>Dokumentaatiokommentit käyttävät kolmea kauttaviivaa <code>///</code> kahden sijaan ja tukevat Markdown-merkintää tekstin muotoiluun. Sijoita dokumentaatiokommentit juuri ennen dokumentoitavaa kohdetta. Listausta 14-1 näyttää dokumentaatiokommentit <code>add_one</code>-funktiolle <code>my_crate</code>-nimisessä cratessa.</p>
-<figure class="listing">
+<p>Pakettienne tarkka dokumentointi auttaa muita käyttäjiä tietämään, miten ja milloin niitä käytetään, joten dokumentaation kirjoittamiseen kannattaa panostaa aikaa. Luvussa 3 käsittelimme, miten Rust-koodia kommentoidaan kahdella kauttaviivalla <code>//</code>. Rustissa on myös erityinen kommenttityyppi dokumentaatiota varten, jota kutsutaan kätevästi <em>dokumentaatiokommentiksi</em> (<em>documentation comment</em>), ja joka tuottaa HTML-dokumentaation. HTML näyttää dokumentaatiokommenttien sisällön julkisille API-kohteille, jotka on tarkoitettu ohjelmoijille, jotka haluavat tietää, miten <em>käyttää</em> crateanne, ei sitä, miten crateanne <em>toteutetaan</em>.</p>
+<p>Dokumentaatiokommentit käyttävät kolmea kauttaviivaa <code>///</code> kahden sijaan ja tukevat Markdown-merkintää tekstin muotoiluun. Sijoittakaa dokumentaatiokommentit juuri ennen dokumentoitavaa kohdetta. Listausta 14-1 näyttää dokumentaatiokommentit <code>add_one</code>-funktiolle <code>my_crate</code>-nimisessä cratessa.</p>
+<figure class="listing" id="listing-14-1">
 <span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch14-more-about-cargo/listing-14-01/src/lib.rs}}</code></pre>
-<figcaption>Listing 14-1: Dokumentaatiokommentti funktiolle</figcaption>
+<figcaption><a href="#listing-14-1">Listing 14-1</a>: Dokumentaatiokommentti funktiolle</figcaption>
 </figure>
 <p>Tässä annamme kuvauksen siitä, mitä <code>add_one</code>-funktio tekee, aloitamme osion otsikolla <code>Examples</code> ja annamme sitten koodin, joka demonstroi <code>add_one</code>-funktion käyttöä. Voimme tuottaa HTML-dokumentaation tästä dokumentaatiokommentista ajamalla <code>cargo doc</code> -komennon. Tämä komento ajaa Rustin mukana jaeltavan <code>rustdoc</code>-työkalun ja sijoittaa tuotetun HTML-dokumentaation <em>target/doc</em>-hakemistoon.</p>
-<p>Kätevyyttä varten <code>cargo doc --open</code> -komennon ajaminen rakentaa nykyisen craten dokumentaation HTML-version (sekä kaikkien craten riippuvuuksien dokumentaation) ja avaa tuloksen verkkoselaimessa. Siirry <code>add_one</code>-funktioon ja näet, miten dokumentaatiokommenttien teksti renderöidään, kuten kuvassa 14-1:</p>
+<p>Kätevyyttä varten <code>cargo doc --open</code> -komennon ajaminen rakentaa nykyisen craten dokumentaation HTML-version (sekä kaikkien craten riippuvuuksien dokumentaation) ja avaa tuloksen verkkoselaimessa. Siirtykää <code>add_one</code>-funktioon ja näette, miten dokumentaatiokommenttien teksti renderöidään, kuten kuvassa 14-1:</p>
 <img alt="Rendered HTML documentation for the `add_one` function of `my_crate`" src="img/trpl14-01.png" class="center" />
 <p><span class="caption">Kuva 14-1: HTML-dokumentaatio <code>add_one</code>-funktiolle</span></p>
 <h4 id="yleisesti-käytetyt-osiot"><a class="header" href="#yleisesti-käytetyt-osiot">Yleisesti käytetyt osiot</a></h4>
@@ -181,9 +203,9 @@
 <li><strong>Errors</strong>: Jos funktio palauttaa <code>Result</code>-arvon, erilaisten virheiden kuvaaminen ja ehtojen, jotka voivat aiheuttaa näiden virheiden palauttamisen, kuvaus voi olla hyödyllistä kutsujille, jotta he voivat kirjoittaa koodia eri virhetyyppien käsittelyyn eri tavoin.</li>
 <li><strong>Safety</strong>: Jos funktion kutsuminen on <code>unsafe</code> (käsittelemme turvattomuutta luvussa 20), pitäisi olla osio, joka selittää, miksi funktio on turvaton ja kattaa invariantit, joiden kutsujien odotetaan ylläpitävän.</li>
 </ul>
-<p>Useimmat dokumentaatiokommentit eivät tarvitse kaikkia näitä osioita, mutta tämä on hyvä tarkistuslista muistuttamaan koodisi näkökulmista, joista käyttäjät ovat kiinnostuneita.</p>
+<p>Useimmat dokumentaatiokommentit eivät tarvitse kaikkia näitä osioita, mutta tämä on hyvä tarkistuslista muistuttamaan koodinne näkökulmista, joista käyttäjät ovat kiinnostuneita.</p>
 <h4 id="dokumentaatiokommentit-testeinä"><a class="header" href="#dokumentaatiokommentit-testeinä">Dokumentaatiokommentit testeinä</a></h4>
-<p>Esimerkkikoodilohkojen lisääminen dokumentaatiokommentteihisi voi auttaa demonstroimaan kirjastosi käyttöä, ja siitä on lisähyöty: <code>cargo test</code> -komennon ajaminen ajaa dokumentaatiosi koodiesimerkit testeinä! Mikään ei ole parempaa kuin dokumentaatio esimerkein. Mutta mikään ei ole pahempaa kuin esimerkit, jotka eivät toimi, koska koodi on muuttunut dokumentaation kirjoittamisen jälkeen. Jos ajamme <code>cargo test</code> -komennon listauksen 14-1 <code>add_one</code>-funktion dokumentaatiolla, näemme testituloksissa osion, joka näyttää tältä:</p>
+<p>Esimerkkikoodilohkojen lisääminen dokumentaatiokommentteihinne voi auttaa demonstroimaan kirjastonne käyttöä, ja siitä on lisähyöty: <code>cargo test</code> -komennon ajaminen ajaa dokumentaatiosi koodiesimerkit testeinä! Mikään ei ole parempaa kuin dokumentaatio esimerkein. Mutta mikään ei ole pahempaa kuin esimerkit, jotka eivät toimi, koska koodi on muuttunut dokumentaation kirjoittamisen jälkeen. Jos ajamme <code>cargo test</code> -komennon listauksen 14-1 <code>add_one</code>-funktion dokumentaatiolla, näemme testituloksissa osion, joka näyttää tältä:</p>
 <!-- manual-regeneration
 cd listings/ch14-more-about-cargo/listing-14-01/
 cargo test
@@ -197,72 +219,76 @@ test src/lib.rs - add_one (line 5) ... ok
 test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.27s
 </code></pre>
 <p>Nyt jos muutamme joko funktiota tai esimerkkiä niin, että esimerkin <code>assert_eq!</code> panikoi, ja ajamme <code>cargo test</code> -komennon uudelleen, näemme, että dokumentaatiotestit havaitsevat esimerkin ja koodin olevan epäsynkassa!</p>
-<h4 id="sisältävien-kohteiden-kommentointi"><a class="header" href="#sisältävien-kohteiden-kommentointi">Sisältävien kohteiden kommentointi</a></h4>
-<p><code>//!</code>-tyylinen dokumentaatiokommentti lisää dokumentaation kommentteja <em>sisältävälle</em> kohteelle sen sijaan, että kommenttien jälkeen tuleville kohteille. Käytämme näitä dokumentaatiokommentteja tyypillisesti crate-juuren tiedostossa (käytännössä <em>src/lib.rs</em>) tai moduulin sisällä dokumentoidaksemme craten tai moduulin kokonaisuudessaan.</p>
+<!-- Old headings. Do not remove or links may break. -->
+<p><a id="commenting-contained-items"></a></p>
+<h4 id="sisältävän-kohteen-kommentit"><a class="header" href="#sisältävän-kohteen-kommentit">Sisältävän kohteen kommentit</a></h4>
+<p><code>//!</code>-tyylinen dokumentaatiokommentti lisää dokumentaation kommentteja <em>sisältävälle</em> kohteelle sen sijaan, että kommenttien <em>jälkeen</em> tuleville kohteille. Käytämme näitä dokumentaatiokommentteja tyypillisesti crate-juuren tiedostossa (käytännössä <em>src/lib.rs</em>) tai moduulin sisällä dokumentoidaksemme craten tai moduulin kokonaisuudessaan.</p>
 <p>Esimerkiksi lisätäksemme dokumentaation, joka kuvaa <code>my_crate</code>-craten tarkoitusta ja joka sisältää <code>add_one</code>-funktion, lisäämme dokumentaatiokommentit, jotka alkavat <code>//!</code>-merkinnällä, <em>src/lib.rs</em>-tiedoston alkuun, kuten listauksessa 14-2:</p>
-<figure class="listing">
+<figure class="listing" id="listing-14-2">
 <span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch14-more-about-cargo/listing-14-02/src/lib.rs:here}}</code></pre>
-<figcaption>Listing 14-2: Dokumentaatio <code>my_crate</code>-cratelle kokonaisuudessaan</figcaption>
+<figcaption><a href="#listing-14-2">Listing 14-2</a>: Dokumentaatio <code>my_crate</code>-cratelle kokonaisuudessaan</figcaption>
 </figure>
 <p>Huomaa, ettei <code>//!</code>-merkinnällä alkavan viimeisen rivin jälkeen ole mitään koodia. Koska aloitimme kommentit <code>///</code>-merkinnän sijaan <code>//!</code>-merkinnällä, dokumentoimme kommenttia sisältävää kohdetta sen sijaan, että dokumentoisimme tämän kommentin jälkeen tulevaa kohdetta. Tässä tapauksessa kyseinen kohde on <em>src/lib.rs</em>-tiedosto, joka on crate-juuri. Nämä kommentit kuvaavat koko craten.</p>
 <p>Kun ajamme <code>cargo doc --open</code> -komennon, nämä kommentit näytetään <code>my_crate</code>-craten dokumentaation etusivulla craten julkisten kohteiden listan yläpuolella, kuten kuvassa 14-2:</p>
+<p>Dokumentaatiokommentit kohteiden sisällä ovat hyödyllisiä erityisesti cratejen ja moduulien kuvaamiseen. Käyttäkää niitä selittämään säilön yleinen tarkoitus auttaaksenne käyttäjiänne ymmärtämään craten rakenteen.</p>
 <img alt="Rendered HTML documentation with a comment for the crate as a whole" src="img/trpl14-02.png" class="center" />
 <p><span class="caption">Kuva 14-2: Renderöity dokumentaatio <code>my_crate</code>-cratelle, mukaan lukien kommentti, joka kuvaa craten kokonaisuudessaan</span></p>
-<p>Dokumentaatiokommentit kohteiden sisällä ovat hyödyllisiä erityisesti cratejen ja moduulien kuvaamiseen. Käytä niitä selittämään säilön yleinen tarkoitus auttaaksesi käyttäjiäsi ymmärtämään craten rakenteen.</p>
-<h3 id="kätevän-julkisen-apin-vienti-pub-use--lauseella"><a class="header" href="#kätevän-julkisen-apin-vienti-pub-use--lauseella">Kätevän julkisen API:n vienti <code>pub use</code> -lauseella</a></h3>
-<p>Julkisen API:n rakenne on tärkeä huomioitava asia craten julkaisemisessa. Crateasi käyttävät ihmiset eivät tunne rakennetta yhtä hyvin kuin sinä, ja heillä saattaa olla vaikeuksia löytää haluamiaan osia, jos cratellasi on suuri moduulihierarkia.</p>
-<p>Luvussa 7 käsittelimme, miten kohteet tehdään julkisiksi <code>pub</code>-avainsanalla ja tuodaan näkyvyysalueelle <code>use</code>-avainsanalla. Kehityksen aikana sinulle järkevä rakenne ei kuitenkaan välttämättä ole kätevä käyttäjillesi. Saatat haluta järjestää struct-rakenteet hierarkiaan, jossa on useita tasoja, mutta sitten ihmiset, jotka haluavat käyttää syvällä hierarkiassa määrittelemääsi tyyppiä, saattavat vaikeuksien kanssa selvittää, että tyyppi on olemassa. Heitä saattaa myös ärsyttää joutua kirjoittamaan <code>use my_crate::some_module::another_module::UsefulType;</code> <code>use my_crate::UsefulType;</code> -lauseen sijaan.</p>
-<p>Hyvä uutinen on, että jos rakenne <em>ei</em> ole kätevä muille kirjastoista käytettäväksi, sinun ei tarvitse järjestellä sisäistä rakennettasi uudelleen: voit sen sijaan viedä kohteita uudelleen luodaksesi julkisen rakenteen, joka poikkeaa yksityisestä rakenteestasi, käyttämällä <code>pub use</code> -lauseita. Uudelleenvienti ottaa julkisen kohteen yhdestä paikasta ja tekee sen julkiseksi toisessa paikassa, ikään kuin se olisi määritelty tuossa toisessa paikassa.</p>
+<!-- Old headings. Do not remove or links may break. -->
+<p><a id="exporting-a-convenient-public-api-with-pub-use"></a></p>
+<h3 id="kätevän-julkisen-apin-vienti"><a class="header" href="#kätevän-julkisen-apin-vienti">Kätevän julkisen API:n vienti</a></h3>
+<p>Julkisen API:n rakenne on tärkeä huomioitava asia craten julkaisemisessa. Crateanne käyttävät ihmiset eivät tunne rakennetta yhtä hyvin kuin te, ja heillä saattaa olla vaikeuksia löytää haluamiaan osia, jos cratellanne on suuri moduulihierarkia.</p>
+<p>Luvussa 7 käsittelimme, miten kohteet tehdään julkisiksi <code>pub</code>-avainsanalla ja tuodaan näkyvyysalueelle <code>use</code>-avainsanalla. Kehityksen aikana teille järkevä rakenne ei kuitenkaan välttämättä ole kätevä käyttäjillenne. Saatatte haluta järjestää struct-rakenteet hierarkiaan, jossa on useita tasoja, mutta sitten ihmiset, jotka haluavat käyttää syvällä hierarkiassa määrittelemäänne tyyppiä, saattavat vaikeuksien kanssa selvittää, että tyyppi on olemassa. Heitä saattaa myös ärsyttää joutua kirjoittamaan <code>use my_crate::some_module::another_module::UsefulType;</code> <code>use my_crate::UsefulType;</code> -lauseen sijaan.</p>
+<p>Hyvä uutinen on, että jos rakenne <em>ei</em> ole kätevä muille kirjastoista käytettäväksi, teidän ei tarvitse järjestellä sisäistä rakennettanne uudelleen: voitte sen sijaan viedä kohteita uudelleen luodaksenne julkisen rakenteen, joka poikkeaa yksityisestä rakenteestanne, käyttämällä <code>pub use</code> -lauseita. <em>Uudelleenvienti</em> ottaa julkisen kohteen yhdestä paikasta ja tekee sen julkiseksi toisessa paikassa, ikään kuin se olisi määritelty tuossa toisessa paikassa.</p>
 <p>Esimerkiksi oletetaan, että teimme <code>art</code>-nimisen kirjaston taiteellisten käsitteiden mallintamiseen. Tässä kirjastossa on kaksi moduulia: <code>kinds</code>-moduuli, joka sisältää kaksi enumia nimeltä <code>PrimaryColor</code> ja <code>SecondaryColor</code>, ja <code>utils</code>-moduuli, joka sisältää funktion nimeltä <code>mix</code>, kuten listauksessa 14-3:</p>
-<figure class="listing">
+<figure class="listing" id="listing-14-3">
 <span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust noplayground test_harness">{{#rustdoc_include ../listings/ch14-more-about-cargo/listing-14-03/src/lib.rs:here}}</code></pre>
-<figcaption>Listing 14-3: <code>art</code>-kirjasto, jonka kohteet on järjestetty <code>kinds</code>- ja <code>utils</code>-moduuleihin</figcaption>
+<figcaption><a href="#listing-14-3">Listing 14-3</a>: <code>art</code>-kirjasto, jonka kohteet on järjestetty <code>kinds</code>- ja <code>utils</code>-moduuleihin</figcaption>
 </figure>
 <p>Kuva 14-3 näyttää, miltä tämän craten <code>cargo doc</code> -komennolla tuottaman dokumentaation etusivu näyttäisi:</p>
 <img alt="Rendered documentation for the `art` crate that lists the `kinds` and `utils` modules" src="img/trpl14-03.png" class="center" />
 <p><span class="caption">Kuva 14-3: <code>art</code>-craten dokumentaation etusivu, joka listaa <code>kinds</code>- ja <code>utils</code>-moduulit</span></p>
 <p>Huomaa, että <code>PrimaryColor</code>- ja <code>SecondaryColor</code>-tyypit eivät ole etusivulla, eikä <code>mix</code>-funktio ole. Meidän täytyy klikata <code>kinds</code>- ja <code>utils</code>-moduuleja nähdäksemme ne.</p>
 <p>Toinen tästä kirjastosta riippuva crate tarvitsisi <code>use</code>-lauseita, jotka tuovat <code>art</code>-craten kohteet näkyvyysalueelle määrittelemällä nykyisen moduulirakenteen. Listausta 14-4 näyttää esimerkin cratesta, joka käyttää <code>art</code>-craten <code>PrimaryColor</code>- ja <code>mix</code>-kohteita:</p>
-<figure class="listing">
+<figure class="listing" id="listing-14-4">
 <span class="file-name">Filename: src/main.rs</span>
 <pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch14-more-about-cargo/listing-14-04/src/main.rs}}</code></pre>
-<figcaption>Listing 14-4: Crate, joka käyttää <code>art</code>-craten kohteita sen sisäisen rakenteen viennin kautta</figcaption>
+<figcaption><a href="#listing-14-4">Listing 14-4</a>: Crate, joka käyttää <code>art</code>-craten kohteita sen sisäisen rakenteen viennin kautta</figcaption>
 </figure>
 <p>Listauksen 14-4 koodin kirjoittajan, joka käyttää <code>art</code>-cratea, täytyi selvittää, että <code>PrimaryColor</code> on <code>kinds</code>-moduulissa ja <code>mix</code> on <code>utils</code>-moduulissa. <code>art</code>-craten moduulirakenne on merkityksellisempi <code>art</code>-cratea kehittäville kuin sitä käyttäville. Sisäinen rakenne ei sisällä hyödyllistä tietoa jollekin, joka yrittää ymmärtää <code>art</code>-craten käyttöä, vaan aiheuttaa hämmennystä, koska sitä käyttävien kehittäjien täytyy selvittää, mistä etsiä, ja heidän täytyy määrittää moduulinimet <code>use</code>-lauseissaan.</p>
 <p>Poistaaksemme sisäisen rakenteen julkisesta API:sta voimme muokata listauksen 14-3 <code>art</code>-crate-koodia lisäämällä <code>pub use</code> -lauseita viedäksemme kohteet uudelleen ylimmälle tasolle, kuten listauksessa 14-5:</p>
-<figure class="listing">
+<figure class="listing" id="listing-14-5">
 <span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch14-more-about-cargo/listing-14-05/src/lib.rs:here}}</code></pre>
-<figcaption>Listing 14-5: <code>pub use</code> -lauseiden lisääminen kohteiden uudelleenvientiin</figcaption>
+<figcaption><a href="#listing-14-5">Listing 14-5</a>: <code>pub use</code> -lauseiden lisääminen kohteiden uudelleenvientiin</figcaption>
 </figure>
 <p><code>cargo doc</code> -komennolla tuottamamme API-dokumentaation etusivu listaa ja linkittää nyt uudelleenviedyt kohteet, kuten kuvassa 14-4, mikä tekee <code>PrimaryColor</code>- ja <code>SecondaryColor</code>-tyypeistä ja <code>mix</code>-funktiosta helpommin löydettäviä.</p>
 <img alt="Rendered documentation for the `art` crate with the re-exports on the front page" src="img/trpl14-04.png" class="center" />
 <p><span class="caption">Kuva 14-4: <code>art</code>-craten dokumentaation etusivu, joka listaa uudelleenviedyt kohteet</span></p>
 <p><code>art</code>-craten käyttäjät voivat edelleen nähdä ja käyttää listauksen 14-3 sisäistä rakennetta, kuten listauksessa 14-4 demonstroitu, tai he voivat käyttää listauksen 14-5 kätevämpää rakennetta, kuten listauksessa 14-6:</p>
-<figure class="listing">
+<figure class="listing" id="listing-14-6">
 <span class="file-name">Filename: src/main.rs</span>
 <pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch14-more-about-cargo/listing-14-06/src/main.rs:here}}</code></pre>
-<figcaption>Listing 14-6: Ohjelma, joka käyttää <code>art</code>-craten uudelleenvietyjä kohteita</figcaption>
+<figcaption><a href="#listing-14-6">Listing 14-6</a>: Ohjelma, joka käyttää <code>art</code>-craten uudelleenvietyjä kohteita</figcaption>
 </figure>
-<p>Tapauksissa, joissa on monia sisäkkäisiä moduuleja, uudelleenviedyt tyyppien vienti ylimmälle tasolle <code>pub use</code> -lauseella voi merkittävästi parantaa craten käyttäjien kokemusta. Toinen yleinen <code>pub use</code> -käyttö on riippuvuuden määritelmien uudelleenvienti nykyisessä cratessa, jotta kyseisen craten määritelmät tulevat osaksi craten julkista API:ta.</p>
-<p>Hyödyllisen julkisen API-rakenteen luominen on enemmän taidetta kuin tiedettä, ja voit iteroida löytääksesi käyttäjillesi parhaiten toimivan API:n. <code>pub use</code> -valinta antaa sinulle joustavuutta craten sisäisen rakenteen suhteen ja erottaa sen sisäisen rakenteen siitä, mitä esität käyttäjillesi. Tutustu asentamiesi cratejen koodiin nähdäksesi, poikkeaako niiden sisäinen rakenne julkisesta API:sta.</p>
+<p>Tapauksissa, joissa on monia sisäkkäisiä moduuleja, uudelleenviedyt tyyppien vienti ylimmälle tasolle <code>pub use</code> -lauseella voi merkittävästi parantaa craten käyttäjien kokemusta. Toinen yleinen <code>pub use</code> -käyttö on riippuvuuden määritelmien uudelleenvienti nykyisessä cratessa, jotta kyseisen craten määritelmät tulevat osaksi cratenne julkista API:ta.</p>
+<p>Hyödyllisen julkisen API-rakenteen luominen on enemmän taidetta kuin tiedettä, ja voitte iteroida löytääksenne käyttäjillenne parhaiten toimivan API:n. <code>pub use</code> -valinta antaa teille joustavuutta craten sisäisen rakenteen suhteen ja erottaa sen sisäisen rakenteen siitä, mitä esitätte käyttäjillenne. Tutustukaa asentamienne cratejen koodiin nähdäksenne, poikkeaako niiden sisäinen rakenne julkisesta API:sta.</p>
 <h3 id="cratesio-tilin-luominen"><a class="header" href="#cratesio-tilin-luominen">Crates.io-tilin luominen</a></h3>
-<p>Ennen kuin voit julkaista crateja, sinun täytyy luoda tili <a href="https://crates.io/">crates.io</a><!-- ignore --> -palveluun ja hankkia API-tunnus. Tee tämä vierailemalla etusivulla osoitteessa <a href="https://crates.io/">crates.io</a><!-- ignore --> ja kirjautumalla GitHub-tilin kautta. (GitHub-tili on tällä hetkellä vaatimus, mutta sivusto saattaa tukea muita tapoja tilin luomiseen tulevaisuudessa.) Kun olet kirjautunut sisään, vieraile tilisi asetuksissa osoitteessa <a href="https://crates.io/me/">https://crates.io/me/</a><!-- ignore --> ja hae API-avaimesi. Suorita sitten <code>cargo login</code> -komento ja liitä API-avaimesi kehotettaessa, näin:</p>
+<p>Ennen kuin voitte julkaista crateja, teidän täytyy luoda tili <a href="https://crates.io/">crates.io</a><!-- ignore --> -palveluun ja hankkia API-tunnus. Tehkää tämä vierailemalla etusivulla osoitteessa <a href="https://crates.io/">crates.io</a><!-- ignore --> ja kirjautumalla GitHub-tilin kautta. (GitHub-tili on tällä hetkellä vaatimus, mutta sivusto saattaa tukea muita tapoja tilin luomiseen tulevaisuudessa.) Kun olette kirjautuneet sisään, vierailette tilinne asetuksissa osoitteessa <a href="https://crates.io/me/">https://crates.io/me/</a><!-- ignore --> ja haette API-avaimenne. Suorittakaa sitten <code>cargo login</code> -komento ja liittäkää API-avaimenne kehotettaessa, näin:</p>
 <pre><code class="language-console">$ cargo login
 abcdefghijklmnopqrstuvwxyz012345
 </code></pre>
-<p>Tämä komento ilmoittaa Cargolle API-tunnuksestasi ja tallentaa sen paikallisesti tiedostoon <em>~/.cargo/credentials</em>. Huomaa, että tämä tunnus on <em>salaisuus</em>: älä jaa sitä kenellekään muulle. Jos jaat sen jostain syystä kenellekään, sinun pitäisi mitätöidä se ja luoda uusi tunnus osoitteessa <a href="https://crates.io/">crates.io</a><!-- ignore
+<p>Tämä komento ilmoittaa Cargolle API-tunnuksestanne ja tallentaa sen paikallisesti tiedostoon <em>~/.cargo/credentials.toml</em>. Huomaa, että tämä tunnus on salaisuus: älkää jakako sitä kenellekään muulle. Jos jaatte sen jostain syystä kenellekään, teidän pitäisi mitätöidä se ja luoda uusi tunnus osoitteessa <a href="https://crates.io/">crates.io</a><!-- ignore
 -->.</p>
 <h3 id="metatietojen-lisääminen-uuteen-crateen"><a class="header" href="#metatietojen-lisääminen-uuteen-crateen">Metatietojen lisääminen uuteen crateen</a></h3>
-<p>Oletetaan, että sinulla on crate, jonka haluat julkaista. Ennen julkaisemista sinun täytyy lisätä metatietoja craten <em>Cargo.toml</em>-tiedoston <code>[package]</code>-osioon.</p>
-<p>Cratellasi täytyy olla yksilöllinen nimi. Kun työskentelet craten parissa paikallisesti, voit nimetä craten miten haluat. <a href="https://crates.io/">crates.io</a><!-- ignore --> -palvelun cratenimet jaetaan kuitenkin ensimmäisen tulevan periaatteella. Kun craten nimi on varattu, kukaan muu ei voi julkaista cratea sillä nimellä. Ennen julkaisuyritystä etsi haluamasi nimi. Jos nimi on jo käytössä, sinun täytyy löytää toinen nimi ja muokata <code>name</code>-kenttää <em>Cargo.toml</em>-tiedoston <code>[package]</code>-osiossa käyttämään uutta nimeä julkaisemista varten, näin:</p>
-<p><span class="filename">Filename: Cargo.toml</span></p>
+<p>Oletetaan, että teillä on crate, jonka haluatte julkaista. Ennen julkaisemista teidän täytyy lisätä metatietoja craten <em>Cargo.toml</em>-tiedoston <code>[package]</code>-osioon.</p>
+<p>Cratellanne täytyy olla yksilöllinen nimi. Kun työskentelette craten parissa paikallisesti, voitte nimetä craten miten haluatte. <a href="https://crates.io/">crates.io</a><!-- ignore --> -palvelun cratenimet jaetaan kuitenkin ensimmäisen tulevan periaatteella. Kun craten nimi on varattu, kukaan muu ei voi julkaista cratea sillä nimellä. Ennen julkaisuyritystä etsikää haluamanne nimi. Jos nimi on jo käytössä, teidän täytyy löytää toinen nimi ja muokata <code>name</code>-kenttää <em>Cargo.toml</em>-tiedoston <code>[package]</code>-osiossa käyttämään uutta nimeä julkaisemista varten, näin:</p>
+<p><span class="filename">Tiedostonimi: Cargo.toml</span></p>
 <pre><code class="language-toml">[package]
 name = "guessing_game"
 </code></pre>
-<p>Vaikka olisit valinnut yksilöllisen nimen, kun ajat <code>cargo publish</code> -komennon julkaistaksesi craten tässä vaiheessa, saat varoituksen ja sitten virheen:</p>
+<p>Vaikka olisitte valinneet yksilöllisen nimen, kun ajatte <code>cargo publish</code> -komennon julkaistaksenne craten tässä vaiheessa, saatte varoituksen ja sitten virheen:</p>
 <!-- manual-regeneration
 Create a new package with an unregistered name, making no further modifications
   to the generated package, so it is missing the description and license fields.
@@ -279,16 +305,16 @@ error: failed to publish to registry at https://crates.io
 Caused by:
   the remote server responded with an error (status 400 Bad Request): missing or empty metadata fields: description, license. Please see https://doc.rust-lang.org/cargo/reference/manifest.html for more information on configuring these fields
 </code></pre>
-<p>Tämä virhe johtuu siitä, että sinulta puuttuu tärkeitä tietoja: kuvaus ja lisenssi ovat pakollisia, jotta ihmiset tietävät, mitä craten tekee ja millä ehdoilla he voivat käyttää sitä. Lisää <em>Cargo.toml</em>-tiedostoon kuvaus, joka on vain lause tai kaksi, koska se näkyy craten kanssa hakutuloksissa. <code>license</code>-kenttään sinun täytyy antaa <em>lisenssitunnistearvo</em>. <a href="http://spdx.org/licenses/">Linux Foundationin Software Package Data Exchange (SPDX)</a> listaa tunnisteet, joita voit käyttää tähän arvoon. Esimerkiksi määrittääksesi, että olet lisensoinut craten MIT-lisenssillä, lisää <code>MIT</code>-tunniste:</p>
-<p><span class="filename">Filename: Cargo.toml</span></p>
+<p>Tämä virhe johtuu siitä, että teiltä puuttuu tärkeitä tietoja: kuvaus ja lisenssi ovat pakollisia, jotta ihmiset tietävät, mitä craten tekee ja millä ehdoilla he voivat käyttää sitä. Lisätkää <em>Cargo.toml</em>-tiedostoon kuvaus, joka on vain lause tai kaksi, koska se näkyy craten kanssa hakutuloksissa. <code>license</code>-kenttään teidän täytyy antaa <em>lisenssitunnistearvo</em>. <a href="https://spdx.org/licenses/">Linux Foundationin Software Package Data Exchange (SPDX)</a> listaa tunnisteet, joita voitte käyttää tähän arvoon. Esimerkiksi määrittääksenne, että olette lisensoineet cratenne MIT-lisenssillä, lisätkää <code>MIT</code>-tunniste:</p>
+<p><span class="filename">Tiedostonimi: Cargo.toml</span></p>
 <pre><code class="language-toml">[package]
 name = "guessing_game"
 license = "MIT"
 </code></pre>
-<p>Jos haluat käyttää lisenssiä, joka ei esiinny SPDX-listassa, sinun täytyy sijoittaa kyseisen lisenssin teksti tiedostoon, sisällyttää tiedosto projektiisi ja käyttää sitten <code>license-file</code>-kenttää määrittämään kyseisen tiedoston nimi <code>license</code>-avaimen sijaan.</p>
-<p>Ohjeet siihen, mikä lisenssi sopii projektiisi, ylittävät tämän kirjan laajuuden. Monet Rust-yhteisön jäsenet lisensoivat projektinsa samalla tavalla kuin Rust käyttämällä kaksoislisenssiä <code>MIT OR Apache-2.0</code>. Tämä käytäntö osoittaa, että voit myös määrittää useita lisenssitunnisteita erotettuna <code>OR</code>-sanalla, jotta projektillasi on useita lisenssejä.</p>
-<p>Kun olet lisännyt yksilöllisen nimen, version, kuvauksen ja lisenssin, julkaisuvalmiin projektin <em>Cargo.toml</em>-tiedosto saattaa näyttää tältä:</p>
-<p><span class="filename">Filename: Cargo.toml</span></p>
+<p>Jos haluatte käyttää lisenssiä, joka ei esiinny SPDX-listassa, teidän täytyy sijoittaa kyseisen lisenssin teksti tiedostoon, sisällyttää tiedosto projektiinne ja käyttää sitten <code>license-file</code>-kenttää määrittämään kyseisen tiedoston nimi <code>license</code>-avaimen sijaan.</p>
+<p>Ohjeet siihen, mikä lisenssi sopii projektiinne, ylittävät tämän kirjan laajuuden. Monet Rust-yhteisön jäsenet lisensoivat projektinsa samalla tavalla kuin Rust käyttämällä kaksoislisenssiä <code>MIT OR Apache-2.0</code>. Tämä käytäntö osoittaa, että voitte myös määrittää useita lisenssitunnisteita erotettuna <code>OR</code>-sanalla, jotta projektillanne on useita lisenssejä.</p>
+<p>Kun olette lisänneet yksilöllisen nimen, version, kuvauksen ja lisenssin, julkaisuvalmiin projektin <em>Cargo.toml</em>-tiedosto saattaa näyttää tältä:</p>
+<p><span class="filename">Tiedostonimi: Cargo.toml</span></p>
 <pre><code class="language-toml">[package]
 name = "guessing_game"
 version = "0.1.0"
@@ -298,11 +324,11 @@ license = "MIT OR Apache-2.0"
 
 [dependencies]
 </code></pre>
-<p><a href="https://doc.rust-lang.org/cargo/">Cargon dokumentaatio</a> kuvaa muuta metatietoa, jonka voit määrittää varmistaaksesi, että muut löytävät ja käyttävät crateasi helpommin.</p>
+<p><a href="https://doc.rust-lang.org/cargo/">Cargon dokumentaatio</a> kuvaa muuta metatietoa, jonka voitte määrittää varmistaaksenne, että muut löytävät ja käyttävät crateanne helpommin.</p>
 <h3 id="julkaiseminen-cratesio-palveluun"><a class="header" href="#julkaiseminen-cratesio-palveluun">Julkaiseminen Crates.io-palveluun</a></h3>
-<p>Nyt kun olet luonut tilin, tallentanut API-tunnuksesi, valinnut nimen cratelle ja määrittänyt vaaditut metatiedot, olet valmis julkaisemaan! Craten julkaiseminen lataa tietyn version <a href="https://crates.io/">crates.io</a><!-- ignore --> -palveluun muiden käytettäväksi.</p>
-<p>Ole varovainen, koska julkaisu on <em>pysyvä</em>. Versiota ei voi koskaan korvata, eikä koodia voi poistaa. Yksi <a href="https://crates.io/">crates.io</a><!-- ignore --> -palvelun tärkeimmistä tavoitteista on toimia pysyvänä koodiarkistona, jotta kaikkien <a href="https://crates.io/">crates.io</a><!-- ignore --> -palvelun crateista riippuvien projektien käännökset toimivat edelleen. Versioiden poistamisen salliminen tekisi tämän tavoitteen toteuttamisen mahdottomaksi. Julkaistavien crateversioiden määrälle ei kuitenkaan ole rajaa.</p>
-<p>Aja <code>cargo publish</code> -komento uudelleen. Sen pitäisi nyt onnistua:</p>
+<p>Nyt kun olette luoneet tilin, tallentaneet API-tunnuksenne, valinneet nimen cratelle ja määrittäneet vaaditut metatiedot, olette valmiita julkaisemaan! Craten julkaiseminen lataa tietyn version <a href="https://crates.io/">crates.io</a><!-- ignore --> -palveluun muiden käytettäväksi.</p>
+<p>Olkaa varovaisia, koska julkaisu on <em>pysyvä</em>. Versiota ei voi koskaan korvata, eikä koodia voi poistaa paitsi tietyissä olosuhteissa. Yksi <a href="https://crates.io/">crates.io</a><!-- ignore --> -palvelun tärkeimmistä tavoitteista on toimia pysyvänä koodiarkistona, jotta kaikkien <a href="https://crates.io/">crates.io</a><!-- ignore --> -palvelun crateista riippuvien projektien käännökset toimivat edelleen. Versioiden poistamisen salliminen tekisi tämän tavoitteen toteuttamisen mahdottomaksi. Julkaistavien crateversioiden määrälle ei kuitenkaan ole rajaa.</p>
+<p>Ajakaa <code>cargo publish</code> -komento uudelleen. Sen pitäisi nyt onnistua:</p>
 <!-- manual-regeneration
 go to some valid crate, publish a new version
 cargo publish
@@ -311,21 +337,28 @@ copy just the relevant lines below
 <pre><code class="language-console">$ cargo publish
     Updating crates.io index
    Packaging guessing_game v0.1.0 (file:///projects/guessing_game)
+    Packaged 6 files, 1.2KiB (895.0B compressed)
    Verifying guessing_game v0.1.0 (file:///projects/guessing_game)
    Compiling guessing_game v0.1.0
 (file:///projects/guessing_game/target/package/guessing_game-0.1.0)
     Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.19s
    Uploading guessing_game v0.1.0 (file:///projects/guessing_game)
+    Uploaded guessing_game v0.1.0 to registry `crates-io`
+note: waiting for `guessing_game v0.1.0` to be available at registry
+`crates-io`.
+You may press ctrl-c to skip waiting; the crate should be available shortly.
+   Published guessing_game v0.1.0 at registry `crates-io`
 </code></pre>
-<p>Onnittelut! Olet nyt jakanut koodisi Rust-yhteisön kanssa, ja kuka tahansa voi helposti lisätä craten riippuvuudekseen projektiinsa.</p>
+<p>Onnittelut! Olette nyt jakaneet koodinne Rust-yhteisön kanssa, ja kuka tahansa voi helposti lisätä cratenne riippuvuudekseen projektiinsa.</p>
 <h3 id="olemassa-olevan-craten-uuden-version-julkaiseminen"><a class="header" href="#olemassa-olevan-craten-uuden-version-julkaiseminen">Olemassa olevan craten uuden version julkaiseminen</a></h3>
-<p>Kun olet tehnyt muutoksia crateesi ja olet valmis julkaisemaan uuden version, muutat <em>Cargo.toml</em>-tiedostossa määritettyä <code>version</code>-arvoa ja julkaiset uudelleen. Käytä <a href="http://semver.org/">semanttisen versionoinnin sääntöjä</a> päättääksesi, mikä sopiva seuraava versionumero on tekemiesi muutosten perusteella. Suorita sitten <code>cargo publish</code> -komento ladataksesi uuden version.</p>
-<!-- Old link, do not remove -->
-<p><a id="removing-versions-from-cratesio-with-cargo-yank"></a></p>
-<h3 id="versioiden-poistaminen-käytöstä-cratesio-palvelussa-cargo-yank--komennolla"><a class="header" href="#versioiden-poistaminen-käytöstä-cratesio-palvelussa-cargo-yank--komennolla">Versioiden poistaminen käytöstä Crates.io-palvelussa <code>cargo yank</code> -komennolla</a></h3>
-<p>Vaikka et voi poistaa craten aiempia versioita, voit estää tulevia projekteja lisäämästä niitä uutena riippuvuutena. Tämä on hyödyllistä, kun crateversio on jostain syystä rikki. Tällaisissa tilanteissa Cargo tukee crateversion <em>poistamista käytöstä</em> (<em>yanking</em>).</p>
+<p>Kun olette tehneet muutoksia crateenne ja olette valmiita julkaisemaan uuden version, muutatte <em>Cargo.toml</em>-tiedostossa määritettyä <code>version</code>-arvoa ja julkaisette uudelleen. Käyttäkää <a href="https://semver.org/">semanttisen versionoinnin sääntöjä</a> päättääksenne, mikä sopiva seuraava versionumero on tekemiesi muutosten perusteella. Suorittakaa sitten <code>cargo publish</code> -komento ladataksenne uuden version.</p>
+<!-- Old headings. Do not remove or links may break. -->
+<p><a id="removing-versions-from-cratesio-with-cargo-yank"></a>
+<a id="deprecating-versions-from-cratesio-with-cargo-yank"></a></p>
+<h3 id="crateversioiden-poistaminen-käytöstä-cratesio-palvelussa"><a class="header" href="#crateversioiden-poistaminen-käytöstä-cratesio-palvelussa">Crateversioiden poistaminen käytöstä Crates.io-palvelussa</a></h3>
+<p>Vaikka ette voi poistaa craten aiempia versioita, voitte estää tulevia projekteja lisäämästä niitä uutena riippuvuutena. Tämä on hyödyllistä, kun crateversio on jostain syystä rikki. Tällaisissa tilanteissa Cargo tukee crateversion poistamista käytöstä (<em>yanking</em>).</p>
 <p>Version poistaminen käytöstä estää uusia projekteja riippumasta kyseisestä versiosta, mutta sallii kaikkien olemassa olevien projektien, jotka riippuvat siitä, jatkaa. Pohjimmiltaan poistaminen käytöstä tarkoittaa, että kaikki projektit, joilla on <em>Cargo.lock</em>-tiedosto, eivät hajoa, eikä mikään tuleva <em>Cargo.lock</em>-tiedosto käytä poistettua versiota.</p>
-<p>Poistaaksesi craten version käytöstä, craten hakemistossa, jonka olet aiemmin julkaissut, suorita <code>cargo yank</code> -komento ja määritä, minkä version haluat poistaa käytöstä. Esimerkiksi jos olemme julkaisseet <code>guessing_game</code>-craten version 1.0.1 ja haluamme poistaa sen käytöstä, <code>guessing_game</code>-projektin hakemistossa suorittaisimme:</p>
+<p>Poistaaksenne craten version käytöstä, craten hakemistossa, jonka olette aiemmin julkaisseet, suorittakaa <code>cargo yank</code> -komento ja määrittäkää, minkä version haluatte poistaa käytöstä. Esimerkiksi jos olemme julkaisseet <code>guessing_game</code>-craten version 1.0.1 ja haluamme poistaa sen käytöstä, <code>guessing_game</code>-projektin hakemistossa suorittaisimme:</p>
 <!-- manual-regeneration:
 cargo yank carol-test --version 2.1.0
 cargo yank carol-test --version 2.1.0 --undo
@@ -334,23 +367,23 @@ cargo yank carol-test --version 2.1.0 --undo
     Updating crates.io index
         Yank guessing_game@1.0.1
 </code></pre>
-<p>Lisäämällä <code>--undo</code>-lipun komentoon voit myös perua poistamisen käytöstä ja sallia projektien alkaa riippua versiosta uudelleen:</p>
+<p>Lisäämällä <code>--undo</code>-lipun komentoon voitte myös perua poistamisen käytöstä ja sallia projektien alkaa riippua versiosta uudelleen:</p>
 <pre><code class="language-console">$ cargo yank --vers 1.0.1 --undo
     Updating crates.io index
       Unyank guessing_game@1.0.1
 </code></pre>
-<p>Poistaminen käytöstä <em>ei</em> poista mitään koodia. Se ei esimerkiksi voi poistaa vahingossa ladattuja salaisuuksia. Jos näin tapahtuu, sinun täytyy nollata nämä salaisuudet välittömästi.</p>
+<p>Poistaminen käytöstä <em>ei</em> poista mitään koodia. Se ei esimerkiksi voi poistaa vahingossa ladattuja salaisuuksia. Jos näin tapahtuu, teidän täytyy nollata nämä salaisuudet välittömästi.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                             <a rel="prev" href="ch14-01-release-profiles.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                                <i class="fa fa-angle-left"></i>
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
                             <a rel="next prefetch" href="ch14-03-cargo-workspaces.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
                         <div style="clear: both"></div>
@@ -360,16 +393,21 @@ cargo yank carol-test --version 2.1.0 --undo
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                     <a rel="prev" href="ch14-01-release-profiles.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                        <i class="fa fa-angle-left"></i>
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
                     <a rel="next prefetch" href="ch14-03-cargo-workspaces.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>
 
         </div>
 
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
 
 
 
@@ -378,16 +416,17 @@ cargo yank carol-test --version 2.1.0 --undo
         </script>
 
 
-        <script src="elasticlunr.min.js"></script>
-        <script src="mark.min.js"></script>
-        <script src="searcher.js"></script>
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-c2a407aa.js"></script>
 
-        <script src="clipboard.min.js"></script>
-        <script src="highlight.js"></script>
-        <script src="book.js"></script>
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-abc7f01d.js"></script>
+        <script src="book-a0b12cfe.js"></script>
 
         <!-- Custom JS scripts -->
-        <script src="ferris.js"></script>
+        <script src="ferris-2317480c.js"></script>
+
 
 
     </div>

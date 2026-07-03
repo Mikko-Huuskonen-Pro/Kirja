@@ -12,44 +12,56 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
 
-        <link rel="icon" href="favicon.svg">
-        <link rel="shortcut icon" href="favicon.png">
-        <link rel="stylesheet" href="css/variables.css">
-        <link rel="stylesheet" href="css/general.css">
-        <link rel="stylesheet" href="css/chrome.css">
-        <link rel="stylesheet" href="css/print.css" media="print">
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-2459343d.css">
+        <link rel="stylesheet" href="css/chrome-ae938929.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
-        <link rel="stylesheet" href="fonts/fonts.css">
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" href="highlight.css">
-        <link rel="stylesheet" href="tomorrow-night.css">
-        <link rel="stylesheet" href="ayu-highlight.css">
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="ferris.css">
-        <link rel="stylesheet" href="theme/2018-edition.css">
-        <link rel="stylesheet" href="theme/semantic-notes.css">
-        <link rel="stylesheet" href="theme/listing.css">
+        <link rel="stylesheet" href="ferris-d33b75bf.css">
+        <link rel="stylesheet" href="theme/2018-edition-4e126c62.css">
+        <link rel="stylesheet" href="theme/semantic-notes-9b5766c0.css">
+        <link rel="stylesheet" href="theme/listing-cab26221.css">
 
 
-        <!-- Provide site root to javascript -->
+        <!-- Provide site root and default themes to javascript -->
         <script>
-            var path_to_root = "";
-            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex-454febf7.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc.js"></script>
+        <script src="toc-7f90d00d.js"></script>
     </head>
     <body>
-    <div id="body-container">
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
             try {
-                var theme = localStorage.getItem('mdbook-theme');
-                var sidebar = localStorage.getItem('mdbook-sidebar');
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
 
                 if (theme.startsWith('"') && theme.endsWith('"')) {
                     localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
@@ -63,7 +75,8 @@
 
         <!-- Set the theme before any content is loaded, prevents flash -->
         <script>
-            var theme;
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
             const html = document.documentElement;
@@ -72,55 +85,59 @@
             html.classList.add("js");
         </script>
 
-        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
-            var sidebar = null;
-            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
             } else {
                 sidebar = 'hidden';
+                sidebar_toggle.checked = false;
             }
-            sidebar_toggle.checked = sidebar === 'visible';
-            html.classList.remove('sidebar-visible');
-            html.classList.add("sidebar-" + sidebar);
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
         </script>
 
-        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
             <!-- populated by js -->
             <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
             <noscript>
                 <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
             </noscript>
-            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
             </div>
         </nav>
 
-        <div id="page-wrapper" class="page-wrapper">
+        <div id="mdbook-page-wrapper" class="page-wrapper">
 
             <div class="page">
-                <div id="menu-bar-hover-placeholder"></div>
-                <div id="menu-bar" class="menu-bar sticky">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
-                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
-                            <i class="fa fa-bars"></i>
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
                         </label>
-                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
-                            <i class="fa fa-paint-brush"></i>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
                         </button>
-                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
-                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
                         </ul>
-                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
-                            <i class="fa fa-search"></i>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
                         </button>
                     </div>
 
@@ -128,377 +145,247 @@
 
                     <div class="right-buttons">
                         <a href="print.html" title="Print this book" aria-label="Print this book">
-                            <i id="print-button" class="fa fa-print"></i>
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
                         </a>
                         <a href="https://github.com/rust-lang/book" title="Git repository" aria-label="Git repository">
-                            <i id="git-repository-button" class="fa fa-github"></i>
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></span>
                         </a>
 
                     </div>
                 </div>
 
-                <div id="search-wrapper" class="hidden">
-                    <form id="searchbar-outer" class="searchbar-outer">
-                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
                     </form>
-                    <div id="searchresults-outer" class="searchresults-outer hidden">
-                        <div id="searchresults-header" class="searchresults-header"></div>
-                        <ul id="searchresults">
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
                         </ul>
                     </div>
                 </div>
 
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
                 <script>
-                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
-                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
-                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
                         link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
                     });
                 </script>
 
-                <div id="content" class="content">
+                <div id="mdbook-content" class="content">
                     <main>
-                        <h2 id="utf-8-koodatun-tekstin-tallentaminen-merkkijonoihin"><a class="header" href="#utf-8-koodatun-tekstin-tallentaminen-merkkijonoihin">UTF-8-koodatun tekstin tallentaminen merkkijonoihin</a></h2>
-<p>Käsittelimme merkkijonoja luvussa 4, mutta tarkastelemme niitä nyt syvällisemmin.
-Rustia opettelevat kehittäjät jäävät usein jumiin merkkijonojen kanssa kolmen
-syyn yhdistelmän vuoksi: Rustin taipumus paljastaa mahdollisia virheitä, se että
-merkkijonot ovat monimutkaisempia tietorakenteita kuin monet ohjelmoijat antavat
-niille kunniaa, ja UTF-8. Nämä tekijät yhdistyvät tavalla, joka voi tuntua
-vaikealta, kun tulet muista ohjelmointikielistä.</p>
-<p>Käsittelemme merkkijonoja kokoelmien yhteydessä, koska merkkijonot on
-toteutettu tavujen kokoelmana sekä joitakin metodeja, jotka tarjoavat hyödyllistä
-toiminnallisuutta, kun nuo tavut tulkitaan tekstinä. Tässä osiossa käymme läpi
-<code>String</code>-tyypin operaatiot, joita jokaisella kokoelmatyypillä on, kuten
-luominen, päivittäminen ja lukeminen. Käsittelemme myös tavat, joilla <code>String</code>
-eroaa muista kokoelmista, eli sitä, miten <code>String</code>-datan indeksointi on
-monimutkaista sen vuoksi, miten ihmiset ja tietokoneet tulkitsevat
-<code>String</code>-dataa.</p>
-<h3 id="mikä-on-merkkijono"><a class="header" href="#mikä-on-merkkijono">Mikä on merkkijono?</a></h3>
-<p>Määrittelemme ensin, mitä tarkoitamme termillä <em>merkkijono</em>. Rustissa on vain
-yksi merkkijonotyyppi kieliytimessä, ja se on merkkijonoviipale <code>str</code>, jota
-nähdään yleensä lainattuna muotona <code>&amp;str</code>. Luvussa 4 käsittelimme
-<em>merkkijonoviipaleita</em>, jotka ovat viittauksia jossain muualla tallennettuun
-UTF-8-koodattuun merkkijonodataan. Merkkijonoliteraalit, esimerkiksi, on
-tallennettu ohjelman binaariin ja ovat siksi merkkijonoviipaleita.</p>
-<p><code>String</code>-tyyppi, jonka Rustin standardikirjasto tarjoaa eikä kieliydin koodaa
-sisään, on kasvava, muuttuva, omistettu, UTF-8-koodattu merkkijonotyyppi. Kun
-Rust-kehittäjät viittaavat Rustin “merkkijonoihin”, he saattavat tarkoittaa
-joko <code>String</code>- tai merkkijonoviipaletyyppiä <code>&amp;str</code>, ei vain yhtä näistä
-tyypeistä. Vaikka tämä osio käsittelee pääosin <code>String</code>-tyyppiä, molempia
-tyyppejä käytetään runsaasti Rustin standardikirjastossa, ja sekä <code>String</code> että
-merkkijonoviipaleet ovat UTF-8-koodattuja.</p>
+                        <h2 id="utf-8-koodatun-tekstin-tallentaminen-merkkijonoilla"><a class="header" href="#utf-8-koodatun-tekstin-tallentaminen-merkkijonoilla">UTF-8-koodatun tekstin tallentaminen merkkijonoilla</a></h2>
+<p>Käsittelimme merkkijonoja luvussa 4, mutta tarkastelemme niitä nyt syvällisemmin. Uudet rustilaiset jäävät usein jumiin merkkijonoihin kolmen syyn yhdistelmän vuoksi: Rustin taipumus paljastaa mahdolliset virheet, merkkijonojen oleminen monimutkaisempia tietorakenteita kuin monet ohjelmoijat antavat niille tunnustusta, ja UTF-8. Nämä tekijät yhdistyvät tavalla, joka voi tuntua vaikealta, kun tulet muista ohjelmointikielistä.</p>
+<p>Käsittelemme merkkijonoja kokoelmien yhteydessä, koska merkkijonot on toteutettu tavujen kokoelmana plus joitakin metodeja hyödyllisen toiminnallisuuden tarjoamiseksi, kun näitä tavuja tulkitaan tekstinä. Tässä osiossa käsittelemme <code>String</code>-tyypin operaatioita, joita jokaisella kokoelmatyypillä on, kuten luominen, päivittäminen ja lukeminen. Käsittelemme myös tapoja, joilla <code>String</code> eroaa muista kokoelmista, nimittäin sitä, miten <code>String</code>-tyyppiin indeksointi on monimutkaista ihmisten ja tietokoneiden eri tulkintojen vuoksi <code>String</code>-datasta.</p>
+<!-- Old headings. Do not remove or links may break. -->
+<p><a id="what-is-a-string"></a></p>
+<h3 id="merkkijonojen-määrittely"><a class="header" href="#merkkijonojen-määrittely">Merkkijonojen määrittely</a></h3>
+<p>Määrittelemme ensin, mitä tarkoitamme termillä <em>merkkijono</em>. Rustissa on vain yksi merkkijonotyyppi ydinkielessä, joka on merkkijonoviipale <code>str</code>, joka nähdään yleensä lainatussa muodossaan <code>&amp;str</code>. Luvussa 4 käsittelimme merkkijonoviipaleita, jotka ovat viittauksia jossain muualla tallennettuun UTF-8-koodattuun merkkijonodataan. Merkkijonoliteraalit, esimerkiksi, tallennetaan ohjelman binääritiedostoon ja ovat siksi merkkijonoviipaleita.</p>
+<p><code>String</code>-tyyppi, jonka Rustin standardikirjasto tarjoaa eikä ydinkieli koodaa, on kasvava, muuttuva, omistettu, UTF-8-koodattu merkkijonotyyppi. Kun rustilaiset viittaavat Rustissa ”merkkijonoihin”, he saattavat viitata joko <code>String</code>- tai merkkijonoviipaletyyppiin <code>&amp;str</code>, ei vain toiseen näistä tyypeistä. Vaikka tämä osio käsittelee pääasiassa <code>String</code>:ia, molempia tyyppejä käytetään runsaasti Rustin standardikirjastossa, ja sekä <code>String</code> että merkkijonoviipaleet ovat UTF-8-koodattuja.</p>
 <h3 id="uuden-merkkijonon-luominen"><a class="header" href="#uuden-merkkijonon-luominen">Uuden merkkijonon luominen</a></h3>
-<p>Monet samat operaatiot, jotka ovat käytettävissä <code>Vec&lt;T&gt;</code>-tyypillä, ovat
-käytettävissä myös <code>String</code>-tyypillä, koska <code>String</code> on itse asiassa toteutettu
-kääreenä tavuvektorin ympärillä joillakin ylimääräisillä takeilla, rajoituksilla
-ja ominaisuuksilla. Esimerkki funktiosta, joka toimii samalla tavalla
-<code>Vec&lt;T&gt;</code>- ja <code>String</code>-tyypeillä, on <code>new</code>-funktio instanssin luomiseen, kuten
-listauksessa 8-11.</p>
-<figure class="listing">
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+<p>Monet samat operaatiot, jotka ovat saatavilla <code>Vec&lt;T&gt;</code>:n kanssa, ovat saatavilla myös <code>String</code>:in kanssa, koska <code>String</code> on itse asiassa toteutettu tavujen vektorin kääreenä joillakin ylimääräisillä takuilla, rajoituksilla ja ominaisuuksilla. Esimerkki funktiosta, joka toimii samalla tavalla <code>Vec&lt;T&gt;</code>:n ja <code>String</code>:in kanssa, on <code>new</code>-funktio instanssin luomiseen, kuten listauksessa 8-11.</p>
+<figure class="listing" id="listing-8-11">
+<pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>{{#rustdoc_include ../listings/ch08-common-collections/listing-08-11/src/main.rs:here}}
-<span class="boring">}</span></code></pre></pre>
-<figcaption>Listing 8-11: Uuden, tyhjän <code>String</code>-olion luominen</figcaption>
+<span class="boring">}</span></code></pre>
+<figcaption><a href="#listing-8-11">Listing 8-11</a>: Uuden tyhjän <code>String</code>:in luominen</figcaption>
 </figure>
-<p>Tämä rivi luo uuden, tyhjän merkkijonon nimeltä <code>s</code>, johon voimme sitten ladata
-dataa. Usein meillä on joitakin alkudataa, joilla haluamme aloittaa
-merkkijonon. Siihen käytämme <code>to_string</code>-metodia, joka on käytettävissä
-millä tahansa tyypillä, joka toteuttaa <code>Display</code>-traitin, kuten
-merkkijonoliteraalit tekevät. Listaus 8-12 näyttää kaksi esimerkkiä.</p>
-<figure class="listing">
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+<p>Tämä rivi luo uuden tyhjän merkkijonon nimeltä <code>s</code>, johon voimme sitten ladata dataa. Usein meillä on joitakin alkudataa, joilla haluamme aloittaa merkkijonon. Tätä varten käytämme <code>to_string</code>-metodia, joka on saatavilla millä tahansa tyypillä, joka toteuttaa <code>Display</code>-traitin, kuten merkkijonoliteraalit. Listaus 8-12 näyttää kaksi esimerkkiä.</p>
+<figure class="listing" id="listing-8-12">
+<pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>{{#rustdoc_include ../listings/ch08-common-collections/listing-08-12/src/main.rs:here}}
-<span class="boring">}</span></code></pre></pre>
-<figcaption>Listing 8-12: <code>to_string</code>-metodin käyttö <code>String</code>-olion luomiseen merkkijonoliteraalista</figcaption>
+<span class="boring">}</span></code></pre>
+<figcaption><a href="#listing-8-12">Listing 8-12</a>: <code>to_string</code>-metodin käyttö <code>String</code>:in luomiseksi merkkijonoliteraalista</figcaption>
 </figure>
 <p>Tämä koodi luo merkkijonon, joka sisältää <code>initial contents</code>.</p>
-<p>Voimme myös käyttää funktiota <code>String::from</code> luodaksemme <code>String</code>-olion
-merkkijonoliteraalista. Listauksen 8-13 koodi on vastaava kuin listauksen 8-12
-koodi, joka käyttää <code>to_string</code>-metodia.</p>
-<figure class="listing">
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+<p>Voimme myös käyttää funktiota <code>String::from</code> luodaksemme <code>String</code>:in merkkijonoliteraalista. Listauksen 8-13 koodi on vastaava listauksen 8-12 koodille, joka käyttää <code>to_string</code>:ia.</p>
+<figure class="listing" id="listing-8-13">
+<pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>{{#rustdoc_include ../listings/ch08-common-collections/listing-08-13/src/main.rs:here}}
-<span class="boring">}</span></code></pre></pre>
-<figcaption>Listing 8-13: <code>String::from</code>-funktion käyttö <code>String</code>-olion luomiseen merkkijonoliteraalista</figcaption>
+<span class="boring">}</span></code></pre>
+<figcaption><a href="#listing-8-13">Listing 8-13</a>: <code>String::from</code>-funktion käyttö <code>String</code>:in luomiseksi merkkijonoliteraalista</figcaption>
 </figure>
-<p>Koska merkkijonoja käytetään niin moniin asioihin, voimme käyttää monia erilaisia
-geneerisiä rajapintoja merkkijonoille, mikä tarjoaa meille paljon vaihtoehtoja.
-Joistakin ne saattavat tuntua päällekkäisiltä, mutta jokaisella on paikkansa!
-Tässä tapauksessa <code>String::from</code> ja <code>to_string</code> tekevät saman asian, joten
-kumpaa valitsetkin, on tyyli- ja luettavuuskysymys.</p>
-<p>Muista, että merkkijonot ovat UTF-8-koodattuja, joten voimme sisällyttää niihin
-mitä tahansa oikein koodattua dataa, kuten listauksessa 8-14.</p>
-<figure class="listing">
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+<p>Koska merkkijonoja käytetään niin moniin asioihin, voimme käyttää monia erilaisia geneerisiä API:ja merkkijonoille, mikä tarjoaa meille paljon vaihtoehtoja. Jotkut niistä saattavat vaikuttaa tarpeettomilta, mutta niillä kaikilla on paikkansa! Tässä tapauksessa <code>String::from</code> ja <code>to_string</code> tekevät saman asian, joten kumpi valitset on tyyli- ja luettavuuskysymys.</p>
+<p>Muista, että merkkijonot ovat UTF-8-koodattuja, joten voimme sisällyttää niihin mitä tahansa oikein koodattua dataa, kuten listauksessa 8-14.</p>
+<figure class="listing" id="listing-8-14">
+<pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>{{#rustdoc_include ../listings/ch08-common-collections/listing-08-14/src/main.rs:here}}
-<span class="boring">}</span></code></pre></pre>
-<figcaption>Listing 8-14: Tervehdyksien tallentaminen eri kielillä merkkijonoihin</figcaption>
+<span class="boring">}</span></code></pre>
+<figcaption><a href="#listing-8-14">Listing 8-14</a>: Tervehdysten tallentaminen eri kielillä merkkijonoihin</figcaption>
 </figure>
 <p>Kaikki nämä ovat kelvollisia <code>String</code>-arvoja.</p>
 <h3 id="merkkijonon-päivittäminen"><a class="header" href="#merkkijonon-päivittäminen">Merkkijonon päivittäminen</a></h3>
-<p><code>String</code> voi kasvaa koossa ja sen sisältö voi muuttua, aivan kuten <code>Vec&lt;T&gt;</code>-tyypin
-sisältö, jos työnnät siihen lisää dataa. Lisäksi voit kätevästi käyttää
-<code>+</code>-operaattoria tai <code>format!</code>-makroa yhdistääksesi <code>String</code>-arvoja.</p>
-<h4 id="merkkijonon-jatkaminen-push_str--ja-push-metodeilla"><a class="header" href="#merkkijonon-jatkaminen-push_str--ja-push-metodeilla">Merkkijonon jatkaminen <code>push_str</code>- ja <code>push</code>-metodeilla</a></h4>
-<p>Voimme kasvattaa <code>String</code>-oliota käyttämällä <code>push_str</code>-metodia liittääksemme
-merkkijonoviipaleen, kuten listauksessa 8-15.</p>
-<figure class="listing">
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+<p><code>String</code> voi kasvaa kooltaan ja sen sisältö voi muuttua, aivan kuten <code>Vec&lt;T&gt;</code>:n sisältö, jos työnnät siihen lisää dataa. Lisäksi voit kätevästi käyttää <code>+</code>-operaattoria tai <code>format!</code>-makroa <code>String</code>-arvojen yhdistämiseen.</p>
+<!-- Old headings. Do not remove or links may break. -->
+<p><a id="appending-to-a-string-with-push_str-and-push"></a></p>
+<h4 id="liittäminen-push_strlla-tai-pushlla"><a class="header" href="#liittäminen-push_strlla-tai-pushlla">Liittäminen <code>push_str</code>:lla tai <code>push</code>:lla</a></h4>
+<p>Voimme kasvattaa <code>String</code>:ia käyttämällä <code>push_str</code>-metodia liittääksemme merkkijonoviipaleen, kuten listauksessa 8-15.</p>
+<figure class="listing" id="listing-8-15">
+<pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>{{#rustdoc_include ../listings/ch08-common-collections/listing-08-15/src/main.rs:here}}
-<span class="boring">}</span></code></pre></pre>
-<figcaption>Listing 8-15: Merkkijonoviipaleen liittäminen <code>String</code>-olioon <code>push_str</code>-metodilla</figcaption>
+<span class="boring">}</span></code></pre>
+<figcaption><a href="#listing-8-15">Listing 8-15</a>: Merkkijonoviipaleen liittäminen <code>String</code>:iin <code>push_str</code>-metodilla</figcaption>
 </figure>
-<p>Näiden kahden rivin jälkeen <code>s</code> sisältää <code>foobar</code>. <code>push_str</code>-metodi ottaa
-merkkijonoviipaleen, koska emme välttämättä halua ottaa parametrin omistusta.
-Esimerkiksi listauksen 8-16 koodissa haluamme pystyä käyttämään <code>s2</code>:ta sen
-sisällön liittämisen jälkeen <code>s1</code>:een.</p>
-<figure class="listing">
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+<p>Näiden kahden rivin jälkeen <code>s</code> sisältää <code>foobar</code>. <code>push_str</code>-metodi ottaa merkkijonoviipaleen, koska emme välttämättä halua ottaa parametrin omistusta. Esimerkiksi listauksen 8-16 koodissa haluamme pystyä käyttämään <code>s2</code>:ta sen sisällön liittämisen jälkeen <code>s1</code>:een.</p>
+<figure class="listing" id="listing-8-16">
+<pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>{{#rustdoc_include ../listings/ch08-common-collections/listing-08-16/src/main.rs:here}}
-<span class="boring">}</span></code></pre></pre>
-<figcaption>Listing 8-16: Merkkijonoviipaleen käyttö sen sisällön liittämisen jälkeen <code>String</code>-olioon</figcaption>
+<span class="boring">}</span></code></pre>
+<figcaption><a href="#listing-8-16">Listing 8-16</a>: Merkkijonoviipaleen käyttö sen sisällön liittämisen jälkeen <code>String</code>:iin</figcaption>
 </figure>
-<p>Jos <code>push_str</code>-metodi ottaisi <code>s2</code>:n omistuksen, emme voisi tulostaa sen arvoa
-viimeisellä rivillä. Tämä koodi kuitenkin toimii odotetulla tavalla!</p>
-<p><code>push</code>-metodi ottaa yhden merkin parametrina ja lisää sen <code>String</code>-olioon.
-Listaus 8-17 lisää kirjaimen <em>l</em> <code>String</code>-olioon <code>push</code>-metodilla.</p>
-<figure class="listing">
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+<p>Jos <code>push_str</code>-metodi ottaisi <code>s2</code>:n omistuksen, emme voisi tulostaa sen arvoa viimeisellä rivillä. Tämä koodi kuitenkin toimii odotetusti!</p>
+<p><code>push</code>-metodi ottaa yhden merkin parametrina ja lisää sen <code>String</code>:iin. Listaus 8-17 lisää kirjaimen <em>l</em> <code>String</code>:iin <code>push</code>-metodilla.</p>
+<figure class="listing" id="listing-8-17">
+<pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>{{#rustdoc_include ../listings/ch08-common-collections/listing-08-17/src/main.rs:here}}
-<span class="boring">}</span></code></pre></pre>
-<figcaption>Listing 8-17: Yhden merkin lisääminen <code>String</code>-arvoon <code>push</code>-metodilla</figcaption>
+<span class="boring">}</span></code></pre>
+<figcaption><a href="#listing-8-17">Listing 8-17</a>: Yhden merkin lisääminen <code>String</code>-arvoon <code>push</code>:lla</figcaption>
 </figure>
 <p>Tuloksena <code>s</code> sisältää <code>lol</code>.</p>
-<h4 id="yhdistäminen--operaattorilla-tai-format-makrolla"><a class="header" href="#yhdistäminen--operaattorilla-tai-format-makrolla">Yhdistäminen <code>+</code>-operaattorilla tai <code>format!</code>-makrolla</a></h4>
-<p>Usein haluat yhdistää kaksi olemassa olevaa merkkijonoa. Yksi tapa tehdä se on
-käyttää <code>+</code>-operaattoria, kuten listauksessa 8-18.</p>
-<figure class="listing">
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+<!-- Old headings. Do not remove or links may break. -->
+<p><a id="concatenation-with-the--operator-or-the-format-macro"></a></p>
+<h4 id="yhdistäminen-lla-tai-formatlla"><a class="header" href="#yhdistäminen-lla-tai-formatlla">Yhdistäminen <code>+</code>:lla tai <code>format!</code>:lla</a></h4>
+<p>Usein haluat yhdistää kaksi olemassa olevaa merkkijonoa. Yksi tapa tehdä se on käyttää <code>+</code>-operaattoria, kuten listauksessa 8-18.</p>
+<figure class="listing" id="listing-8-18">
+<pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>{{#rustdoc_include ../listings/ch08-common-collections/listing-08-18/src/main.rs:here}}
-<span class="boring">}</span></code></pre></pre>
-<figcaption>Listing 8-18: <code>+</code>-operaattorin käyttö kahden <code>String</code>-arvon yhdistämiseen uudeksi <code>String</code>-arvoksi</figcaption>
+<span class="boring">}</span></code></pre>
+<figcaption><a href="#listing-8-18">Listing 8-18</a>: <code>+</code>-operaattorin käyttö kahden <code>String</code>-arvon yhdistämiseksi uudeksi <code>String</code>-arvoksi</figcaption>
 </figure>
-<p>Merkkijono <code>s3</code> sisältää <code>Hello, world!</code>. Syy siihen, miksi <code>s1</code> ei ole enää
-kelvollinen yhteenlaskun jälkeen, ja syy siihen, miksi käytimme viitettä
-<code>s2</code>:een, liittyy metodin allekirjoitukseen, jota kutsutaan kun käytämme
-<code>+</code>-operaattoria. <code>+</code>-operaattori käyttää <code>add</code>-metodia, jonka allekirjoitus
-näyttää suunnilleen tältä:</p>
+<p>Merkkijono <code>s3</code> sisältää <code>Hello, world!</code>. Syy siihen, miksi <code>s1</code> ei ole enää kelvollinen lisäyksen jälkeen, ja syy siihen, miksi käytimme viitettä <code>s2</code>:een, liittyy metodin allekirjoitukseen, jota kutsutaan kun käytämme <code>+</code>-operaattoria. <code>+</code>-operaattori käyttää <code>add</code>-metodia, jonka allekirjoitus näyttää suunnilleen tältä:</p>
 <pre><code class="language-rust ignore">fn add(self, s: &amp;str) -&gt; String {</code></pre>
-<p>Standardikirjastossa näet <code>add</code>-metodin määriteltynä geneerisillä tyypeillä ja
-assosioiduilla tyypeillä. Tässä olemme korvanneet konkreettisilla tyypeillä,
-mitä tapahtuu kun kutsumme tätä metodia <code>String</code>-arvoilla. Käsittelemme
-geneerisiä tyyppejä luvussa 10. Tämä allekirjoitus antaa meille vihjeet, joita
-tarvitsemme ymmärtääksemme <code>+</code>-operaattorin hankalat kohdat.</p>
-<p>Ensinnäkin <code>s2</code>:lla on <code>&amp;</code>, mikä tarkoittaa, että lisäämme <em>viittauksen</em>
-toisesta merkkijonosta ensimmäiseen merkkijonoon. Tämä johtuu <code>add</code>-funktion
-<code>s</code>-parametrista: voimme lisätä vain <code>&amp;str</code>-tyypin <code>String</code>-olioon; emme voi
-lisätä kahta <code>String</code>-arvoa yhteen. Mutta odota—tyyppi <code>&amp;s2</code> on <code>&amp;String</code>, ei
-<code>&amp;str</code>, kuten <code>add</code>-metodin toinen parametri määrittää. Miksi listaus 8-18
-sitten kääntyy?</p>
-<p>Syy siihen, miksi voimme käyttää <code>&amp;s2</code>:ta <code>add</code>-kutsussa, on se, että kääntäjä
-voi <em>pakottaa</em> <code>&amp;String</code>-argumentin muotoon <code>&amp;str</code>. Kun kutsumme <code>add</code>-metodia,
-Rust käyttää <em>deref-pakotusta</em> (<em>deref coercion</em>), joka tässä muuttaa <code>&amp;s2</code>:n
-muotoon <code>&amp;s2[..]</code>. Käsittelemme deref-pakotusta syvällisemmin luvussa 15. Koska
-<code>add</code> ei ota <code>s</code>-parametrin omistusta, <code>s2</code> on edelleen kelvollinen <code>String</code>
-tämän operaation jälkeen.</p>
-<p>Toiseksi näemme allekirjoituksesta, että <code>add</code> ottaa <code>self</code>:n omistuksen, koska
-<code>self</code>:llä <em>ei</em> ole <code>&amp;</code>-merkintää. Tämä tarkoittaa, että listauksen 8-18 <code>s1</code>
-siirtyy <code>add</code>-kutsuun eikä ole enää kelvollinen sen jälkeen. Vaikka
-<code>let s3 = s1 + &amp;s2;</code> näyttää siltä, että se kopioisi molemmat merkkijonot ja
-loisi uuden, tämä lause itse asiassa ottaa <code>s1</code>:n omistuksen, liittää kopion
-<code>s2</code>:n sisällöstä ja palauttaa tuloksen omistuksen. Toisin sanoen se näyttää
-tekevän paljon kopioita, mutta ei tee; toteutus on tehokkaampi kuin kopiointi.</p>
-<p>Jos meidän täytyy yhdistää useita merkkijonoja, <code>+</code>-operaattorin käyttäytyminen
-käy hankalaksi:</p>
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+<p>Standardikirjastossa näet <code>add</code>:n määriteltynä geneerisillä tyypeillä ja assosioituilla tyypeillä. Tässä olemme korvanneet konkreettisilla tyypeillä, mikä tapahtuu kun kutsumme tätä metodia <code>String</code>-arvoilla. Käsittelemme geneerisiä tyyppejä luvussa 10. Tämä allekirjoitus antaa meille vihjeet, joita tarvitsemme <code>+</code>-operaattorin hankalien osien ymmärtämiseksi.</p>
+<p>Ensinnäkin <code>s2</code>:lla on <code>&amp;</code>, mikä tarkoittaa, että lisäämme viitteen toisesta merkkijonosta ensimmäiseen merkkijonoon. Tämä johtuu <code>add</code>-funktion <code>s</code>-parametrista: Voimme lisätä vain merkkijonoviipaleen <code>String</code>:iin; emme voi lisätä kahta <code>String</code>-arvoa yhteen. Mutta odota—<code>&amp;s2</code>:n tyyppi on <code>&amp;String</code>, ei <code>&amp;str</code>, kuten <code>add</code>:n toisessa parametrissa määritellään. Miksi listaus 8-18 sitten kääntyy?</p>
+<p>Syy siihen, miksi voimme käyttää <code>&amp;s2</code>:ta <code>add</code>-kutsussa, on se, että kääntäjä voi pakottaa <code>&amp;String</code>-argumentin muotoon <code>&amp;str</code>. Kun kutsumme <code>add</code>-metodia, Rust käyttää dereferointipakkoa, joka tässä muuttaa <code>&amp;s2</code>:n muotoon <code>&amp;s2[..]</code>. Käsittelemme dereferointipakkoa tarkemmin luvussa 15. Koska <code>add</code> ei ota <code>s</code>-parametrin omistusta, <code>s2</code> on edelleen kelvollinen <code>String</code> tämän operaation jälkeen.</p>
+<p>Toiseksi allekirjoituksesta näemme, että <code>add</code> ottaa <code>self</code>:n omistuksen, koska <code>self</code>:llä <em>ei</em> ole <code>&amp;</code>:ia. Tämä tarkoittaa, että <code>s1</code> listauksessa 8-18 siirretään <code>add</code>-kutsuun eikä ole enää kelvollinen sen jälkeen. Joten vaikka <code>let s3 = s1 + &amp;s2;</code> näyttää siltä, että se kopioisi molemmat merkkijonot ja loisi uuden, tämä lause itse asiassa ottaa <code>s1</code>:n omistuksen, liittää kopion <code>s2</code>:n sisällöstä ja palauttaa tuloksen omistuksen. Toisin sanoen se näyttää tekevän paljon kopioita, mutta ei tee; toteutus on tehokkaampi kuin kopiointi.</p>
+<p>Jos meidän on yhdistettävä useita merkkijonoja, <code>+</code>-operaattorin käyttäytyminen muuttuu hankalaksi:</p>
+<pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>{{#rustdoc_include ../listings/ch08-common-collections/no-listing-01-concat-multiple-strings/src/main.rs:here}}
-<span class="boring">}</span></code></pre></pre>
-<p>Tässä vaiheessa <code>s</code> on <code>tic-tac-toe</code>. Kaikkien <code>+</code>- ja <code>"</code>-merkkien kanssa on
-vaikea nähdä, mitä tapahtuu. Monimutkaisempien yhdistämistapojen kohdalla
-voimme sen sijaan käyttää <code>format!</code>-makroa:</p>
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+<span class="boring">}</span></code></pre>
+<p>Tässä vaiheessa <code>s</code> on <code>tic-tac-toe</code>. Kaikkien <code>+</code>- ja <code>"</code>-merkkien kanssa on vaikea nähdä, mitä tapahtuu. Monimutkaisempien merkkijonoyhdistelmien tekemiseen voimme sen sijaan käyttää <code>format!</code>-makroa:</p>
+<pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>{{#rustdoc_include ../listings/ch08-common-collections/no-listing-02-format/src/main.rs:here}}
-<span class="boring">}</span></code></pre></pre>
-<p>Tämä koodi asettaa myös <code>s</code>:n arvoksi <code>tic-tac-toe</code>. <code>format!</code>-makro toimii
-kuten <code>println!</code>, mutta tulostaa tulosteen ruudulle sen sijaan, että se palauttaa
-<code>String</code>-olion sisällöllä. <code>format!</code>-makroa käyttävä koodiversio on paljon
-helpompi lukea, ja <code>format!</code>-makron generoima koodi käyttää viittauksia, joten
-tämä kutsu ei ota minkään parametreistaan omistusta.</p>
-<h3 id="merkkijonojen-indeksointi"><a class="header" href="#merkkijonojen-indeksointi">Merkkijonojen indeksointi</a></h3>
-<p>Monissa muissa ohjelmointikielissä yksittäisiin merkkeihin merkkijonossa
-viittaaminen indeksillä on kelvollinen ja yleinen operaatio. Jos kuitenkin
-yrität käyttää indeksointisyntaksia <code>String</code>-olion osiin Rustissa, saat
-virheen. Harkitse kelvotonta koodia listauksessa 8-19.</p>
-<figure class="listing">
+<span class="boring">}</span></code></pre>
+<p>Tämä koodi asettaa myös <code>s</code>:n arvoksi <code>tic-tac-toe</code>. <code>format!</code>-makro toimii kuten <code>println!</code>, mutta tulostaa tulosteen näytölle sen sijaan, että se palauttaa <code>String</code>:in sisällöllä. <code>format!</code>-makroa käyttävä versio on paljon helpompi lukea, ja <code>format!</code>-makron generoima koodi käyttää viitteitä, joten tämä kutsu ei ota omistusta mistään parametreistään.</p>
+<h3 id="merkkijonoon-indeksointi"><a class="header" href="#merkkijonoon-indeksointi">Merkkijonoon indeksointi</a></h3>
+<p>Monissa muissa ohjelmointikielissä yksittäisten merkkien käyttäminen merkkijonosta viittaamalla niihin indeksillä on kelvollinen ja yleinen operaatio. Jos kuitenkin yrität käyttää <code>String</code>:in osia indeksointisyntaksilla Rustissa, saat virheen. Harkitse kelvotonta koodia listauksessa 8-19.</p>
+<figure class="listing" id="listing-8-19">
 <pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch08-common-collections/listing-08-19/src/main.rs:here}}</code></pre>
-<figcaption>Listing 8-19: Indeksointisyntaksin yrittäminen <code>String</code>-olion kanssa</figcaption>
+<figcaption><a href="#listing-8-19">Listing 8-19</a>: Yritys käyttää indeksointisyntaksia <code>String</code>:in kanssa</figcaption>
 </figure>
-<p>Tämä koodi johtaa seuraavaan virheeseen:</p>
+<p>Tämä koodi tuottaa seuraavan virheen:</p>
 <pre><code class="language-console">{{#include ../listings/ch08-common-collections/listing-08-19/output.txt}}
 </code></pre>
-<p>Virhe ja huomautus kertovat tarinan: Rustin merkkijonot eivät tue indeksointia.
-Mutta miksi ei? Vastataksemme siihen kysymykseen meidän täytyy käsitellä, miten
-Rust tallentaa merkkijonot muistiin.</p>
+<p>Virhe kertoo tarinan: Rust-merkkijonot eivät tue indeksointia. Mutta miksi ei? Vastataksemme tähän kysymykseen meidän on käsiteltävä, miten Rust tallentaa merkkijonot muistiin.</p>
 <h4 id="sisäinen-esitys"><a class="header" href="#sisäinen-esitys">Sisäinen esitys</a></h4>
-<p><code>String</code> on kääre <code>Vec&lt;u8&gt;</code>-tyypin ympärillä. Katsotaan joitakin oikein
-koodattuja UTF-8-esimerkkimerkkijonojamme listauksesta 8-14. Ensin tämä:</p>
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+<p><code>String</code> on kääre <code>Vec&lt;u8&gt;</code>:n ympärillä. Katsotaan joitakin oikein koodattuja UTF-8-esimerkkimerkkijonojamme listauksesta 8-14. Ensin tämä:</p>
+<pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>{{#rustdoc_include ../listings/ch08-common-collections/listing-08-14/src/main.rs:spanish}}
-<span class="boring">}</span></code></pre></pre>
-<p>Tässä tapauksessa <code>len</code> on <code>4</code>, mikä tarkoittaa, että merkkijonoa <code>"Hola"</code>
-tallentava vektori on 4 tavua pitkä. Jokainen näistä kirjaimista vie yhden tavun
-UTF-8-koodauksessa. Seuraava rivi saattaa kuitenkin yllättää (huomaa, että tämä
-merkkijono alkaa kyrillisen isolla kirjaimella <em>Ze</em>, ei numerolla 3):</p>
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+<span class="boring">}</span></code></pre>
+<p>Tässä tapauksessa <code>len</code> on <code>4</code>, mikä tarkoittaa, että merkkijonoa <code>"Hola"</code> tallentava vektori on 4 tavua pitkä. Jokainen näistä kirjaimista vie 1 tavun UTF-8-koodauksessa. Seuraava rivi saattaa kuitenkin yllättää (huomaa, että tämä merkkijono alkaa kyrillisen isolla kirjaimella <em>Ze</em>, ei numerolla 3):</p>
+<pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>{{#rustdoc_include ../listings/ch08-common-collections/listing-08-14/src/main.rs:russian}}
-<span class="boring">}</span></code></pre></pre>
-<p>Jos sinulta kysyttäisiin, kuinka pitkä merkkijono on, saatat sanoa 12. Itse
-asiassa Rustin vastaus on 24: se on tavujen määrä, joita tarvitaan
-“Здравствуйте”-merkkijonon koodaamiseen UTF-8:ssa, koska jokainen Unicode-skaalaarvo
-tässä merkkijonossa vie 2 tavua tallennustilaa. Siksi indeksi merkkijonon
-tavuihin ei aina vastaa kelvollista Unicode-skaalaarvoa. Havainnollistukseksi
-harkitse tätä kelvotonta Rust-koodia:</p>
+<span class="boring">}</span></code></pre>
+<p>Jos sinulta kysyttäisiin, kuinka pitkä merkkijono on, saatat sanoa 12. Itse asiassa Rustin vastaus on 24: se on tavujen määrä, joita tarvitaan ”Здравствуйте”:n koodaamiseen UTF-8:ssa, koska jokainen Unicode-skaalaarvo kyseisessä merkkijonossa vie 2 tavua tallennustilaa. Siksi indeksi merkkijonon tavuissa ei aina vastaa kelvollista Unicode-skaalaarvoa. Havainnollistaaksemme, harkitse tätä kelvotonta Rust-koodia:</p>
 <pre><code class="language-rust ignore does_not_compile">let hello = "Здравствуйте";
 let answer = &amp;hello[0];</code></pre>
-<p>Tiedät jo, että <code>answer</code> ei ole <code>З</code>, ensimmäinen kirjain. UTF-8-koodauksessa
-<code>З</code>:n ensimmäinen tavu on <code>208</code> ja toinen on <code>151</code>, joten näyttäisi siltä, että
-<code>answer</code>:n pitäisi olla <code>208</code>, mutta <code>208</code> ei ole kelvollinen merkki yksinään.
-<code>208</code>:n palauttaminen ei todennäköisesti ole sitä, mitä käyttäjä haluaisi, jos
-hän pyytäisi tämän merkkijonon ensimmäistä kirjainta; kuitenkin se on ainoa
-data, joka Rustilla on tavuindeksissä 0. Käyttäjät eivät yleensä halua tavuarvoa
-palautettavaksi, vaikka merkkijono sisältäisi vain latinalaisia kirjaimia: jos
-<code>&amp;"hi"[0]</code> olisi kelvollista koodia, joka palauttaisi tavuarvon, se palauttaisi
-<code>104</code>:n, ei <code>h</code>:ta.</p>
-<p>Vastaus on siis, että odottamattoman arvon palauttamisen ja virheiden
-välttämiseksi, joita ei ehkä huomata heti, Rust ei käännä tätä koodia lainkaan
-ja estää väärinkäsitykset varhaisessa kehitysvaiheessa.</p>
-<h4 id="tavut-skaalaarvot-ja-grafeemiklusterit-voi-ei"><a class="header" href="#tavut-skaalaarvot-ja-grafeemiklusterit-voi-ei">Tavut, skaalaarvot ja grafeemiklusterit! Voi ei!</a></h4>
-<p>Toinen huomio UTF-8:sta on, että merkkijonoihin on itse asiassa kolme
-olennaista tapaa katsoa Rustin näkökulmasta: tavuina, skaalaarvoina ja
-grafeemiklustereina (lähin vastine sille, mitä kutsumme <em>kirjaimiksi</em>).</p>
-<p>Jos katsomme hindinkielistä sanaa “नमस्ते” devanagari-kirjoituksella, se
-tallennetaan <code>u8</code>-arvojen vektorina, joka näyttää tältä:</p>
+<p>Tiedät jo, että <code>answer</code> ei ole <code>З</code>, ensimmäinen kirjain. Kun <code>З</code> on koodattu UTF-8:ssa, ensimmäinen tavu on <code>208</code> ja toinen on <code>151</code>, joten näyttäisi siltä, että <code>answer</code>:n pitäisi olla <code>208</code>, mutta <code>208</code> ei ole kelvollinen merkki yksinään. <code>208</code>:n palauttaminen ei todennäköisesti ole sitä, mitä käyttäjä haluaisi, jos he pyytäisivät tämän merkkijonon ensimmäistä kirjainta; kuitenkin se on ainoa data, joka Rustilla on tavuindeksissä 0. Käyttäjät eivät yleensä halua tavuarvoa palautettavaksi, vaikka merkkijono sisältäisi vain latinalaisia kirjaimia: Jos <code>&amp;"hi"[0]</code> olisi kelvollista koodia, joka palauttaisi tavuarvon, se palauttaisi <code>104</code>:n, ei <code>h</code>:ta.</p>
+<p>Vastaus on siis, että odottamattoman arvon palauttamisen ja virheiden estämiseksi, joita ei ehkä huomata heti, Rust ei käännä tätä koodia lainkaan ja estää väärinkäsitykset varhaisessa kehitysvaiheessa.</p>
+<!-- Old headings. Do not remove or links may break. -->
+<p><a id="bytes-and-scalar-values-and-grapheme-clusters-oh-my"></a></p>
+<h4 id="tavut-skaalaarvot-ja-grafeemiklusterit"><a class="header" href="#tavut-skaalaarvot-ja-grafeemiklusterit">Tavut, skaalaarvot ja grafeemiklusterit</a></h4>
+<p>Toinen kohta UTF-8:sta on, että Rustin näkökulmasta merkkijonoihin on itse asiassa kolme relevanttia tapaa katsoa: tavuina, skaalaarvoina ja grafeemiklustereina (lähin vastine sille, mitä kutsumme <em>kirjaimiksi</em>).</p>
+<p>Jos katsomme hindinkielistä sanaa ”नमस्ते”, joka on kirjoitettu devanagari-kirjaimistolla, se tallennetaan <code>u8</code>-arvojen vektorina, joka näyttää tältä:</p>
 <pre><code class="language-text">[224, 164, 168, 224, 164, 174, 224, 164, 184, 224, 165, 141, 224, 164, 164,
 224, 165, 135]
 </code></pre>
-<p>Se on 18 tavua ja näin tietokoneet lopulta tallentavat tämän datan. Jos
-katsomme niitä Unicode-skaalaarvoina, joita Rustin <code>char</code>-tyyppi edustaa, nuo
-tavut näyttävät tältä:</p>
+<p>Se on 18 tavua ja näin tietokoneet lopulta tallentavat tämän datan. Jos katsomme niitä Unicode-skaalaarvoina, jotka ovat Rustin <code>char</code>-tyyppi, nämä tavut näyttävät tältä:</p>
 <pre><code class="language-text">['न', 'म', 'स', '्', 'त', 'े']
 </code></pre>
-<p>Tässä on kuusi <code>char</code>-arvoa, mutta neljäs ja kuudes eivät ole kirjaimia: ne
-ovat diakriittisiä merkkejä, joilla ei ole järkeä yksinään. Lopuksi, jos
-katsomme niitä grafeemiklustereina, saamme sen, mitä ihminen kutsuisi
-hindinkielisen sanan neljäksi kirjaimiksi:</p>
+<p>Tässä on kuusi <code>char</code>-arvoa, mutta neljäs ja kuudes eivät ole kirjaimia: ne ovat diakriittisiä merkkejä, jotka eivät ole järkeviä yksinään. Lopuksi, jos katsomme niitä grafeemiklustereina, saisimme sen, mitä ihminen kutsuisi hindinkielisen sanan neljäksi kirjaimiksi:</p>
 <pre><code class="language-text">["न", "म", "स्", "ते"]
 </code></pre>
-<p>Rust tarjoaa erilaisia tapoja tulkita raakaa merkkijonodataa, jota tietokoneet
-tallentavat, jotta jokainen ohjelma voi valita tarvitsemansa tulkinnan
-riippumatta siitä, millä ihmiskielellä data on.</p>
-<p>Viimeinen syy siihen, miksi Rust ei salli indeksointia <code>String</code>-olioon merkin
-saamiseksi, on se, että indeksointioperointien odotetaan aina vievän vakioajan
-(O(1)). Mutta tällaista suorituskykyä ei voi taata <code>String</code>-tyypillä, koska
-Rustin täytyisi käydä sisältö läpi alusta indeksiin määrittääkseen, kuinka monta
-kelvollista merkkiä siinä on.</p>
-<h3 id="merkkijonojen-viipaleet"><a class="header" href="#merkkijonojen-viipaleet">Merkkijonojen viipaleet</a></h3>
-<p>Indeksointi merkkijonoon on usein huono idea, koska ei ole selvää, mikä
-merkkijonon indeksointioperoinnin paluutyyppi pitäisi olla: tavu, merkki,
-grafeemiklusteri vai merkkijonoviipale. Jos todella tarvitset käyttää indeksejä
-merkkijonoviipaleiden luomiseen, Rust pyytää sinua olemaan tarkempi.</p>
-<p>Sen sijaan, että indeksoisit <code>[]</code>-syntaksilla yhdellä numerolla, voit käyttää
-<code>[]</code>-syntaksia väliarvolla luodaksesi merkkijonoviipaleen, joka sisältää
-tietyt tavut:</p>
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+<p>Rust tarjoaa erilaisia tapoja tulkita raakaa merkkijonodataa, jota tietokoneet tallentavat, jotta jokainen ohjelma voi valita tarvitsemansa tulkinnan riippumatta siitä, millä ihmiskielellä data on.</p>
+<p>Viimeinen syy siihen, miksi Rust ei salli meidän indeksoida <code>String</code>:iin saadaksemme merkin, on se, että indeksointi-operaatioiden odotetaan aina vievän vakiintuneen ajan (O(1)). Mutta tätä suorituskykyä ei ole mahdollista taata <code>String</code>:in kanssa, koska Rustin pitäisi käydä läpi sisältö alusta indeksiin määrittääkseen, kuinka monta kelvollista merkkiä siellä on.</p>
+<h3 id="merkkijonoviipaleiden-leikkaaminen"><a class="header" href="#merkkijonoviipaleiden-leikkaaminen">Merkkijonoviipaleiden leikkaaminen</a></h3>
+<p>Merkkijonoon indeksointi on usein huono idea, koska ei ole selvää, mikä merkkijonon indeksointi-operaation palautustyypin pitäisi olla: tavu, merkki, grafeemiklusteri vai merkkijonoviipale. Jos todella tarvitset käyttää indeksejä merkkijonoviipaleiden luomiseen, Rust pyytää sinua olemaan tarkempi.</p>
+<p>Sen sijaan, että indeksoisit <code>[]</code>:lla yhdellä numerolla, voit käyttää <code>[]</code>:a alueella luodaksesi merkkijonoviipaleen, joka sisältää tiettyjä tavuja:</p>
+<pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>let hello = "Здравствуйте";
 
 let s = &amp;hello[0..4];
-<span class="boring">}</span></code></pre></pre>
-<p>Tässä <code>s</code> on <code>&amp;str</code>, joka sisältää merkkijonon ensimmäiset neljä tavua.
-Aiemmin mainitsimme, että jokainen näistä merkeistä oli kaksi tavua, mikä
-tarkoittaa, että <code>s</code> on <code>Зд</code>.</p>
-<p>Jos yrittäisimme viipaloida vain osan merkin tavuista esimerkiksi
-<code>&amp;hello[0..1]</code>:llä, Rust panikoi ajonaikana samalla tavalla kuin jos
-vektorissa käytettäisiin kelvotonta indeksiä:</p>
+<span class="boring">}</span></code></pre>
+<p>Tässä <code>s</code> on <code>&amp;str</code>, joka sisältää merkkijonon ensimmäiset 4 tavua. Aiemmin mainitsimme, että jokainen näistä merkeistä oli 2 tavua, mikä tarkoittaa, että <code>s</code> on <code>Зд</code>.</p>
+<p>Jos yrittäisimme leikata vain osan merkin tavuista jollakin kuten <code>&amp;hello[0..1]</code>, Rust panikoisi ajonaikana samalla tavalla kuin jos virheellistä indeksiä käytettäisiin vektorissa:</p>
 <pre><code class="language-console">{{#include ../listings/ch08-common-collections/output-only-01-not-char-boundary/output.txt}}
 </code></pre>
-<p>Sinun pitäisi olla varovainen luodessasi merkkijonoviipaleita väliarvoilla,
-koska se voi kaataa ohjelmasi.</p>
-<h3 id="merkkijonojen-läpikäyntimetodit"><a class="header" href="#merkkijonojen-läpikäyntimetodit">Merkkijonojen läpikäyntimetodit</a></h3>
-<p>Paras tapa käsitellä merkkijonon osia on olla eksplisiittinen siitä, haluatko
-merkkejä vai tavuja. Yksittäisiä Unicode-skaalaarvoja varten käytä <code>chars</code>-metodia.
-<code>chars</code>-metodin kutsuminen merkkijonolla “Зд” erottelee ja palauttaa kaksi
-<code>char</code>-tyyppistä arvoa, ja voit iteroida tuloksen läpi päästäksesi käsiksi
-jokaiseen alkioon:</p>
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+<p>Sinun pitäisi olla varovainen luodessasi merkkijonoviipaleita alueilla, koska se voi kaataa ohjelmasi.</p>
+<!-- Old headings. Do not remove or links may break. -->
+<p><a id="methods-for-iterating-over-strings"></a></p>
+<h3 id="merkkijonojen-läpikäynti"><a class="header" href="#merkkijonojen-läpikäynti">Merkkijonojen läpikäynti</a></h3>
+<p>Paras tapa käsitellä merkkijonon osia on olla eksplisiittinen siitä, haluatko merkkejä vai tavuja. Yksittäisille Unicode-skaalaarvoille käytä <code>chars</code>-metodia. <code>chars</code>:in kutsuminen merkkijonolla ”Зд” erottelee ja palauttaa kaksi <code>char</code>-tyyppistä arvoa, ja voit käydä tuloksen läpi käyttääksesi jokaista elementtiä:</p>
+<pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>for c in "Зд".chars() {
     println!("{c}");
 }
-<span class="boring">}</span></code></pre></pre>
+<span class="boring">}</span></code></pre>
 <p>Tämä koodi tulostaa seuraavan:</p>
 <pre><code class="language-text">З
 д
 </code></pre>
-<p>Vaihtoehtoisesti <code>bytes</code>-metodi palauttaa jokaisen raakatavu, mikä saattaa olla
-sopivaa sinun käyttöalueellesi:</p>
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+<p>Vaihtoehtoisesti <code>bytes</code>-metodi palauttaa jokaisen raakatuvun, mikä saattaa olla sopivaa toimialallesi:</p>
+<pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>for b in "Зд".bytes() {
     println!("{b}");
 }
-<span class="boring">}</span></code></pre></pre>
-<p>Tämä koodi tulostaa neljä tavua, joista tämä merkkijono koostuu:</p>
+<span class="boring">}</span></code></pre>
+<p>Tämä koodi tulostaa 4 tavua, jotka muodostavat tämän merkkijonon:</p>
 <pre><code class="language-text">208
 151
 208
 180
 </code></pre>
-<p>Muista kuitenkin, että kelvolliset Unicode-skaalaarvot voivat koostua useammasta
-kuin yhdestä tavusta.</p>
-<p>Grafeemiklusterien saaminen merkkijonoista, kuten devanagari-kirjoituksessa, on
-monimutkaista, joten standardikirjasto ei tarjoa tätä toiminnallisuutta.
-Crates.io-sivustolta löytyy <a href="https://crates.io/">crates.io</a><!-- ignore --> -paketteja,
-jos tarvitset tätä toiminnallisuutta.</p>
-<h3 id="merkkijonot-eivät-ole-niin-yksinkertaisia"><a class="header" href="#merkkijonot-eivät-ole-niin-yksinkertaisia">Merkkijonot eivät ole niin yksinkertaisia</a></h3>
-<p>Yhteenvetona merkkijonot ovat monimutkaisia. Eri ohjelmointikielet tekevät
-erilaisia valintoja siitä, miten tämä monimutkaisuus esitetään ohjelmoijalle.
-Rust on valinnut tehdä <code>String</code>-datan oikeasta käsittelystä oletuskäyttäytymisen
-kaikille Rust-ohjelmille, mikä tarkoittaa, että ohjelmoijien täytyy miettiä
-UTF-8-datan käsittelyä etukäteen enemmän. Tämä kompromissi paljastaa enemmän
-merkkijonojen monimutkaisuutta kuin muissa ohjelmointikielissä näkyy, mutta se
-estää sinua joutumasta käsittelemään ei-ASCII-merkkeihin liittyviä virheitä
-myöhemmin kehityssyklin aikana.</p>
-<p>Hyvä uutinen on, että standardikirjasto tarjoaa paljon toiminnallisuutta, joka
-perustuu <code>String</code>- ja <code>&amp;str</code>-tyyppeihin auttamaan näiden monimutkaisten
-tilanteiden oikeassa käsittelyssä. Muista tutustua dokumentaatioon hyödyllisistä
-metodeista, kuten <code>contains</code> merkkijonosta etsimiseen ja <code>replace</code> merkkijonon
-osien korvaamiseen toisella merkkijonolla.</p>
-<p>Siirrytään hieman vähemmän monimutkaiseen asiaan: hajautustauluihin!</p>
+<p>Muista kuitenkin, että kelvolliset Unicode-skaalaarvot voivat koostua useammasta kuin yhdestä tavusta.</p>
+<p>Grafeemiklusterien saaminen merkkijonoista, kuten devanagari-kirjaimistolla, on monimutkaista, joten standardikirjasto ei tarjoa tätä toiminnallisuutta. Crate:t ovat saatavilla osoitteessa <a href="https://crates.io/">crates.io</a><!-- ignore -->, jos tarvitset tätä toiminnallisuutta.</p>
+<!-- Old headings. Do not remove or links may break. -->
+<p><a id="strings-are-not-so-simple"></a></p>
+<h3 id="merkkijonojen-monimutkaisuuden-käsittely"><a class="header" href="#merkkijonojen-monimutkaisuuden-käsittely">Merkkijonojen monimutkaisuuden käsittely</a></h3>
+<p>Yhteenvetona, merkkijonot ovat monimutkaisia. Eri ohjelmointikielet tekevät erilaisia valintoja siitä, miten esittää tämä monimutkaisuus ohjelmoijalle. Rust on valinnut tehdä <code>String</code>-datan oikeasta käsittelystä oletuskäyttäytymisen kaikille Rust-ohjelmille, mikä tarkoittaa, että ohjelmoijien on pohdittava UTF-8-datan käsittelyä etukäteen. Tämä kompromissi paljastaa enemmän merkkijonojen monimutkaisuutta kuin on ilmeistä muissa ohjelmointikielissä, mutta se estää sinua käsittelemästä ei-ASCII-merkkeihin liittyviä virheitä myöhemmin kehityssykliäsi.</p>
+<p>Hyvä uutinen on, että standardikirjasto tarjoaa paljon toiminnallisuutta, joka on rakennettu <code>String</code>- ja <code>&amp;str</code>-tyyppien päälle auttamaan käsittelemään näitä monimutkaisia tilanteita oikein. Muista tutustua dokumentaatioon hyödyllisistä metodeista, kuten <code>contains</code> merkkijonon etsimiseen ja <code>replace</code> merkkijonon osien korvaamiseen toisella merkkijonolla.</p>
+<p>Siirrytään hieman vähemmän monimutkaiseen asiaan: hajautustaulukot!</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                             <a rel="prev" href="ch08-01-vectors.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                                <i class="fa fa-angle-left"></i>
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
                             <a rel="next prefetch" href="ch08-03-hash-maps.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
                         <div style="clear: both"></div>
@@ -508,16 +395,21 @@ osien korvaamiseen toisella merkkijonolla.</p>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                     <a rel="prev" href="ch08-01-vectors.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                        <i class="fa fa-angle-left"></i>
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
                     <a rel="next prefetch" href="ch08-03-hash-maps.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>
 
         </div>
 
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
 
 
 
@@ -526,16 +418,17 @@ osien korvaamiseen toisella merkkijonolla.</p>
         </script>
 
 
-        <script src="elasticlunr.min.js"></script>
-        <script src="mark.min.js"></script>
-        <script src="searcher.js"></script>
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-c2a407aa.js"></script>
 
-        <script src="clipboard.min.js"></script>
-        <script src="highlight.js"></script>
-        <script src="book.js"></script>
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-abc7f01d.js"></script>
+        <script src="book-a0b12cfe.js"></script>
 
         <!-- Custom JS scripts -->
-        <script src="ferris.js"></script>
+        <script src="ferris-2317480c.js"></script>
+
 
 
     </div>

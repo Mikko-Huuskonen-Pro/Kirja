@@ -12,44 +12,56 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
 
-        <link rel="icon" href="favicon.svg">
-        <link rel="shortcut icon" href="favicon.png">
-        <link rel="stylesheet" href="css/variables.css">
-        <link rel="stylesheet" href="css/general.css">
-        <link rel="stylesheet" href="css/chrome.css">
-        <link rel="stylesheet" href="css/print.css" media="print">
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-2459343d.css">
+        <link rel="stylesheet" href="css/chrome-ae938929.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
-        <link rel="stylesheet" href="fonts/fonts.css">
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" href="highlight.css">
-        <link rel="stylesheet" href="tomorrow-night.css">
-        <link rel="stylesheet" href="ayu-highlight.css">
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="ferris.css">
-        <link rel="stylesheet" href="theme/2018-edition.css">
-        <link rel="stylesheet" href="theme/semantic-notes.css">
-        <link rel="stylesheet" href="theme/listing.css">
+        <link rel="stylesheet" href="ferris-d33b75bf.css">
+        <link rel="stylesheet" href="theme/2018-edition-4e126c62.css">
+        <link rel="stylesheet" href="theme/semantic-notes-9b5766c0.css">
+        <link rel="stylesheet" href="theme/listing-cab26221.css">
 
 
-        <!-- Provide site root to javascript -->
+        <!-- Provide site root and default themes to javascript -->
         <script>
-            var path_to_root = "";
-            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex-454febf7.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc.js"></script>
+        <script src="toc-7f90d00d.js"></script>
     </head>
     <body>
-    <div id="body-container">
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
             try {
-                var theme = localStorage.getItem('mdbook-theme');
-                var sidebar = localStorage.getItem('mdbook-sidebar');
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
 
                 if (theme.startsWith('"') && theme.endsWith('"')) {
                     localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
@@ -63,7 +75,8 @@
 
         <!-- Set the theme before any content is loaded, prevents flash -->
         <script>
-            var theme;
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
             const html = document.documentElement;
@@ -72,55 +85,59 @@
             html.classList.add("js");
         </script>
 
-        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
-            var sidebar = null;
-            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
             } else {
                 sidebar = 'hidden';
+                sidebar_toggle.checked = false;
             }
-            sidebar_toggle.checked = sidebar === 'visible';
-            html.classList.remove('sidebar-visible');
-            html.classList.add("sidebar-" + sidebar);
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
         </script>
 
-        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
             <!-- populated by js -->
             <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
             <noscript>
                 <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
             </noscript>
-            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
             </div>
         </nav>
 
-        <div id="page-wrapper" class="page-wrapper">
+        <div id="mdbook-page-wrapper" class="page-wrapper">
 
             <div class="page">
-                <div id="menu-bar-hover-placeholder"></div>
-                <div id="menu-bar" class="menu-bar sticky">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
-                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
-                            <i class="fa fa-bars"></i>
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
                         </label>
-                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
-                            <i class="fa fa-paint-brush"></i>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
                         </button>
-                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
-                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
                         </ul>
-                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
-                            <i class="fa fa-search"></i>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
                         </button>
                     </div>
 
@@ -128,318 +145,214 @@
 
                     <div class="right-buttons">
                         <a href="print.html" title="Print this book" aria-label="Print this book">
-                            <i id="print-button" class="fa fa-print"></i>
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
                         </a>
                         <a href="https://github.com/rust-lang/book" title="Git repository" aria-label="Git repository">
-                            <i id="git-repository-button" class="fa fa-github"></i>
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></span>
                         </a>
 
                     </div>
                 </div>
 
-                <div id="search-wrapper" class="hidden">
-                    <form id="searchbar-outer" class="searchbar-outer">
-                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
                     </form>
-                    <div id="searchresults-outer" class="searchresults-outer hidden">
-                        <div id="searchresults-header" class="searchresults-header"></div>
-                        <ul id="searchresults">
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
                         </ul>
                     </div>
                 </div>
 
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
                 <script>
-                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
-                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
-                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
                         link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
                     });
                 </script>
 
-                <div id="content" class="content">
+                <div id="mdbook-content" class="content">
                     <main>
-                        <h2 id="olio-ohjelmoinnin-suunnittelumallin-toteuttaminen"><a class="header" href="#olio-ohjelmoinnin-suunnittelumallin-toteuttaminen">Olio-ohjelmoinnin suunnittelumallin toteuttaminen</a></h2>
-<p><em>Tila-malli</em> on olio-ohjelmoinnin suunnittelumalli. Mallin ydin on, että määrittelemme joukon tiloja, joissa arvo voi olla sisäisesti.
-Tilat edustetaan joukolla <em>tilaobjekteja</em>, ja arvon käyttäytyminen muuttuu sen tilan mukaan. Käymme läpi esimerkin blogikirjoitus-structista,
-jolla on kenttä tilan säilyttämiseen; tila on tilaobjekti joukosta ”luonnos”, ”tarkistettavana” tai ”julkaistu”.</p>
-<p>Tilaobjektit jakavat toiminnallisuutta: Rustissa käytämme tietysti structeja ja traitteja objektien ja perinnän sijaan.
-Jokainen tilaobjekti vastaa omasta käyttäytymisestään ja siitä, milloin sen tulisi muuttua toiseen tilaan.
-Tilaa säilyttävä arvo ei tiedä mitään eri tilojen käyttäytymisestä tai siitä, milloin siirtyä tilojen välillä.</p>
-<p>Tilamallin etu on, että kun ohjelman liiketoimintavaatimukset muuttuvat, emme tarvitse muuttaa tilaa säilyttävän arvon koodia
-tai arvoa käyttävän koodin koodia. Meidän täytyy päivittää vain yhden tilaobjektin sisällä oleva koodi muuttaaksemme sen sääntöjä
-tai ehkä lisätä lisää tilaobjekteja.</p>
-<p>Ensin toteutamme tilamallin perinteisemmällä olio-ohjelmointitavalla, sitten käytämme Rustiin luontevampaa lähestymistapaa.
-Aloitetaan blogikirjoituksen työnkulun vaiheittainen toteuttaminen tilamallilla.</p>
+                        <h2 id="oliopohjaisen-suunnittelumallin-toteuttaminen"><a class="header" href="#oliopohjaisen-suunnittelumallin-toteuttaminen">Oliopohjaisen suunnittelumallin toteuttaminen</a></h2>
+<p><em>tilamalli</em> on oliopohjainen suunnittelumalli. Mallin ydin on, että määrittelemme joukon tiloja, joissa arvo voi sisäisesti olla. Tilat edustetaan joukolla <em>tilaolioita</em>, ja arvon käyttäytyminen muuttuu sen tilan mukaan. Käymme läpi esimerkin blogikirjoitus-rakenteesta, jolla on kenttä tilan säilyttämiseen; tila on tilaolio joukosta ”luonnos”, ”tarkistus” tai ”julkaistu”.</p>
+<p>Tilaoliot jakavat toiminnallisuutta: Rustissa käytämme tietysti rakenteita ja traitteja objektien ja periytymisen sijaan. Jokainen tilaolio vastaa omasta käyttäytymisestään ja siitä, milloin sen pitäisi siirtyä toiseen tilaan. Arvo, joka sisältää tilaolion, ei tiedä tilojen eri käyttäytymisestä tai siirtymisajankohdista.</p>
+<p>Tilamallin etu on, että kun ohjelman liiketoimintavaatimukset muuttuvat, emme joudu muuttamaan tilaa sisältävän arvon koodia tai arvoa käyttävän koodin koodia. Meidän tarvitsee päivittää vain yhden tilaolion sisäinen koodi muuttaaksemme sen sääntöjä tai ehkä lisätäksemme uusia tilaolioita.</p>
+<p>Ensin toteutamme tilamallin perinteisemmällä oliopohjaisella tavalla. Sitten käytämme lähestymistapaa, joka on luontevampi Rustissa. Aloitetaan toteuttamaan blogikirjoituksen työnkulkua vaiheittain tilamallia käyttäen.</p>
 <p>Lopullinen toiminnallisuus näyttää tältä:</p>
 <ol>
 <li>Blogikirjoitus alkaa tyhjänä luonnoksena.</li>
-<li>Kun luonnos on valmis, kirjoituksesta pyydetään tarkistusta.</li>
+<li>Kun luonnos on valmis, kirjoituksen tarkistus pyydetään.</li>
 <li>Kun kirjoitus hyväksytään, se julkaistaan.</li>
-<li>Vain julkaistut blogikirjoitukset palauttavat tulostettavaa sisältöä, joten hyväksymättömiä kirjoituksia ei voi vahingossa julkaista.</li>
+<li>Vain julkaistut blogikirjoitukset palauttavat tulostettavaa sisältöä, jotta hyväksymättömät kirjoitukset eivät voi vahingossa julkaista.</li>
 </ol>
-<p>Mikä tahansa muu kirjoitukseen tehty muutos ei saa vaikutusta. Esimerkiksi jos yritämme hyväksyä luonnosblogikirjoituksen
-ennen kuin olemme pyytäneet tarkistusta, kirjoituksen pitäisi pysyä julkaisemattomana luonnoksena.</p>
-<p>Listaus 18-11 näyttää tämän työnkulun koodimuodossa: tämä on esimerkki <code>blog</code>-nimisen kirjastocraten API:n käytöstä.
-Tämä ei vielä käänny, koska emme ole toteuttaneet <code>blog</code>-cratea.</p>
-<figure class="listing">
+<p>Mikä tahansa muu kirjoitukseen tehty muutosyritys ei saa vaikuttaa mihinkään. Jos esimerkiksi yritämme hyväksyä luonnoskirjoituksen ennen kuin olemme pyytäneet tarkistusta, kirjoituksen pitäisi pysyä julkaisemattomana luonnoksena.</p>
+<!-- Old headings. Do not remove or links may break. -->
+<p><a id="a-traditional-object-oriented-attempt"></a></p>
+<h3 id="perinteisen-oliopohjaisen-tyylin-yritys"><a class="header" href="#perinteisen-oliopohjaisen-tyylin-yritys">Perinteisen oliopohjaisen tyylin yritys</a></h3>
+<p>Samaan ongelmaan on äärettömän monta tapaa rakentaa koodi, jokaisella eri kompromisseilla. Tämän osion toteutus on perinteisempää oliopohjaista tyyliä, joka on mahdollista kirjoittaa Rustissa, mutta ei hyödynnä kaikkia Rustin vahvuuksia. Myöhemmin esittelemme toisen ratkaisun, joka käyttää edelleen oliopohjaista suunnittelumallia mutta on rakennettu tavalla, joka saattaa näyttää vähemmän tutulta oliopohjaista kokemusta omaaville ohjelmoijille. Vertailemme kahta ratkaisua kokeaksemme kompromissit, kun Rust-koodia suunnitellaan eri tavalla kuin muiden kielten koodia.</p>
+<p>Listaus 18-11 näyttää tämän työnkulun koodimuodossa: tämä on esimerkki <code>blog</code>-nimisen kirjastokrateen API:n käytöstä. Tämä ei vielä käänny, koska emme ole toteuttaneet <code>blog</code>-kratea.</p>
+<figure class="listing" id="listing-18-11">
 <span class="file-name">Filename: src/main.rs</span>
 <pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch18-oop/listing-18-11/src/main.rs:all}}</code></pre>
-<figcaption>Listing 18-11: Koodi, joka havainnollistaa haluamaamme <code>blog</code>-craten käyttäytymistä</figcaption>
+<figcaption><a href="#listing-18-11">Listing 18-11</a>: Koodi, joka demonstroi haluttua käyttäytymistä, jonka haluamme <code>blog</code>-krateen</figcaption>
 </figure>
-<p>Haluamme antaa käyttäjän luoda uuden luonnosblogikirjoituksen <code>Post::new</code>-funktiolla. Haluamme antaa lisätä tekstiä blogikirjoitukseen.
-Jos yritämme saada kirjoituksen sisällön heti hyväksynnän edellä, emme saa tekstiä, koska kirjoitus on vielä luonnos.
-Olemme lisänneet koodiin <code>assert_eq!</code>-makron havainnollistustarkoituksessa. Erinomainen yksikkötesti tälle olisi varmistaa,
-että luonnosblogikirjoitus palauttaa tyhjän merkkijonon <code>content</code>-metodista, mutta emme kirjoita testejä tälle esimerkille.</p>
-<p>Seuraavaksi haluamme mahdollistaa kirjoituksen tarkistuspyynnön, ja haluamme <code>content</code>-metodin palauttavan tyhjän merkkijonon
-tarkistusta odottaessa. Kun kirjoitus hyväksytään, se julkaistaan, eli kirjoituksen teksti palautetaan, kun <code>content</code>-metodia kutsutaan.</p>
-<p>Huomaa, että ainoa tyyppi, jonka kanssa olemme vuorovaikutuksessa craten kanssa, on <code>Post</code>-tyyppi. Tämä tyyppi käyttää tilamallia
-ja säilyttää arvon, joka on yksi kolmesta tilaobjektista edustaen eri tiloja, joissa kirjoitus voi olla — luonnos, tarkistusta odottava tai julkaistu.
-Siirtyminen tilasta toiseen hallitaan sisäisesti <code>Post</code>-tyypin sisällä. Tilat muuttuvat vastauksena kirjastomme käyttäjien <code>Post</code>-instanssille
-kutsumiin metodeihin, mutta heidän ei tarvitse hallita tilamuutoksia suoraan. Lisäksi käyttäjät eivät voi tehdä virheitä tilojen kanssa,
-kuten julkaista kirjoitusta ennen kuin se on tarkistettu.</p>
-<h3 id="post-tyypin-määrittely-ja-uuden-instanssin-luominen-luonnostilassa"><a class="header" href="#post-tyypin-määrittely-ja-uuden-instanssin-luominen-luonnostilassa"><code>Post</code>-tyypin määrittely ja uuden instanssin luominen luonnostilassa</a></h3>
-<p>Aloitetaan kirjaston toteutus! Tiedämme tarvitsevamme julkisen <code>Post</code>-structin, joka säilyttää sisältöä, joten aloitamme
-structin määrittelystä ja siihen liittyvästä julkisesta <code>new</code>-funktiosta uuden <code>Post</code>-instanssin luomiseksi, kuten Listauksessa 18-12 näytetään.
-Teemme myös yksityisen <code>State</code>-traitin, joka määrittelee käyttäytymisen, joka kaikilla <code>Post</code>-tyypin tilaobjekteilla täytyy olla.</p>
-<p>Sitten <code>Post</code> säilyttää <code>Box&lt;dyn State&gt;</code>-trait-objektin <code>Option&lt;T&gt;</code>-tyypin sisällä yksityisessä <code>state</code>-kentässä tilan säilyttämiseksi.
-Näet hetken kuluttua, miksi <code>Option&lt;T&gt;</code> on tarpeen.</p>
-<figure class="listing">
+<p>Haluamme antaa käyttäjän luoda uuden luonnosblogikirjoituksen <code>Post::new</code>-funktiolla. Haluamme sallia tekstin lisäämisen blogikirjoitukseen. Jos yritämme hakea kirjoituksen sisältöä heti, ennen hyväksyntää, emme saa tekstiä, koska kirjoitus on vielä luonnos. Olemme lisänneet koodiin <code>assert_eq!</code>-makron demonstrointitarkoituksessa. Erinomainen yksikkötesti tälle olisi varmistaa, että luonnosblogikirjoitus palauttaa tyhjän merkkijonon <code>content</code>-metodista, mutta emme kirjoita testejä tähän esimerkkiin.</p>
+<p>Seuraavaksi haluamme mahdollistaa kirjoituksen tarkistuksen pyytämisen ja haluamme, että <code>content</code> palauttaa tyhjän merkkijonon odottaessaan tarkistusta. Kun kirjoitus saa hyväksynnän, se julkaistaan, eli kirjoituksen teksti palautetaan kun <code>content</code> kutsutaan.</p>
+<p>Huomaa, että ainoa tyyppi, jonka kanssa olemme vuorovaikutuksessa kratesta, on <code>Post</code>-tyyppi. Tämä tyyppi käyttää tilamallia ja sisältää arvon, joka on yksi kolmesta tilaoliosta edustaen eri tiloja, joissa kirjoitus voi olla — luonnos, tarkistus tai julkaistu. Siirtyminen tilasta toiseen hallitaan sisäisesti <code>Post</code>-tyypin sisällä. Tilat muuttuvat vastauksena kirjastomme käyttäjien <code>Post</code>-instanssilla kutsumiin metodeihin, mutta heidän ei tarvitse hallita tilamuutoksia suoraan. Lisäksi käyttäjät eivät voi tehdä virheitä tilojen kanssa, kuten julkaista kirjoitusta ennen tarkistusta.</p>
+<!-- Old headings. Do not remove or links may break. -->
+<p><a id="defining-post-and-creating-a-new-instance-in-the-draft-state"></a></p>
+<h4 id="post-rakenteen-määrittely-ja-uuden-instanssin-luominen"><a class="header" href="#post-rakenteen-määrittely-ja-uuden-instanssin-luominen"><code>Post</code>-rakenteen määrittely ja uuden instanssin luominen</a></h4>
+<p>Aloitetaan kirjaston toteutus! Tiedämme tarvitsevamme julkisen <code>Post</code>-rakenteen, joka sisältää sisältöä, joten aloitamme rakenteen määritelmästä ja siihen liittyvästä julkisesta <code>new</code>-funktiosta <code>Post</code>-instanssin luomiseen, kuten listauksessa 18-12 näytetään. Teemme myös yksityisen <code>State</code>-traitin, joka määrittelee käyttäytymisen, joka kaikilla <code>Post</code>-rakenteen tilaolioilla täytyy olla.</p>
+<p>Sitten <code>Post</code> sisältää trait-olion <code>Box&lt;dyn State&gt;</code> <code>Option&lt;T&gt;</code>-tyypin sisällä yksityisessä <code>state</code>-kentässä tilaolion säilyttämiseen. Näet hetken kuluttua, miksi <code>Option&lt;T&gt;</code> on tarpeen.</p>
+<figure class="listing" id="listing-18-12">
 <span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch18-oop/listing-18-12/src/lib.rs}}</code></pre>
-<figcaption>Listing 18-12: <code>Post</code>-structin määrittely ja <code>new</code>-funktio uuden <code>Post</code>-instanssin luomiseksi, <code>State</code>-trait ja <code>Draft</code>-struct</figcaption>
+<figcaption><a href="#listing-18-12">Listing 18-12</a>: <code>Post</code>-rakenteen määritelmä ja <code>new</code>-funktio uuden <code>Post</code>-instanssin luomiseen, <code>State</code>-trait ja <code>Draft</code>-rakenne</figcaption>
 </figure>
-<p><code>State</code>-trait määrittelee eri kirjoitustilojen jakaman käyttäytymisen. Tilaobjektit ovat <code>Draft</code>, <code>PendingReview</code> ja <code>Published</code>,
-ja ne kaikki toteuttavat <code>State</code>-traitin. Toistaiseksi traitilla ei ole metodeja, ja aloitamme määrittelemällä vain <code>Draft</code>-tilan,
-koska haluamme kirjoituksen alkavan luonnoksena.</p>
-<p>Kun luomme uuden <code>Post</code>-instanssin, asetamme sen <code>state</code>-kentän <code>Some</code>-arvoksi, joka sisältää <code>Box</code>-tyypin.
-Tämä <code>Box</code> osoittaa uuteen <code>Draft</code>-struct-instanssiin. Tämä varmistaa, että aina kun luomme uuden <code>Post</code>-instanssin,
-se alkaa luonnoksena. Koska <code>Post</code>-structin <code>state</code>-kenttä on yksityinen, <code>Post</code>-instanssia ei voi luoda missään muussa tilassa!
-<code>Post::new</code>-funktiossa asetamme <code>content</code>-kentän uudeksi, tyhjäksi <code>String</code>-tyypiksi.</p>
-<h3 id="kirjoituksen-sisällön-tekstin-säilyttäminen"><a class="header" href="#kirjoituksen-sisällön-tekstin-säilyttäminen">Kirjoituksen sisällön tekstin säilyttäminen</a></h3>
-<p>Näimme Listauksessa 18-11, että haluamme pystyä kutsumaan <code>add_text</code>-metodia ja välittämään sille <code>&amp;str</code>-tyypin,
-joka lisätään blogikirjoituksen tekstisisällöksi. Toteutamme tämän metodina sen sijaan, että paljastaisimme <code>content</code>-kentän <code>pub</code>-määritteellä,
-jotta voimme myöhemmin toteuttaa metodin, joka hallitsee <code>content</code>-kentän datan lukemista. <code>add_text</code>-metodi on melko suoraviivainen,
-joten lisätään toteutus Listauksessa 18-13 <code>impl Post</code> -lohkoon:</p>
-<figure class="listing">
+<p><code>State</code>-trait määrittelee eri kirjoitustilojen jakaman käyttäytymisen. Tilaoliot ovat <code>Draft</code>, <code>PendingReview</code> ja <code>Published</code>, ja ne kaikki toteuttavat <code>State</code>-traitin. Toistaiseksi traitilla ei ole metodeja, ja aloitamme määrittelemällä vain <code>Draft</code>-tilan, koska siinä tilassa kirjoituksen pitää alkaa.</p>
+<p>Kun luomme uuden <code>Post</code>-instanssin, asetamme sen <code>state</code>-kentän <code>Some</code>-arvoksi, joka sisältää <code>Box</code>-osoittimen. Tämä <code>Box</code> osoittaa uuteen <code>Draft</code>-rakenteen instanssiin. Tämä varmistaa, että aina kun luomme uuden <code>Post</code>-instanssin, se alkaa luonnoksena. Koska <code>Post</code>-rakenteen <code>state</code>-kenttä on yksityinen, <code>Post</code>-instanssia ei voi luoda missään muussa tilassa! <code>Post::new</code>-funktiossa asetamme <code>content</code>-kentän uudeksi tyhjäksi <code>String</code>-arvoksi.</p>
+<h4 id="kirjoituksen-sisällön-tekstin-tallentaminen"><a class="header" href="#kirjoituksen-sisällön-tekstin-tallentaminen">Kirjoituksen sisällön tekstin tallentaminen</a></h4>
+<p>Näimme listauksessa 18-11, että haluamme pystyä kutsumaan <code>add_text</code>-nimistä metodia ja välittämään sille <code>&amp;str</code>-viitteen, joka lisätään blogikirjoituksen tekstisisällöksi. Toteutamme tämän metodina sen sijaan, että paljastaisimme <code>content</code>-kentän <code>pub</code>-avainsanalla, jotta voimme myöhemmin toteuttaa metodin, joka hallitsee <code>content</code>-kentän datan lukemista. <code>add_text</code>-metodi on melko suoraviivainen, joten lisätään toteutus listauksessa 18-13 <code>impl Post</code> -lohkoon.</p>
+<figure class="listing" id="listing-18-13">
 <span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch18-oop/listing-18-13/src/lib.rs:here}}</code></pre>
-<figcaption>Listing 18-13: <code>add_text</code>-metodin toteuttaminen tekstin lisäämiseksi kirjoituksen <code>content</code>-kenttään</figcaption>
+<figcaption><a href="#listing-18-13">Listing 18-13</a>: <code>add_text</code>-metodin toteutus tekstin lisäämiseksi kirjoituksen <code>content</code>-kenttään</figcaption>
 </figure>
-<p><code>add_text</code>-metodi ottaa muuttuvan viitteen <code>self</code>:ään, koska muutamme <code>Post</code>-instanssia, jolle kutsumme <code>add_text</code>-metodia.
-Sitten kutsumme <code>push_str</code>-metodia <code>content</code>-kentän <code>String</code>-tyypillä ja välitämme <code>text</code>-argumentin lisättäväksi tallennettuun <code>content</code>-kenttään.
-Tämä käyttäytyminen ei riipu kirjoituksen tilasta, joten se ei ole osa tilamallia. <code>add_text</code>-metodi ei vuorovaikuta <code>state</code>-kentän kanssa lainkaan,
-mutta se on osa käyttäytymistä, jota haluamme tukea.</p>
-<h3 id="luonnoskirjoituksen-sisällön-tyhjyyden-varmistaminen"><a class="header" href="#luonnoskirjoituksen-sisällön-tyhjyyden-varmistaminen">Luonnoskirjoituksen sisällön tyhjyyden varmistaminen</a></h3>
-<p>Vaikka olemme kutsuneet <code>add_text</code>-metodia ja lisänneet sisältöä kirjoitukseemme, haluamme silti <code>content</code>-metodin palauttavan
-tyhjän merkkijonoviipaleen, koska kirjoitus on vielä luonnostilassa, kuten Listauksen 18-11 rivillä 7 näytetään.
-Toteutetaan toistaiseksi <code>content</code>-metodi yksinkertaisimmalla tavalla, joka täyttää tämän vaatimuksen: palauttamalla aina tyhjä merkkijonoviipale.
-Muutamme tämän myöhemmin, kun toteutamme kyvyn muuttaa kirjoituksen tilaa, jotta se voidaan julkaista.
-Toistaiseksi kirjoitukset voivat olla vain luonnostilassa, joten kirjoituksen sisällön pitäisi aina olla tyhjä.
-Listaus 18-14 näyttää tämän paikkamerkkitoteutuksen:</p>
-<figure class="listing">
+<p><code>add_text</code>-metodi ottaa muuttuvan viitteen <code>self</code>:ään, koska muutamme <code>Post</code>-instanssia, jolla kutsumme <code>add_text</code>-metodia. Kutsumme sitten <code>push_str</code>-metodia <code>content</code>-kentän <code>String</code>-arvolla ja välitämme <code>text</code>-argumentin lisättäväksi tallennettuun <code>content</code>-arvoon. Tämä käyttäytyminen ei riipu kirjoituksen tilasta, joten se ei ole osa tilamallia. <code>add_text</code>-metodi ei ole lainkaan vuorovaikutuksessa <code>state</code>-kentän kanssa, mutta se on osa käyttäytymistä, jota haluamme tukea.</p>
+<!-- Old headings. Do not remove or links may break. -->
+<p><a id="ensuring-the-content-of-a-draft-post-is-empty"></a></p>
+<h4 id="luonnoskirjoituksen-sisällön-tyhjyyden-varmistaminen"><a class="header" href="#luonnoskirjoituksen-sisällön-tyhjyyden-varmistaminen">Luonnoskirjoituksen sisällön tyhjyyden varmistaminen</a></h4>
+<p>Vaikka olisimme kutsuneet <code>add_text</code>-metodia ja lisänneet sisältöä kirjoitukseen, haluamme silti <code>content</code>-metodin palauttavan tyhjän merkkijonoviitteen, koska kirjoitus on vielä luonnostilassa, kuten listauksen 18-11 ensimmäinen <code>assert_eq!</code> osoittaa. Toteutetaan toistaiseksi <code>content</code>-metodi yksinkertaisimmalla tavalla, joka täyttää tämän vaatimuksen: palauttamalla aina tyhjän merkkijonoviitteen. Muutamme tämän myöhemmin, kun toteutamme kyvykkyyden muuttaa kirjoituksen tilaa julkaistavaksi. Toistaiseksi kirjoitukset voivat olla vain luonnostilassa, joten kirjoituksen sisällön pitäisi aina olla tyhjä. Listaus 18-14 näyttää tämän väliaikaisen toteutuksen.</p>
+<figure class="listing" id="listing-18-14">
 <span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch18-oop/listing-18-14/src/lib.rs:here}}</code></pre>
-<figcaption>Listing 18-14: Paikkamerkkitoteutuksen lisääminen <code>Post</code>-tyypin <code>content</code>-metodille, joka palauttaa aina tyhjän merkkijonoviipaleen</figcaption>
+<figcaption><a href="#listing-18-14">Listing 18-14</a>: Väliaikaisen toteutuksen lisääminen <code>content</code>-metodille <code>Post</code>-rakenteella, joka palauttaa aina tyhjän merkkijonoviitteen</figcaption>
 </figure>
-<p>Tämän <code>content</code>-metodin lisäämisen jälkeen kaikki Listauksessa 18-11 riville 7 asti toimii tarkoitetulla tavalla.</p>
-<h3 id="kirjoituksen-tarkistuspyyntö-muuttaa-sen-tilaa"><a class="header" href="#kirjoituksen-tarkistuspyyntö-muuttaa-sen-tilaa">Kirjoituksen tarkistuspyyntö muuttaa sen tilaa</a></h3>
-<p>Seuraavaksi meidän täytyy lisätä toiminnallisuus kirjoituksen tarkistuksen pyytämiseen, mikä pitäisi muuttaa sen tilan <code>Draft</code>-tilasta <code>PendingReview</code>-tilaan.
-Listaus 18-15 näyttää tämän koodin:</p>
-<figure class="listing">
+<p>Tämän lisätyn <code>content</code>-metodin myötä kaikki listauksessa 18-11 ensimmäiseen <code>assert_eq!</code>-kutsuun asti toimii tarkoitetulla tavalla.</p>
+<!-- Old headings. Do not remove or links may break. -->
+<p><a id="requesting-a-review-of-the-post-changes-its-state"></a>
+<a id="requesting-a-review-changes-the-posts-state"></a></p>
+<h4 id="tarkistuksen-pyytäminen-joka-muuttaa-kirjoituksen-tilaa"><a class="header" href="#tarkistuksen-pyytäminen-joka-muuttaa-kirjoituksen-tilaa">Tarkistuksen pyytäminen, joka muuttaa kirjoituksen tilaa</a></h4>
+<p>Seuraavaksi meidän täytyy lisätä toiminnallisuus kirjoituksen tarkistuksen pyytämiseen, mikä pitäisi muuttaa sen tilan <code>Draft</code>-tilasta <code>PendingReview</code>-tilaan. Listaus 18-15 näyttää tämän koodin.</p>
+<figure class="listing" id="listing-18-15">
 <span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch18-oop/listing-18-15/src/lib.rs:here}}</code></pre>
-<figcaption>Listing 18-15: <code>request_review</code>-metodien toteuttaminen <code>Post</code>-tyypille ja <code>State</code>-traitille</figcaption>
+<figcaption><a href="#listing-18-15">Listing 18-15</a>: <code>request_review</code>-metodien toteutus <code>Post</code>-rakenteella ja <code>State</code>-traitilla</figcaption>
 </figure>
-<p>Annamme <code>Post</code>-tyypille julkisen <code>request_review</code>-metodin, joka ottaa muuttuvan viitteen <code>self</code>:ään. Sitten kutsumme sisäistä
-<code>request_review</code>-metodia <code>Post</code>-tyypin nykyiselle tilalle, ja tämä toinen <code>request_review</code>-metodi kuluttaa nykyisen tilan ja palauttaa uuden tilan.</p>
-<p>Lisäämme <code>request_review</code>-metodin <code>State</code>-traitiin; kaikkien traitin toteuttavien tyyppien täytyy nyt toteuttaa <code>request_review</code>-metodi.
-Huomaa, että metodin ensimmäisenä parametrina on <code>self: Box&lt;Self&gt;</code> <code>self</code>:n, <code>&amp;self</code>:n tai <code>&amp;mut self</code>:n sijaan.
-Tämä syntaksi tarkoittaa, että metodi on kelvollinen vain, kun sitä kutsutaan tyyppiä <code>Box</code>-tyypin sisältävällä <code>Box</code>-rakenteella.
-Tämä syntaksi ottaa omistajuuden <code>Box&lt;Self&gt;</code>-rakenteesta mitätöiden vanhan tilan, jotta <code>Post</code>-tyypin tila-arvo voi muuttua uudeksi tilaksi.</p>
-<p>Vanhan tilan kuluttamiseksi <code>request_review</code>-metodin täytyy ottaa omistajuus tila-arvosta. Tässä <code>Post</code>-structin <code>state</code>-kentän <code>Option</code> tulee kuvaan:
-kutsumme <code>take</code>-metodia ottamaan <code>Some</code>-arvon <code>state</code>-kentästä ja jättämään tilalle <code>None</code>, koska Rust ei salli tyhjiä kenttiä structeissa.
-Tämä antaa meidän siirtää <code>state</code>-arvon <code>Post</code>-tyypistä lainaamisen sijaan. Sitten asetamme kirjoituksen <code>state</code>-arvon tämän operaation tulokseksi.</p>
-<p>Meidän täytyy asettaa <code>state</code> väliaikaisesti <code>None</code>-arvoksi sen sijaan, että asettaisimme sen suoraan koodilla kuten
-<code>self.state = self.state.request_review();</code> saadaksemme omistajuuden <code>state</code>-arvosta. Tämä varmistaa, ettei <code>Post</code> voi käyttää vanhaa <code>state</code>-arvoa
-sen jälkeen, kun olemme muuttaneet sen uudeksi tilaksi.</p>
-<p><code>Draft</code>-tyypin <code>request_review</code>-metodi palauttaa uuden, laatikon sisällä olevan instanssin uudesta <code>PendingReview</code>-structista,
-joka edustaa tilaa, jossa kirjoitus odottaa tarkistusta. <code>PendingReview</code>-struct toteuttaa myös <code>request_review</code>-metodin,
-mutta ei tee muunnoksia. Sen sijaan se palauttaa itsensä, koska kun pyydämme tarkistusta kirjoitukselle, joka on jo <code>PendingReview</code>-tilassa,
-sen pitäisi pysyä <code>PendingReview</code>-tilassa.</p>
-<p>Nyt voimme alkaa nähdä tilamallin edut: <code>Post</code>-tyypin <code>request_review</code>-metodi on sama riippumatta sen <code>state</code>-arvosta.
-Jokainen tila vastaa omista säännöistään.</p>
-<p>Jätämme <code>Post</code>-tyypin <code>content</code>-metodin ennalleen palauttaen tyhjän merkkijonoviipaleen. Voimme nyt olla <code>Post</code>-instanssin kanssa
-<code>PendingReview</code>-tilassa sekä <code>Draft</code>-tilassa, mutta haluamme saman käyttäytymisen <code>PendingReview</code>-tilassa.
-Listaus 18-11 toimii nyt riville 10 asti!</p>
+<p>Annamme <code>Post</code>-rakenteelle julkisen <code>request_review</code>-nimisen metodin, joka ottaa muuttuvan viitteen <code>self</code>:ään. Kutsumme sitten sisäistä <code>request_review</code>-metodia <code>Post</code>-rakenteen nykyisellä tilalla, ja tämä toinen <code>request_review</code>-metodi kuluttaa nykyisen tilan ja palauttaa uuden tilan.</p>
+<p>Lisäämme <code>request_review</code>-metodin <code>State</code>-traitiin; kaikkien traitin toteuttavien tyyppien täytyy nyt toteuttaa <code>request_review</code>-metodi. Huomaa, että metodin ensimmäisenä parametrina on <code>self: Box&lt;Self&gt;</code> sen sijaan, että olisi <code>self</code>, <code>&amp;self</code> tai <code>&amp;mut self</code>. Tämä syntaksi tarkoittaa, että metodi on kelvollinen vain kun sitä kutsutaan <code>Box</code>-osoittimella, joka sisältää tyypin. Tämä syntaksi ottaa omistajuuden <code>Box&lt;Self&gt;</code>-arvosta, mitätöiden vanhan tilan, jotta <code>Post</code>-rakenteen tilan arvo voi muuttua uudeksi tilaksi.</p>
+<p>Vanhan tilan kuluttamiseksi <code>request_review</code>-metodin täytyy ottaa omistajuus tilan arvosta. Tässä <code>Post</code>-rakenteen <code>state</code>-kentän <code>Option</code> tulee kuvaan: kutsumme <code>take</code>-metodia ottamaan <code>Some</code>-arvon <code>state</code>-kentästä ja jättämään sen paikalle <code>None</code>-arvon, koska Rust ei salli tyhjäksi jääneitä kenttiä rakenteissa. Näin voimme siirtää <code>state</code>-arvon pois <code>Post</code>-rakenteesta lainaamisen sijaan. Asetamme sitten kirjoituksen <code>state</code>-arvon tämän operaation tulokseksi.</p>
+<p>Meidän täytyy asettaa <code>state</code> väliaikaisesti <code>None</code>-arvoksi sen sijaan, että asettaisimme sen suoraan koodilla kuten <code>self.state = self.state.request_review();</code> saadaksemme omistajuuden <code>state</code>-arvosta. Tämä varmistaa, että <code>Post</code> ei voi käyttää vanhaa <code>state</code>-arvoa sen jälkeen, kun olemme muuttaneet sen uudeksi tilaksi.</p>
+<p><code>Draft</code>-rakenteen <code>request_review</code>-metodi palauttaa uuden, laatikkoon pakatun instanssin uudesta <code>PendingReview</code>-rakenteesta, joka edustaa tilaa, jossa kirjoitus odottaa tarkistusta. <code>PendingReview</code>-rakenne toteuttaa myös <code>request_review</code>-metodin, mutta ei tee muunnoksia. Sen sijaan se palauttaa itsensä, koska kun pyydämme tarkistusta kirjoitukselle, joka on jo <code>PendingReview</code>-tilassa, sen pitäisi pysyä <code>PendingReview</code>-tilassa.</p>
+<p>Nyt voimme alkaa nähdä tilamallin edut: <code>Post</code>-rakenteen <code>request_review</code>-metodi on sama riippumatta sen <code>state</code>-arvosta. Jokainen tila vastaa omista säännöistään.</p>
+<p>Jätämme <code>Post</code>-rakenteen <code>content</code>-metodin ennalleen palauttaen tyhjän merkkijonoviitteen. Voimme nyt olla <code>Post</code>-instanssi <code>PendingReview</code>-tilassa sekä <code>Draft</code>-tilassa, mutta haluamme saman käyttäytymisen <code>PendingReview</code>-tilassa. Listaus 18-11 toimii nyt toiseen <code>assert_eq!</code>-kutsuun asti!</p>
 <!-- Old headings. Do not remove or links may break. -->
-<p><a id="adding-the-approve-method-that-changes-the-behavior-of-content"></a></p>
-<h3 id="approve-metodin-lisääminen-content-metodin-käyttäytymisen-muuttamiseksi"><a class="header" href="#approve-metodin-lisääminen-content-metodin-käyttäytymisen-muuttamiseksi"><code>approve</code>-metodin lisääminen <code>content</code>-metodin käyttäytymisen muuttamiseksi</a></h3>
-<p><code>approve</code>-metodi on samanlainen kuin <code>request_review</code>-metodi: se asettaa <code>state</code>-arvon arvoksi, jonka nykyinen tila sanoo sen pitävän,
-kun tila hyväksytään, kuten Listauksessa 18-16 näytetään:</p>
-<figure class="listing">
+<p><a id="adding-the-approve-method-that-changes-the-behavior-of-content"></a>
+<a id="adding-approve-to-change-the-behavior-of-content"></a></p>
+<h4 id="approve-metodin-lisääminen-content-metodin-käyttäytymisen-muuttamiseksi"><a class="header" href="#approve-metodin-lisääminen-content-metodin-käyttäytymisen-muuttamiseksi"><code>approve</code>-metodin lisääminen <code>content</code>-metodin käyttäytymisen muuttamiseksi</a></h4>
+<p><code>approve</code>-metodi on samanlainen kuin <code>request_review</code>-metodi: se asettaa <code>state</code>-kentän arvoksi sen, jonka nykyinen tila sanoo sen pitävän olla kun tila hyväksytään, kuten listauksessa 18-16 näytetään.</p>
+<figure class="listing" id="listing-18-16">
 <span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch18-oop/listing-18-16/src/lib.rs:here}}</code></pre>
-<figcaption>Listing 18-16: <code>approve</code>-metodin toteuttaminen <code>Post</code>-tyypille ja <code>State</code>-traitille</figcaption>
+<figcaption><a href="#listing-18-16">Listing 18-16</a>: <code>approve</code>-metodin toteutus <code>Post</code>-rakenteella ja <code>State</code>-traitilla</figcaption>
 </figure>
-<p>Lisäämme <code>approve</code>-metodin <code>State</code>-traitiin ja uuden structin, joka toteuttaa <code>State</code>-traitin: <code>Published</code>-tilan.</p>
-<p>Samalla tavalla kuin <code>PendingReview</code>-tyypin <code>request_review</code> toimii, jos kutsumme <code>approve</code>-metodia <code>Draft</code>-tyypillä, sillä ei ole vaikutusta,
-koska <code>approve</code> palauttaa <code>self</code>:n. Kun kutsumme <code>approve</code>-metodia <code>PendingReview</code>-tyypillä, se palauttaa uuden, laatikon sisällä olevan
-instanssin <code>Published</code>-structista. <code>Published</code>-struct toteuttaa <code>State</code>-traitin, ja sekä <code>request_review</code>- että <code>approve</code>-metodit
-palauttavat itsensä, koska kirjoituksen pitäisi pysyä <code>Published</code>-tilassa näissä tapauksissa.</p>
-<p>Nyt meidän täytyy päivittää <code>Post</code>-tyypin <code>content</code>-metodi. Haluamme <code>content</code>-metodin palauttaman arvon riippuvan <code>Post</code>-tyypin nykyisestä tilasta,
-joten annamme <code>Post</code>-tyypin delegoida <code>content</code>-metodille, joka on määritelty sen <code>state</code>-kentässä, kuten Listauksessa 18-17 näytetään:</p>
-<figure class="listing">
+<p>Lisäämme <code>approve</code>-metodin <code>State</code>-traitiin ja uuden rakenteen, joka toteuttaa <code>State</code>-traitin, <code>Published</code>-tilan.</p>
+<p>Samalla tavalla kuin <code>PendingReview</code>-rakenteen <code>request_review</code> toimii, jos kutsumme <code>approve</code>-metodia <code>Draft</code>-rakenteella, sillä ei ole vaikutusta, koska <code>approve</code> palauttaa <code>self</code>:n. Kun kutsumme <code>approve</code>-metodia <code>PendingReview</code>-rakenteella, se palauttaa uuden, laatikkoon pakatun instanssin <code>Published</code>-rakenteesta. <code>Published</code>-rakenne toteuttaa <code>State</code>-traitin, ja sekä <code>request_review</code>- että <code>approve</code>-metodille se palauttaa itsensä, koska kirjoituksen pitäisi pysyä <code>Published</code>-tilassa näissä tapauksissa.</p>
+<p>Nyt meidän täytyy päivittää <code>Post</code>-rakenteen <code>content</code>-metodi. Haluamme <code>content</code>-metodin palauttaman arvon riippuvan <code>Post</code>-rakenteen nykyisestä tilasta, joten annamme <code>Post</code>-rakenteen delegoida <code>content</code>-metodille, joka on määritelty sen <code>state</code>-kentässä, kuten listauksessa 18-17 näytetään.</p>
+<figure class="listing" id="listing-18-17">
 <span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch18-oop/listing-18-17/src/lib.rs:here}}</code></pre>
-<figcaption>Listing 18-17: <code>Post</code>-tyypin <code>content</code>-metodin päivittäminen delegoimaan <code>State</code>-tyypin <code>content</code>-metodille</figcaption>
+<figcaption><a href="#listing-18-17">Listing 18-17</a>: <code>Post</code>-rakenteen <code>content</code>-metodin päivittäminen delegoimaan <code>State</code>-traitin <code>content</code>-metodille</figcaption>
 </figure>
-<p>Koska tavoitteena on pitää kaikki nämä säännöt <code>State</code>-traitin toteuttavien structien sisällä, kutsumme <code>content</code>-metodia <code>state</code>-kentän arvolla
-ja välitämme kirjoitusinstanssin (eli <code>self</code>) argumenttina. Sitten palautamme arvon, joka palautuu <code>state</code>-arvon <code>content</code>-metodin käytöstä.</p>
-<p>Kutsumme <code>as_ref</code>-metodia <code>Option</code>-tyypillä, koska haluamme viitteen <code>Option</code>-tyypin sisällä olevaan arvoon omistajuuden sijaan.
-Koska <code>state</code> on <code>Option&lt;Box&lt;dyn State&gt;&gt;</code>, kun kutsumme <code>as_ref</code>-metodia, palautuu <code>Option&lt;&amp;Box&lt;dyn State&gt;&gt;</code>.
-Jos emme kutsuisi <code>as_ref</code>-metodia, saisimme virheen, koska emme voi siirtää <code>state</code>-arvoa funktion parametrin lainatusta <code>&amp;self</code>:stä.</p>
-<p>Sitten kutsumme <code>unwrap</code>-metodia, joka emme tiedä koskaan kaatuvan, koska tiedämme <code>Post</code>-tyypin metodien varmistavan,
-että <code>state</code> sisältää aina <code>Some</code>-arvon, kun nämä metodit ovat valmiita. Tämä on yksi tapauksista, joista puhuimme Luvun 9
-<a href="ch09-03-to-panic-or-not-to-panic.html#cases-in-which-you-have-more-information-than-the-compiler">”Tapaukset, joissa sinulla on enemmän tietoa kuin kääntäjällä”</a><!-- ignore --> -osiossa,
-kun tiedämme <code>None</code>-arvon olevan mahdoton, vaikka kääntäjä ei pysty sitä ymmärtämään.</p>
-<p>Tässä vaiheessa, kun kutsumme <code>content</code>-metodia <code>&amp;Box&lt;dyn State&gt;</code>-tyypillä, deref-pakotus vaikuttaa <code>&amp;</code>- ja <code>Box</code>-rakenteisiin,
-joten <code>content</code>-metodia kutsutaan lopulta tyypillä, joka toteuttaa <code>State</code>-traitin. Tämä tarkoittaa, että meidän täytyy lisätä <code>content</code>
-<code>State</code>-traitin määrittelyyn, ja sinne sijoitamme logiikan sille, mitä sisältöä palautetaan riippuen siitä, mikä tila meillä on,
-kuten Listauksessa 18-18 näytetään:</p>
-<figure class="listing">
+<p>Koska tavoitteena on pitää kaikki nämä säännöt <code>State</code>-traitin toteuttavien rakenteiden sisällä, kutsumme <code>content</code>-metodia <code>state</code>-kentän arvolla ja välitämme kirjoitusinstanssin (eli <code>self</code>) argumenttina. Palautamme sitten arvon, jonka <code>state</code>-arvon <code>content</code>-metodin käyttö palauttaa.</p>
+<p>Kutsumme <code>as_ref</code>-metodia <code>Option</code>-tyypillä, koska haluamme viitteen <code>Option</code>-tyypin sisällä olevaan arvoon omistajuuden sijaan. Koska <code>state</code> on <code>Option&lt;Box&lt;dyn State&gt;&gt;</code>, kun kutsumme <code>as_ref</code>-metodia, palautuu <code>Option&lt;&amp;Box&lt;dyn State&gt;&gt;</code>. Jos emme kutsuisi <code>as_ref</code>-metodia, saisimme virheen, koska emme voi siirtää <code>state</code>-arvoa pois funktion parametrin lainatusta <code>&amp;self</code>-viitteestä.</p>
+<p>Kutsumme sitten <code>unwrap</code>-metodia, joka emme tiedä koskaan panikoivan, koska tiedämme <code>Post</code>-rakenteen metodien varmistavan, että <code>state</code> sisältää aina <code>Some</code>-arvon kun nämä metodit ovat valmiit. Tämä on yksi tapauksista, joista puhuimme luvun 9 <a href="ch09-03-to-panic-or-not-to-panic.html#cases-in-which-you-have-more-information-than-the-compiler">”Kun sinulla on enemmän tietoa kuin kääntäjällä”</a><!-- ignore --> -osiossa, kun tiedämme <code>None</code>-arvon olevan mahdoton, vaikka kääntäjä ei pysty sitä ymmärtämään.</p>
+<p>Tässä vaiheessa, kun kutsumme <code>content</code>-metodia <code>&amp;Box&lt;dyn State&gt;</code>-arvolla, dereferointipakotus vaikuttaa <code>&amp;</code>- ja <code>Box</code>-osoittimiin, joten <code>content</code>-metodia kutsutaan lopulta tyypillä, joka toteuttaa <code>State</code>-traitin. Tämä tarkoittaa, että meidän täytyy lisätä <code>content</code> <code>State</code>-traitin määritelmään, ja sinne asetamme logiikan sille, mitä sisältöä palautetaan riippuen siitä, mikä tila meillä on, kuten listauksessa 18-18 näytetään.</p>
+<figure class="listing" id="listing-18-18">
 <span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch18-oop/listing-18-18/src/lib.rs:here}}</code></pre>
-<figcaption>Listing 18-18: <code>content</code>-metodin lisääminen <code>State</code>-traitiin</figcaption>
+<figcaption><a href="#listing-18-18">Listing 18-18</a>: <code>content</code>-metodin lisääminen <code>State</code>-traitiin</figcaption>
 </figure>
-<p>Lisäämme <code>content</code>-metodille oletustoteutuksen, joka palauttaa tyhjän merkkijonoviipaleen. Tämä tarkoittaa, että emme tarvitse
-toteuttaa <code>content</code>-metodia <code>Draft</code>- ja <code>PendingReview</code>-structeille. <code>Published</code>-struct korvaa <code>content</code>-metodin ja palauttaa arvon <code>post.content</code>-kentässä.</p>
-<p>Huomaa, että tarvitsemme elinajan annotaatiot tälle metodille, kuten käsittelimme Luvussa 10. Otamme viitteen <code>post</code>-argumenttiin
-ja palautamme viitteen osaan kyseistä <code>post</code>-argumenttia, joten palautetun viitteen elinikä liittyy <code>post</code>-argumentin elinikään.</p>
-<p>Ja olemme valmiita — koko Listaus 18-11 toimii nyt! Olemme toteuttaneet tilamallin blogikirjoituksen työnkulun säännöillä.
-Sääntöihin liittyvä logiikka sijaitsee tilaobjekteissa sen sijaan, että se olisi hajautettu <code>Post</code>-tyypin ympäri.</p>
+<p>Lisäämme <code>content</code>-metodille oletustoteutuksen, joka palauttaa tyhjän merkkijonoviitteen. Tämä tarkoittaa, että emme tarvitse toteuttaa <code>content</code>-metodia <code>Draft</code>- ja <code>PendingReview</code>-rakenteille. <code>Published</code>-rakenne ylikirjoittaa <code>content</code>-metodin ja palauttaa arvon <code>post.content</code>-kentästä. Vaikka kätevää, <code>State</code>-traitin <code>content</code>-metodin käyttäminen <code>Post</code>-rakenteen sisällön määrittämiseen hämärtää rajaa <code>State</code>-traitin ja <code>Post</code>-rakenteen vastuiden välillä.</p>
+<p>Huomaa, että tarvitsemme elinaikaannotaatiot tälle metodille, kuten käsittelimme luvussa 10. Otamme viitteen <code>post</code>-argumenttiin ja palautamme viitteen osaan kyseisestä <code>post</code>-argumentista, joten palautetun viitteen elinaika liittyy <code>post</code>-argumentin elinaikaan.</p>
+<p>Ja olemme valmiit — koko listaus 18-11 toimii nyt! Olemme toteuttaneet tilamallin blogikirjoituksen työnkulun säännöillä. Sääntöihin liittyvä logiikka asuu tilaolioissa sen sijaan, että se olisi hajautettu ympäri <code>Post</code>-rakennetta.</p>
 <section class="note" aria-role="note">
-<h4 id="miksi-ei-enumia"><a class="header" href="#miksi-ei-enumia">Miksi ei enumia?</a></h4>
-<p>Olet ehkä miettinyt, miksi emme käyttäneet <code>enum</code>-tyyppiä eri mahdollisten kirjoitustilojen variantteina.
-Se on varmasti mahdollinen ratkaisu, kokeile sitä ja vertaa lopputuloksia nähdäksesi kumman pidät parempana!
-Yksi enumin käytön haittapuoli on, että jokaisessa paikassa, joka tarkistaa enum-arvon, tarvitaan <code>match</code>-lauseke tai vastaava
-käsittelemään jokainen mahdollinen variantti. Tämä voi tulla toistuvammaksi kuin tämä trait-objektiratkaisu.</p>
+<h3 id="miksi-ei-luettelotyyppiä"><a class="header" href="#miksi-ei-luettelotyyppiä">Miksi ei luettelotyyppiä?</a></h3>
+<p>Olet ehkä miettinyt, miksi emme käyttäneet luettelotyyppiä eri mahdollisilla kirjoitustiloilla variantteina. Se on varmasti mahdollinen ratkaisu; kokeile sitä ja vertaa lopputuloksia nähdäksesi kumman pidät parempana! Yksi luettelotyypin käytön haittapuoli on, että jokaisessa paikassa, joka tarkistaa luettelotyypin arvon, tarvitaan <code>match</code>-lauseke tai vastaava käsittelemään jokainen mahdollinen variantti. Tämä voi tulla toistuvammaksi kuin tämä trait-olio-ratkaisu.</p>
 </section>
-<h3 id="tilamallin-kompromissit"><a class="header" href="#tilamallin-kompromissit">Tilamallin kompromissit</a></h3>
-<p>Olemme osoittaneet, että Rust pystyy toteuttamaan olio-ohjelmoinnin tilamallin kapseloimaan erilaisen käyttäytymisen, jonka kirjoituksen pitäisi
-olla kussakin tilassa. <code>Post</code>-tyypin metodit eivät tiedä mitään eri käyttäytymisistä. Koodin järjestelyllä meidän tarvitsee katsoa vain yhteen paikkaan
-tietääksemme eri tavat, joilla julkaistu kirjoitus voi käyttäytyä: <code>Published</code>-structin <code>State</code>-traitin toteutus.</p>
-<p>Jos loisimme vaihtoehtoisen toteutuksen, joka ei käyttäisi tilamallia, voisimme sen sijaan käyttää <code>match</code>-lausekkeita <code>Post</code>-tyypin metodeissa
-tai jopa <code>main</code>-koodissa, joka tarkistaa kirjoituksen tilan ja muuttaa käyttäytymistä näissä paikoissa. Tämä tarkoittaisi, että meidän täytyisi
-katsoa useita paikkoja ymmärtääksemme kaikki julkaistun kirjoituksen tilan vaikutukset! Tämä kasvaisi vain sitä enemmän, mitä enemmän tiloja lisäisimme:
-jokainen näistä <code>match</code>-lausekkeista tarvitsisi uuden haaran.</p>
-<p>Tilamallin avulla <code>Post</code>-metodeissa ja paikoissa, joissa käytämme <code>Post</code>-tyyppiä, ei tarvita <code>match</code>-lausekkeita,
-ja uuden tilan lisäämiseksi meidän tarvitsisi vain lisätä uusi struct ja toteuttaa trait-metodit kyseiselle structille.</p>
-<p>Tilamallia käyttävä toteutus on helppo laajentaa lisätoiminnallisuudella. Nähdäksesi tilamallia käyttävän koodin ylläpidon yksinkertaisuuden,
-kokeile muutamia näistä ehdotuksista:</p>
+<!-- Old headings. Do not remove or links may break. -->
+<p><a id="trade-offs-of-the-state-pattern"></a></p>
+<h4 id="tilamallin-arviointi"><a class="header" href="#tilamallin-arviointi">Tilamallin arviointi</a></h4>
+<p>Olemme osoittaneet, että Rust pystyy toteuttamaan oliopohjaisen tilamallin kapseloimaan erilaiset käyttäytymiset, joita kirjoituksella pitäisi olla kussakin tilassa. <code>Post</code>-rakenteen metodit eivät tiedä eri käyttäytymisistä. Koodin organisoinnin ansiosta meidän tarvitsee katsoa vain yhteen paikkaan tietääksemme eri tavat, joilla julkaistu kirjoitus voi käyttäytyä: <code>Published</code>-rakenteen <code>State</code>-traitin toteutus.</p>
+<p>Jos loisimme vaihtoehtoisen toteutuksen, joka ei käyttäisi tilamallia, voisimme sen sijaan käyttää <code>match</code>-lausekkeita <code>Post</code>-rakenteen metodeissa tai jopa <code>main</code>-koodissa, joka tarkistaa kirjoituksen tilan ja muuttaa käyttäytymistä näissä paikoissa. Tämä tarkoittaisi, että meidän pitäisi katsoa useita paikkoja ymmärtääksemme kaikki seuraukset siitä, että kirjoitus on julkaistussa tilassa.</p>
+<p>Tilamallin kanssa <code>Post</code>-rakenteen metodit ja paikat, joissa käytämme <code>Post</code>-rakennetta, eivät tarvitse <code>match</code>-lausekkeita, ja uuden tilan lisäämiseksi meidän tarvitsee vain lisätä uusi rakenne ja toteuttaa trait-metodit kyseiselle rakenteelle yhdessä paikassa.</p>
+<p>Tilamallia käyttävä toteutus on helppo laajentaa lisätoiminnallisuudella. Nähdäksesi tilamallia käyttävän koodin ylläpidon yksinkertaisuuden, kokeile muutamia näistä ehdotuksista:</p>
 <ul>
 <li>Lisää <code>reject</code>-metodi, joka muuttaa kirjoituksen tilan <code>PendingReview</code>-tilasta takaisin <code>Draft</code>-tilaan.</li>
-<li>Vaadi kaksi <code>approve</code>-kutsua ennen kuin tila voidaan muuttaa <code>Published</code>-tilaksi.</li>
-<li>Salli käyttäjien lisätä tekstisisältöä vain, kun kirjoitus on <code>Draft</code>-tilassa.
-Vihje: anna tilaobjektin vastata siitä, mikä sisällössä voi muuttua, mutta älä anna sen vastata <code>Post</code>-tyypin muokkaamisesta.</li>
+<li>Vaadi kaksi <code>approve</code>-kutsua ennen kuin tila voi muuttua <code>Published</code>-tilaksi.</li>
+<li>Salli käyttäjien lisätä tekstisisältöä vain kun kirjoitus on <code>Draft</code>-tilassa.
+Vihje: anna tilaolion vastata siitä, mikä sisällössä saattaa muuttua, mutta älä anna sen vastata <code>Post</code>-rakenteen muokkaamisesta.</li>
 </ul>
-<p>Yksi tilamallin haittapuoli on, että koska tilat toteuttavat siirtymät tilojen välillä, jotkin tilat ovat toisiinsa kytkettyjä.
-Jos lisäisimme uuden tilan <code>PendingReview</code>- ja <code>Published</code>-tilojen väliin, kuten <code>Scheduled</code>, meidän täytyisi muuttaa <code>PendingReview</code>-tyypin koodia
-siirtymään <code>Scheduled</code>-tilaan <code>Published</code>-tilan sijaan. Olisi vähemmän työtä, jos <code>PendingReview</code>-tyypin ei tarvitsisi muuttua uuden tilan lisäämisen yhteydessä,
-mutta se tarkoittaisi siirtymistä toiseen suunnittelumalliin.</p>
-<p>Toinen haittapuoli on, että olemme monistaneet logiikkaa. Monistuksen poistamiseksi voisimme yrittää tehdä oletustoteutuksia
-<code>request_review</code>- ja <code>approve</code>-metodeille <code>State</code>-traitissa, jotka palauttavat <code>self</code>:n; tämä ei kuitenkaan olisi dyn-yhteensopivaa,
-koska trait ei tiedä, mikä konkreettinen <code>self</code> tarkalleen on. Haluamme pystyä käyttämään <code>State</code>-tyyppiä trait-objektina,
-joten sen metodien täytyy olla dyn-yhteensopivia.</p>
-<p>Muuta monistusta ovat samanlaiset <code>request_review</code>- ja <code>approve</code>-metodien toteutukset <code>Post</code>-tyypillä.
-Molemmat metodit delegoivat saman metodin toteutukselle <code>state</code>-kentän <code>Option</code>-tyypin arvossa ja asettavat <code>state</code>-kentän uudeksi arvoksi tuloksen.
-Jos <code>Post</code>-tyypillä olisi paljon metodeja, jotka noudattaisivat tätä mallia, voisimme harkita makron määrittelyä toiston poistamiseksi
-(katso Luvun 20 <a href="ch20-05-macros.html#macros">”Makrot”</a><!-- ignore --> -osio).</p>
-<p>Toteuttamalla tilamallin täsmälleen niin kuin se on määritelty olio-ohjelmointikielille, emme hyödynnä Rustin vahvuuksia niin täysin kuin voisimme.
-Katsotaan joitakin muutoksia, joita voimme tehdä <code>blog</code>-crateen ja jotka voivat tehdä virheellisistä tiloista ja siirtymistä käännösaikaisia virheitä.</p>
-<h4 id="tilojen-ja-käyttäytymisen-koodaaminen-tyyppeinä"><a class="header" href="#tilojen-ja-käyttäytymisen-koodaaminen-tyyppeinä">Tilojen ja käyttäytymisen koodaaminen tyyppeinä</a></h4>
-<p>Näytämme, miten tilamallia voi ajatella uudelleen saadakseen erilaisen kompromissijoukon. Sen sijaan, että kapseloisimme tilat ja siirtymät
-kokonaan niin, ettei ulkopuolinen koodi tiedä niistä mitään, koodaamme tilat eri tyyppeihin. Näin ollen Rustin tyyppitarkistusjärjestelmä
-estää yritykset käyttää luonnoskirjoituksia siellä, missä vain julkaistut kirjoitukset ovat sallittuja, antamalla kääntäjävirheen.</p>
-<p>Tarkastellaan Listauksen 18-11 <code>main</code>-funktion ensimmäistä osaa:</p>
+<p>Yksi tilamallin haittapuoli on, että koska tilat toteuttavat siirtymät tilojen välillä, jotkin tilat ovat kytkettyjä toisiinsa. Jos lisäisimme uuden tilan <code>PendingReview</code>- ja <code>Published</code>-tilojen väliin, kuten <code>Scheduled</code>, meidän pitäisi muuttaa <code>PendingReview</code>-rakenteen koodia siirtymään <code>Scheduled</code>-tilaan sen sijaan. Olisi vähemmän työtä, jos <code>PendingReview</code>-rakenteen ei tarvitsisi muuttua uuden tilan lisäämisen yhteydessä, mutta se tarkoittaisi siirtymistä toiseen suunnittelumalliin.</p>
+<p>Toinen haittapuoli on, että olemme monistaneet logiikkaa. Monistuksen poistamiseksi voisimme yrittää tehdä oletustoteutukset <code>request_review</code>- ja <code>approve</code>-metodeille <code>State</code>-traitissa, jotka palauttavat <code>self</code>:n. Tämä ei kuitenkaan toimisi: kun käytämme <code>State</code>-traitia trait-oliona, trait ei tiedä tarkalleen, mikä konkreettinen <code>self</code> on, joten palautustyyppi ei ole tiedossa käännösaikana. (Tämä on yksi dyn-yhteensopivuussäännöistä, joista mainittiin aiemmin.)</p>
+<p>Muuta monistusta ovat samanlaiset <code>request_review</code>- ja <code>approve</code>-metodien toteutukset <code>Post</code>-rakenteella. Molemmat metodit käyttävät <code>Option::take</code>-metodia <code>Post</code>-rakenteen <code>state</code>-kentällä, ja jos <code>state</code> on <code>Some</code>, ne delegoivat käärityn arvon saman metodin toteutukselle ja asettavat <code>state</code>-kentän uudeksi arvoksi tuloksen. Jos <code>Post</code>-rakenteella olisi paljon tämän kaavan mukaisia metodeja, voisimme harkita makron määrittelyä toiston poistamiseksi (katso luvun 20 <a href="ch20-05-macros.html#macros">”Makrot”</a><!-- ignore --> -osio).</p>
+<p>Toteuttamalla tilamallin täsmälleen niin kuin se on määritelty oliopohjaisille kielille, emme hyödynnä Rustin vahvuuksia niin täysin kuin voisimme. Katsotaan muutoksia, joita voimme tehdä <code>blog</code>-krateen, jotta virheelliset tilat ja siirtymät muuttuvat käännösaikaisiksi virheiksi.</p>
+<h3 id="tilojen-ja-käyttäytymisen-koodaus-tyyppeinä"><a class="header" href="#tilojen-ja-käyttäytymisen-koodaus-tyyppeinä">Tilojen ja käyttäytymisen koodaus tyyppeinä</a></h3>
+<p>Näytämme, miten tilamalli voidaan ajatella uudelleen saadaksemme erilaisen joukon kompromisseja. Sen sijaan, että kapseloisimme tilat ja siirtymät kokonaan niin, ettei ulkopuolinen koodi tiedä niistä mitään, koodaamme tilat eri tyyppeihin. Näin Rustin tyyppitarkistusjärjestelmä estää yritykset käyttää luonnoskirjoituksia paikoissa, joissa sallitaan vain julkaistut kirjoitukset, antamalla kääntäjävirheen.</p>
+<p>Tarkastellaan listauksen 18-11 <code>main</code>-funktion ensimmäistä osaa:</p>
 <figure class="listing">
 <span class="file-name">Filename: src/main.rs</span>
 <pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch18-oop/listing-18-11/src/main.rs:here}}</code></pre>
 </figure>
-<p>Sallimme edelleen uusien kirjoitusten luomisen luonnostilassa <code>Post::new</code>-funktiolla ja tekstin lisäämisen kirjoituksen sisältöön.
-Sen sijaan, että luonnoskirjoituksella olisi <code>content</code>-metodi, joka palauttaa tyhjän merkkijonon, teemme niin, ettei luonnoskirjoituksilla ole <code>content</code>-metodia lainkaan.
-Näin, jos yritämme saada luonnoskirjoituksen sisällön, saamme kääntäjävirheen, joka kertoo metodin olevan olematon.
-Näin on mahdotonta vahingossa näyttää luonnoskirjoituksen sisältöä tuotannossa, koska tuollainen koodi ei edes käänny.
-Listaus 18-19 näyttää <code>Post</code>-structin ja <code>DraftPost</code>-structin määrittelyn sekä metodit kummallekin:</p>
-<figure class="listing">
+<p>Sallimme edelleen uusien kirjoitusten luomisen luonnostilassa <code>Post::new</code>-funktiolla ja tekstin lisäämisen kirjoituksen sisältöön. Sen sijaan, että luonnoskirjoituksella olisi <code>content</code>-metodi, joka palauttaa tyhjän merkkijonon, teemme niin, ettei luonnoskirjoituksilla ole <code>content</code>-metodia lainkaan. Näin, jos yritämme hakea luonnoskirjoituksen sisältöä, saamme kääntäjävirheen, joka kertoo metodin olevan olematon. Näin on mahdotonta vahingossa näyttää luonnoskirjoituksen sisältöä tuotannossa, koska sellainen koodi ei edes käänny. Listaus 18-19 näyttää <code>Post</code>- ja <code>DraftPost</code>-rakenteiden määritelmät sekä metodit kummallekin.</p>
+<figure class="listing" id="listing-18-19">
 <span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch18-oop/listing-18-19/src/lib.rs}}</code></pre>
-<figcaption>Listing 18-19: <code>Post</code> <code>content</code>-metodilla ja <code>DraftPost</code> ilman <code>content</code>-metodia</figcaption>
+<figcaption><a href="#listing-18-19">Listing 18-19</a>: <code>Post</code>-rakenne <code>content</code>-metodilla ja <code>DraftPost</code>-rakenne ilman <code>content</code>-metodia</figcaption>
 </figure>
-<p>Sekä <code>Post</code>- että <code>DraftPost</code>-structeilla on yksityinen <code>content</code>-kenttä, joka säilyttää blogikirjoituksen tekstin.
-Structeilla ei ole enää <code>state</code>-kenttää, koska siirrämme tilan koodauksen structien tyyppeihin. <code>Post</code>-struct edustaa julkaistua kirjoitusta,
-ja sillä on <code>content</code>-metodi, joka palauttaa <code>content</code>-kentän.</p>
-<p>Meillä on edelleen <code>Post::new</code>-funktio, mutta sen sijaan, että se palauttaisi <code>Post</code>-instanssin, se palauttaa <code>DraftPost</code>-instanssin.
-Koska <code>content</code> on yksityinen eikä ole funktioita, jotka palauttavat <code>Post</code>-tyypin, <code>Post</code>-instanssia ei voi luoda juuri nyt.</p>
-<p><code>DraftPost</code>-structilla on <code>add_text</code>-metodi, joten voimme lisätä tekstiä <code>content</code>-kenttään kuten aiemmin,
-mutta huomaa, että <code>DraftPost</code>-tyypillä ei ole määritelty <code>content</code>-metodia! Nyt ohjelma varmistaa, että kaikki kirjoitukset alkavat luonnoskirjoituksina
-ja luonnoskirjoituksilla ei ole sisältöä näytettäväksi. Mikä tahansa yritys kiertää nämä rajoitukset johtaa kääntäjävirheeseen.</p>
-<h4 id="siirtymien-toteuttaminen-muunnoksina-eri-tyyppeihin"><a class="header" href="#siirtymien-toteuttaminen-muunnoksina-eri-tyyppeihin">Siirtymien toteuttaminen muunnoksina eri tyyppeihin</a></h4>
-<p>Miten siis saamme julkaistun kirjoituksen? Haluamme pakottaa säännön, että luonnoskirjoitus täytyy tarkistaa ja hyväksyä ennen julkaisemista.
-Tarkistusta odottavan tilan kirjoituksella ei pitäisi vieläkään näyttää sisältöä. Toteutamme nämä rajoitukset lisäämällä toisen structin,
-<code>PendingReviewPost</code>-structin, määrittelemällä <code>request_review</code>-metodin <code>DraftPost</code>-tyypille palauttamaan <code>PendingReviewPost</code>-tyypin
-ja määrittelemällä <code>approve</code>-metodin <code>PendingReviewPost</code>-tyypille palauttamaan <code>Post</code>-tyypin, kuten Listauksessa 18-20 näytetään:</p>
-<figure class="listing">
+<p>Sekä <code>Post</code>- että <code>DraftPost</code>-rakenteilla on yksityinen <code>content</code>-kenttä, joka tallentaa blogikirjoituksen tekstin. Rakenteilla ei ole enää <code>state</code>-kenttää, koska siirrämme tilan koodauksen rakenteiden tyyppeihin. <code>Post</code>-rakenne edustaa julkaistua kirjoitusta, ja sillä on <code>content</code>-metodi, joka palauttaa <code>content</code>-kentän arvon.</p>
+<p>Meillä on edelleen <code>Post::new</code>-funktio, mutta sen sijaan, että se palauttaisi <code>Post</code>-instanssin, se palauttaa <code>DraftPost</code>-instanssin. Koska <code>content</code> on yksityinen eikä ole funktioita, jotka palauttavat <code>Post</code>-tyypin, <code>Post</code>-instanssia ei voi luoda tällä hetkellä.</p>
+<p><code>DraftPost</code>-rakenteella on <code>add_text</code>-metodi, joten voimme lisätä tekstiä <code>content</code>-kenttään kuten ennenkin, mutta huomaa, että <code>DraftPost</code>-rakenteella ei ole määritelty <code>content</code>-metodia! Nyt ohjelma varmistaa, että kaikki kirjoitukset alkavat luonnoskirjoituksina, eikä luonnoskirjoituksilla ole sisältöään näytettävissä. Mikä tahansa yritys kiertää nämä rajoitukset johtaa kääntäjävirheeseen.</p>
+<!-- Old headings. Do not remove or links may break. -->
+<p><a id="implementing-transitions-as-transformations-into-different-types"></a></p>
+<p>Miten siis saamme julkaistun kirjoituksen? Haluamme pakottaa säännön, että luonnoskirjoituksen täytyy tarkistaa ja hyväksyä ennen julkaisemista. Tarkistusta odottavan tilan kirjoituksen ei pitäisi silti näyttää sisältöä. Toteutamme nämä rajoitukset lisäämällä toisen rakenteen, <code>PendingReviewPost</code>, määrittelemällä <code>request_review</code>-metodin <code>DraftPost</code>-rakenteelle palauttamaan <code>PendingReviewPost</code>-rakenteen ja määrittelemällä <code>approve</code>-metodin <code>PendingReviewPost</code>-rakenteelle palauttamaan <code>Post</code>-rakenteen, kuten listauksessa 18-20 näytetään.</p>
+<figure class="listing" id="listing-18-20">
 <span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch18-oop/listing-18-20/src/lib.rs:here}}</code></pre>
-<figcaption>Listing 18-20: <code>PendingReviewPost</code>, joka luodaan kutsumalla <code>request_review</code>-metodia <code>DraftPost</code>-tyypillä, ja <code>approve</code>-metodi, joka muuttaa <code>PendingReviewPost</code>-tyypin julkaistuksi <code>Post</code>-tyypiksi</figcaption>
+<figcaption><a href="#listing-18-20">Listing 18-20</a>: <code>PendingReviewPost</code>, joka luodaan kutsumalla <code>request_review</code>-metodia <code>DraftPost</code>-rakenteella, ja <code>approve</code>-metodi, joka muuttaa <code>PendingReviewPost</code>-rakenteen julkaistuksi <code>Post</code>-rakenteeksi</figcaption>
 </figure>
-<p><code>request_review</code>- ja <code>approve</code>-metodit ottavat omistajuuden <code>self</code>:stä kuluttaen <code>DraftPost</code>- ja <code>PendingReviewPost</code>-instanssit
-ja muuntaen ne <code>PendingReviewPost</code>- ja julkaistuksi <code>Post</code>-instanssiksi. Näin meillä ei jää <code>DraftPost</code>-instansseja jäljelle
-sen jälkeen, kun olemme kutsuneet niille <code>request_review</code>-metodia, ja niin edelleen. <code>PendingReviewPost</code>-structilla ei ole määritelty
-<code>content</code>-metodia, joten sen sisällön lukeminen johtaa kääntäjävirheeseen kuten <code>DraftPost</code>-tyypillä. Koska ainoa tapa saada julkaistu
-<code>Post</code>-instanssi, jolla on määritelty <code>content</code>-metodi, on kutsua <code>approve</code>-metodia <code>PendingReviewPost</code>-tyypillä, ja ainoa tapa saada
-<code>PendingReviewPost</code> on kutsua <code>request_review</code>-metodia <code>DraftPost</code>-tyypillä, olemme nyt koodanneet blogikirjoituksen työnkulun tyyppijärjestelmään.</p>
-<p>Meidän täytyy kuitenkin tehdä pieniä muutoksia <code>main</code>-funktioon. <code>request_review</code>- ja <code>approve</code>-metodit palauttavat uusia instansseja
-sen sijaan, että ne muokkaisivat structia, jolle niitä kutsutaan, joten meidän täytyy lisätä enemmän <code>let post =</code> -varjostussijoituksia
-tallennettavaksi palautetut instanssit. Emme myöskään voi pitää varmistuksia siitä, että luonnos- ja tarkistusta odottavien kirjoitusten
-sisällöt ovat tyhjiä merkkijonoja, emmekä tarvitse niitä: emme voi enää kääntää koodia, joka yrittää käyttää kirjoitusten sisältöä näissä tiloissa.
-Päivitetty koodi <code>main</code>-funktiossa näytetään Listauksessa 18-21:</p>
-<figure class="listing">
+<p><code>request_review</code>- ja <code>approve</code>-metodit ottavat omistajuuden <code>self</code>:stä, kuluttaen <code>DraftPost</code>- ja <code>PendingReviewPost</code>-instanssit ja muuttaen ne <code>PendingReviewPost</code>- ja julkaistuksi <code>Post</code>-rakenteeksi. Näin meillä ei jää jäljelle <code>DraftPost</code>-instansseja sen jälkeen, kun olemme kutsuneet niillä <code>request_review</code>-metodia, ja niin edelleen. <code>PendingReviewPost</code>-rakenteella ei ole määritelty <code>content</code>-metodia, joten sen sisällön lukeminen johtaa kääntäjävirheeseen, kuten <code>DraftPost</code>-rakenteella. Koska ainoa tapa saada julkaistu <code>Post</code>-instanssi, jolla on määritelty <code>content</code>-metodi, on kutsua <code>approve</code>-metodia <code>PendingReviewPost</code>-rakenteella, ja ainoa tapa saada <code>PendingReviewPost</code> on kutsua <code>request_review</code>-metodia <code>DraftPost</code>-rakenteella, olemme nyt koodanneet blogikirjoituksen työnkulun tyyppijärjestelmään.</p>
+<p>Meidän täytyy kuitenkin tehdä pieniä muutoksia <code>main</code>-funktioon. <code>request_review</code>- ja <code>approve</code>-metodit palauttavat uusia instansseja sen sijaan, että muokkaisivat rakennetta, jolla niitä kutsutaan, joten meidän täytyy lisätä enemmän <code>let post =</code> -varjostusmäärityksiä tallentaaksemme palautetut instanssit. Emme myöskään voi tehdä väitteitä luonnos- ja tarkistusta odottavien kirjoitusten sisällöstä tyhjinä merkkijonoina, emmekä tarvitse niitä: emme voi enää kääntää koodia, joka yrittää käyttää kirjoitusten sisältöä näissä tiloissa. Päivitetty koodi <code>main</code>-funktiossa on listauksessa 18-21.</p>
+<figure class="listing" id="listing-18-21">
 <span class="file-name">Filename: src/main.rs</span>
 <pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch18-oop/listing-18-21/src/main.rs}}</code></pre>
-<figcaption>Listing 18-21: Muutokset <code>main</code>-funktioon blogikirjoituksen työnkulun uuden toteutuksen käyttämiseksi</figcaption>
+<figcaption><a href="#listing-18-21">Listing 18-21</a>: Muutokset <code>main</code>-funktioon käyttämään blogikirjoituksen työnkulun uutta toteutusta</figcaption>
 </figure>
-<p>Muutokset, jotka meidän täytyi tehdä <code>main</code>-funktioon <code>post</code>-muuttujan uudelleensijoittamiseksi, tarkoittavat, että tämä toteutus ei aivan
-noudata enää olio-ohjelmoinnin tilamallia: siirtymät tilojen välillä eivät ole enää täysin kapseloitu <code>Post</code>-toteutuksen sisällä.
-Saamamme kuitenkin hyödyn siitä, että virheelliset tilat ovat nyt mahdottomia tyyppijärjestelmän ja käännösaikana tapahtuvan tyyppitarkistuksen ansiosta!
-Tämä varmistaa, että tietyt bugit, kuten julkaisemattoman kirjoituksen sisällön näyttäminen, löydetään ennen kuin ne päätyvät tuotantoon.</p>
-<p>Kokeile tämän osion alussa ehdotettuja tehtäviä <code>blog</code>-crateen Listauksen 18-21 jälkeisessä tilassa ja pohdi, mitä mieltä olet tämän version koodin suunnittelusta.
-Huomaa, että jotkin tehtävistä saattavat olla jo valmiita tässä suunnittelussa.</p>
-<p>Olemme nähneet, että vaikka Rust pystyy toteuttamaan olio-ohjelmoinnin suunnittelumalleja, Rustissa on saatavilla myös muita malleja,
-kuten tilan koodaaminen tyyppijärjestelmään. Näillä malleilla on erilaiset kompromissit. Vaikka olisit hyvin perehtynyt olio-ohjelmoinnin malleihin,
-ongelman uudelleenajattelu Rustin ominaisuuksien hyödyntämiseksi voi tarjota etuja, kuten joidenkin bugien estämisen käännösaikana.
-Olio-ohjelmoinnin mallit eivät aina ole paras ratkaisu Rustissa tiettyjen ominaisuuksien, kuten omistajuuden, vuoksi,
-joita olio-ohjelmointikielillä ei ole.</p>
+<p>Muutokset, jotka meidän piti tehdä <code>main</code>-funktioon <code>post</code>-muuttujan uudelleenmääritykseen, tarkoittavat, että tämä toteutus ei aivan seuraa oliopohjaista tilamallia enää: siirtymät tilojen välillä eivät ole enää täysin kapseloitu <code>Post</code>-rakenteen toteutuksen sisällä. Saamme kuitenkin sen, että virheelliset tilat ovat nyt mahdottomia tyyppijärjestelmän ja käännösaikaisen tyyppitarkistuksen ansiosta! Tämä varmistaa, että tietyt bugit, kuten julkaisemattoman kirjoituksen sisällön näyttäminen, löydetään ennen kuin ne päätyvät tuotantoon.</p>
+<p>Kokeile tämän osion alussa ehdotettuja tehtäviä <code>blog</code>-krateen sellaisena kuin se on listauksen 18-21 jälkeen ja pohdi, mitä mieltä olet tämän version koodin suunnittelusta. Huomaa, että jotkin tehtävistä saattavat olla jo valmiita tässä suunnittelussa.</p>
+<p>Olemme nähneet, että vaikka Rust pystyy toteuttamaan oliopohjaisia suunnittelumalleja, myös muut mallit, kuten tilan koodaus tyyppijärjestelmään, ovat saatavilla Rustissa. Näillä malleilla on erilaiset kompromissit. Vaikka olisit hyvin perehtynyt oliopohjaisiin malleihin, ongelman uudelleenajattelu Rustin ominaisuuksien hyödyntämiseksi voi tarjota etuja, kuten joidenkin bugien estämisen käännösaikana. Oliopohjaiset mallit eivät aina ole paras ratkaisu Rustissa tiettyjen ominaisuuksien, kuten omistajuuden, vuoksi, joita oliopohjaisilla kielillä ei ole.</p>
 <h2 id="yhteenveto"><a class="header" href="#yhteenveto">Yhteenveto</a></h2>
-<p>Riippumatta siitä, pidätkö Rustia olio-ohjelmointikielenä tämän luvun lukemisen jälkeen, tiedät nyt, että voit käyttää trait-objekteja
-saadaksesi joitakin olio-ohjelmoinnin ominaisuuksia Rustissa. Dynaaminen dispatch voi antaa koodillesi joustavuutta pienellä suorituskyvyn hinnalla.
-Voit käyttää tätä joustavuutta olio-ohjelmoinnin mallien toteuttamiseen, jotka voivat auttaa koodisi ylläpidettävyydessä.
-Rustissa on myös muita ominaisuuksia, kuten omistajuus, joita olio-ohjelmointikielillä ei ole. Olio-ohjelmoinnin malli ei aina ole
-paras tapa hyödyntää Rustin vahvuuksia, mutta se on käytettävissä oleva vaihtoehto.</p>
-<p>Seuraavaksi tarkastelemme kuvioita, jotka ovat toinen Rustin ominaisuuksista ja mahdollistavat paljon joustavuutta.
-Olemme katsoneet niitä lyhyesti läpi kirjan, mutta emme ole vielä nähneet niiden täyttä potentiaalia. Mennään!</p>
+<p>Riippumatta siitä, pidätkö Rustia oliopohjaisena kielenä tämän luvun lukemisen jälkeen, tiedät nyt, että voit käyttää trait-olioita saadaksesi joitakin oliopohjaisia ominaisuuksia Rustissa. Dynaaminen dispatch voi antaa koodillesi joustavuutta pienen ajonaikaisen suorituskyvyn kustannuksella. Voit käyttää tätä joustavuutta oliopohjaisten mallien toteuttamiseen, jotka voivat auttaa koodisi ylläpidettävyydessä. Rustissa on myös muita ominaisuuksia, kuten omistajuus, joita oliopohjaisilla kielillä ei ole. Oliopohjainen malli ei aina ole paras tapa hyödyntää Rustin vahvuuksia, mutta se on käytettävissä oleva vaihtoehto.</p>
+<p>Seuraavaksi katsomme kuvioita, jotka ovat toinen Rustin ominaisuuksista mahdollistamassa paljon joustavuutta. Olemme vilkaisseet niitä lyhyesti läpi kirjan, mutta emme ole vielä nähneet niiden täyttä potentiaalia. Mennään!</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                             <a rel="prev" href="ch18-02-trait-objects.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                                <i class="fa fa-angle-left"></i>
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
                             <a rel="next prefetch" href="ch19-00-patterns.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
                         <div style="clear: both"></div>
@@ -449,16 +362,21 @@ Olemme katsoneet niitä lyhyesti läpi kirjan, mutta emme ole vielä nähneet ni
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                     <a rel="prev" href="ch18-02-trait-objects.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                        <i class="fa fa-angle-left"></i>
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
                     <a rel="next prefetch" href="ch19-00-patterns.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>
 
         </div>
 
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
 
 
 
@@ -467,16 +385,17 @@ Olemme katsoneet niitä lyhyesti läpi kirjan, mutta emme ole vielä nähneet ni
         </script>
 
 
-        <script src="elasticlunr.min.js"></script>
-        <script src="mark.min.js"></script>
-        <script src="searcher.js"></script>
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-c2a407aa.js"></script>
 
-        <script src="clipboard.min.js"></script>
-        <script src="highlight.js"></script>
-        <script src="book.js"></script>
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-abc7f01d.js"></script>
+        <script src="book-a0b12cfe.js"></script>
 
         <!-- Custom JS scripts -->
-        <script src="ferris.js"></script>
+        <script src="ferris-2317480c.js"></script>
+
 
 
     </div>

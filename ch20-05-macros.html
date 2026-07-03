@@ -12,44 +12,56 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
 
-        <link rel="icon" href="favicon.svg">
-        <link rel="shortcut icon" href="favicon.png">
-        <link rel="stylesheet" href="css/variables.css">
-        <link rel="stylesheet" href="css/general.css">
-        <link rel="stylesheet" href="css/chrome.css">
-        <link rel="stylesheet" href="css/print.css" media="print">
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-2459343d.css">
+        <link rel="stylesheet" href="css/chrome-ae938929.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
-        <link rel="stylesheet" href="fonts/fonts.css">
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" href="highlight.css">
-        <link rel="stylesheet" href="tomorrow-night.css">
-        <link rel="stylesheet" href="ayu-highlight.css">
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="ferris.css">
-        <link rel="stylesheet" href="theme/2018-edition.css">
-        <link rel="stylesheet" href="theme/semantic-notes.css">
-        <link rel="stylesheet" href="theme/listing.css">
+        <link rel="stylesheet" href="ferris-d33b75bf.css">
+        <link rel="stylesheet" href="theme/2018-edition-4e126c62.css">
+        <link rel="stylesheet" href="theme/semantic-notes-9b5766c0.css">
+        <link rel="stylesheet" href="theme/listing-cab26221.css">
 
 
-        <!-- Provide site root to javascript -->
+        <!-- Provide site root and default themes to javascript -->
         <script>
-            var path_to_root = "";
-            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex-454febf7.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc.js"></script>
+        <script src="toc-7f90d00d.js"></script>
     </head>
     <body>
-    <div id="body-container">
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
             try {
-                var theme = localStorage.getItem('mdbook-theme');
-                var sidebar = localStorage.getItem('mdbook-sidebar');
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
 
                 if (theme.startsWith('"') && theme.endsWith('"')) {
                     localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
@@ -63,7 +75,8 @@
 
         <!-- Set the theme before any content is loaded, prevents flash -->
         <script>
-            var theme;
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
             const html = document.documentElement;
@@ -72,55 +85,59 @@
             html.classList.add("js");
         </script>
 
-        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
-            var sidebar = null;
-            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
             } else {
                 sidebar = 'hidden';
+                sidebar_toggle.checked = false;
             }
-            sidebar_toggle.checked = sidebar === 'visible';
-            html.classList.remove('sidebar-visible');
-            html.classList.add("sidebar-" + sidebar);
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
         </script>
 
-        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
             <!-- populated by js -->
             <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
             <noscript>
                 <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
             </noscript>
-            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
             </div>
         </nav>
 
-        <div id="page-wrapper" class="page-wrapper">
+        <div id="mdbook-page-wrapper" class="page-wrapper">
 
             <div class="page">
-                <div id="menu-bar-hover-placeholder"></div>
-                <div id="menu-bar" class="menu-bar sticky">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
-                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
-                            <i class="fa fa-bars"></i>
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
                         </label>
-                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
-                            <i class="fa fa-paint-brush"></i>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
                         </button>
-                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
-                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
                         </ul>
-                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
-                            <i class="fa fa-search"></i>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
                         </button>
                     </div>
 
@@ -128,110 +145,83 @@
 
                     <div class="right-buttons">
                         <a href="print.html" title="Print this book" aria-label="Print this book">
-                            <i id="print-button" class="fa fa-print"></i>
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
                         </a>
                         <a href="https://github.com/rust-lang/book" title="Git repository" aria-label="Git repository">
-                            <i id="git-repository-button" class="fa fa-github"></i>
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></span>
                         </a>
 
                     </div>
                 </div>
 
-                <div id="search-wrapper" class="hidden">
-                    <form id="searchbar-outer" class="searchbar-outer">
-                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
                     </form>
-                    <div id="searchresults-outer" class="searchresults-outer hidden">
-                        <div id="searchresults-header" class="searchresults-header"></div>
-                        <ul id="searchresults">
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
                         </ul>
                     </div>
                 </div>
 
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
                 <script>
-                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
-                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
-                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
                         link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
                     });
                 </script>
 
-                <div id="content" class="content">
+                <div id="mdbook-content" class="content">
                     <main>
                         <h2 id="makrot"><a class="header" href="#makrot">Makrot</a></h2>
-<p>Olemme käyttäneet makroja kuten <code>println!</code> läpi tämän kirjan, mutta emme ole täysin tutkineet, mikä makro on ja miten se toimii.
-Termi <em>makro</em> viittaa Rustin ominaisuusperheeseen: <em>deklaratiiviset</em> makrot <code>macro_rules!</code>-rakenteella ja kolmelaista <em>proseduraalista</em> makroa:</p>
+<p>Olemme käyttäneet makroja kuten <code>println!</code> koko kirjan ajan, mutta emme ole täysin tutkineet, mikä makro on ja miten se toimii. Termi <em>makro</em> viittaa Rustin ominaisuusperheeseen — deklaratiivisiin makroihin <code>macro_rules!</code>-avainsanalla ja kolmeen proseduraalisen makron lajiin:</p>
 <ul>
-<li>Mukautetut <code>#[derive]</code>-makrot, jotka määrittävät <code>derive</code>-attribuutilla lisättävän koodin structeille ja enumeille</li>
-<li>Attribuuttimaiset makrot, jotka määrittelevät mukautettuja attribuutteja käytettäviksi millä tahansa kohteella</li>
-<li>Funktiomaiset makrot, jotka näyttävät funktiokutsuilta mutta toimivat argumenteina annetuilla tokeneilla</li>
+<li>Mukautetut <code>#[derive]</code>-makrot, jotka määrittävät <code>derive</code>-attribuutilla lisättävän koodin rakenteille ja luettelotyypeille</li>
+<li>Attribuuttimaiset makrot, jotka määrittelevät mukautettuja attribuutteja käytettäväksi millä tahansa kohteella</li>
+<li>Funktiomaiset makrot, jotka näyttävät funktiokutsuilta mutta toimivat argumenttina annetuilla tokeneilla</li>
 </ul>
-<p>Käsittelemme jokaisen näistä vuorollaan, mutta ensin katsotaan, miksi tarvitsemme makroja, kun meillä on jo funktiot.</p>
+<p>Käsittelemme kukin näistä vuorollaan, mutta ensin katsotaan, miksi tarvitsemme makroja, kun meillä on jo funktiot.</p>
 <h3 id="ero-makrojen-ja-funktioiden-välillä"><a class="header" href="#ero-makrojen-ja-funktioiden-välillä">Ero makrojen ja funktioiden välillä</a></h3>
-<p>Pohjimmiltaan makrot ovat tapa kirjoittaa koodia, joka kirjoittaa muuta koodia, mikä tunnetaan nimellä <em>metaprogrammointi</em>.
-Liitteessä C käsittelemme <code>derive</code>-attribuuttia, joka luo erilaisten traitien toteutuksia puolestasi.
-Olemme myös käyttäneet <code>println!</code>- ja <code>vec!</code>-makroja läpi kirjan. Kaikki nämä makrot <em>laajenevat</em> tuottaakseen enemmän koodia
-kuin mitä olet kirjoittanut manuaalisesti.</p>
-<p>Metaprogrammointi on hyödyllistä vähentämään kirjoitettavan ja ylläpidettävän koodin määrää, mikä on myös yksi funktioiden tehtävistä.
-Makroilla on kuitenkin joitakin lisävoimia, joita funktioilla ei ole.</p>
-<p>Funktion signatuurissa täytyy ilmoittaa parametrien määrä ja tyyppi. Makrot puolestaan voivat ottaa vaihtelevan määrän parametreja:
-voimme kutsua <code>println!("hello")</code> yhdellä argumentilla tai <code>println!("hello {}", name)</code> kahdella argumentilla.
-Lisäksi makrot laajenevat ennen kuin kääntäjä tulkitsee koodin merkityksen, joten makro voi esimerkiksi toteuttaa traitin annetulle tyypille.
-Funktio ei voi, koska sitä kutsutaan suorituksen aikana ja trait täytyy toteuttaa käännösaikana.</p>
-<p>Makron toteuttamisen haittapuoli funktion sijaan on, että makromäärittelyt ovat monimutkaisempia kuin funktiomäärittelyt,
-koska kirjoitat Rust-koodia, joka kirjoittaa Rust-koodia. Tämän epäsuoruuden vuoksi makromäärittelyt ovat yleensä
-vaikeampia lukea, ymmärtää ja ylläpitää kuin funktiomäärittelyt.</p>
-<p>Toinen tärkeä ero makrojen ja funktioiden välillä on, että makrot täytyy määritellä tai tuoda näkyvyysalueelle <em>ennen</em>
-kuin kutsut niitä tiedostossa, toisin kuin funktiot, jotka voi määritellä missä tahansa ja kutsua missä tahansa.</p>
-<h3 id="deklaratiiviset-makrot-macro_rules-rakenteella-yleiseen-metaprogrammointiin"><a class="header" href="#deklaratiiviset-makrot-macro_rules-rakenteella-yleiseen-metaprogrammointiin">Deklaratiiviset makrot <code>macro_rules!</code>-rakenteella yleiseen metaprogrammointiin</a></h3>
-<p>Yleisin makrojen muoto Rustissa on <em>deklaratiivinen makro</em>. Näitä kutsutaan joskus myös ”makroiksi esimerkin kautta”,
-”<code>macro_rules!</code>-makroiksi” tai pelkästään ”makroiksi”. Ytimessään deklaratiiviset makrot antavat kirjoittaa jotain,
-mikä muistuttaa Rustin <code>match</code>-lauseketta. Kuten käsittelimme Luvussa 6, <code>match</code>-lausekkeet ovat ohjausrakenteita,
-jotka ottavat lausekkeen, vertaavat lausekkeen tulosarvoa kuvioihin ja suorittavat sitten kuvioon liittyvän koodin.
-Makrot vertaavat myös arvoa kuhunkin tiettyyn koodiin liittyviin kuvioihin: tässä tilanteessa arvo on makrolle välitetty
-kirjaimellinen Rust-lähdekoodi; kuviot verrataan kyseisen lähdekoodin rakenteeseen; ja kuhunkin kuvioon liittyvä koodi,
-kun se täsmää, korvaa makrolle välitetyn koodin. Kaikki tämä tapahtuu käännöksen aikana.</p>
-<p>Makron määrittelyssä käytetään <code>macro_rules!</code>-rakennetta. Tutkitaan <code>macro_rules!</code>-rakenteen käyttöä katsomalla,
-miten <code>vec!</code>-makro on määritelty. Luku 8 käsitteli <code>vec!</code>-makron käyttöä uuden vektorin luomiseen tietyillä arvoilla.
-Esimerkiksi seuraava makro luo uuden vektorin, joka sisältää kolme kokonaislukua:</p>
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+<p>Pohjimmiltaan makrot ovat tapa kirjoittaa koodia, joka kirjoittaa muuta koodia; tätä kutsutaan <em>metaprogrammoinniksi</em>. Liitteessä C käsittelemme <code>derive</code>-attribuuttia, joka luo eri traitien toteutuksia puolestasi. Olemme myös käyttäneet <code>println!</code>- ja <code>vec!</code>-makroja koko kirjan ajan. Kaikki nämä makrot <em>laajenevat</em> tuottaakseen enemmän koodia kuin mitä olet kirjoittanut manuaalisesti.</p>
+<p>Metaprogrammointi on hyödyllistä vähentämään kirjoitettavan ja ylläpidettävän koodin määrää, mikä on myös yksi funktioiden rooleista. Makroilla on kuitenkin lisävoimia, joita funktioilla ei ole.</p>
+<p>Funktiosignatuurissa täytyy julistaa funktion parametrien määrä ja tyypit. Makrot sen sijaan voivat ottaa muuttuvan määrän parametreja: voimme kutsua <code>println!("hello")</code> yhdellä argumentilla tai <code>println!("hello {}", name)</code> kahdella argumentilla. Lisäksi makrot laajennetaan ennen kuin kääntäjä tulkitsee koodin merkityksen, joten makro voi esimerkiksi toteuttaa traitin tietylle tyypille. Funktio ei voi, koska sitä kutsutaan ajonaikana ja trait täytyy toteuttaa käännösaikana.</p>
+<p>Makron toteuttamisen haittapuoli funktion sijaan on, että makromääritelmät ovat monimutkaisempia kuin funktiomääritelmät, koska kirjoitat Rust-koodia, joka kirjoittaa Rust-koodia. Tämän epäsuoran viittauksen vuoksi makromääritelmiä on yleensä vaikeampi lukea, ymmärtää ja ylläpitää kuin funktiomääritelmiä.</p>
+<p>Toinen tärkeä ero makrojen ja funktioiden välillä on, että makrot täytyy määritellä tai tuoda näkyvyysalueelle <em>ennen</em> kuin kutsut niitä tiedostossa, toisin kuin funktiot, jotka voi määritellä missä tahansa ja kutsua missä tahansa.</p>
+<!-- Old headings. Do not remove or links may break. -->
+<p><a id="declarative-macros-with-macro_rules-for-general-metaprogramming"></a></p>
+<h3 id="deklaratiiviset-makrot-yleiseen-metaprogrammointiin"><a class="header" href="#deklaratiiviset-makrot-yleiseen-metaprogrammointiin">Deklaratiiviset makrot yleiseen metaprogrammointiin</a></h3>
+<p>Yleisin makrojen muoto Rustissa on <em>deklaratiivinen makro</em>. Niitä kutsutaan joskus myös ”makroiksi esimerkin mukaan”, ”<code>macro_rules!</code>-makroiksi” tai yksinkertaisesti ”makroiksi”. Ytimessään deklaratiiviset makrot sallivat kirjoittaa jotain, mikä muistuttaa Rustin <code>match</code>-lauseketta. Kuten luvussa 6 käsiteltiin, <code>match</code>-lausekkeet ovat ohjausrakenteita, jotka ottavat lausekkeen, vertaavat lausekkeen tulosarvoa kuvioihin ja suorittavat sitten kuvioon liittyvän koodin. Makrot vertaavat myös arvoa kuvioihin, joihin liittyy tietty koodi: tässä tilanteessa arvo on makrolle välitetty kirjaimellinen Rust-lähdekoodi; kuviot verrataan kyseisen lähdekoodin rakenteeseen; ja kuhunkin kuvioon liittyvä koodi korvaa makrolle välitetyn koodin, kun kuvio täsmää. Kaikki tämä tapahtuu käännöksen aikana.</p>
+<p>Makron määrittelyssä käytetään <code>macro_rules!</code>-rakennetta. Tutkitaan <code>macro_rules!</code>-käyttöä katsomalla, miten <code>vec!</code>-makro on määritelty. Luvussa 8 käsittelimme <code>vec!</code>-makron käyttöä uuden vektorin luomiseen tietyillä arvoilla. Esimerkiksi seuraava makro luo uuden vektorin, joka sisältää kolme kokonaislukua:</p>
+<pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>let v: Vec&lt;u32&gt; = vec![1, 2, 3];
-<span class="boring">}</span></code></pre></pre>
-<p>Voimme käyttää <code>vec!</code>-makroa myös kahden kokonaisluvun vektorin tai viiden merkkijonoviipaleen vektorin luomiseen.
-Emme voisi tehdä samaa funktiolla, koska emme tietäisi etukäteen arvojen määrää tai tyyppiä.</p>
-<p>Listaus 20-29 näyttää hieman yksinkertaistetun <code>vec!</code>-makron määrittelyn.</p>
-<figure class="listing">
+<span class="boring">}</span></code></pre>
+<p>Voisimme käyttää <code>vec!</code>-makroa myös kahden kokonaisluvun vektorin tai viiden merkkijonoviipaleen vektorin luomiseen. Emme voisi tehdä samaa funktiolla, koska emme tietäisi etukäteen arvojen määrää tai tyyppiä.</p>
+<p>Listaus 20-35 näyttää hieman yksinkertaistetun <code>vec!</code>-makron määritelmän.</p>
+<figure class="listing" id="listing-20-35">
 <span class="file-name">Filename: src/lib.rs</span>
-<pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-29/src/lib.rs}}</code></pre>
-<figcaption>Listing 20-29: Yksinkertaistettu versio <code>vec!</code>-makron määrittelystä</figcaption>
+<pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-35/src/lib.rs}}</code></pre>
+<figcaption><a href="#listing-20-35">Listing 20-35</a>: Yksinkertaistettu <code>vec!</code>-makron määritelmä</figcaption>
 </figure>
 <blockquote>
-<p>Huom: Standardikirjaston todellinen <code>vec!</code>-makron määrittely sisältää koodia oikean muistimäärän varaamiseksi etukäteen.
-Tuo koodi on optimointi, jota emme sisällytä tähän esimerkin yksinkertaistamiseksi.</p>
+<p>Huom: Standardikirjaston todellinen <code>vec!</code>-makron määritelmä sisältää koodia oikean muistimäärän varaamiseksi etukäteen. Tämä koodi on optimointi, jota emme sisällytä tähän esimerkin yksinkertaistamiseksi.</p>
 </blockquote>
-<p><code>#[macro_export]</code>-annotaatio ilmaisee, että tämä makro tulisi olla käytettävissä aina, kun makron määrittelevä crate tuodaan näkyvyysalueelle.
-Ilman tätä annotaatiota makroa ei voi tuoda näkyvyysalueelle.</p>
-<p>Aloitamme sitten makromäärittelyn <code>macro_rules!</code>-rakenteella ja määrittelemämme makron nimellä <em>ilman</em> huutomerkkiä.
-Nimi, tässä tapauksessa <code>vec</code>, on seurattu aaltosulkeilla, jotka ilmaisevat makromäärittelyn rungon.</p>
-<p><code>vec!</code>-makron rungon rakenne on samanlainen kuin <code>match</code>-lausekkeen rakenne. Tässä meillä on yksi haara kuviolla <code>( $( $x:expr ),* )</code>,
-jota seuraa <code>=&gt;</code> ja tähän kuvioon liittyvä koodilohko. Jos kuvio täsmää, siihen liittyvä koodilohko emitoidaan.
-Koska tämä on ainoa kuvio tässä makrossa, on vain yksi kelvollinen täsmäystapa; mikä tahansa muu kuvio johtaa virheeseen.
-Monimutkaisemmilla makroilla on useampi kuin yksi haara.</p>
-<p>Kelvollinen kuviosyntaksi makromäärittelyissä eroaa Luvussa 19 käsitellystä kuviosyntaksista, koska makrokuviot täsmätään
-Rust-koodin rakenteeseen arvojen sijaan. Käydään läpi, mitä Listauksen 20-29 kuvion osat tarkoittavat; täydellisestä makrokuviosyntaksista
-katso <a href="../reference/macros-by-example.html">Rust Reference</a>.</p>
-<p>Ensin käytämme sulkeita kattamaan koko kuvion. Käytämme dollarimerkkiä (<code>$</code>) ilmoittamaan muuttujan makrojärjestelmässä,
-joka sisältää kuvioon täsmäävän Rust-koodin. Dollarimerkki tekee selväksi, että kyseessä on makromuuttuja tavallisen Rust-muuttujan sijaan.
-Seuraavaksi tulee sulkeet, jotka kaappaavat arvot, jotka täsmäävät sulkeiden sisällä olevaan kuvioon, korvauskoodin käyttöön.
-<code>$()</code>-rakenteen sisällä on <code>$x:expr</code>, joka täsmää mihin tahansa Rust-lausekkeeseen ja antaa lausekkeelle nimen <code>$x</code>.</p>
-<p><code>$()</code>-rakenteen jälkeen oleva pilkku ilmaisee, että literaalinen pilkkuerotin täytyy esiintyä jokaisen <code>$()</code>-rakenteen sisällä olevaan
-koodiin täsmäävän instanssin välissä. <code>*</code> määrittää, että kuvio täsmää nolla tai useampaan kertaan siihen, mikä edeltää <code>*</code>-merkkiä.</p>
-<p>Kun kutsumme tätä makroa <code>vec![1, 2, 3];</code>, <code>$x</code>-kuvio täsmää kolme kertaa lausekkeisiin <code>1</code>, <code>2</code> ja <code>3</code>.</p>
-<p>Katsotaan nyt kuviota tämän haaran rungossa olevan koodin yhteydessä: <code>temp_vec.push()</code> <code>$()*</code>-rakenteen sisällä generoidaan
-jokaiselle <code>$()</code>-kuvion osalle, joka täsmää, nolla tai useampi kertaa riippuen siitä, kuinka monta kertaa kuvio täsmää.
-<code>$x</code> korvataan jokaisella täsmäävällä lausekkeella. Kun kutsumme tätä makroa <code>vec![1, 2, 3];</code>, tämän makrokutsun korvaava generoitu koodi on seuraava:</p>
+<p><code>#[macro_export]</code>-annotaatio osoittaa, että tämä makro tulisi olla käytettävissä aina, kun makron määrittelevä krate tuodaan näkyvyysalueelle. Ilman tätä annotaatiota makroa ei voi tuoda näkyvyysalueelle.</p>
+<p>Aloitamme makromääritelmän <code>macro_rules!</code>-avainsanalla ja määrittelemämme makron nimellä <em>ilman</em> huutomerkkiä. Nimeä, tässä tapauksessa <code>vec</code>, seuraa aaltosulkeet, jotka merkitsevät makromääritelmän runkoa.</p>
+<p><code>vec!</code>-rungon rakenne muistuttaa <code>match</code>-lausekkeen rakennetta. Tässä on yksi haara kuviolla <code>( $( $x:expr ),* )</code>, jota seuraa <code>=&gt;</code> ja tähän kuvioon liittyvä koodilohko. Jos kuvio täsmää, siihen liittyvä koodilohko emitoidaan. Koska tämä on ainoa kuvio tässä makrossa, on vain yksi kelvollinen täsmäystapa; mikä tahansa muu kuvio johtaa virheeseen. Monimutkaisemmilla makroilla on useampia haaroja.</p>
+<p>Kelvollinen kuviosyntaksi makromääritelmissä eroaa luvussa 19 käsitellystä kuviosyntaksista, koska makrokuviot täsmätään Rust-koodin rakenteeseen eikä arvoihin. Käydään läpi, mitä listauksen 20-35 kuvion osat tarkoittavat; täydellisestä makrokuviosyntaksista katso <a href="../reference/macros-by-example.html">Rustin viite</a>.</p>
+<p>Ensin käytämme sulkeita koko kuvion ympärillä. Käytämme dollarimerkkiä (<code>$</code>) julistaaksemme muuttujan makrojärjestelmässä, joka sisältää kuvioon täsmäävän Rust-koodin. Dollarimerkki tekee selväksi, että kyseessä on makromuuttuja eikä tavallinen Rust-muuttuja. Seuraavaksi tulee sulkeet, jotka sieppaavat kuvioon täsmäävät arvot käytettäväksi korvaavassa koodissa. <code>$()</code>-sisällä on <code>$x:expr</code>, joka täsmää mihin tahansa Rust-lausekkeeseen ja antaa lausekkeelle nimen <code>$x</code>.</p>
+<p><code>$()</code>-jälkeinen pilkku osoittaa, että jokaisen <code>$()</code>-sisällön täsmäävän koodin instanssin välissä täytyy olla kirjaimellinen pilkkuerotin. <code>*</code> määrittää, että kuvio täsmää nolla tai useampaan edeltävään osaan.</p>
+<p>Kun kutsumme tätä makroa <code>vec![1, 2, 3];</code>-kutsulla, <code>$x</code>-kuvio täsmää kolme kertaa lausekkeisiin <code>1</code>, <code>2</code> ja <code>3</code>.</p>
+<p>Katsotaan nyt tähän haaraan liittyvän rungon kuviota: <code>temp_vec.push()</code> <code>$()*</code>-sisällä generoidaan jokaiselle <code>$()</code>-kuvioon täsmäävälle osalle nolla tai useamman kerran riippuen siitä, montako kertaa kuvio täsmää. <code>$x</code> korvataan jokaisella täsmäävällä lausekkeella. Kun kutsumme tätä makroa <code>vec![1, 2, 3];</code>-kutsulla, tämän makrokutsun korvaava generoitu koodi on seuraava:</p>
 <pre><code class="language-rust ignore">{
     let mut temp_vec = Vec::new();
     temp_vec.push(1);
@@ -239,103 +229,70 @@ jokaiselle <code>$()</code>-kuvion osalle, joka täsmää, nolla tai useampi ker
     temp_vec.push(3);
     temp_vec
 }</code></pre>
-<p>Olemme määritelleet makron, joka voi ottaa minkä tahansa määrän argumentteja minkä tahansa tyypin ja generoida koodin vektorin luomiseksi määritellyillä alkioilla.</p>
-<p>Opi lisää makrojen kirjoittamisesta verkko-dokumentaatiosta tai muista lähteistä, kuten Daniel Keepin aloittamasta ja Lukas Wirthin jatkamasta
-<a href="https://veykril.github.io/tlborm/">”The Little Book of Rust Macros”</a> -oppaasta.</p>
+<p>Olemme määritelleet makron, joka voi ottaa minkä tahansa määrän argumentteja minkä tahansa tyypillä ja generoida koodin vektorin luomiseksi määritellyillä elementeillä.</p>
+<p>Lisätietoa makrojen kirjoittamisesta löydät verkkodokumentaatiosta tai muista lähteistä, kuten Daniel Keepin aloittamasta ja Lukas Wirthin jatkamasta <a href="https://veykril.github.io/tlborm/">”The Little Book of Rust Macros”</a> -oppaasta.</p>
 <h3 id="proseduraaliset-makrot-koodin-generointiin-attribuuteista"><a class="header" href="#proseduraaliset-makrot-koodin-generointiin-attribuuteista">Proseduraaliset makrot koodin generointiin attribuuteista</a></h3>
-<p>Makrojen toinen muoto on <em>proseduraalinen makro</em>, joka toimii enemmän funktion tavoin (ja on eräänlaista proseduuria).
-Proseduraaliset makrot ottavat koodia syötteenä, käsittelevät sitä ja tuottavat koodia tulosteena sen sijaan,
-että ne täsmäisivät kuvioihin ja korvaisivat koodin muulla koodilla kuten deklaratiiviset makrot.
-Kolme proseduraalisen makron lajia ovat mukautettu derive, attribuuttimainen ja funktiomaiset, ja kaikki toimivat samankaltaisesti.</p>
-<p>Proseduraalisia makroja luotaessa määrittelyjen täytyy sijaita omassa cratessaan erityisellä crate-tyypillä.
-Tämä johtuu monimutkaisista teknisistä syistä, joita toivomme poistavamme tulevaisuudessa. Listauksessa 20-30 näytämme,
-miten proseduraalinen makro määritellään, jossa <code>some_attribute</code> on paikkamerkki tietyn makrolajin käytölle.</p>
-<figure class="listing">
+<p>Makrojen toinen muoto on proseduraalinen makro, joka toimii enemmän kuin funktio (ja on eräänlaista proseduuria). <em>Proseduraaliset makrot</em> ottavat koodia syötteenä, käsittelevät sitä ja tuottavat koodia tulosteena sen sijaan, että täsmäisivät kuvioihin ja korvaisivat koodin muulla koodilla kuten deklaratiiviset makrot. Kolme proseduraalisen makron lajia ovat mukautettu <code>derive</code>, attribuuttimainen ja funktiomainen, ja ne kaikki toimivat samankaltaisesti.</p>
+<p>Proseduraalisia makroja luodessa määritelmien täytyy sijaita omassa kratessaan erityisellä kratetyypillä. Tämä johtuu monimutkaisista teknisistä syistä, joita toivomme poistavamme tulevaisuudessa. Listauksessa 20-36 näytämme, miten proseduraalinen makro määritellään, jossa <code>some_attribute</code> on paikkamerkki tietyn makrolajin käytölle.</p>
+<figure class="listing" id="listing-20-36">
 <span class="file-name">Filename: src/lib.rs</span>
-<pre><code class="language-rust ignore">use proc_macro;
+<pre><code class="language-rust ignore">use proc_macro::TokenStream;
 
 #[some_attribute]
 pub fn some_name(input: TokenStream) -&gt; TokenStream {
 }</code></pre>
-<figcaption>Listing 20-30: Esimerkki proseduraalisen makron määrittelystä</figcaption>
+<figcaption><a href="#listing-20-36">Listing 20-36</a>: Esimerkki proseduraalisen makron määrittelystä</figcaption>
 </figure>
-<p>Proseduraalisen makron määrittelevä funktio ottaa <code>TokenStream</code>-tyypin syötteenä ja tuottaa <code>TokenStream</code>-tyypin tulosteena.
-<code>TokenStream</code>-tyyppi on määritelty Rustin mukana tulevassa <code>proc_macro</code>-cratessa ja edustaa tokenien jonoa.
-Tämä on makron ydin: lähdekoodi, jolla makro toimii, muodostaa syöte-<code>TokenStream</code>-tyypin,
-ja makron tuottama koodi on tuloste-<code>TokenStream</code>-tyyppi. Funktioon on liitetty attribuutti, joka määrittää,
-minkälaisen proseduraalisen makron luomme. Samassa cratessa voi olla useita proseduraalisen makron lajeja.</p>
-<p>Katsotaan eri proseduraalisen makron lajeja. Aloitamme mukautetulla derive-makrolla ja selitämme sitten pienet erot,
-jotka tekevät muista muodoista erilaisia.</p>
-<h3 id="mukautetun-derive-makron-kirjoittaminen"><a class="header" href="#mukautetun-derive-makron-kirjoittaminen">Mukautetun <code>derive</code>-makron kirjoittaminen</a></h3>
-<p>Luodaan crate nimeltä <code>hello_macro</code>, joka määrittelee traitin nimeltä <code>HelloMacro</code> yhdellä liitetyllä funktiolla nimeltä <code>hello_macro</code>.
-Sen sijaan, että pakottaisimme käyttäjiämme toteuttamaan <code>HelloMacro</code>-traitin jokaiselle tyypeilleen, tarjoamme proseduraalisen makron,
-jotta käyttäjät voivat annotoida tyypin <code>#[derive(HelloMacro)]</code>-attribuutilla saadakseen oletustoteutuksen <code>hello_macro</code>-funktiolle.
-Oletustoteutus tulostaa <code>Hello, Macro! My name is TypeName!</code>, jossa <code>TypeName</code> on tyypin nimi, jolle tämä trait on määritelty.
-Toisin sanoen kirjoitamme craten, joka mahdollistaa toisen ohjelmoijan kirjoittaa Listauksen 20-31 kaltaista koodia käyttäen crateamme.</p>
-<figure class="listing">
+<p>Proseduraalisen makron määrittelevä funktio ottaa <code>TokenStream</code>-syötteen ja tuottaa <code>TokenStream</code>-tulosteen. <code>TokenStream</code>-tyyppi on määritelty Rustin mukana tulevassa <code>proc_macro</code>-kratessa ja edustaa tokenien jonoa. Tämä on makron ydin: makron käsittelemä lähdekoodi muodostaa syöte-<code>TokenStream</code>-arvon, ja makron tuottama koodi on tuloste-<code>TokenStream</code>. Funktioon on liitetty myös attribuutti, joka määrittää, minkä lajista proseduraalista makroa luomme. Samassa kratessa voi olla useita proseduraalisen makron lajeja.</p>
+<p>Katsotaan eri proseduraalisen makron lajeja. Aloitamme mukautetulla <code>derive</code>-makrolla ja selitämme sitten pienet erot, jotka tekevät muista lajeista erilaisia.</p>
+<!-- Old headings. Do not remove or links may break. -->
+<p><a id="how-to-write-a-custom-derive-macro"></a></p>
+<h3 id="mukautetut-derive-makrot"><a class="header" href="#mukautetut-derive-makrot">Mukautetut <code>derive</code>-makrot</a></h3>
+<p>Luodaan krate nimeltä <code>hello_macro</code>, joka määrittelee traitin nimeltä <code>HelloMacro</code> yhdellä assosioituneella funktiolla nimeltä <code>hello_macro</code>. Sen sijaan, että pakottaisimme käyttäjät toteuttamaan <code>HelloMacro</code>-traitin jokaiselle tyypeilleen, tarjoamme proseduraalisen makron, jotta käyttäjät voivat merkitä tyypin attribuutilla <code>#[derive(HelloMacro)]</code> saadakseen oletustoteutuksen <code>hello_macro</code>-funktiolle. Oletustoteutus tulostaa <code>Hello, Macro! My name is TypeName!</code>, jossa <code>TypeName</code> on tyyppi, jolle trait on määritelty. Toisin sanoen kirjoitamme kraten, jonka avulla toinen ohjelmoija voi kirjoittaa listauksen 20-37 kaltaista koodia käyttäen kratettamme.</p>
+<figure class="listing" id="listing-20-37">
 <span class="file-name">Filename: src/main.rs</span>
-<pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-31/src/main.rs}}</code></pre>
-<figcaption>Listing 20-31: Koodi, jonka crateamme käyttäjä voi kirjoittaa proseduraalista makroamme käyttäen</figcaption>
+<pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-37/src/main.rs}}</code></pre>
+<figcaption><a href="#listing-20-37">Listing 20-37</a>: Koodi, jonka kratettamme käyttäjä voi kirjoittaa proseduraalista makroamme käyttäen</figcaption>
 </figure>
-<p>Tämä koodi tulostaa <code>Hello, Macro! My name is Pancakes!</code>, kun olemme valmiita. Ensimmäinen askel on luoda uusi kirjastocrate näin:</p>
+<p>Tämä koodi tulostaa <code>Hello, Macro! My name is Pancakes!</code>, kun olemme valmiita. Ensimmäinen askel on luoda uusi kirjastokrate näin:</p>
 <pre><code class="language-console">$ cargo new hello_macro --lib
 </code></pre>
-<p>Seuraavaksi määrittelemme <code>HelloMacro</code>-traitin ja sen liitetyn funktion:</p>
-<figure class="listing">
+<p>Seuraavaksi listauksessa 20-38 määrittelemme <code>HelloMacro</code>-traitin ja sen assosioituneen funktion.</p>
+<figure class="listing" id="listing-20-38">
 <span class="file-name">Filename: src/lib.rs</span>
-<pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch20-advanced-features/no-listing-20-impl-hellomacro-for-pancakes/hello_macro/src/lib.rs}}</code></pre>
+<pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-38/hello_macro/src/lib.rs}}</code></pre>
+<figcaption><a href="#listing-20-38">Listing 20-38</a>: Yksinkertainen trait, jota käytämme <code>derive</code>-makron kanssa</figcaption>
 </figure>
-<p>Meillä on trait ja sen funktio. Tässä vaiheessa crateamme käyttäjä voisi toteuttaa traitin saavuttaakseen halutun toiminnallisuuden näin:</p>
-<pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch20-advanced-features/no-listing-20-impl-hellomacro-for-pancakes/pancakes/src/main.rs}}</code></pre>
-<p>Heidän täytyisi kuitenkin kirjoittaa toteutuslohko jokaiselle tyypille, jota he haluavat käyttää <code>hello_macro</code>-funktion kanssa;
-haluamme säästää heidät tältä työltä.</p>
-<p>Lisäksi emme voi vielä tarjota <code>hello_macro</code>-funktiolle oletustoteutusta, joka tulostaisi tyypin nimen, jolle trait on toteutettu:
-Rustilla ei ole reflektio-ominaisuuksia, joten se ei voi etsiä tyypin nimeä suorituksen aikana. Tarvitsemme makron generoimaan koodia käännösaikana.</p>
-<p>Seuraava askel on määritellä proseduraalinen makro. Kirjoitushetkellä proseduraalisten makrojen täytyy olla omassa cratessaan.
-Tämä rajoitus saattaa poistua tulevaisuudessa. Cratejen ja makrocratejen rakentelun käytäntö on seuraava:
-crate nimeltä <code>foo</code> käyttää mukautetun derive-proseduraalisen makron cratena nimeä <code>foo_derive</code>.
-Aloitetaan uusi crate nimeltä <code>hello_macro_derive</code> <code>hello_macro</code>-projektimme sisällä:</p>
+<p>Meillä on trait ja sen funktio. Tässä vaiheessa kratettamme käyttäjä voisi toteuttaa traitin saavuttaakseen halutun toiminnallisuuden, kuten listauksessa 20-39.</p>
+<figure class="listing" id="listing-20-39">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-39/pancakes/src/main.rs}}</code></pre>
+<figcaption><a href="#listing-20-39">Listing 20-39</a>: Miltä näyttäisi, jos käyttäjät kirjoittaisivat <code>HelloMacro</code>-traitin manuaalisen toteutuksen</figcaption>
+</figure>
+<p>Heidän täytyisi kuitenkin kirjoittaa toteutuslohko jokaiselle tyypille, jota haluavat käyttää <code>hello_macro</code>-funktion kanssa; haluamme säästää heidät tältä työltä.</p>
+<p>Lisäksi emme voi vielä tarjota <code>hello_macro</code>-funktiolle oletustoteutusta, joka tulostaisi tyypin nimen, jolle trait on toteutettu: Rustilla ei ole reflektio-ominaisuuksia, joten se ei voi hakea tyypin nimeä ajonaikana. Tarvitsemme makron generoimaan koodia käännösaikana.</p>
+<p>Seuraava askel on määritellä proseduraalinen makro. Kirjoitushetkellä proseduraalisten makrojen täytyy olla omassa kratessaan. Tämä rajoitus saattaa poistua tulevaisuudessa. Kratien ja makrokratien rakentelun käytäntö on seuraava: kratelle nimeltä <code>foo</code> mukautettu <code>derive</code>-proseduraalinen makrokrate kutsutaan <code>foo_derive</code>. Aloitetaan uusi krate nimeltä <code>hello_macro_derive</code> <code>hello_macro</code>-projektimme sisällä:</p>
 <pre><code class="language-console">$ cargo new hello_macro_derive --lib
 </code></pre>
-<p>Kaksi crateamme liittyy tiiviisti toisiinsa, joten luomme proseduraalisen makrocraten <code>hello_macro</code>-craten hakemistoon.
-Jos muutamme <code>hello_macro</code>-craten trait-määrittelyä, meidän täytyy muuttaa myös <code>hello_macro_derive</code>-craten proseduraalisen makron toteutusta.
-Kaksi cratea täytyy julkaista erikseen, ja näitä crateja käyttävien ohjelmoijien täytyy lisätä molemmat riippuvuuksiksi
-ja tuoda molemmat näkyvyysalueelle. Voisimme sen sijaan antaa <code>hello_macro</code>-craten käyttää <code>hello_macro_derive</code>-cratea riippuvuutena
-ja uudelleenviedä proseduraalisen makron koodin. Projektin rakenne kuitenkin mahdollistaa ohjelmoijien käyttää <code>hello_macro</code>-cratea,
-vaikka he eivät haluaisi <code>derive</code>-toiminnallisuutta.</p>
-<p>Meidän täytyy ilmoittaa <code>hello_macro_derive</code>-crate proseduraalisen makron cratena. Tarvitsemme myös toiminnallisuutta
-<code>syn</code>- ja <code>quote</code>-crateista, kuten näet hetken kuluttua, joten ne täytyy lisätä riippuvuuksiksi. Lisää seuraava
-<code>hello_macro_derive</code>-craten <em>Cargo.toml</em>-tiedostoon:</p>
+<p>Kaksi kratettamme ovat tiiviisti sidoksissa, joten luomme proseduraalisen makrokrateen <code>hello_macro</code>-kraten hakemistoon. Jos muutamme <code>hello_macro</code>-kraten trait-määritelmää, meidän täytyy muuttaa myös <code>hello_macro_derive</code>-kraten proseduraalisen makron toteutusta. Kaksi kratetta täytyy julkaista erikseen, ja näitä kratteja käyttävien ohjelmoijien täytyy lisätä molemmat riippuvuuksiksi ja tuoda ne näkyvyysalueelle. Voisimme sen sijaan tehdä <code>hello_macro</code>-kratesta riippuvaisen <code>hello_macro_derive</code>-kratesta ja uudelleenviedä proseduraalisen makron koodin. Tämä projektirakenne kuitenkin mahdollistaa <code>hello_macro</code>-kraten käytön, vaikka käyttäjä ei haluaisi <code>derive</code>-toiminnallisuutta.</p>
+<p>Meidän täytyy julistaa <code>hello_macro_derive</code>-krate proseduraaliseksi makrokrateeksi. Tarvitsemme myös toiminnallisuutta <code>syn</code>- ja <code>quote</code>-krateista, kuten näet pian, joten meidän täytyy lisätä ne riippuvuuksiksi. Lisää seuraava <code>hello_macro_derive</code>-kraten <em>Cargo.toml</em>-tiedostoon:</p>
 <figure class="listing">
 <span class="file-name">Filename: hello_macro_derive/Cargo.toml</span>
-<pre><code class="language-toml">{{#include ../listings/ch20-advanced-features/listing-20-32/hello_macro/hello_macro_derive/Cargo.toml:6:12}}
+<pre><code class="language-toml">{{#include ../listings/ch20-advanced-features/listing-20-40/hello_macro/hello_macro_derive/Cargo.toml:6:12}}
 </code></pre>
 </figure>
-<p>Aloittaaksesi proseduraalisen makron määrittelyn, sijoita Listauksen 20-32 koodi <code>hello_macro_derive</code>-craten <em>src/lib.rs</em>-tiedostoon.
-Huomaa, että tämä koodi ei käänny, ennen kuin lisäämme määrittelyn <code>impl_hello_macro</code>-funktiolle.</p>
-<figure class="listing">
+<p>Aloittaaksesi proseduraalisen makron määrittelyn, laita listauksen 20-40 koodi <code>hello_macro_derive</code>-kraten <em>src/lib.rs</em>-tiedostoon. Huomaa, että tämä koodi ei kääntyisi ennen kuin lisäät määritelmän <code>impl_hello_macro</code>-funktiolle.</p>
+<figure class="listing" id="listing-20-40">
 <span class="file-name">Filename: hello_macro_derive/src/lib.rs</span>
-<pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-32/hello_macro/hello_macro_derive/src/lib.rs}}</code></pre>
-<figcaption>Listing 20-32: Koodi, jota useimmat proseduraalisen makron cratet tarvitsevat Rust-koodin käsittelyyn</figcaption>
+<pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-40/hello_macro/hello_macro_derive/src/lib.rs}}</code></pre>
+<figcaption><a href="#listing-20-40">Listing 20-40</a>: Koodi, jota useimmat proseduraaliset makrokratet tarvitsevat Rust-koodin käsittelyyn</figcaption>
 </figure>
-<p>Huomaa, että olemme jakaneet koodin <code>hello_macro_derive</code>-funktioon, joka vastaa <code>TokenStream</code>-tyypin jäsentämisestä,
-ja <code>impl_hello_macro</code>-funktioon, joka vastaa syntaksipuun muuntamisesta: tämä tekee proseduraalisen makron kirjoittamisesta kätevämpää.
-Ulomman funktion (<code>hello_macro_derive</code> tässä tapauksessa) koodi on sama lähes jokaisessa näkemässäsi tai luomassasi proseduraalisen makron cratessa.
-Sisemmän funktion rungossa (<code>impl_hello_macro</code> tässä tapauksessa) määrittelemäsi koodi on erilainen proseduraalisen makron tarkoituksen mukaan.</p>
-<p>Olemme esitelleet kolme uutta cratea: <code>proc_macro</code>, <a href="https://crates.io/crates/syn"><code>syn</code></a> ja <a href="https://crates.io/crates/quote"><code>quote</code></a>. <code>proc_macro</code>-crate tulee Rustin mukana,
-joten sitä ei tarvinnut lisätä <em>Cargo.toml</em>-tiedoston riippuvuuksiin. <code>proc_macro</code>-crate on kääntäjän API,
-jonka avulla voimme lukea ja käsitellä Rust-koodia omasta koodistamme.</p>
-<p><code>syn</code>-crate jäsentää Rust-koodin merkkijonosta tietorakenteeksi, jolla voimme suorittaa operaatioita.
-<code>quote</code>-crate muuntaa <code>syn</code>-tietorakenteet takaisin Rust-koodiksi. Nämä cratet yksinkertaistavat merkittävästi
-minkä tahansa Rust-koodin jäsentämistä, jota saatamme haluta käsitellä: täydellisen jäsentimen kirjoittaminen Rust-koodille ei ole yksinkertainen tehtävä.</p>
-<p><code>hello_macro_derive</code>-funktiota kutsutaan, kun kirjastomme käyttäjä määrittää <code>#[derive(HelloMacro)]</code>-attribuutin tyypille.
-Tämä on mahdollista, koska olemme merkinneet <code>hello_macro_derive</code>-funktion <code>proc_macro_derive</code>-attribuutilla
-ja määrittäneet nimen <code>HelloMacro</code>, joka vastaa traitimme nimeä; tämä on käytäntö, jota useimmat proseduraaliset makrot noudattavat.</p>
-<p><code>hello_macro_derive</code>-funktio muuntaa ensin <code>input</code>-arvon <code>TokenStream</code>-tyypistä tietorakenteeksi, jota voimme sitten tulkita ja käsitellä.
-Tässä <code>syn</code> tulee kuvaan. <code>syn</code>-craten <code>parse</code>-funktio ottaa <code>TokenStream</code>-tyypin ja palauttaa <code>DeriveInput</code>-structin,
-joka edustaa jäsennettyä Rust-koodia. Listaus 20-33 näyttää olennaiset osat <code>DeriveInput</code>-structista,
-jonka saamme jäsentämällä merkkijonon <code>struct Pancakes;</code>:</p>
-<figure class="listing">
+<p>Huomaa, että olemme jakaneet koodin <code>hello_macro_derive</code>-funktioon, joka vastaa <code>TokenStream</code>-arvon jäsentämisestä, ja <code>impl_hello_macro</code>-funktioon, joka vastaa syntaksipuun muuntamisesta: tämä tekee proseduraalisen makron kirjoittamisesta kätevämpää. Ulomman funktion (<code>hello_macro_derive</code> tässä tapauksessa) koodi on sama lähes jokaisessa näkemässäsi tai luomassasi proseduraalisessa makrokrateessa. Sisemmän funktion (<code>impl_hello_macro</code> tässä tapauksessa) rungon koodi on erilainen proseduraalisen makron tarkoituksen mukaan.</p>
+<p>Olemme tuoneet kolme uutta kratetta: <code>proc_macro</code>, <a href="https://crates.io/crates/syn"><code>syn</code></a><!-- ignore --> ja <a href="https://crates.io/crates/quote"><code>quote</code></a><!-- ignore -->. <code>proc_macro</code>-krate tulee Rustin mukana, joten emme tarvinneet lisätä sitä <em>Cargo.toml</em>-tiedoston riippuvuuksiin. <code>proc_macro</code>-krate on kääntäjän API, jonka avulla voimme lukea ja käsitellä Rust-koodia omasta koodistamme.</p>
+<p><code>syn</code>-krate jäsentää Rust-koodia merkkijonosta tietorakenteeksi, jolla voimme suorittaa operaatioita. <code>quote</code>-krate muuntaa <code>syn</code>-tietorakenteet takaisin Rust-koodiksi. Nämä kratet tekevät paljon yksinkertaisemmaksi jäsentää mitä tahansa Rust-koodia, jota haluamme käsitellä: täydellisen Rust-koodin parserin kirjoittaminen ei ole yksinkertainen tehtävä.</p>
+<p><code>hello_macro_derive</code>-funktiota kutsutaan, kun kirjastomme käyttäjä määrittää <code>#[derive(HelloMacro)]</code> tyypille. Tämä on mahdollista, koska olemme merkinneet <code>hello_macro_derive</code>-funktion <code>proc_macro_derive</code>-attribuutilla ja määrittäneet nimen <code>HelloMacro</code>, joka vastaa traitimme nimeä; tämä on käytäntö, jota useimmat proseduraaliset makrot noudattavat.</p>
+<p><code>hello_macro_derive</code>-funktio muuntaa ensin <code>input</code>-arvon <code>TokenStream</code>-tyypistä tietorakenteeksi, jota voimme sitten tulkita ja käsitellä. Tässä <code>syn</code> tulee mukaan. <code>syn</code>-kraten <code>parse</code>-funktio ottaa <code>TokenStream</code>-arvon ja palauttaa <code>DeriveInput</code>-rakenteen, joka edustaa jäsennettyä Rust-koodia. Listaus 20-41 näyttää oleelliset osat <code>DeriveInput</code>-rakenteesta, jonka saamme jäsentämällä merkkijonon <code>struct Pancakes;</code>.</p>
+<figure class="listing" id="listing-20-41">
 <pre><code class="language-rust ignore">DeriveInput {
     // --snip--
 
@@ -353,97 +310,57 @@ jonka saamme jäsentämällä merkkijonon <code>struct Pancakes;</code>:</p>
         }
     )
 }</code></pre>
-<figcaption>Listing 20-33: <code>DeriveInput</code>-instanssi, jonka saamme jäsentäessämme Listauksen 20-31 makroattribuutin sisältävän koodin</figcaption>
+<figcaption><a href="#listing-20-41">Listing 20-41</a>: <code>DeriveInput</code>-instanssi, jonka saamme jäsentäessämme listauksen 20-37 makroattribuutilla varustetun koodin</figcaption>
 </figure>
-<p>Tämän structin kentät osoittavat, että jäsentämämme Rust-koodi on yksikköstruct tunnisteella (<code>ident</code>, tunnistin eli nimi) <code>Pancakes</code>.
-Structilla on lisää kenttiä erilaisten Rust-koodien kuvaamiseen; katso <a href="https://docs.rs/syn/2.0/syn/struct.DeriveInput.html"><code>syn</code>-dokumentaatio <code>DeriveInput</code>-structille</a> lisätietoja.</p>
-<p>Määrittelemme pian <code>impl_hello_macro</code>-funktion, jossa rakennamme uutta Rust-koodia, jonka haluamme sisällyttää. Ennen sitä huomaa,
-että derive-makromme tuloste on myös <code>TokenStream</code>-tyyppi. Palautettu <code>TokenStream</code>-tyyppi lisätään crateamme käyttäjien kirjoittamaan koodiin,
-joten kun he kääntävät craten, he saavat lisätoiminnallisuuden, jonka tarjoamme muokatussa <code>TokenStream</code>-tyypissä.</p>
-<p>Saatat huomata, että kutsumme <code>unwrap</code>-metodia aiheuttaaksemme <code>hello_macro_derive</code>-funktion kaatumisen,
-jos <code>syn::parse</code>-funktion kutsu epäonnistuu tässä. Proseduraalisen makromme täytyy kaatua virheissä,
-koska <code>proc_macro_derive</code>-funktioiden täytyy palauttaa <code>TokenStream</code> <code>Result</code>-tyypin sijaan proseduraalisen makron API:n mukaisuuden vuoksi.
-Olemme yksinkertaistaneet tämän esimerkin käyttämällä <code>unwrap</code>-metodia; tuotantokoodissa sinun pitäisi antaa tarkempia virheilmoituksia
-siitä, mikä meni pieleen, käyttämällä <code>panic!</code>- tai <code>expect</code>-makroa.</p>
-<p>Nyt kun meillä on koodi, joka muuntaa annotoidun Rust-koodin <code>TokenStream</code>-tyypistä <code>DeriveInput</code>-instanssiksi,
-generoidaan koodi, joka toteuttaa <code>HelloMacro</code>-traitin annotoidulle tyypille, kuten Listauksessa 20-34 näytetään.</p>
-<figure class="listing">
+<p>Tämän rakenteen kentät osoittavat, että jäsentämämme Rust-koodi on yksikkörakenne, jonka <code>ident</code> (<em>identifier</em>, eli nimi) on <code>Pancakes</code>. Rakenteessa on lisää kenttiä kaikenlaisen Rust-koodin kuvaamiseen; katso <a href="https://docs.rs/syn/2.0/syn/struct.DeriveInput.html"><code>syn</code>-dokumentaatiosta <code>DeriveInput</code></a> lisätietoja.</p>
+<p>Määrittelemme pian <code>impl_hello_macro</code>-funktion, jossa rakennamme uutta Rust-koodia, jonka haluamme sisällyttää. Mutta ennen sitä huomaa, että <code>derive</code>-makromme tuloste on myös <code>TokenStream</code>. Palautettu <code>TokenStream</code> lisätään kratettamme käyttäjien kirjoittamaan koodiin, joten kun he kääntävät kratensa, he saavat lisätoiminnallisuuden, jonka tarjoamme muokatussa <code>TokenStream</code>-arvossa.</p>
+<p>Saatoit huomata, että kutsumme <code>unwrap</code>-funktiota aiheuttaaksemme <code>hello_macro_derive</code>-funktion panikoinnin, jos <code>syn::parse</code>-funktion kutsu epäonnistuu. Proseduraalisen makromme täytyy panikoida virheissä, koska <code>proc_macro_derive</code>-funktioiden täytyy palauttaa <code>TokenStream</code> eikä <code>Result</code> proseduraalisen makro-API:n mukaisesti. Olemme yksinkertaistaneet tämän esimerkin käyttämällä <code>unwrap</code>-funktiota; tuotantokoodissa sinun pitäisi antaa tarkempia virheilmoituksia siitä, mikä meni pieleen, käyttämällä <code>panic!</code>- tai <code>expect</code>-makroa.</p>
+<p>Nyt kun meillä on koodi, joka muuntaa annotoidun Rust-koodin <code>TokenStream</code>-arvosta <code>DeriveInput</code>-instanssiksi, generoidaan koodi, joka toteuttaa <code>HelloMacro</code>-traitin annotoidulle tyypille, kuten listauksessa 20-42.</p>
+<figure class="listing" id="listing-20-42">
 <span class="file-name">Filename: hello_macro_derive/src/lib.rs</span>
-<pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-34/hello_macro/hello_macro_derive/src/lib.rs:here}}</code></pre>
-<figcaption>Listing 20-34: <code>HelloMacro</code>-traitin toteuttaminen jäsennetyn Rust-koodin avulla</figcaption>
+<pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-42/hello_macro/hello_macro_derive/src/lib.rs:here}}</code></pre>
+<figcaption><a href="#listing-20-42">Listing 20-42</a>: <code>HelloMacro</code>-traitin toteutus jäsennetyn Rust-koodin avulla</figcaption>
 </figure>
-<p>Saamme <code>Ident</code>-struct-instanssin, joka sisältää annotoidun tyypin nimen (tunnisteen), käyttämällä <code>ast.ident</code>-kenttää.
-Listauksen 20-33 struct osoittaa, että kun ajamme <code>impl_hello_macro</code>-funktion Listauksen 20-31 koodille,
-saamamme <code>ident</code> sisältää <code>ident</code>-kentän arvolla <code>"Pancakes"</code>. Näin ollen Listauksen 20-34 <code>name</code>-muuttuja sisältää <code>Ident</code>-struct-instanssin,
-joka tulostettaessa on merkkijono <code>"Pancakes"</code>, Listauksen 20-31 structin nimi.</p>
-<p><code>quote!</code>-makro antaa meidän määritellä Rust-koodin, jonka haluamme palauttaa. Kääntäjä odottaa jotain erilaista kuin <code>quote!</code>-makron
-suorituksen suora tulos, joten meidän täytyy muuntaa se <code>TokenStream</code>-tyypiksi. Teemme tämän kutsumalla <code>into</code>-metodia,
-joka kuluttaa tämän välisen esityksen ja palauttaa vaaditun <code>TokenStream</code>-tyypin arvon.</p>
-<p><code>quote!</code>-makro tarjoaa myös erittäin hienoja mallipohjamekaniikkoja: voimme kirjoittaa <code>#name</code>, ja <code>quote!</code> korvaa sen muuttujan <code>name</code> arvolla.
-Voit jopa tehdä toistoa samankaltaisesti kuin tavalliset makrot. Katso <a href="https://docs.rs/quote">quote-craten dokumentaatio</a> perusteellinen johdanto.</p>
-<p>Haluamme proseduraalisen makromme generoivan <code>HelloMacro</code>-traitin toteutuksen käyttäjän annotoimalle tyypille, jonka saamme <code>#name</code>-rakenteella.
-Traitin toteutuksessa on yksi funktio <code>hello_macro</code>, jonka runko sisältää tarjoamamme toiminnallisuuden: tulostaa <code>Hello, Macro! My name is</code>
-ja sitten annotoidun tyypin nimen.</p>
-<p>Tässä käytetty <code>stringify!</code>-makro on sisäänrakennettu Rustiin. Se ottaa Rust-lausekkeen, kuten <code>1 + 2</code>, ja muuntaa lausekkeen käännösaikana
-merkkijonoliteraaliksi, kuten <code>"1 + 2"</code>. Tämä eroaa <code>format!</code>- tai <code>println!</code>-makroista, jotka evaluoivat lausekkeen ja muuntavat tuloksen <code>String</code>-tyypiksi.
-On mahdollista, että <code>#name</code>-syöte on lauseke, joka tulostetaan kirjaimellisesti, joten käytämme <code>stringify!</code>-makroa.
-<code>stringify!</code>-makron käyttö säästää myös allokoinnin muuntamalla <code>#name</code>:n merkkijonoliteraaliksi käännösaikana.</p>
-<p>Tässä vaiheessa <code>cargo build</code> pitäisi onnistua sekä <code>hello_macro</code>- että <code>hello_macro_derive</code>-crateissa. Kytketään nämä cratet
-Listauksen 20-31 koodiin nähdäksemme proseduraalisen makron toiminnassa! Luo uusi binääriprojekti <em>projects</em>-hakemistoosi
-komennolla <code>cargo new pancakes</code>. Meidän täytyy lisätä <code>hello_macro</code> ja <code>hello_macro_derive</code> riippuvuuksiksi <code>pancakes</code>-craten <em>Cargo.toml</em>-tiedostoon.
-Jos julkaiset <code>hello_macro</code>- ja <code>hello_macro_derive</code>-versiosi <a href="https://crates.io/">crates.io</a>-sivustolle, ne olisivat tavallisia riippuvuuksia;
-jos et, voit määrittää ne <code>path</code>-riippuvuuksiksi seuraavasti:</p>
-<pre><code class="language-toml">{{#include ../listings/ch20-advanced-features/no-listing-21-pancakes/pancakes/Cargo.toml:7:9}}
+<p>Saamme <code>Ident</code>-rakenteen instanssin, joka sisältää annotoidun tyypin nimen (tunnisteen), käyttämällä <code>ast.ident</code>. Listauksen 20-41 rakenne osoittaa, että kun ajamme <code>impl_hello_macro</code>-funktion listauksen 20-37 koodilla, saamamme <code>ident</code> sisältää <code>ident</code>-kentän arvolla <code>"Pancakes"</code>. Näin ollen listauksen 20-42 <code>name</code>-muuttuja sisältää <code>Ident</code>-rakenteen instanssin, joka tulostettuna on merkkijono <code>"Pancakes"</code>, listauksen 20-37 rakenteen nimi.</p>
+<p><code>quote!</code>-makro sallii määritellä Rust-koodin, jonka haluamme palauttaa. Kääntäjä odottaa jotain erilaista kuin <code>quote!</code>-makron suoran suorituksen tulos, joten meidän täytyy muuntaa se <code>TokenStream</code>-tyypiksi. Teemme tämän kutsumalla <code>into</code>-metodia, joka kuluttaa tämän välisen esityksen ja palauttaa vaaditun <code>TokenStream</code>-tyypin arvon.</p>
+<p><code>quote!</code>-makrossa on myös erittäin hienoja mallipohjamekanismeja: voimme kirjoittaa <code>#name</code>, ja <code>quote!</code> korvaa sen <code>name</code>-muuttujan arvolla. Voit jopa tehdä toistoa samankaltaisesti kuin tavallisissa makroissa. Katso <a href="https://docs.rs/quote"><code>quote</code>-kraten dokumentaatiosta</a> perusteellinen johdanto.</p>
+<p>Haluamme proseduraalisen makromme generoivan <code>HelloMacro</code>-traitin toteutuksen käyttäjän annotoimalle tyypille, jonka saamme <code>#name</code>-avulla. Trait-toteutuksessa on yksi funktio <code>hello_macro</code>, jonka runko sisältää haluamamme toiminnallisuuden: tulostaa <code>Hello, Macro! My name is</code> ja sitten annotoidun tyypin nimen.</p>
+<p>Tässä käytetty <code>stringify!</code>-makro on sisäänrakennettu Rustiin. Se ottaa Rust-lausekkeen, kuten <code>1 + 2</code>, ja muuntaa lausekkeen käännösaikana merkkijonoliteraaliksi, kuten <code>"1 + 2"</code>. Tämä eroaa <code>format!</code>- tai <code>println!</code>-makroista, jotka arvioivat lausekkeen ja muuntavat tuloksen <code>String</code>-tyypiksi. On mahdollista, että <code>#name</code>-syöte on tulostettava lauseke, joten käytämme <code>stringify!</code>-makroa. <code>stringify!</code>-makron käyttö säästää myös allokaation muuntamalla <code>#name</code>:n merkkijonoliteraaliksi käännösaikana.</p>
+<p>Tässä vaiheessa <code>cargo build</code> pitäisi onnistua sekä <code>hello_macro</code>- että <code>hello_macro_derive</code>-krateissa. Kytketään nämä kratet listauksen 20-37 koodiin ja katsotaan proseduraalista makroa käytännössä! Luo uusi binääriprojekti <em>projects</em>-hakemistoosi komennolla <code>cargo new pancakes</code>. Meidän täytyy lisätä <code>hello_macro</code> ja <code>hello_macro_derive</code> riippuvuuksiksi <code>pancakes</code>-kraten <em>Cargo.toml</em>-tiedostoon. Jos julkaiset <code>hello_macro</code>- ja <code>hello_macro_derive</code>-versiosi <a href="https://crates.io/">crates.io</a><!-- ignore --> -sivustolle, ne olisivat tavallisia riippuvuuksia; jos et, voit määrittää ne <code>path</code>-riippuvuuksiksi seuraavasti:</p>
+<pre><code class="language-toml">{{#include ../listings/ch20-advanced-features/no-listing-21-pancakes/pancakes/Cargo.toml:6:8}}
 </code></pre>
-<p>Sijoita Listauksen 20-31 koodi <em>src/main.rs</em>-tiedostoon ja aja <code>cargo run</code>: sen pitäisi tulostaa <code>Hello, Macro! My name is Pancakes!</code>
-<code>HelloMacro</code>-traitin toteutus proseduraalisesta makrosta sisällytettiin ilman, että <code>pancakes</code>-craten täytyi toteuttaa sitä;
-<code>#[derive(HelloMacro)]</code> lisäsi traitin toteutuksen.</p>
-<p>Seuraavaksi tutkitaan, miten muut proseduraalisen makron lajit eroavat mukautetuista derive-makroista.</p>
+<p>Laita listauksen 20-37 koodi <em>src/main.rs</em>-tiedostoon ja aja <code>cargo run</code>: sen pitäisi tulostaa <code>Hello, Macro! My name is Pancakes!</code>. Proseduraalisen makron <code>HelloMacro</code>-trait-toteutus sisällytettiin ilman, että <code>pancakes</code>-kraten täytyi toteuttaa sitä; <code>#[derive(HelloMacro)]</code> lisäsi trait-toteutuksen.</p>
+<p>Seuraavaksi tutkitaan, miten muut proseduraalisen makron lajit eroavat mukautetuista <code>derive</code>-makroista.</p>
 <h3 id="attribuuttimaiset-makrot"><a class="header" href="#attribuuttimaiset-makrot">Attribuuttimaiset makrot</a></h3>
-<p>Attribuuttimaiset makrot ovat samanlaisia kuin mukautetut derive-makrot, mutta sen sijaan, että ne generoisivat koodia <code>derive</code>-attribuutille,
-ne antavat luoda uusia attribuutteja. Ne ovat myös joustavampia: <code>derive</code> toimii vain structeille ja enumeille;
-attribuutteja voi soveltaa myös muihin kohteisiin, kuten funktioihin. Tässä on esimerkki attribuuttimaisen makron käytöstä:
-oletetaan, että sinulla on <code>route</code>-niminen attribuutti, joka annotoi funktioita web-sovelluskehyksen käytössä:</p>
+<p>Attribuuttimaiset makrot muistuttavat mukautettuja <code>derive</code>-makroja, mutta sen sijaan, että ne generoisivat koodia <code>derive</code>-attribuutille, ne sallivat uusien attribuuttien luomisen. Ne ovat myös joustavampia: <code>derive</code> toimii vain rakenteille ja luettelotyypeille; attribuutteja voi käyttää myös muissa kohteissa, kuten funktioissa. Tässä on esimerkki attribuuttimaisen makron käytöstä. Oletetaan, että sinulla on <code>route</code>-attribuutti, joka annotoi funktioita web-sovelluskehyksen käytössä:</p>
 <pre><code class="language-rust ignore">#[route(GET, "/")]
 fn index() {</code></pre>
-<p>Tämä <code>#[route]</code>-attribuutti olisi kehyksen määrittelemä proseduraalinen makro. Makromäärittelyfunktion signatuuri näyttäisi tältä:</p>
+<p>Tämän <code>#[route]</code>-attribuutin määrittelisi kehys proseduraalisena makrona. Makromääritelmäfunktion signatuuri näyttäisi tältä:</p>
 <pre><code class="language-rust ignore">#[proc_macro_attribute]
 pub fn route(attr: TokenStream, item: TokenStream) -&gt; TokenStream {</code></pre>
-<p>Tässä meillä on kaksi <code>TokenStream</code>-tyypin parametria. Ensimmäinen on attribuutin sisällölle: <code>GET, "/"</code> -osa.
-Toinen on kohteen runko, johon attribuutti on liitetty: tässä tapauksessa <code>fn index() {}</code> ja funktion rungon loppuosa.</p>
-<p>Muuten attribuuttimaiset makrot toimivat samalla tavalla kuin mukautetut derive-makrot: luot craten <code>proc-macro</code>-crate-tyypillä
-ja toteutat funktion, joka generoi haluamasi koodin!</p>
+<p>Tässä meillä on kaksi <code>TokenStream</code>-tyyppistä parametria. Ensimmäinen on attribuutin sisältö: <code>GET, "/"</code> -osa. Toinen on kohteen runko, johon attribuutti on liitetty: tässä tapauksessa <code>fn index() {}</code> ja funktion rungon loppuosa.</p>
+<p>Muuten attribuuttimaiset makrot toimivat samalla tavalla kuin mukautetut <code>derive</code>-makrot: luot kraten <code>proc-macro</code>-kratetyypillä ja toteutat funktion, joka generoi haluamasi koodin!</p>
 <h3 id="funktiomaiset-makrot"><a class="header" href="#funktiomaiset-makrot">Funktiomaiset makrot</a></h3>
-<p>Funktiomaiset makrot määrittelevät makroja, jotka näyttävät funktiokutsuilta. Samankaltaisesti kuin <code>macro_rules!</code>-makrot,
-ne ovat joustavampia kuin funktiot; esimerkiksi ne voivat ottaa tuntemattoman määrän argumentteja. <code>macro_rules!</code>-makroja voi kuitenkin
-määritellä vain käyttämällä aiemmin käsittelemäämme <code>match</code>-tyylistä syntaksia
-<a href="#declarative-macros-with-macro_rules-for-general-metaprogramming">”Deklaratiiviset makrot <code>macro_rules!</code>-rakenteella yleiseen metaprogrammointiin”</a><!-- ignore --> -osiossa.
-Funktiomaiset makrot ottavat <code>TokenStream</code>-parametrin, ja niiden määrittely käsittelee tuota <code>TokenStream</code>-tyyppiä Rust-koodilla
-samalla tavalla kuin muut kaksi proseduraalisen makron tyyppiä. Esimerkki funktiomaisesta makrosta on <code>sql!</code>-makro,
-jota voisi kutsua näin:</p>
+<p>Funktiomaiset makrot määrittelevät makroja, jotka näyttävät funktiokutsuilta. Samankaltaisesti kuin <code>macro_rules!</code>-makrot, ne ovat joustavampia kuin funktiot; esimerkiksi ne voivat ottaa tuntemattoman määrän argumentteja. <code>macro_rules!</code>-makroja voi kuitenkin määritellä vain aiemmin käsitellyllä match-tyylisellä syntaksilla <a href="#declarative-macros-with-macro_rules-for-general-metaprogramming">”Deklaratiiviset makrot yleiseen metaprogrammointiin”</a><!-- ignore --> -osiossa. Funktiomaiset makrot ottavat <code>TokenStream</code>-parametrin, ja niiden määritelmä käsittelee sitä Rust-koodilla kuten muutkin proseduraalisen makron lajit. Esimerkki funktiomaisesta makrosta on <code>sql!</code>-makro, jota voisi kutsua näin:</p>
 <pre><code class="language-rust ignore">let sql = sql!(SELECT * FROM posts WHERE id=1);</code></pre>
-<p>Tämä makro jäsentäisi sen sisällä olevan SQL-lausekkeen ja tarkistaisi, että se on syntaktisesti oikein, mikä on paljon monimutkaisempaa
-käsittelyä kuin <code>macro_rules!</code>-makro pystyy tekemään. <code>sql!</code>-makro määriteltäisiin näin:</p>
+<p>Tämä makro jäsentäisi sen sisällä olevan SQL-lausekkeen ja tarkistaisi sen syntaktisen oikeellisuuden, mikä on paljon monimutkaisempaa käsittelyä kuin <code>macro_rules!</code>-makro pystyy tekemään. <code>sql!</code>-makro määriteltäisiin näin:</p>
 <pre><code class="language-rust ignore">#[proc_macro]
 pub fn sql(input: TokenStream) -&gt; TokenStream {</code></pre>
-<p>Tämä määrittely on samanlainen kuin mukautetun derive-makron signatuuri: saamme sulkeiden sisällä olevat tokenit ja palautamme generoimamme koodin.</p>
+<p>Tämä määritelmä muistuttaa mukautetun <code>derive</code>-makron signatuuria: saamme sulkeiden sisällä olevat tokenit ja palautamme koodin, jonka haluamme generoida.</p>
 <h2 id="yhteenveto"><a class="header" href="#yhteenveto">Yhteenveto</a></h2>
-<p>Huh! Nyt sinulla on työkalupakissa joitakin Rust-ominaisuuksia, joita et todennäköisesti käytä usein,
-mutta tiedät, että ne ovat saatavilla hyvin erityisissä tilanteissa. Olemme esitelleet useita monimutkaisia aiheita,
-jotta kun kohtaat niitä virheilmoitusten ehdotuksissa tai muiden ihmisten koodissa, tunnistat nämä käsitteet ja syntaksin.
-Käytä tätä lukua viitteenä ratkaisujen löytämiseen.</p>
-<p>Seuraavaksi otamme käyttöön kaiken, mitä olemme käsitelleet läpi kirjan, ja teemme vielä yhden projektin!</p>
+<p>Huh! Nyt sinulla on Rust-ominaisuuksia työkalupakissasi, joita et todennäköisesti käytä usein, mutta tiedät niiden olevan saatavilla hyvin erityisissä tilanteissa. Olemme esitelleet useita monimutkaisia aiheita, jotta kun kohtaat niitä virheilmoitusten ehdotuksissa tai muiden koodissa, tunnistat nämä käsitteet ja syntaksin. Käytä tätä lukua viitteenä ratkaisujen löytämiseen.</p>
+<p>Seuraavaksi laitamme kaiken, mistä olemme puhuneet koko kirjan ajan, käytäntöön ja teemme vielä yhden projektin!</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                             <a rel="prev" href="ch20-04-advanced-functions-and-closures.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                                <i class="fa fa-angle-left"></i>
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
                             <a rel="next prefetch" href="ch21-00-final-project-a-web-server.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
                         <div style="clear: both"></div>
@@ -453,16 +370,21 @@ Käytä tätä lukua viitteenä ratkaisujen löytämiseen.</p>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                     <a rel="prev" href="ch20-04-advanced-functions-and-closures.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                        <i class="fa fa-angle-left"></i>
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
                     <a rel="next prefetch" href="ch21-00-final-project-a-web-server.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>
 
         </div>
 
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
 
 
 
@@ -471,16 +393,17 @@ Käytä tätä lukua viitteenä ratkaisujen löytämiseen.</p>
         </script>
 
 
-        <script src="elasticlunr.min.js"></script>
-        <script src="mark.min.js"></script>
-        <script src="searcher.js"></script>
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-c2a407aa.js"></script>
 
-        <script src="clipboard.min.js"></script>
-        <script src="highlight.js"></script>
-        <script src="book.js"></script>
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-abc7f01d.js"></script>
+        <script src="book-a0b12cfe.js"></script>
 
         <!-- Custom JS scripts -->
-        <script src="ferris.js"></script>
+        <script src="ferris-2317480c.js"></script>
+
 
 
     </div>

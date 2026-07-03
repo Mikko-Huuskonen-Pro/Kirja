@@ -12,44 +12,56 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
 
-        <link rel="icon" href="favicon.svg">
-        <link rel="shortcut icon" href="favicon.png">
-        <link rel="stylesheet" href="css/variables.css">
-        <link rel="stylesheet" href="css/general.css">
-        <link rel="stylesheet" href="css/chrome.css">
-        <link rel="stylesheet" href="css/print.css" media="print">
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-2459343d.css">
+        <link rel="stylesheet" href="css/chrome-ae938929.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
-        <link rel="stylesheet" href="fonts/fonts.css">
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" href="highlight.css">
-        <link rel="stylesheet" href="tomorrow-night.css">
-        <link rel="stylesheet" href="ayu-highlight.css">
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="ferris.css">
-        <link rel="stylesheet" href="theme/2018-edition.css">
-        <link rel="stylesheet" href="theme/semantic-notes.css">
-        <link rel="stylesheet" href="theme/listing.css">
+        <link rel="stylesheet" href="ferris-d33b75bf.css">
+        <link rel="stylesheet" href="theme/2018-edition-4e126c62.css">
+        <link rel="stylesheet" href="theme/semantic-notes-9b5766c0.css">
+        <link rel="stylesheet" href="theme/listing-cab26221.css">
 
 
-        <!-- Provide site root to javascript -->
+        <!-- Provide site root and default themes to javascript -->
         <script>
-            var path_to_root = "";
-            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex-454febf7.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc.js"></script>
+        <script src="toc-7f90d00d.js"></script>
     </head>
     <body>
-    <div id="body-container">
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
             try {
-                var theme = localStorage.getItem('mdbook-theme');
-                var sidebar = localStorage.getItem('mdbook-sidebar');
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
 
                 if (theme.startsWith('"') && theme.endsWith('"')) {
                     localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
@@ -63,7 +75,8 @@
 
         <!-- Set the theme before any content is loaded, prevents flash -->
         <script>
-            var theme;
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
             const html = document.documentElement;
@@ -72,55 +85,59 @@
             html.classList.add("js");
         </script>
 
-        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
-            var sidebar = null;
-            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
             } else {
                 sidebar = 'hidden';
+                sidebar_toggle.checked = false;
             }
-            sidebar_toggle.checked = sidebar === 'visible';
-            html.classList.remove('sidebar-visible');
-            html.classList.add("sidebar-" + sidebar);
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
         </script>
 
-        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
             <!-- populated by js -->
             <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
             <noscript>
                 <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
             </noscript>
-            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
             </div>
         </nav>
 
-        <div id="page-wrapper" class="page-wrapper">
+        <div id="mdbook-page-wrapper" class="page-wrapper">
 
             <div class="page">
-                <div id="menu-bar-hover-placeholder"></div>
-                <div id="menu-bar" class="menu-bar sticky">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
-                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
-                            <i class="fa fa-bars"></i>
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
                         </label>
-                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
-                            <i class="fa fa-paint-brush"></i>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
                         </button>
-                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
-                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
                         </ul>
-                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
-                            <i class="fa fa-search"></i>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
                         </button>
                     </div>
 
@@ -128,134 +145,155 @@
 
                     <div class="right-buttons">
                         <a href="print.html" title="Print this book" aria-label="Print this book">
-                            <i id="print-button" class="fa fa-print"></i>
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
                         </a>
                         <a href="https://github.com/rust-lang/book" title="Git repository" aria-label="Git repository">
-                            <i id="git-repository-button" class="fa fa-github"></i>
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></span>
                         </a>
 
                     </div>
                 </div>
 
-                <div id="search-wrapper" class="hidden">
-                    <form id="searchbar-outer" class="searchbar-outer">
-                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
                     </form>
-                    <div id="searchresults-outer" class="searchresults-outer hidden">
-                        <div id="searchresults-header" class="searchresults-header"></div>
-                        <ul id="searchresults">
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
                         </ul>
                     </div>
                 </div>
 
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
                 <script>
-                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
-                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
-                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
                         link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
                     });
                 </script>
 
-                <div id="content" class="content">
+                <div id="mdbook-content" class="content">
                     <main>
-                        <h2 id="avaimien-ja-niihin-liittyvien-arvojen-tallentaminen-hajautustauluilla"><a class="header" href="#avaimien-ja-niihin-liittyvien-arvojen-tallentaminen-hajautustauluilla">Avaimien ja niihin liittyvien arvojen tallentaminen hajautustauluilla</a></h2>
-<p>Viimeinen yleinen kokoelmatyyppi, jota tarkastelemme, on <strong>hajautustaulu</strong> (<em>hash map</em>). <code>HashMap&lt;K, V&gt;</code>-tyyppi tallentaa avain-arvo -pareja käyttäen <strong>hajautusfunktiota</strong>, joka määrittää, miten avaimet ja arvot sijoitetaan muistiin. Monet ohjelmointikielet tukevat vastaavaa tietorakennetta, mutta sitä kutsutaan eri nimillä, kuten <strong>hash</strong>, <strong>map</strong>, <strong>dictionary</strong>, <strong>associative array</strong> tai <strong>hash table</strong>.</p>
-<p>Hajautustaulut ovat hyödyllisiä silloin, kun tietoa halutaan hakea <strong>avaimen</strong> eikä <strong>indeksin</strong> perusteella. Esimerkiksi pelissä voidaan seurata joukkueiden pisteitä käyttämällä hajautustaulua, jossa avaimina ovat joukkueiden nimet ja arvoina pisteet.</p>
-<p>Käymme tässä osiossa läpi hajautustaulujen perusominaisuudet, mutta Rustin standardikirjastosta löytyy monia hyödyllisiä lisäominaisuuksia.</p>
-<h3 id="uuden-hajautustaulun-luominen"><a class="header" href="#uuden-hajautustaulun-luominen">Uuden hajautustaulun luominen</a></h3>
-<p>Voimme luoda tyhjän hajautustaulun käyttämällä <code>new</code>-metodia ja lisätä siihen avain-arvo -pareja <code>insert</code>-metodilla. Seuraavassa esimerkissä tallennetaan kahden joukkueen pisteet:</p>
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+                        <h2 id="avaimien-tallentaminen-liittyvine-arvoineen-hajautustaulukoissa"><a class="header" href="#avaimien-tallentaminen-liittyvine-arvoineen-hajautustaulukoissa">Avaimien tallentaminen liittyvine arvoineen hajautustaulukoissa</a></h2>
+<p>Viimeinen yleisistä kokoelmistamme on hajautustaulukko. Tyyppi <code>HashMap&lt;K, V&gt;</code> tallentaa avainten tyyppiä <code>K</code> olevien avainten ja arvojen tyyppiä <code>V</code> olevien arvojen välisen kuvauksen käyttämällä <em>hajautusfunktiota</em>, joka määrittää, miten nämä avaimet ja arvot sijoitetaan muistiin. Monet ohjelmointikielet tukevat tällaista tietorakennetta, mutta ne käyttävät usein eri nimeä, kuten <em>hash</em>, <em>map</em>, <em>object</em>, <em>hash table</em>, <em>dictionary</em> tai <em>associative array</em>, mainitakseni muutamia.</p>
+<p>Hajautustaulukot ovat hyödyllisiä, kun haluat hakea dataa ei indeksillä, kuten vektoreilla, vaan avaimella, joka voi olla minkä tahansa tyyppinen. Esimerkiksi pelissä voisit seurata kunkin joukkueen pistemäärää hajautustaulukossa, jossa jokainen avain on joukkueen nimi ja arvot ovat kunkin joukkueen pisteet. Joukkueen nimen perusteella voit hakea sen pistemäärän.</p>
+<p>Käymme läpi hajautustaulukoiden perus-API:n tässä osiossa, mutta <code>HashMap&lt;K, V&gt;</code>:lle standardikirjaston määrittelemissä funktioissa piilee paljon muutakin hyödyllistä. Kuten aina, tarkista standardikirjaston dokumentaatio lisätietoja varten.</p>
+<h3 id="uuden-hajautustaulukon-luominen"><a class="header" href="#uuden-hajautustaulukon-luominen">Uuden hajautustaulukon luominen</a></h3>
+<p>Yksi tapa luoda tyhjä hajautustaulukko on käyttää <code>new</code>:ia ja lisätä elementtejä <code>insert</code>:illä. Listauksessa 8-20 seuraamme kahden joukkueen, joiden nimet ovat <em>Blue</em> ja <em>Yellow</em>, pistemääriä. Blue-joukkue aloittaa 10 pisteellä ja Yellow-joukkue 50 pisteellä.</p>
+<figure class="listing" id="listing-8-20">
+<pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>{{#rustdoc_include ../listings/ch08-common-collections/listing-08-20/src/main.rs:here}}
-<span class="boring">}</span></code></pre></pre>
-<p>Huomaa, että <code>HashMap</code>-tietorakenne tulee erikseen tuoda standardikirjaston <code>collections</code>-osasta. Hajautustaulut eivät ole yhtä yleisesti käytettyjä kuin vektorit ja merkkijonot, joten niitä ei tuoda automaattisesti esiin Rustin <strong>prelude</strong>-määrittelyllä.</p>
-<p>Hajautustaulut muistuttavat vektoreita siinä mielessä, että ne tallennetaan <strong>kekoon</strong> (<em>heap</em>). Tässä esimerkissä <code>HashMap</code> sisältää <strong>String</strong>-tyyppisiä avaimia ja <strong>i32</strong>-tyyppisiä arvoja. Kuten vektorit, myös hajautustaulut ovat <strong>homogeenisia</strong>, eli kaikki avaimet ja kaikki arvot ovat aina samaa tietotyyppiä.</p>
-<h3 id="arvojen-hakeminen-hajautustaulusta"><a class="header" href="#arvojen-hakeminen-hajautustaulusta">Arvojen hakeminen hajautustaulusta</a></h3>
-<p>Voimme hakea arvoja hajautustaulusta <code>get</code>-metodilla antamalla sille avaimen:</p>
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+<span class="boring">}</span></code></pre>
+<figcaption><a href="#listing-8-20">Listing 8-20</a>: Uuden hajautustaulukon luominen ja avainten ja arvojen lisääminen</figcaption>
+</figure>
+<p>Huomaa, että meidän on ensin <code>use</code>:ttava <code>HashMap</code> standardikirjaston collections-osasta. Kolmesta yleisestä kokoelmastamme tämä on vähiten käytetty, joten sitä ei sisällytetä automaattisesti preludiin tuotuihin ominaisuuksiin. Hajautustaulukoilla on myös vähemmän tukea standardikirjastosta; ei ole esimerkiksi sisäänrakennettua makroa niiden rakentamiseen.</p>
+<p>Kuten vektorit, hajautustaulukot tallentavat datansa kekoon. Tällä <code>HashMap</code>:illa on avaimia tyyppiä <code>String</code> ja arvoja tyyppiä <code>i32</code>. Kuten vektorit, hajautustaulukot ovat homogeenisia: kaikkien avainten on oltava samaa tyyppiä, ja kaikkien arvojen on oltava samaa tyyppiä.</p>
+<h3 id="hajautustaulukon-arvojen-käyttö"><a class="header" href="#hajautustaulukon-arvojen-käyttö">Hajautustaulukon arvojen käyttö</a></h3>
+<p>Voimme saada arvon hajautustaulukosta antamalla sen avaimen <code>get</code>-metodille, kuten listauksessa 8-21.</p>
+<figure class="listing" id="listing-8-21">
+<pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>{{#rustdoc_include ../listings/ch08-common-collections/listing-08-21/src/main.rs:here}}
-<span class="boring">}</span></code></pre></pre>
-<p>Tässä <code>score</code> saa <strong>Blue</strong>-joukkueen arvon, joka on <code>10</code>. <code>get</code> palauttaa <code>Option&lt;&amp;V&gt;</code>-tyypin: jos avainta ei löydy, palautetaan <code>None</code>. Tässä tapauksessa <code>copied</code>-metodilla muunnetaan <code>Option&lt;&amp;i32&gt;</code> muotoon <code>Option&lt;i32&gt;</code>, ja <code>unwrap_or</code>-metodilla määritetään, että puuttuvien avainten kohdalla tuloksena on <code>0</code>.</p>
-<p>Voimme myös iteroida avain-arvo -parien yli <code>for</code>-silmukalla:</p>
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+<span class="boring">}</span></code></pre>
+<figcaption><a href="#listing-8-21">Listing 8-21</a>: Blue-joukkueen hajautustaulukkoon tallennetun pistemäärän käyttö</figcaption>
+</figure>
+<p>Tässä <code>score</code>:lla on arvo, joka liittyy Blue-joukkueeseen, ja tulos on <code>10</code>. <code>get</code>-metodi palauttaa <code>Option&lt;&amp;V&gt;</code>:n; jos hajautustaulukossa ei ole arvoa kyseiselle avaimelle, <code>get</code> palauttaa <code>None</code>:n. Tämä ohjelma käsittelee <code>Option</code>:in kutsumalla <code>copied</code>:ia saadakseen <code>Option&lt;i32&gt;</code>:n <code>Option&lt;&amp;i32&gt;</code>:n sijaan, sitten <code>unwrap_or</code>:ia asettaakseen <code>score</code>:n nollaksi, jos <code>scores</code>:issa ei ole merkintää avaimelle.</p>
+<p>Voimme käydä läpi jokaisen avain-arvo-parin hajautustaulukossa samalla tavalla kuin vektoreilla käyttämällä <code>for</code>-silmukkaa:</p>
+<pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>{{#rustdoc_include ../listings/ch08-common-collections/no-listing-03-iterate-over-hashmap/src/main.rs:here}}
-<span class="boring">}</span></code></pre></pre>
-<p>Tulostusjärjestys voi olla satunnainen:</p>
+<span class="boring">}</span></code></pre>
+<p>Tämä koodi tulostaa jokaisen parin satunnaisessa järjestyksessä:</p>
 <pre><code class="language-text">Yellow: 50
 Blue: 10
 </code></pre>
-<h3 id="hajautustaulut-ja-omistus"><a class="header" href="#hajautustaulut-ja-omistus">Hajautustaulut ja omistus</a></h3>
-<p>Jos avaimet ja arvot ovat tyyppejä, jotka toteuttavat <code>Copy</code>-piirteen (esim. <code>i32</code>), ne <strong>kopioidaan</strong> hajautustauluun. Jos taas tallennamme omistettuja arvoja, kuten <code>String</code>, ne <strong>siirtyvät</strong> hajautustaulun omistukseen:</p>
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+<!-- Old headings. Do not remove or links may break. -->
+<p><a id="hash-maps-and-ownership"></a></p>
+<h3 id="omistuksen-hallinta-hajautustaulukoissa"><a class="header" href="#omistuksen-hallinta-hajautustaulukoissa">Omistuksen hallinta hajautustaulukoissa</a></h3>
+<p><code>Copy</code>-traitin toteuttaville tyypeille, kuten <code>i32</code>, arvot kopioidaan hajautustaulukkoon. Omistetuille arvoille, kuten <code>String</code>, arvot siirretään ja hajautustaulukko on niiden omistaja, kuten listauksessa 8-22 havainnollistetaan.</p>
+<figure class="listing" id="listing-8-22">
+<pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>{{#rustdoc_include ../listings/ch08-common-collections/listing-08-22/src/main.rs:here}}
-<span class="boring">}</span></code></pre></pre>
-<p>Tämän jälkeen <code>field_name</code> ja <code>field_value</code> eivät ole enää käytettävissä, koska niiden omistajuus on siirtynyt hajautustaululle.</p>
-<p>Jos haluamme välttää omistajuuden siirtymisen, voimme lisätä tauluun <strong>viittauksia</strong>. Tällöin viitatun tiedon täytyy pysyä olemassa vähintään niin kauan kuin hajautustaulu on käytössä.</p>
-<h3 id="hajautustaulun-päivittäminen"><a class="header" href="#hajautustaulun-päivittäminen">Hajautustaulun päivittäminen</a></h3>
-<p>Vaikka hajautustauluun voi lisätä uusia avain-arvo -pareja, <strong>sama avain voi sisältää vain yhden arvon kerrallaan</strong>. Arvon päivittäessä on valittava, miten olemassa oleva arvo käsitellään:</p>
-<ul>
-<li><strong>Vanha arvo korvataan uudella</strong></li>
-<li><strong>Uusi arvo lisätään vain, jos avainta ei ole vielä olemassa</strong></li>
-<li><strong>Vanha ja uusi arvo yhdistetään</strong></li>
-</ul>
+<span class="boring">}</span></code></pre>
+<figcaption><a href="#listing-8-22">Listing 8-22</a>: Avainten ja arvojen omistajuuden hajautustaulukossa lisäämisen jälkeen</figcaption>
+</figure>
+<p>Emme voi käyttää muuttujia <code>field_name</code> ja <code>field_value</code> sen jälkeen, kun ne on siirretty hajautustaulukkoon <code>insert</code>-kutsulla.</p>
+<p>Jos lisäämme viittauksia arvoihin hajautustaulukkoon, arvoja ei siirretä hajautustaulukkoon. Arvojen, joihin viitteet osoittavat, on oltava kelvollisia vähintään niin kauan kuin hajautustaulukko on kelvollinen. Käsittelemme näitä ongelmia tarkemmin kohdassa <a href="ch10-03-lifetime-syntax.html#validating-references-with-lifetimes">”Viittausten validointi elinaikoilla”</a><!-- ignore --> luvussa 10.</p>
+<h3 id="hajautustaulukon-päivittäminen"><a class="header" href="#hajautustaulukon-päivittäminen">Hajautustaulukon päivittäminen</a></h3>
+<p>Vaikka avain-arvo-parien määrä on kasvava, jokaisella yksilöllisellä avaimella voi olla vain yksi siihen liittyvä arvo kerrallaan (mutta ei päinvastoin: esimerkiksi sekä Blue- että Yellow-joukkueella voi olla arvo <code>10</code> tallennettuna <code>scores</code>-hajautustaulukkoon).</p>
+<p>Kun haluat muuttaa dataa hajautustaulukossa, sinun on päätettävä, miten käsitellä tapaus, jossa avaimella on jo arvo. Voit korvata vanhan arvon uudella arvolla täysin sivuuttaen vanhan arvon. Voit pitää vanhan arvon ja jättää huomiotta uuden arvon, lisäten uuden arvon vain, jos avaimella <em>ei</em> jo ole arvoa. Tai voit yhdistää vanhan arvon ja uuden arvon. Katsotaan, miten tehdä kukin näistä!</p>
 <h4 id="arvon-korvaaminen"><a class="header" href="#arvon-korvaaminen">Arvon korvaaminen</a></h4>
-<p>Jos lisäämme avaimelle uuden arvon, vanha arvo ylikirjoitetaan:</p>
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+<p>Jos lisäämme avaimen ja arvon hajautustaulukkoon ja lisäämme sitten saman avaimen eri arvolla, avaimeen liittyvä arvo korvataan. Vaikka listauksen 8-23 koodi kutsuu <code>insert</code>:ia kahdesti, hajautustaulukossa on vain yksi avain-arvo-pari, koska lisäämme Blue-joukkueen avaimen arvon molemmilla kerroilla.</p>
+<figure class="listing" id="listing-8-23">
+<pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>{{#rustdoc_include ../listings/ch08-common-collections/listing-08-23/src/main.rs:here}}
-<span class="boring">}</span></code></pre></pre>
-<p>Tuloste:</p>
-<pre><code class="language-text">{"Blue": 25}
-</code></pre>
-<p>Ensimmäinen <code>insert("Blue", 10)</code> korvautuu toisella <code>insert("Blue", 25)</code>, joten vain viimeisin arvo jää talteen.</p>
-<h4 id="avain-arvo--parin-lisääminen-vain-jos-avainta-ei-vielä-ole"><a class="header" href="#avain-arvo--parin-lisääminen-vain-jos-avainta-ei-vielä-ole">Avain-arvo -parin lisääminen vain, jos avainta ei vielä ole</a></h4>
-<p>Rust tarjoaa <code>entry</code>-API:n, joka mahdollistaa uuden arvon lisäämisen vain, jos avainta ei vielä ole:</p>
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+<span class="boring">}</span></code></pre>
+<figcaption><a href="#listing-8-23">Listing 8-23</a>: Tiettyyn avaimeen tallennetun arvon korvaaminen</figcaption>
+</figure>
+<p>Tämä koodi tulostaa <code>{"Blue": 25}</code>. Alkuperäinen arvo <code>10</code> on korvattu.</p>
+<!-- Old headings. Do not remove or links may break. -->
+<p><a id="only-inserting-a-value-if-the-key-has-no-value"></a></p>
+<h4 id="avaimen-ja-arvon-lisääminen-vain-jos-avaimella-ei-ole-arvoa"><a class="header" href="#avaimen-ja-arvon-lisääminen-vain-jos-avaimella-ei-ole-arvoa">Avaimen ja arvon lisääminen vain, jos avaimella ei ole arvoa</a></h4>
+<p>On yleistä tarkistaa, onko tietyllä avaimella jo arvo hajautustaulukossa, ja sitten toimia seuraavasti: Jos avain on olemassa hajautustaulukossa, olemassa olevan arvon pitäisi pysyä ennallaan; jos avainta ei ole, lisää se ja sille arvo.</p>
+<p>Hajautustaulukoilla on tähän erityinen API nimeltä <code>entry</code>, joka ottaa parametrina avaimen, jonka haluat tarkistaa. <code>entry</code>-metodin palautusarvo on enum nimeltä <code>Entry</code>, joka edustaa arvoa, joka saattaa olla olemassa tai ei. Oletetaan, että haluamme tarkistaa, onko Yellow-joukkueen avaimella arvo. Jos ei ole, haluamme lisätä arvon <code>50</code>, ja sama Blue-joukkueelle. <code>entry</code>-API:ta käyttäen koodi näyttää listaukselta 8-24.</p>
+<figure class="listing" id="listing-8-24">
+<pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>{{#rustdoc_include ../listings/ch08-common-collections/listing-08-24/src/main.rs:here}}
-<span class="boring">}</span></code></pre></pre>
-<p>Tuloste:</p>
-<pre><code class="language-text">{"Yellow": 50, "Blue": 10}
-</code></pre>
-<p>Ensimmäinen <code>entry("Yellow")</code> lisää uuden arvon <code>50</code>, koska <strong>Yellow</strong>-avain puuttuu. <strong>Blue</strong>-avain on jo olemassa, joten sen arvoa ei muuteta.</p>
+<span class="boring">}</span></code></pre>
+<figcaption><a href="#listing-8-24">Listing 8-24</a>: <code>entry</code>-metodin käyttö lisäämiseen vain, jos avaimella ei jo ole arvoa</figcaption>
+</figure>
+<p><code>Entry</code>:n <code>or_insert</code>-metodi on määritelty palauttamaan muuttuva viite vastaavan <code>Entry</code>-avaimen arvoon, jos kyseinen avain on olemassa, ja jos ei, se lisää parametrin uudeksi arvoksi tälle avaimelle ja palauttaa muuttuvan viitteen uuteen arvoon. Tämä tekniikka on paljon siistimpi kuin logiikan kirjoittaminen itse, ja lisäksi se toimii paremmin lainauskontrollerin kanssa.</p>
+<p>Listauksen 8-24 koodin suorittaminen tulostaa <code>{"Yellow": 50, "Blue": 10}</code>. Ensimmäinen <code>entry</code>-kutsu lisää Yellow-joukkueen avaimen arvolla <code>50</code>, koska Yellow-joukkueella ei ole vielä arvoa. Toinen <code>entry</code>-kutsu ei muuta hajautustaulukkoa, koska Blue-joukkueella on jo arvo <code>10</code>.</p>
 <h4 id="arvon-päivittäminen-vanhan-arvon-perusteella"><a class="header" href="#arvon-päivittäminen-vanhan-arvon-perusteella">Arvon päivittäminen vanhan arvon perusteella</a></h4>
-<p>Seuraavassa esimerkissä lasketaan, kuinka monta kertaa kukin sana esiintyy tekstissä:</p>
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+<p>Toinen yleinen käyttötapaus hajautustaulukoille on avaimen arvon hakeminen ja sen päivittäminen vanhan arvon perusteella. Esimerkiksi listaus 8-25 näyttää koodin, joka laskee, kuinka monta kertaa kukin sana esiintyy tekstissä. Käytämme hajautustaulukkoa, jossa sanat ovat avaimia, ja kasvatamme arvoa seurataksemme, kuinka monta kertaa olemme nähneet kyseisen sanan. Jos näemme sanan ensimmäistä kertaa, lisäämme ensin arvon <code>0</code>.</p>
+<figure class="listing" id="listing-8-25">
+<pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>{{#rustdoc_include ../listings/ch08-common-collections/listing-08-25/src/main.rs:here}}
-<span class="boring">}</span></code></pre></pre>
-<p>Tuloste:</p>
-<pre><code class="language-text">{"world": 2, "hello": 1, "wonderful": 1}
-</code></pre>
-<p>Ohjelma jakaa tekstin sanoiksi ja käyttää <code>entry().or_insert(0)</code> -kutsua varmistaakseen, että jokaiselle sanalle on alkulukema <code>0</code>. Sitten se kasvattaa sanan esiintymiskertaa.</p>
-<h3 id="hajautusfunktioiden-käyttäminen"><a class="header" href="#hajautusfunktioiden-käyttäminen">Hajautusfunktioiden käyttäminen</a></h3>
-<p>Rustin <code>HashMap</code> käyttää oletuksena <strong>SipHash</strong>-hajautusfunktiota, joka suojaa <strong>palvelunestohyökkäyksiä</strong> (<em>DoS attacks</em>) vastaan. Tämä ei ole nopein mahdollinen hajautusalgoritmi, mutta se tarjoaa hyvän tasapainon <strong>turvallisuuden ja suorituskyvyn</strong> välillä.</p>
-<p>Jos ohjelmasi vaatii nopeampaa hajautusta, voit määrittää <strong>eri hajautusfunktion</strong>. Tätä varten on olemassa <strong><code>BuildHasher</code>-rajapinta</strong>, jota voidaan käyttää erilaisten hajautusalgoritmien kanssa. Näitä löytyy esimerkiksi Rustin <a href="https://crates.io/">crates.io</a> -kirjastosta.</p>
-<hr />
+<span class="boring">}</span></code></pre>
+<figcaption><a href="#listing-8-25">Listing 8-25</a>: Sanojen esiintymisten laskeminen hajautustaulukolla, joka tallentaa sanat ja laskurit</figcaption>
+</figure>
+<p>Tämä koodi tulostaa <code>{"world": 2, "hello": 1, "wonderful": 1}</code>. Saatat nähdä samat avain-arvo-parit tulostettuna eri järjestyksessä: Muista kohdasta <a href="#accessing-values-in-a-hash-map">”Hajautustaulukon arvojen käyttö”</a><!-- ignore -->, että hajautustaulukon läpikäynti tapahtuu satunnaisessa järjestyksessä.</p>
+<p><code>split_whitespace</code>-metodi palauttaa iteraattorin aliviipaleista, jotka on erotettu välilyönneillä <code>text</code>:n arvosta. <code>or_insert</code>-metodi palauttaa muuttuvan viitteen (<code>&amp;mut V</code>) määritellyn avaimen arvoon. Tässä tallennamme kyseisen muuttuvan viitteen <code>count</code>-muuttujaan, joten arvon asettamiseksi meidän on ensin dereferoitava <code>count</code> asteriskilla (<code>*</code>). Muuttuva viite poistuu laajuudesta <code>for</code>-silmukan lopussa, joten kaikki nämä muutokset ovat turvallisia ja lainaussääntöjen sallimia.</p>
+<h3 id="hajautusfunktiot"><a class="header" href="#hajautusfunktiot">Hajautusfunktiot</a></h3>
+<p>Oletuksena <code>HashMap</code> käyttää hajautusfunktiota nimeltä <em>SipHash</em>, joka voi tarjota vastustuskykyä hajautustaulukoihin liittyviä palvelunestohyökkäyksiä (DoS) vastaan<sup class="footnote-reference" id="fr-siphash-1"><a href="#footnote-siphash">1</a></sup><!-- ignore -->. Tämä ei ole nopein saatavilla oleva hajautusalgoritmi, mutta kompromissi paremman turvallisuuden ja suorituskyvyn laskun välillä on sen arvoinen. Jos profiloit koodisi ja huomaat, että oletushajautusfunktio on liian hidas tarkoituksiisi, voit vaihtaa toiseen funktioon määrittämällä eri hasherin. <em>Hasher</em> on tyyppi, joka toteuttaa <code>BuildHasher</code>-traitin. Käsittelemme trait:eja ja niiden toteuttamista <a href="ch10-02-traits.html">luvussa 10</a><!-- ignore -->. Sinun ei välttämättä tarvitse toteuttaa omaa hasheria alusta; <a href="https://crates.io/">crates.io</a><!-- ignore --> -sivustolla on muiden Rust-käyttäjien jakamia kirjastoja, jotka tarjoavat hashereita toteuttaen monia yleisiä hajautusalgoritmeja.</p>
 <h2 id="yhteenveto"><a class="header" href="#yhteenveto">Yhteenveto</a></h2>
-<p>Tässä luvussa opimme käyttämään <strong>vektoreita, merkkijonoja ja hajautustauluja</strong> tiedon tallentamiseen, hakemiseen ja päivittämiseen.</p>
-<h3 id="harjoitustehtävät"><a class="header" href="#harjoitustehtävät">Harjoitustehtävät</a></h3>
+<p>Vektorit, merkkijonot ja hajautustaulukot tarjoavat paljon toiminnallisuutta, jota tarvitaan ohjelmissa, kun sinun on tallennettava, käytettävä ja muokattava dataa. Tässä on harjoituksia, joihin sinun pitäisi nyt olla valmis:</p>
 <ol>
-<li>Anna joukko kokonaislukuja vektorina ja laske <strong>mediaani</strong> (järjestettynä keskimmäinen arvo) ja <strong>moodi</strong> (yleisin arvo). Hajautustaulu voi olla hyödyllinen tähän.</li>
-<li>Muunna merkkijonot <strong>pig latin</strong> -kielelle: siirrä sanan ensimmäinen konsonantti loppuun ja lisää <em>ay</em>, esim. <strong>“first” → “irst-fay”</strong>. Jos sana alkaa vokaalilla, lisää <em>hay</em>, esim. <strong>“apple” → “apple-hay”</strong>.</li>
-<li>Luo <strong>tekstikäyttöliittymä</strong>, jonka avulla käyttäjä voi lisätä työntekijöitä osastoille ja hakea heitä hajautustaulusta. Tulosta työntekijät aakkosjärjestyksessä.</li>
+<li>Annetulle kokonaislukulistalle käytä vektoria ja palauta mediaani (lajiteltuna arvo keskimmäisessä sijainnissa) ja moodi (arvo, joka esiintyy useimmin; hajautustaulukko on hyödyllinen tässä) listasta.</li>
+<li>Muunna merkkijonot siansaksaksi. Jokaisen sanan ensimmäinen konsonantti siirretään sanan loppuun ja lisätään <em>ay</em>, joten <em>first</em> muuttuu muotoon <em>irst-fay</em>. Vokaalilla alkaviin sanoihin lisätään loppuun <em>hay</em> sen sijaan (<em>apple</em> muuttuu muotoon <em>apple-hay</em>). Muista UTF-8-koodauksen yksityiskohdat!</li>
+<li>Käyttämällä hajautustaulukkoa ja vektoreita luo tekstipohjainen käyttöliittymä, jonka avulla käyttäjä voi lisätä työntekijöiden nimiä osastoon yrityksessä; esimerkiksi ”Add Sally to Engineering” tai ”Add Amir to Sales.” Anna sitten käyttäjän hakea luettelo kaikista osaston henkilöistä tai kaikista yrityksen henkilöistä osastoittain, lajiteltuna aakkosjärjestykseen.</li>
 </ol>
-<p>Seuraavaksi käsittelemme <strong>virheidenhallintaa</strong>, koska alamme siirtyä monimutkaisempiin ohjelmiin, joissa operaatioita voi epäonnistua!</p>
+<p>Standardikirjaston API-dokumentaatio kuvaa vektoreiden, merkkijonojen ja hajautustaulukoiden metodeja, jotka ovat hyödyllisiä näissä harjoituksissa!</p>
+<p>Siirrymme monimutkaisempiin ohjelmiin, joissa operaatiot voivat epäonnistua, joten on täydellinen hetki käsitellä virheenkäsittelyä. Teemme sen seuraavaksi!</p>
+<hr>
+<ol class="footnote-definition">
+<li id="footnote-siphash">
+<p><a href="https://en.wikipedia.org/wiki/SipHash">https://en.wikipedia.org/wiki/SipHash</a> <a href="#fr-siphash-1">↩</a></p>
+</li>
+</ol>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                             <a rel="prev" href="ch08-02-strings.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                                <i class="fa fa-angle-left"></i>
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
                             <a rel="next prefetch" href="ch09-00-error-handling.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
                         <div style="clear: both"></div>
@@ -265,16 +303,21 @@ Blue: 10
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                     <a rel="prev" href="ch08-02-strings.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                        <i class="fa fa-angle-left"></i>
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
                     <a rel="next prefetch" href="ch09-00-error-handling.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>
 
         </div>
 
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
 
 
 
@@ -283,16 +326,17 @@ Blue: 10
         </script>
 
 
-        <script src="elasticlunr.min.js"></script>
-        <script src="mark.min.js"></script>
-        <script src="searcher.js"></script>
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-c2a407aa.js"></script>
 
-        <script src="clipboard.min.js"></script>
-        <script src="highlight.js"></script>
-        <script src="book.js"></script>
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-abc7f01d.js"></script>
+        <script src="book-a0b12cfe.js"></script>
 
         <!-- Custom JS scripts -->
-        <script src="ferris.js"></script>
+        <script src="ferris-2317480c.js"></script>
+
 
 
     </div>

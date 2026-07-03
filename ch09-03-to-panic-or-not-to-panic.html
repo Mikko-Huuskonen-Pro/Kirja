@@ -12,44 +12,56 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
 
-        <link rel="icon" href="favicon.svg">
-        <link rel="shortcut icon" href="favicon.png">
-        <link rel="stylesheet" href="css/variables.css">
-        <link rel="stylesheet" href="css/general.css">
-        <link rel="stylesheet" href="css/chrome.css">
-        <link rel="stylesheet" href="css/print.css" media="print">
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-2459343d.css">
+        <link rel="stylesheet" href="css/chrome-ae938929.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
-        <link rel="stylesheet" href="fonts/fonts.css">
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" href="highlight.css">
-        <link rel="stylesheet" href="tomorrow-night.css">
-        <link rel="stylesheet" href="ayu-highlight.css">
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="ferris.css">
-        <link rel="stylesheet" href="theme/2018-edition.css">
-        <link rel="stylesheet" href="theme/semantic-notes.css">
-        <link rel="stylesheet" href="theme/listing.css">
+        <link rel="stylesheet" href="ferris-d33b75bf.css">
+        <link rel="stylesheet" href="theme/2018-edition-4e126c62.css">
+        <link rel="stylesheet" href="theme/semantic-notes-9b5766c0.css">
+        <link rel="stylesheet" href="theme/listing-cab26221.css">
 
 
-        <!-- Provide site root to javascript -->
+        <!-- Provide site root and default themes to javascript -->
         <script>
-            var path_to_root = "";
-            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex-454febf7.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc.js"></script>
+        <script src="toc-7f90d00d.js"></script>
     </head>
     <body>
-    <div id="body-container">
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
             try {
-                var theme = localStorage.getItem('mdbook-theme');
-                var sidebar = localStorage.getItem('mdbook-sidebar');
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
 
                 if (theme.startsWith('"') && theme.endsWith('"')) {
                     localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
@@ -63,7 +75,8 @@
 
         <!-- Set the theme before any content is loaded, prevents flash -->
         <script>
-            var theme;
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
             const html = document.documentElement;
@@ -72,55 +85,59 @@
             html.classList.add("js");
         </script>
 
-        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
-            var sidebar = null;
-            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
             } else {
                 sidebar = 'hidden';
+                sidebar_toggle.checked = false;
             }
-            sidebar_toggle.checked = sidebar === 'visible';
-            html.classList.remove('sidebar-visible');
-            html.classList.add("sidebar-" + sidebar);
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
         </script>
 
-        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
             <!-- populated by js -->
             <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
             <noscript>
                 <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
             </noscript>
-            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
             </div>
         </nav>
 
-        <div id="page-wrapper" class="page-wrapper">
+        <div id="mdbook-page-wrapper" class="page-wrapper">
 
             <div class="page">
-                <div id="menu-bar-hover-placeholder"></div>
-                <div id="menu-bar" class="menu-bar sticky">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
-                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
-                            <i class="fa fa-bars"></i>
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
                         </label>
-                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
-                            <i class="fa fa-paint-brush"></i>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
                         </button>
-                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
-                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
                         </ul>
-                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
-                            <i class="fa fa-search"></i>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
                         </button>
                     </div>
 
@@ -128,106 +145,107 @@
 
                     <div class="right-buttons">
                         <a href="print.html" title="Print this book" aria-label="Print this book">
-                            <i id="print-button" class="fa fa-print"></i>
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
                         </a>
                         <a href="https://github.com/rust-lang/book" title="Git repository" aria-label="Git repository">
-                            <i id="git-repository-button" class="fa fa-github"></i>
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></span>
                         </a>
 
                     </div>
                 </div>
 
-                <div id="search-wrapper" class="hidden">
-                    <form id="searchbar-outer" class="searchbar-outer">
-                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
                     </form>
-                    <div id="searchresults-outer" class="searchresults-outer hidden">
-                        <div id="searchresults-header" class="searchresults-header"></div>
-                        <ul id="searchresults">
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
                         </ul>
                     </div>
                 </div>
 
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
                 <script>
-                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
-                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
-                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
                         link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
                     });
                 </script>
 
-                <div id="content" class="content">
+                <div id="mdbook-content" class="content">
                     <main>
-                        <h2 id="käyttääkö-panic-makroa-vai-ei"><a class="header" href="#käyttääkö-panic-makroa-vai-ei">Käyttääkö <code>panic!</code>-makroa vai ei?</a></h2>
-<p>Miten päättää, milloin <code>panic!</code>-makroa tulisi käyttää ja milloin tulisi palauttaa <code>Result</code>? Kun koodi käyttää <code>panic!</code>, virheestä ei voi palautua. Voit kutsua <code>panic!</code>-makroa missä tahansa virhetilanteessa, mutta tällöin päätät kutsuvan koodin puolesta, että tilanne on palauttamaton. Jos sen sijaan palautat <code>Result</code>-arvon, annat kutsuvalle koodille mahdollisuuden valita, kuinka virhe käsitellään. Kutsuva koodi voi yrittää palautua tilanteesta tai päättää, että virhe on kriittinen ja kutsua <code>panic!</code>…</p>
-<p>Esimerkeissä, prototyyppikoodissa ja testeissä on usein sopivampaa käyttää <code>panic!</code>-makroa <code>Result</code>-arvon palauttamisen sijaan. Tarkastellaan, miksi näin on, ja käsitellään tilanteita, joissa kääntäjä ei voi tietää, että virhe on mahdoton, mutta ihminen voi. Lopuksi annamme yleisiä ohjeita siitä, milloin kirjastoissa kannattaa käyttää <code>panic!</code>-makroa.</p>
-<h3 id="esimerkit-prototyypit-ja-testit"><a class="header" href="#esimerkit-prototyypit-ja-testit">Esimerkit, prototyypit ja testit</a></h3>
-<p>Kun kirjoitat esimerkkejä selittämään jotain konseptia, virheenkäsittelykoodin lisääminen voi tehdä esimerkistä vaikeaselkoisemman. Esimerkeissä on ymmärrettävää käyttää <code>unwrap</code>-kutsuja, jotka voivat aiheuttaa paniikkitilan. Ne toimivat <strong>paikkamerkkeinä</strong> ja osoittavat, että virheenkäsittelyyn kannattaa kiinnittää huomiota tuotantokoodia kirjoitettaessa.</p>
-<p>Samoin <code>unwrap</code> ja <code>expect</code> ovat käteviä prototyyppivaiheessa, kun et ole vielä päättänyt, miten virheet tulisi käsitellä. Ne jättävät selkeitä merkkejä koodiin ja auttavat tekemään siitä robustimpaa myöhemmin.</p>
-<p>Testitilanteissa on usein tarkoituksenmukaista käyttää <code>panic!</code>-makroa, koska testin epäonnistuminen tarkoittaa, että virhe havaittiin. Siksi <code>unwrap</code> ja <code>expect</code> ovat hyödyllisiä testikoodissa.</p>
-<h3 id="tilanteet-joissa-sinulla-on-enemmän-tietoa-kuin-kääntäjällä"><a class="header" href="#tilanteet-joissa-sinulla-on-enemmän-tietoa-kuin-kääntäjällä">Tilanteet, joissa sinulla on enemmän tietoa kuin kääntäjällä</a></h3>
-<p>On myös tilanteita, joissa <code>unwrap</code> tai <code>expect</code> on perusteltu, koska <strong>tiedät</strong>, että <code>Result</code>-arvo on aina <code>Ok</code>, vaikka kääntäjä ei voi sitä päätellä. Tällöin voit silti joutua käsittelemään <code>Result</code>-arvon, koska kutsuttu funktio voi <strong>yleisesti ottaen</strong> epäonnistua, vaikka sinun tapauksessasi se ei voi tapahtua.</p>
-<p>Esimerkiksi seuraavassa tapauksessa <code>expect</code>-metodin käyttö on perusteltua:</p>
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+                        <h2 id="panic-vai-ei"><a class="header" href="#panic-vai-ei"><code>panic!</code> vai ei?</a></h2>
+<p>Miten siis päätät, milloin sinun pitäisi kutsua <code>panic!</code>:ia ja milloin palauttaa <code>Result</code>? Kun koodi panikoi, palautumista ei ole mahdollista. Voit kutsua <code>panic!</code>:ia mihin tahansa virhetilanteeseen, onko mahdollinen tapa palautua vai ei, mutta silloin teet päätöksen, että tilanne on palautumaton kutsuvalle koodille. Kun valitset palauttaa <code>Result</code>-arvon, annat kutsuvalle koodille vaihtoehtoja. Kutsuva koodi voi valita yrittää palautua tavalla, joka sopii sen tilanteeseen, tai se voi päättää, että <code>Err</code>-arvo tässä tapauksessa on palautumaton, jolloin se voi kutsua <code>panic!</code>:ia ja muuttaa palautuvan virheesi palautumattomaksi. Siksi <code>Result</code>:in palauttaminen on hyvä oletusvalinta, kun määrittelet funktion, joka voi epäonnistua.</p>
+<p>Tilanteissa kuten esimerkeissä, prototyyppikoodissa ja testeissä on sopivampaa kirjoittaa koodia, joka panikoi <code>Result</code>:in palauttamisen sijaan. Tutkitaan miksi, ja sitten käsitellään tilanteita, joissa kääntäjä ei voi kertoa, että epäonnistuminen on mahdotonta, mutta sinä ihmisenä voit. Luku päättyy yleisiin ohjeisiin siitä, milloin panikoida kirjastokoodissa.</p>
+<h3 id="esimerkit-prototyyppikoodi-ja-testit"><a class="header" href="#esimerkit-prototyyppikoodi-ja-testit">Esimerkit, prototyyppikoodi ja testit</a></h3>
+<p>Kun kirjoitat esimerkkiä havainnollistamaan jotain käsitettä, vankan virheenkäsittelykoodin sisällyttäminen voi tehdä esimerkistä epäselvemmän. Esimerkeissä ymmärretään, että metodin, kuten <code>unwrap</code>:in, kutsuminen, joka voi panikoida, on tarkoitettu paikanpitäjäksi sille tavalle, jolla haluat sovelluksesi käsittelevän virheet, mikä voi vaihdella sen mukaan, mitä muu koodisi tekee.</p>
+<p>Vastaavasti <code>unwrap</code>- ja <code>expect</code>-metodit ovat erittäin käteviä prototyyppauksessa, kun et ole vielä valmis päättämään, miten käsitellä virheitä. Ne jättävät selkeät merkit koodiisi siihen asti, kun olet valmis tekemään ohjelmastasi vankemman.</p>
+<p>Jos metodikutsu epäonnistuu testissä, haluat koko testin epäonnistuvan, vaikka kyseinen metodi ei olisikaan testattava toiminnallisuus. Koska <code>panic!</code> on tapa, jolla testi merkitään epäonnistuneeksi, <code>unwrap</code>:in tai <code>expect</code>:in kutsuminen on juuri sitä, mitä pitäisi tapahtua.</p>
+<!-- Old headings. Do not remove or links may break. -->
+<p><a id="cases-in-which-you-have-more-information-than-the-compiler"></a></p>
+<h3 id="kun-sinulla-on-enemmän-tietoa-kuin-kääntäjällä"><a class="header" href="#kun-sinulla-on-enemmän-tietoa-kuin-kääntäjällä">Kun sinulla on enemmän tietoa kuin kääntäjällä</a></h3>
+<p>Olisi myös sopivaa kutsua <code>expect</code>:ia, kun sinulla on muuta logiikkaa, joka varmistaa, että <code>Result</code>:illa on <code>Ok</code>-arvo, mutta logiikka ei ole sellaista, mitä kääntäjä ymmärtää. Sinulla on silti <code>Result</code>-arvo, joka on käsiteltävä: mikä tahansa kutsumasi operaatio voi silti epäonnistua yleisesti, vaikka se olisi loogisesti mahdotonta juuri sinun tilanteessasi. Jos voit varmistaa tarkastamalla koodin manuaalisesti, ettet koskaan saa <code>Err</code>-varianttia, on täysin hyväksyttävää kutsua <code>expect</code>:ia ja dokumentoida syy, miksi uskot, ettei koskaan saa <code>Err</code>-varianttia, argumenttitekstissä. Tässä on esimerkki:</p>
+<pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>{{#rustdoc_include ../listings/ch09-error-handling/no-listing-08-unwrap-that-cant-fail/src/main.rs:here}}
-<span class="boring">}</span></code></pre></pre>
-<p>Tässä <code>IpAddr</code>-instanssi luodaan <strong>kovakoodatusta merkkijonosta</strong>. Tiedämme, että <code>"127.0.0.1"</code> on <strong>aina</strong> kelvollinen IP-osoite. Kääntäjä ei kuitenkaan ymmärrä tätä, joten meidän on silti käsiteltävä <code>Result</code>. <code>expect</code>-metodin käyttö on tässä perusteltua, mutta on hyvä dokumentoida syy, miksi <code>expect</code> ei voi epäonnistua.</p>
-<p>Jos merkkijono olisi saatu käyttäjän syötteenä, meidän olisi ehdottomasti käytettävä <code>Result</code>-tyypin virheenkäsittelyä, koska virhe voisi tapahtua.</p>
-<h3 id="virheenkäsittelyn-suuntaviivat"><a class="header" href="#virheenkäsittelyn-suuntaviivat">Virheenkäsittelyn suuntaviivat</a></h3>
-<p>Panic-tilan käyttö on suositeltavaa silloin, kun koodi voi päätyä <strong>huonoon tilaan</strong> (<em>bad state</em>). Tällainen tilanne syntyy, kun:</p>
+<span class="boring">}</span></code></pre>
+<p>Luomme <code>IpAddr</code>-instanssin jäsentämällä kovakoodatun merkkijonon. Näemme, että <code>127.0.0.1</code> on kelvollinen IP-osoite, joten <code>expect</code>:in käyttö on tässä hyväksyttävää. Kovakoodatun kelvollisen merkkijonon olemassaolo ei kuitenkaan muuta <code>parse</code>-metodin palautustyyppiä: saamme silti <code>Result</code>-arvon, ja kääntäjä pakottaa meidät käsittelemään <code>Result</code>:ia ikään kuin <code>Err</code>-variantti olisi mahdollisuus, koska kääntäjä ei ole tarpeeksi älykäs nähdäkseen, että tämä merkkijono on aina kelvollinen IP-osoite. Jos IP-osoitemerkkijono tulisi käyttäjältä sen sijaan, että se olisi kovakoodattu ohjelmaan ja siksi <em>voisi</em> epäonnistua, käsittelisimme ehdottomasti <code>Result</code>:ia vankemmalla tavalla. Oletuksen mainitseminen, että tämä IP-osoite on kovakoodattu, kehottaa meitä muuttamaan <code>expect</code>:in paremmaksi virheenkäsittelykoodiksi, jos tulevaisuudessa tarvitsemme hakea IP-osoitteen jostain muusta lähteestä.</p>
+<h3 id="ohjeita-virheenkäsittelyyn"><a class="header" href="#ohjeita-virheenkäsittelyyn">Ohjeita virheenkäsittelyyn</a></h3>
+<p>On suositeltavaa, että koodisi panikoi, kun on mahdollista, että koodisi päätyy huonoon tilaan. Tässä kontekstissa <em>huono tila</em> tarkoittaa tilannetta, jossa jokin oletus, takuu, sopimus tai invariantti on rikottu, kuten kun virheellisiä arvoja, ristiriitaisia arvoja tai puuttuvia arvoja välitetään koodillesi—plus yksi tai useampi seuraavista:</p>
 <ul>
-<li>Jokin <strong>oletus, sopimus tai sääntö</strong> on rikkoutunut (esim. virheellisiä tai ristiriitaisia arvoja on syötetty).</li>
-<li>Tilanne on <strong>ennalta arvaamaton</strong>, eikä kyse ole vain esimerkiksi käyttäjän virheellisestä syötteestä.</li>
-<li>Koodin suorittaminen <strong>ei voi jatkua turvallisesti</strong> tämän jälkeen.</li>
-<li>Tätä tilannetta <strong>ei voi kuvata selkeästi</strong> Rustin tyyppejä käyttäen.</li>
+<li>Huono tila on jotain odottamatonta, toisin kuin jotain, mikä todennäköisesti tapahtuu satunnaisesti, kuten käyttäjä syöttää dataa väärässä muodossa.</li>
+<li>Koodisi tästä eteenpäin on luotettava siihen, ettei ole tässä huonossa tilassa, sen sijaan että tarkistaisi ongelman jokaisessa vaiheessa.</li>
+<li>Ei ole hyvää tapaa koodata tätä tietoa käyttämiisi tyyppeihin. Käymme läpi esimerkin siitä, mitä tarkoitamme kohdassa <a href="ch18-03-oo-design-patterns.html#encoding-states-and-behavior-as-types">”Tilojen ja käyttäytymisen koodaus tyypeillä”</a><!-- ignore --> luvussa 18.</li>
 </ul>
-<p>Jos joku kutsuu funktiotasi väärillä arvoilla, on yleensä parempi <strong>palauttaa virhe</strong> <code>Result</code>-arvona, jotta kutsuva koodi voi päättää, mitä tehdä. Jos kuitenkin jatkaminen olisi <strong>epäturvallista tai haitallista</strong>, paras vaihtoehto voi olla <code>panic!</code>, jolloin ohjelmoija huomaa ongelman kehitysvaiheessa.</p>
-<p>Samoin <code>panic!</code> voi olla hyvä valinta, jos kutsumasi ulkoinen koodi palauttaa <strong>kelvottoman tilan</strong>, jota et voi itse korjata.</p>
-<h3 id="panic-vs-result"><a class="header" href="#panic-vs-result"><code>panic!</code> vs. <code>Result</code></a></h3>
-<p>Jos virhe on <strong>ennakoitavissa</strong>, on yleensä parempi <strong>palauttaa <code>Result</code></strong> kuin käyttää <code>panic!</code>-makroa. Esimerkiksi:</p>
-<ul>
-<li>Jos parseri saa <strong>virheellistä dataa</strong>, <code>Result</code> on parempi.</li>
-<li>Jos verkkopyyntö <strong>ylittää nopeusrajan</strong>, <code>Result</code> on parempi.</li>
-</ul>
-<p>Tällaisissa tapauksissa <code>Result</code> kertoo kutsuvalle koodille, että virhe on <strong>odotettavissa</strong> ja se voi päättää, miten se käsittelee sen.</p>
-<p>Jos taas operaatio voi vaarantaa ohjelman käyttäjän, kannattaa käyttää <code>panic!</code>-makroa. Esimerkiksi Rustin standardikirjasto <strong>pysäyttää ohjelman</strong>, jos yrität käyttää taulukon rajojen ulkopuolista indeksiä. Tämä on tietoturvasyistä, sillä muistin ulkopuolelle meneminen voi aiheuttaa haavoittuvuuksia.</p>
-<h3 id="räätälöityjen-tyyppien-käyttäminen-validoinnissa"><a class="header" href="#räätälöityjen-tyyppien-käyttäminen-validoinnissa">Räätälöityjen tyyppien käyttäminen validoinnissa</a></h3>
-<p>Rustin tyyppijärjestelmää voi käyttää virheiden estämiseen jo käännösaikana. Esimerkiksi:</p>
-<ul>
-<li><code>Option&lt;T&gt;</code> kertoo, että arvo voi puuttua.</li>
-<li><code>u32</code> varmistaa, että arvo ei voi olla negatiivinen.</li>
-</ul>
-<p>Tämä vähentää tarvetta virheiden tarkistamiseen ajonaikana.</p>
-<p>Esimerkkinä katsotaan <strong>luvunarvauspeliä</strong> luvusta 2. Oletetaan, että ohjelma pyytää käyttäjää arvaamaan luvun <strong>1 ja 100 välillä</strong>. Voimme lisätä tarkistuksen, joka varmistaa, että annettu arvo on sallitulla alueella:</p>
+<p>Jos joku kutsuu koodiasi ja välittää arvoja, jotka eivät ole järkeviä, on parasta palauttaa virhe, jos voit, jotta kirjastosi käyttäjä voi päättää, mitä tehdä kyseisessä tapauksessa. Jos kuitenkin jatkaminen voisi olla epäturvallista tai haitallista, paras valinta saattaa olla kutsua <code>panic!</code>:ia ja hälyttää kirjastosi käyttäjä heidän koodinsa bugista, jotta he voivat korjata sen kehityksen aikana. Vastaavasti <code>panic!</code> on usein sopivaa, jos kutsut ulkoista koodia, joka on hallintasi ulkopuolella ja palauttaa virheellisen tilan, jota et voi korjata.</p>
+<p>Kun epäonnistuminen on odotettavissa, on sopivampaa palauttaa <code>Result</code> kuin kutsua <code>panic!</code>:ia. Esimerkkejä ovat jäsentäjälle annettu virheellinen data tai HTTP-pyyntö, joka palauttaa tilan, joka ilmaisee, että olet osunut nopeusrajoitukseen. Näissä tapauksissa <code>Result</code>:in palauttaminen ilmaisee, että epäonnistuminen on odotettu mahdollisuus, jonka kutsuvan koodin on päätettävä, miten käsitellä.</p>
+<p>Kun koodisi suorittaa operaation, joka voi asettaa käyttäjän riskiin, jos sitä kutsutaan virheellisillä arvoilla, koodisi pitäisi ensin varmistaa, että arvot ovat kelvollisia, ja panikoida, jos arvot eivät ole kelvollisia. Tämä on pääasiassa turvallisuussyistä: Yritys käsitellä virheellistä dataa voi altistaa koodisi haavoittuvuuksille. Tämä on pääsyy, miksi standardikirjasto kutsuu <code>panic!</code>:ia, jos yrität muistin käyttöä alueen ulkopuolelta: Yritys käyttää muistia, joka ei kuulu nykyiseen tietorakenteeseen, on yleinen turvallisuusongelma. Funktioilla on usein <em>sopimuksia</em>: Niiden käyttäytymistä taataan vain, jos syötteet täyttävät tietyt vaatimukset. Panikointi, kun sopimus rikotaan, on järkevää, koska sopimusrikkomus osoittaa aina kutsupuolen bugia, eikä se ole sellainen virhe, jonka haluat kutsuvan koodin käsittelevän eksplisiittisesti. Itse asiassa ei ole järkevää tapaa kutsuvalle koodille palautua; kutsupuolen <em>ohjelmoijien</em> on korjattava koodi. Funktion sopimukset, erityisesti kun rikkomus aiheuttaa paniikin, tulisi selittää funktion API-dokumentaatiossa.</p>
+<p>Paljon virhetarkistuksia kaikissa funktioissasi olisi kuitenkin sanallista ja ärsyttävää. Onneksi voit käyttää Rustin tyyppijärjestelmää (ja siten kääntäjän tekemää tyyppitarkistusta) tekemään monia tarkistuksista puolestasi. Jos funktiollasi on tietty tyyppi parametrina, voit jatkaa koodisi logiikkaa tietäen, että kääntäjä on jo varmistanut, että sinulla on kelvollinen arvo. Esimerkiksi jos sinulla on tyyppi <code>Option</code>:in sijaan, ohjelmasi odottaa <em>jotain</em> eikä <em>ei mitään</em>. Koodisi ei sitten tarvitse käsitellä kahta tapausta <code>Some</code>- ja <code>None</code>-varianteille: sillä on vain yksi tapaus, jossa arvo on varmasti olemassa. Koodi, joka yrittää välittää ei mitään funktiollesi, ei edes käänny, joten funktiosi ei tarvitse tarkistaa kyseistä tapausta ajonaikana. Toinen esimerkki on etumerkittömän kokonaislukutyypin, kuten <code>u32</code>:n, käyttö, joka varmistaa, että parametri ei ole koskaan negatiivinen.</p>
+<!-- Old headings. Do not remove or links may break. -->
+<p><a id="creating-custom-types-for-validation"></a></p>
+<h3 id="mukautetut-tyypit-validointiin"><a class="header" href="#mukautetut-tyypit-validointiin">Mukautetut tyypit validointiin</a></h3>
+<p>Viedään ajatus Rustin tyyppijärjestelmän käytöstä kelvollisen arvon varmistamiseksi askeleen pidemmälle ja katsotaan mukautetun tyypin luomista validointiin. Muista arvauspeli luvusta 2, jossa koodimme pyysi käyttäjää arvaamaan luvun välillä 1 ja 100. Emme koskaan validoineet, että käyttäjän arvaus oli näiden lukujen välillä ennen kuin tarkistimme sen salaisen lukuamme vastaan; validoimme vain, että arvaus oli positiivinen. Tässä tapauksessa seuraukset eivät olleet kovin vakavat: Tulosteemme ”Liian korkea” tai ”Liian matala” olisi silti oikein. Mutta olisi hyödyllinen parannus ohjata käyttäjää kohti kelvollisia arvauksia ja saada eri käyttäytyminen, kun käyttäjä arvaa luvun, joka on alueen ulkopuolella, verrattuna tilanteeseen, jossa käyttäjä kirjoittaa esimerkiksi kirjaimia numeroiden sijaan.</p>
+<p>Yksi tapa tehdä tämä olisi jäsentää arvaus <code>i32</code>:ksi pelkän <code>u32</code>:n sijaan salliakseen mahdollisesti negatiiviset luvut, ja sitten lisätä tarkistus, että luku on alueella, näin:</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
 <pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch09-error-handling/no-listing-09-guess-out-of-range/src/main.rs:here}}</code></pre>
-<p>Tämä toimii, mutta tarkistus on toistettava jokaisessa paikassa, jossa arvoa käytetään. Parempi tapa on luoda <strong>oma tyyppi</strong>, joka <strong>takuulla</strong> sisältää vain luvut 1 ja 100 välillä:</p>
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</figure>
+<p><code>if</code>-lauseke tarkistaa, onko arvomme alueen ulkopuolella, kertoo käyttäjälle ongelmasta ja kutsuu <code>continue</code>:a aloittaakseen silmukan seuraavan iteraation ja pyytääkseen uuden arvauksen. <code>if</code>-lausekkeen jälkeen voimme jatkaa <code>guess</code>:n ja salaisen luvun vertailuja tietäen, että <code>guess</code> on välillä 1 ja 100.</p>
+<p>Tämä ei kuitenkaan ole ihanteellinen ratkaisu: Jos olisi ehdottoman kriittistä, että ohjelma toimisi vain arvoilla välillä 1 ja 100, ja sillä olisi monia funktioita tällä vaatimuksella, tällaisen tarkistuksen tekeminen jokaisessa funktiossa olisi työlästä (ja saattaisi vaikuttaa suorituskykyyn).</p>
+<p>Sen sijaan voimme luoda uuden tyypin erilliseen moduuliin ja sijoittaa validoinnit funktioon, joka luo tyypin instanssin, sen sijaan että toistaisimme validoinnit kaikkialla. Näin on turvallista funktioiden käyttää uutta tyyppiä signatuureissaan ja luottaa saamiinsa arvoihin. Listaus 9-13 näyttää yhden tavan määritellä <code>Guess</code>-tyyppi, joka luo <code>Guess</code>-instanssin vain, jos <code>new</code>-funktio saa arvon välillä 1 ja 100.</p>
+<figure class="listing" id="listing-9-13">
+<span class="file-name">Filename: src/guessing_game.rs</span>
+<pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span>{{#rustdoc_include ../listings/ch09-error-handling/listing-09-13/src/lib.rs}}
-<span class="boring">}</span></code></pre></pre>
-<p>Tässä <code>Guess</code>-rakenne varmistaa, että arvo on <strong>aina</strong> validi. <code>new</code>-metodi <strong>estää</strong> virheellisten arvojen luonnin. Näin muut funktiot voivat turvallisesti käyttää <code>Guess</code>-tyyppiä ilman ylimääräisiä tarkistuksia.</p>
-<hr />
+</span>{{#rustdoc_include ../listings/ch09-error-handling/listing-09-13/src/guessing_game.rs}}
+<span class="boring">}</span></code></pre>
+<figcaption><a href="#listing-9-13">Listing 9-13</a>: <code>Guess</code>-tyyppi, joka jatkaa vain arvoilla välillä 1 ja 100</figcaption>
+</figure>
+<p>Huomaa, että tämä koodi tiedostossa <em>src/guessing_game.rs</em> riippuu moduulimäärittelyn <code>mod guessing_game;</code> lisäämisestä tiedostoon <em>src/lib.rs</em>, jota emme ole näyttäneet tässä. Tämän uuden moduulin tiedostossa määrittelemme structin nimeltä <code>Guess</code>, jolla on kenttä nimeltä <code>value</code>, joka tallentaa <code>i32</code>:n. Tähän tallennetaan luku.</p>
+<p>Sitten toteutamme assosioitun funktion nimeltä <code>new</code> tyypille <code>Guess</code>, joka luo <code>Guess</code>-arvojen instansseja. <code>new</code>-funktio on määritelty ottamaan yksi parametri nimeltä <code>value</code> tyyppiä <code>i32</code> ja palauttamaan <code>Guess</code>:in. <code>new</code>-funktion rungon koodi testaa <code>value</code>:n varmistaakseen, että se on välillä 1 ja 100. Jos <code>value</code> ei läpäise tätä testiä, kutsumme <code>panic!</code>:ia, mikä hälyttää kutsupuolen ohjelmoijan, että heillä on bugi korjattavana, koska <code>Guess</code>:in luominen <code>value</code>:lla tämän alueen ulkopuolella rikkoisi sopimuksen, johon <code>Guess::new</code> luottaa. Olosuhteet, joissa <code>Guess::new</code> saattaa panikoida, tulisi käsitellä sen julkisessa API-dokumentaatiossa; käsittelemme dokumentointikäytäntöjä, jotka ilmaisevat <code>panic!</code>:in mahdollisuuden luomassasi API-dokumentaatiossa luvussa 14. Jos <code>value</code> läpäisee testin, luomme uuden <code>Guess</code>:in, jonka <code>value</code>-kenttä on asetettu <code>value</code>-parametriin, ja palautamme <code>Guess</code>:in.</p>
+<p>Seuraavaksi toteutamme metodin nimeltä <code>value</code>, joka lainaa <code>self</code>:ää, ei ota muita parametreja ja palauttaa <code>i32</code>:n. Tällaisia metodeja kutsutaan joskus <em>gettereiksi</em>, koska niiden tarkoitus on saada dataa kentistään ja palauttaa se. Tämä julkinen metodi on tarpeen, koska <code>Guess</code>-structin <code>value</code>-kenttä on yksityinen. On tärkeää, että <code>value</code>-kenttä on yksityinen, jotta <code>Guess</code>-structia käyttävä koodi ei saa asettaa <code>value</code>:a suoraan: <code>guessing_game</code>-moduulin ulkopuolinen koodi <em>täytyy</em> käyttää <code>Guess::new</code>-funktiota luodakseen <code>Guess</code>-instanssin, varmistaen näin, ettei <code>Guess</code>:illä voi olla <code>value</code>:a, jota <code>Guess::new</code>-funktion ehtoja ei ole tarkistettu.</p>
+<p>Funktio, jolla on parametri tai joka palauttaa vain lukuja välillä 1 ja 100, voi sitten ilmoittaa signatuurissaan, että se ottaa tai palauttaa <code>Guess</code>:in <code>i32</code>:n sijaan, eikä sen tarvitse tehdä lisätarkistuksia rungossaan.</p>
 <h2 id="yhteenveto"><a class="header" href="#yhteenveto">Yhteenveto</a></h2>
-<p>Rustin virheenkäsittely auttaa tekemään koodista <strong>luotettavampaa</strong>:</p>
-<ul>
-<li><code>panic!</code> <strong>pysäyttää ohjelman</strong>, kun jatkaminen ei ole turvallista.</li>
-<li><code>Result</code> antaa mahdollisuuden <strong>palautua virheestä</strong>.</li>
-<li>Rustin <strong>tyyppijärjestelmä</strong> voi auttaa ehkäisemään virheitä jo käännösaikana.</li>
-</ul>
-<p>Seuraavaksi tutustumme <strong>geneerisiin tyyppeihin</strong>, joita käytetään laajalti Rustin standardikirjastossa.</p>
+<p>Rustin virheenkäsittelyominaisuudet on suunniteltu auttamaan sinua kirjoittamaan vankempaa koodia. <code>panic!</code>-makro ilmaisee, että ohjelmasi on tilassa, jota se ei voi käsitellä, ja antaa sinun kertoa prosessille pysähtyä sen sijaan, että yrittäisit jatkaa virheellisillä tai vääriä arvoilla. <code>Result</code>-enum käyttää Rustin tyyppijärjestelmää ilmaisemaan, että operaatiot voivat epäonnistua tavalla, josta koodisi voi palautua. Voit käyttää <code>Result</code>:ia kertomaan koodille, joka kutsuu koodiasi, että sen on käsiteltävä mahdollinen onnistuminen tai epäonnistuminen. <code>panic!</code>:in ja <code>Result</code>:in käyttö sopivissa tilanteissa tekee koodistasi luotettavamman väistämättömien ongelmien edessä.</p>
+<p>Nyt kun olet nähnyt hyödyllisiä tapoja, joilla standardikirjasto käyttää geneerisiä tyyppejä <code>Option</code>- ja <code>Result</code>-enumien kanssa, puhumme siitä, miten geneeriset tyypit toimivat ja miten voit käyttää niitä koodissasi.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                             <a rel="prev" href="ch09-02-recoverable-errors-with-result.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                                <i class="fa fa-angle-left"></i>
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
                             <a rel="next prefetch" href="ch10-00-generics.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
                         <div style="clear: both"></div>
@@ -237,16 +255,21 @@
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                     <a rel="prev" href="ch09-02-recoverable-errors-with-result.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                        <i class="fa fa-angle-left"></i>
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
                     <a rel="next prefetch" href="ch10-00-generics.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>
 
         </div>
 
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
 
 
 
@@ -255,16 +278,17 @@
         </script>
 
 
-        <script src="elasticlunr.min.js"></script>
-        <script src="mark.min.js"></script>
-        <script src="searcher.js"></script>
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-c2a407aa.js"></script>
 
-        <script src="clipboard.min.js"></script>
-        <script src="highlight.js"></script>
-        <script src="book.js"></script>
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-abc7f01d.js"></script>
+        <script src="book-a0b12cfe.js"></script>
 
         <!-- Custom JS scripts -->
-        <script src="ferris.js"></script>
+        <script src="ferris-2317480c.js"></script>
+
 
 
     </div>

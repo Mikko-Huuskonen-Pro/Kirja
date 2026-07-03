@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Sulkeiset: anonyymit funktiot, jotka sieppaavat ympäristönsä - Rust-ohjelmointikieli</title>
+        <title>Sulkeiset - Rust-ohjelmointikieli</title>
 
 
         <!-- Custom HTML head -->
@@ -12,44 +12,56 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
 
-        <link rel="icon" href="favicon.svg">
-        <link rel="shortcut icon" href="favicon.png">
-        <link rel="stylesheet" href="css/variables.css">
-        <link rel="stylesheet" href="css/general.css">
-        <link rel="stylesheet" href="css/chrome.css">
-        <link rel="stylesheet" href="css/print.css" media="print">
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-2459343d.css">
+        <link rel="stylesheet" href="css/chrome-ae938929.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
-        <link rel="stylesheet" href="fonts/fonts.css">
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" href="highlight.css">
-        <link rel="stylesheet" href="tomorrow-night.css">
-        <link rel="stylesheet" href="ayu-highlight.css">
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="ferris.css">
-        <link rel="stylesheet" href="theme/2018-edition.css">
-        <link rel="stylesheet" href="theme/semantic-notes.css">
-        <link rel="stylesheet" href="theme/listing.css">
+        <link rel="stylesheet" href="ferris-d33b75bf.css">
+        <link rel="stylesheet" href="theme/2018-edition-4e126c62.css">
+        <link rel="stylesheet" href="theme/semantic-notes-9b5766c0.css">
+        <link rel="stylesheet" href="theme/listing-cab26221.css">
 
 
-        <!-- Provide site root to javascript -->
+        <!-- Provide site root and default themes to javascript -->
         <script>
-            var path_to_root = "";
-            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex-454febf7.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc.js"></script>
+        <script src="toc-7f90d00d.js"></script>
     </head>
     <body>
-    <div id="body-container">
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
             try {
-                var theme = localStorage.getItem('mdbook-theme');
-                var sidebar = localStorage.getItem('mdbook-sidebar');
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
 
                 if (theme.startsWith('"') && theme.endsWith('"')) {
                     localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
@@ -63,7 +75,8 @@
 
         <!-- Set the theme before any content is loaded, prevents flash -->
         <script>
-            var theme;
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
             const html = document.documentElement;
@@ -72,55 +85,59 @@
             html.classList.add("js");
         </script>
 
-        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
-            var sidebar = null;
-            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
             } else {
                 sidebar = 'hidden';
+                sidebar_toggle.checked = false;
             }
-            sidebar_toggle.checked = sidebar === 'visible';
-            html.classList.remove('sidebar-visible');
-            html.classList.add("sidebar-" + sidebar);
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
         </script>
 
-        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
             <!-- populated by js -->
             <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
             <noscript>
                 <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
             </noscript>
-            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
             </div>
         </nav>
 
-        <div id="page-wrapper" class="page-wrapper">
+        <div id="mdbook-page-wrapper" class="page-wrapper">
 
             <div class="page">
-                <div id="menu-bar-hover-placeholder"></div>
-                <div id="menu-bar" class="menu-bar sticky">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
-                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
-                            <i class="fa fa-bars"></i>
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
                         </label>
-                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
-                            <i class="fa fa-paint-brush"></i>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
                         </button>
-                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
-                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
                         </ul>
-                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
-                            <i class="fa fa-search"></i>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
                         </button>
                     </div>
 
@@ -128,52 +145,59 @@
 
                     <div class="right-buttons">
                         <a href="print.html" title="Print this book" aria-label="Print this book">
-                            <i id="print-button" class="fa fa-print"></i>
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
                         </a>
                         <a href="https://github.com/rust-lang/book" title="Git repository" aria-label="Git repository">
-                            <i id="git-repository-button" class="fa fa-github"></i>
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></span>
                         </a>
 
                     </div>
                 </div>
 
-                <div id="search-wrapper" class="hidden">
-                    <form id="searchbar-outer" class="searchbar-outer">
-                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
                     </form>
-                    <div id="searchresults-outer" class="searchresults-outer hidden">
-                        <div id="searchresults-header" class="searchresults-header"></div>
-                        <ul id="searchresults">
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
                         </ul>
                     </div>
                 </div>
 
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
                 <script>
-                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
-                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
-                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
                         link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
                     });
                 </script>
 
-                <div id="content" class="content">
+                <div id="mdbook-content" class="content">
                     <main>
-                        <!-- Old heading. Do not remove or links may break. -->
-<p><a id="closures-anonymous-functions-that-can-capture-their-environment"></a></p>
-<h2 id="sulkeumat-anonyymit-funktiot-jotka-sieppaavat-ympäristönsä"><a class="header" href="#sulkeumat-anonyymit-funktiot-jotka-sieppaavat-ympäristönsä">Sulkeumat: anonyymit funktiot, jotka sieppaavat ympäristönsä</a></h2>
-<p>Rustin sulkeumat ovat anonyymejä funktioita, jotka voidaan tallentaa muuttujaan tai
-välittää argumenttina toisille funktioille. Sulkeuman voi määrittää yhdessä paikassa ja
+                        <!-- Old headings. Do not remove or links may break. -->
+<p><a id="closures-anonymous-functions-that-can-capture-their-environment"></a>
+<a id="closures-anonymous-functions-that-capture-their-environment"></a></p>
+<h2 id="sulkeiset"><a class="header" href="#sulkeiset">Sulkeiset</a></h2>
+<p>Rustin sulkeiset ovat anonyymejä funktioita, jotka voidaan tallentaa muuttujaan tai
+välittää argumenttina toisille funktioille. Sulkeisen voi määrittää yhdessä paikassa ja
 kutsua sitä myöhemmin toisessa yhteydessä sen arvioimiseksi. Toisin kuin funktiot,
-sulkeumat voivat siepata arvoja siitä laajuudesta, jossa ne on määritelty. Näytämme,
-miten nämä sulkeumien ominaisuudet mahdollistavat koodin uudelleenkäytön ja
+sulkeiset voivat siepata arvoja siitä laajuudesta, jossa ne on määritelty. Näytämme,
+miten nämä sulkeisten ominaisuudet mahdollistavat koodin uudelleenkäytön ja
 käyttäytymisen mukauttamisen.</p>
 <!-- Old headings. Do not remove or links may break. -->
 <p><a id="creating-an-abstraction-of-behavior-with-closures"></a>
 <a id="refactoring-using-functions"></a>
-<a id="refactoring-with-closures-to-store-code"></a></p>
-<h3 id="ympäristön-sieppaaminen-sulkeumilla"><a class="header" href="#ympäristön-sieppaaminen-sulkeumilla">Ympäristön sieppaaminen sulkeumilla</a></h3>
-<p>Tarkastelemme ensin, miten voimme käyttää sulkeumia sieppaamaan arvoja määrittelynsä
+<a id="refactoring-with-closures-to-store-code"></a>
+<a id="capturing-the-environment-with-closures"></a></p>
+<h3 id="ympäristön-sieppaaminen"><a class="header" href="#ympäristön-sieppaaminen">Ympäristön sieppaaminen</a></h3>
+<p>Tarkastelemme ensin, miten voimme käyttää sulkeisia sieppaamaan arvoja määrittelynsä
 ympäristöstä myöhempää käyttöä varten. Tässä on skenaario: aika ajoin T-paitayrityksemme
 antaa eksklusiivisen, rajoitetun erän paidan postituslistallamme olevalle henkilölle
 kampanjana. Postituslistan jäsenet voivat halutessaan lisätä suosikkivärinsä profiiliinsa.
@@ -185,200 +209,205 @@ jolla on variantit <code>Red</code> ja <code>Blue</code> (rajoitamme värien mä
 Yrityksen varastoa edustaa <code>Inventory</code>-rakenne, jossa on <code>shirts</code>-kenttä, joka sisältää
 <code>Vec&lt;ShirtColor&gt;</code>-vektorin varastossa olevista paidan väreistä. <code>Inventory</code>-rakenteelle
 määritelty <code>giveaway</code>-metodi saa ilmaispaidan voittajan valinnaisen paidan väripreferenssin
-ja palauttaa värin, jonka henkilö saa. Tämä asetelma on esitetty listauksessa 13-1:</p>
-<figure class="listing">
+ja palauttaa värin, jonka henkilö saa. Tämä asetelma on esitetty listauksessa 13-1.</p>
+<figure class="listing" id="listing-13-1">
 <span class="file-name">Filename: src/main.rs</span>
 <pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch13-functional-features/listing-13-01/src/main.rs}}</code></pre>
-<figcaption>Listing 13-1: T-paitayrityksen kampanjatilanne</figcaption>
+<figcaption><a href="#listing-13-1">Listing 13-1</a>: T-paitayrityksen kampanjatilanne</figcaption>
 </figure>
 <p><code>main</code>-funktiossa määritellyssä <code>store</code>-muuttujassa on kaksi sinistä ja yksi punainen paita
 jäljellä jaettavaksi tässä rajoitetun erän kampanjassa. Kutsumme <code>giveaway</code>-metodia
 käyttäjälle, joka haluaa punaisen paidan, ja käyttäjälle, jolla ei ole mitään preferenssiä.</p>
-<p>Tämän koodin voisi toteuttaa monin tavoin, ja tässä keskitymme sulkeumiin, joten olemme
+<p>Tämän koodin voisi toteuttaa monin tavoin, ja tässä keskitymme sulkeisiin, joten olemme
 pysytelleet käsitteissä, jotka olet jo oppinut, lukuun ottamatta <code>giveaway</code>-metodin runkoa,
-joka käyttää sulkeumaa. <code>giveaway</code>-metodissa saamme käyttäjän preferenssin parametrina
+joka käyttää sulkeista. <code>giveaway</code>-metodissa saamme käyttäjän preferenssin parametrina
 tyypiltä <code>Option&lt;ShirtColor&gt;</code> ja kutsumme <code>unwrap_or_else</code>-metodia <code>user_preference</code>-arvolla.
 <a href="../std/option/enum.Option.html#method.unwrap_or_else"><code>unwrap_or_else</code>-metodi tyypille <code>Option&lt;T&gt;</code></a><!-- ignore --> on määritelty
-standardikirjastossa. Se ottaa yhden argumentin: sulkeuman ilman argumentteja, joka palauttaa
+standardikirjastossa. Se ottaa yhden argumentin: sulkeisen ilman argumentteja, joka palauttaa
 arvon <code>T</code> (saman tyypin, joka on tallennettuna <code>Option&lt;T&gt;</code>-tyypin <code>Some</code>-varianttiin; tässä
 tapauksessa <code>ShirtColor</code>). Jos <code>Option&lt;T&gt;</code> on <code>Some</code>-variantti, <code>unwrap_or_else</code> palauttaa
 arvon <code>Some</code>-variantin sisältä. Jos <code>Option&lt;T&gt;</code> on <code>None</code>-variantti, <code>unwrap_or_else</code> kutsuu
-sulkeumaa ja palauttaa sulkeuman palauttaman arvon.</p>
-<p>Määrittelemme sulkeumalausekkeen <code>|| self.most_stocked()</code> argumentiksi <code>unwrap_or_else</code>-metodille.
-Tämä on sulkeuma, joka ei itse ota parametreja (jos sulkeumalla olisi parametreja, ne
-näkyisivät kahden pystyviivan välissä). Sulkeuman runko kutsuu <code>self.most_stocked()</code>-metodia.
-Määrittelemme sulkeuman tässä, ja <code>unwrap_or_else</code>-metodin toteutus arvioi sulkeuman myöhemmin,
+sulkeista ja palauttaa sulkeisen palauttaman arvon.</p>
+<p>Määrittelemme sulkeislausekkeen <code>|| self.most_stocked()</code> argumentiksi <code>unwrap_or_else</code>-metodille.
+Tämä on sulkeinen, joka ei itse ota parametreja (jos sulkeisella olisi parametreja, ne
+näkyisivät kahden pystyviivan välissä). Sulkeisen runko kutsuu <code>self.most_stocked()</code>-metodia.
+Määrittelemme sulkeisen tässä, ja <code>unwrap_or_else</code>-metodin toteutus arvioi sulkeisen myöhemmin,
 jos tulos tarvitaan.</p>
 <p>Tämän koodin suorittaminen tulostaa:</p>
 <pre><code class="language-console">{{#include ../listings/ch13-functional-features/listing-13-01/output.txt}}
 </code></pre>
-<p>Yksi mielenkiintoinen näkökohta on, että olemme välittäneet sulkeuman, joka kutsuu
+<p>Yksi mielenkiintoinen näkökohta on, että olemme välittäneet sulkeisen, joka kutsuu
 <code>self.most_stocked()</code>-metodia nykyisellä <code>Inventory</code>-instanssilla. Standardikirjaston ei
 tarvinnut tietää mitään määrittelemistämme <code>Inventory</code>- tai <code>ShirtColor</code>-tyypeistä tai
-logiikasta, jota haluamme käyttää tässä skenaariossa. Sulkeuma sieppaa muuttumattoman
+logiikasta, jota haluamme käyttää tässä skenaariossa. Sulkeinen sieppaa muuttumattoman
 viittauksen <code>self</code>-<code>Inventory</code>-instanssiin ja välittää sen määrittelemämme koodin kanssa
 <code>unwrap_or_else</code>-metodille. Funktiot puolestaan eivät pysty sieppaamaan ympäristöään tällä
 tavalla.</p>
-<h3 id="sulkeumien-tyyppipäätelmä-ja-annotointi"><a class="header" href="#sulkeumien-tyyppipäätelmä-ja-annotointi">Sulkeumien tyyppipäätelmä ja annotointi</a></h3>
-<p>Funktioiden ja sulkeumien välillä on muitakin eroja. Sulkeumat eivät yleensä vaadi
+<!-- Old headings. Do not remove or links may break. -->
+<p><a id="closure-type-inference-and-annotation"></a></p>
+<h3 id="sulkeisten-tyyppipäätelmä-ja-annotointi"><a class="header" href="#sulkeisten-tyyppipäätelmä-ja-annotointi">Sulkeisten tyyppipäätelmä ja annotointi</a></h3>
+<p>Funktioiden ja sulkeisten välillä on muitakin eroja. Sulkeiset eivät yleensä vaadi
 parametrien tai palautusarvon tyyppien annotointia kuten <code>fn</code>-funktiot. Funktioissa
 tyyppiannotaatiot ovat pakollisia, koska tyypit ovat osa käyttäjille paljastettua
 eksplisiittistä rajapintaa. Tämän rajapinnan jäykkä määrittely on tärkeää varmistaakseen,
 että kaikki ovat samaa mieltä siitä, minkä tyyppisiä arvoja funktio käyttää ja palauttaa.
-Sulkeumia ei puolestaan käytetä tällaisessa paljastetussa rajapinnassa: ne tallennetaan
+Sulkeisia ei puolestaan käytetä tällaisessa paljastetussa rajapinnassa: ne tallennetaan
 muuttujiin ja käytetään nimeämättä niitä ja paljastamatta niitä kirjastomme käyttäjille.</p>
-<p>Sulkeumat ovat tyypillisesti lyhyitä ja merkityksellisiä vain kapeassa kontekstissa eivätkä
+<p>Sulkeiset ovat tyypillisesti lyhyitä ja merkityksellisiä vain kapeassa kontekstissa eivätkä
 missä tahansa satunnaisessa skenaariossa. Näissä rajallisissa konteksteissa kääntäjä pystyy
 päättelemään parametrien ja palautustyypin tyypit, samoin kuin se pystyy päättelemään useimpien
-muuttujien tyypit (on harvinaisia tapauksia, joissa kääntäjä tarvitsee myös sulkeuman
+muuttujien tyypit (on harvinaisia tapauksia, joissa kääntäjä tarvitsee myös sulkeisen
 tyyppiannotaatioita).</p>
 <p>Kuten muuttujien kanssa, voimme lisätä tyyppiannotaatioita, jos haluamme lisätä eksplisiittisyyttä
 ja selkeyttä kustannuksella siitä, että olemme sanallisempia kuin on ehdottoman välttämätöntä.
-Sulkeuman tyyppien annotointi näyttäisi listauksessa 13-2 esitetyltä määrittelyltä. Tässä
-esimerkissä määrittelemme sulkeuman ja tallennamme sen muuttujaan sen sijaan, että määrittäisimme
-sulkeuman siinä kohdassa, jossa välitämme sen argumenttina, kuten teimme listauksessa 13-1.</p>
-<figure class="listing">
+Sulkeisen tyyppien annotointi näyttäisi listauksessa 13-2 esitetyltä määrittelyltä. Tässä
+esimerkissä määrittelemme sulkeisen ja tallennamme sen muuttujaan sen sijaan, että määrittäisimme
+sulkeisen siinä kohdassa, jossa välitämme sen argumenttina, kuten teimme listauksessa 13-1.</p>
+<figure class="listing" id="listing-13-2">
 <span class="file-name">Filename: src/main.rs</span>
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+<pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>{{#rustdoc_include ../listings/ch13-functional-features/listing-13-02/src/main.rs:here}}
-<span class="boring">}</span></code></pre></pre>
-<figcaption>Listing 13-2: Sulkeuman parametrin ja palautusarvon tyyppien valinnaisten tyyppiannotaatioiden lisääminen</figcaption>
+<span class="boring">}</span></code></pre>
+<figcaption><a href="#listing-13-2">Listing 13-2</a>: Sulkeisen parametrin ja palautusarvon tyyppien valinnaisten tyyppiannotaatioiden lisääminen</figcaption>
 </figure>
-<p>Tyyppiannotaatioiden lisäämisen jälkeen sulkeumien syntaksi näyttää enemmän funktioiden
-syntaksilta. Tässä määrittelemme funktion, joka lisää 1 parametrilleen, ja sulkeuman, jolla
+<p>Tyyppiannotaatioiden lisäämisen jälkeen sulkeisten syntaksi näyttää enemmän funktioiden
+syntaksilta. Tässä määrittelemme funktion, joka lisää 1 parametrilleen, ja sulkeisen, jolla
 on sama käyttäytyminen, vertailua varten. Olemme lisänneet välilyöntejä kohdistaaksemme
-asiaankuuluvat osat. Tämä havainnollistaa, miten sulkeumien syntaksi on samankaltainen
+asiaankuuluvat osat. Tämä havainnollistaa, miten sulkeisten syntaksi on samankaltainen
 kuin funktioiden syntaksi, paitsi pystyviivojen käyttö ja valinnaisen syntaksin määrä:</p>
 <pre><code class="language-rust ignore">fn  add_one_v1   (x: u32) -&gt; u32 { x + 1 }
 let add_one_v2 = |x: u32| -&gt; u32 { x + 1 };
 let add_one_v3 = |x|             { x + 1 };
 let add_one_v4 = |x|               x + 1  ;</code></pre>
 <p>Ensimmäinen rivi näyttää funktion määrittelyn, ja toinen rivi näyttää täysin annotoidun
-sulkeuman määrittelyn. Kolmannella rivillä poistamme tyyppiannotaatiot sulkeuman määrittelystä.
-Neljännellä rivillä poistamme aaltosulkeet, jotka ovat valinnaisia, koska sulkeuman rungossa
+sulkeisen määrittelyn. Kolmannella rivillä poistamme tyyppiannotaatiot sulkeisen määrittelystä.
+Neljännellä rivillä poistamme aaltosulkeet, jotka ovat valinnaisia, koska sulkeisen rungossa
 on vain yksi lauseke. Nämä ovat kaikki kelvollisia määrittelyjä, jotka tuottavat saman
-käyttäytymisen, kun niitä kutsutaan. <code>add_one_v3</code>- ja <code>add_one_v4</code>-rivit vaativat sulkeumien
+käyttäytymisen, kun niitä kutsutaan. <code>add_one_v3</code>- ja <code>add_one_v4</code>-rivit vaativat sulkeisten
 arviointia, jotta ne voivat kääntyä, koska tyypit päätellään niiden käytöstä. Tämä on
 samankaltaista kuin <code>let v = Vec::new();</code>, joka vaatii joko tyyppiannotaatioita tai jonkin
 tyypin arvoja lisättäväksi <code>Vec</code>-kokoelmaan, jotta Rust pystyy päättelemään tyypin.</p>
-<p>Sulkeumien määrittelyissä kääntäjä päättelee yhden konkreettisen tyypin kullekin niiden
-parametrille ja palautusarvolle. Esimerkiksi listaus 13-3 näyttää lyhyen sulkeuman määrittelyn,
-joka vain palauttaa parametrina saamansa arvon. Tämä sulkeuma ei ole kovin hyödyllinen muuten
+<p>Sulkeisten määrittelyissä kääntäjä päättelee yhden konkreettisen tyypin kullekin niiden
+parametrille ja palautusarvolle. Esimerkiksi listaus 13-3 näyttää lyhyen sulkeisen määrittelyn,
+joka vain palauttaa parametrina saamansa arvon. Tämä sulkeinen ei ole kovin hyödyllinen muuten
 kuin tämän esimerkin tarkoituksia varten. Huomaa, ettemme ole lisänneet määrittelyyn mitään
-tyyppiannotaatioita. Koska tyyppiannotaatioita ei ole, voimme kutsua sulkeumaa millä tahansa
+tyyppiannotaatioita. Koska tyyppiannotaatioita ei ole, voimme kutsua sulkeista millä tahansa
 tyypillä, minkä olemme tehneet tässä ensimmäisellä kerralla <code>String</code>-tyypillä. Jos yritämme
-sitten kutsua <code>example_closure</code>-sulkeumaa kokonaisluvulla, saamme virheen.</p>
-<figure class="listing">
+sitten kutsua <code>example_closure</code>-sulkeista kokonaisluvulla, saamme virheen.</p>
+<figure class="listing" id="listing-13-3">
 <span class="file-name">Filename: src/main.rs</span>
 <pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch13-functional-features/listing-13-03/src/main.rs:here}}</code></pre>
-<figcaption>Listing 13-3: Yritys kutsua sulkeumaa, jonka tyypit on päätelty, kahdella eri tyypillä</figcaption>
+<figcaption><a href="#listing-13-3">Listing 13-3</a>: Yritys kutsua sulkeista, jonka tyypit on päätelty, kahdella eri tyypillä</figcaption>
 </figure>
 <p>Kääntäjä antaa meille tämän virheen:</p>
 <pre><code class="language-console">{{#include ../listings/ch13-functional-features/listing-13-03/output.txt}}
 </code></pre>
-<p>Ensimmäisellä kerralla, kun kutsumme <code>example_closure</code>-sulkeumaa <code>String</code>-arvolla, kääntäjä
-päättelee <code>x</code>:n tyypiksi ja sulkeuman palautustyypiksi <code>String</code>. Nämä tyypit lukitaan sitten
-<code>example_closure</code>-sulkeumaan, ja saamme tyyppivirheen, kun yritämme seuraavaksi käyttää
-eri tyyppiä saman sulkeuman kanssa.</p>
+<p>Ensimmäisellä kerralla, kun kutsumme <code>example_closure</code>-sulkeista <code>String</code>-arvolla, kääntäjä
+päättelee <code>x</code>:n tyypiksi ja sulkeisen palautustyypiksi <code>String</code>. Nämä tyypit lukitaan sitten
+<code>example_closure</code>-sulkeiseen, ja saamme tyyppivirheen, kun yritämme seuraavaksi käyttää
+eri tyyppiä saman sulkeisen kanssa.</p>
 <h3 id="viittausten-sieppaaminen-tai-omistajuuden-siirtäminen"><a class="header" href="#viittausten-sieppaaminen-tai-omistajuuden-siirtäminen">Viittausten sieppaaminen tai omistajuuden siirtäminen</a></h3>
-<p>Sulkeumat voivat siepata arvoja ympäristöstään kolmella tavalla, jotka vastaavat suoraan
+<p>Sulkeiset voivat siepata arvoja ympäristöstään kolmella tavalla, jotka vastaavat suoraan
 kolmea tapaa, joilla funktio voi ottaa parametrin: lainata muuttumattomasti, lainata
-muuttuvasti ja ottaa omistajuuden. Sulkeuma päättää, kumpaa näistä käyttää, sen perusteella,
+muuttuvasti ja ottaa omistajuuden. Sulkeinen päättää, kumpaa näistä käyttää, sen perusteella,
 mitä funktion runko tekee siepatuille arvoille.</p>
-<p>Listauksessa 13-4 määrittelemme sulkeuman, joka sieppaa muuttumattoman viittauksen <code>list</code>-nimiseen
-vektoriin, koska se tarvitsee vain muuttumattoman viittauksen arvon tulostamiseen:</p>
-<figure class="listing">
+<p>Listauksessa 13-4 määrittelemme sulkeisen, joka sieppaa muuttumattoman viittauksen <code>list</code>-nimiseen
+vektoriin, koska se tarvitsee vain muuttumattoman viittauksen arvon tulostamiseen.</p>
+<figure class="listing" id="listing-13-4">
 <span class="file-name">Filename: src/main.rs</span>
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+<pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>{{#rustdoc_include ../listings/ch13-functional-features/listing-13-04/src/main.rs}}
-<span class="boring">}</span></code></pre></pre>
-<figcaption>Listing 13-4: Muuttumattoman viittauksen sieppaavan sulkeuman määrittely ja kutsuminen</figcaption>
+<span class="boring">}</span></code></pre>
+<figcaption><a href="#listing-13-4">Listing 13-4</a>: Muuttumattoman viittauksen sieppaavan sulkeisen määrittely ja kutsuminen</figcaption>
 </figure>
-<p>Tämä esimerkki havainnollistaa myös, että muuttuja voi sitoutua sulkeuman määrittelyyn, ja
-voimme myöhemmin kutsua sulkeumaa käyttämällä muuttujan nimeä ja sulkeita ikään kuin muuttujan
+<p>Tämä esimerkki havainnollistaa myös, että muuttuja voi sitoutua sulkeisen määrittelyyn, ja
+voimme myöhemmin kutsua sulkeista käyttämällä muuttujan nimeä ja sulkeita ikään kuin muuttujan
 nimi olisi funktion nimi.</p>
 <p>Koska voimme olla samanaikaisesti useita muuttumattomia viittauksia <code>list</code>-muuttujaan, <code>list</code>
-on edelleen käytettävissä koodista ennen sulkeuman määrittelyä, sulkeuman määrittelyn jälkeen
-mutta ennen sulkeuman kutsumista ja sulkeuman kutsumisen jälkeen. Tämä koodi kääntyy, suorittuu
+on edelleen käytettävissä koodista ennen sulkeisen määrittelyä, sulkeisen määrittelyn jälkeen
+mutta ennen sulkeisen kutsumista ja sulkeisen kutsumisen jälkeen. Tämä koodi kääntyy, suorittuu
 ja tulostaa:</p>
 <pre><code class="language-console">{{#include ../listings/ch13-functional-features/listing-13-04/output.txt}}
 </code></pre>
-<p>Seuraavaksi listauksessa 13-5 muutamme sulkeuman runkoa niin, että se lisää elementin <code>list</code>-vektoriin.
-Sulkeuma sieppaa nyt muuttuvan viittauksen:</p>
-<figure class="listing">
+<p>Seuraavaksi listauksessa 13-5 muutamme sulkeisen runkoa niin, että se lisää elementin <code>list</code>-vektoriin.
+Sulkeinen sieppaa nyt muuttuvan viittauksen.</p>
+<figure class="listing" id="listing-13-5">
 <span class="file-name">Filename: src/main.rs</span>
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+<pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>{{#rustdoc_include ../listings/ch13-functional-features/listing-13-05/src/main.rs}}
-<span class="boring">}</span></code></pre></pre>
-<figcaption>Listing 13-5: Muuttuvan viittauksen sieppaavan sulkeuman määrittely ja kutsuminen</figcaption>
+<span class="boring">}</span></code></pre>
+<figcaption><a href="#listing-13-5">Listing 13-5</a>: Muuttuvan viittauksen sieppaavan sulkeisen määrittely ja kutsuminen</figcaption>
 </figure>
 <p>Tämä koodi kääntyy, suorittuu ja tulostaa:</p>
 <pre><code class="language-console">{{#include ../listings/ch13-functional-features/listing-13-05/output.txt}}
 </code></pre>
-<p>Huomaa, ettei <code>println!</code>-kutsua ole enää <code>borrows_mutably</code>-sulkeuman määrittelyn ja kutsumisen
+<p>Huomaa, ettei <code>println!</code>-kutsua ole enää <code>borrows_mutably</code>-sulkeisen määrittelyn ja kutsumisen
 välissä: kun <code>borrows_mutably</code> määritellään, se sieppaa muuttuvan viittauksen <code>list</code>-muuttujaan.
-Emme käytä sulkeumaa uudelleen sen kutsumisen jälkeen, joten muuttuva laina päättyy. Sulkeuman
+Emme käytä sulkeista uudelleen sen kutsumisen jälkeen, joten muuttuva laina päättyy. Sulkeisen
 määrittelyn ja kutsumisen välissä muuttumatonta lainaa tulostusta varten ei sallita, koska muita
 lainoja ei sallita, kun on muuttuva laina. Kokeile lisätä <code>println!</code>-kutsu sinne ja katso,
 millaisen virheilmoituksen saat!</p>
-<p>Jos haluat pakottaa sulkeuman ottamaan omistajuuden arvoista, joita se käyttää ympäristössään,
-vaikka sulkeuman runko ei ehdottomasti tarvitsisikaan omistajuutta, voit käyttää <code>move</code>-avainsanaa
+<p>Jos haluat pakottaa sulkeisen ottamaan omistajuuden arvoista, joita se käyttää ympäristössään,
+vaikka sulkeisen runko ei ehdottomasti tarvitsisikaan omistajuutta, voit käyttää <code>move</code>-avainsanaa
 parametrilistan edessä.</p>
-<p>Tämä tekniikka on enimmäkseen hyödyllinen, kun välitetään sulkeuma uudelle säikeelle siirtämään
+<p>Tämä tekniikka on enimmäkseen hyödyllinen, kun välitetään sulkeinen uudelle säikeelle siirtämään
 data niin, että uusi säie omistaa sen. Käsittelemme säikeitä ja syitä niiden käyttöön
 yksityiskohtaisesti luvussa 16 puhuessamme rinnakkaisuudesta, mutta tutkitaan nyt lyhyesti
-uuden säikeen luomista sulkeumalla, joka tarvitsee <code>move</code>-avainsanan. Listaus 13-6 näyttää
+uuden säikeen luomista sulkeisella, joka tarvitsee <code>move</code>-avainsanan. Listaus 13-6 näyttää
 listauksen 13-4 muutetun version, joka tulostaa vektorin uudessa säikeessä pääsäikeen sijaan:</p>
-<figure class="listing">
+<figure class="listing" id="listing-13-6">
 <span class="file-name">Filename: src/main.rs</span>
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+<pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>{{#rustdoc_include ../listings/ch13-functional-features/listing-13-06/src/main.rs}}
-<span class="boring">}</span></code></pre></pre>
-<figcaption>Listing 13-6: <code>move</code>-avainsanan käyttö pakottamaan säikeen sulkeuma ottamaan omistajuuden <code>list</code>-muuttujasta</figcaption>
+<span class="boring">}</span></code></pre>
+<figcaption><a href="#listing-13-6">Listing 13-6</a>: <code>move</code>-avainsanan käyttö pakottamaan säikeen sulkeinen ottamaan omistajuuden <code>list</code>-muuttujasta</figcaption>
 </figure>
-<p>Luomme uuden säikeen antamalla säikeelle sulkeuman argumenttina suoritettavaksi. Sulkeuman
-runko tulostaa listan. Listauksessa 13-4 sulkeuma sieppasi <code>list</code>-muuttujan vain muuttumattomalla
+<p>Luomme uuden säikeen antamalla säikeelle sulkeisen argumenttina suoritettavaksi. Sulkeisen
+runko tulostaa listan. Listauksessa 13-4 sulkeinen sieppasi <code>list</code>-muuttujan vain muuttumattomalla
 viittauksella, koska se on vähimmän määrä pääsyä <code>list</code>-muuttujaan sen tulostamiseen. Tässä
-esimerkissä, vaikka sulkeuman runko tarvitsee edelleen vain muuttumattoman viittauksen, meidän
-täytyy määrittää, että <code>list</code> siirretään sulkeumaan asettamalla <code>move</code>-avainsana sulkeuman
-määrittelyn alkuun. Uusi säie saattaa valmistua ennen kuin pääsäie valmistuu, tai pääsäie
+esimerkissä, vaikka sulkeisen runko tarvitsee edelleen vain muuttumattoman viittauksen, meidän
+täytyy määrittää, että <code>list</code> siirretään sulkeiseen asettamalla <code>move</code>-avainsana sulkeisen
+määrittelyn alkuun. Jos pääsäie suorittaisi lisää operaatioita ennen kuin kutsuu <code>join</code>-metodia
+uudella säikeellä, uusi säie saattaa valmistua ennen kuin pääsäie valmistuu, tai pääsäie
 saattaa valmistua ensin. Jos pääsäie säilyttäisi omistajuuden <code>list</code>-muuttujaan mutta päättyisi
 ennen uutta säiettä ja pudottaisi <code>list</code>-muuttujan, säikeen muuttumaton viittaus olisi virheellinen.
-Siksi kääntäjä vaatii, että <code>list</code> siirretään uudelle säikeelle annettuun sulkeumaan, jotta
+Siksi kääntäjä vaatii, että <code>list</code> siirretään uudelle säikeelle annettuun sulkeiseen, jotta
 viittaus olisi kelvollinen. Kokeile poistaa <code>move</code>-avainsana tai käyttää <code>list</code>-muuttujaa
-pääsäikeessä sulkeuman määrittelyn jälkeen ja katso, mitä kääntäjävirheitä saat!</p>
+pääsäikeessä sulkeisen määrittelyn jälkeen ja katso, mitä kääntäjävirheitä saat!</p>
 <!-- Old headings. Do not remove or links may break. -->
 <p><a id="storing-closures-using-generic-parameters-and-the-fn-traits"></a>
 <a id="limitations-of-the-cacher-implementation"></a>
-<a id="moving-captured-values-out-of-the-closure-and-the-fn-traits"></a></p>
-<h3 id="kaapattujen-arvojen-siirtäminen-sulkeumasta-ja-fn-traitit"><a class="header" href="#kaapattujen-arvojen-siirtäminen-sulkeumasta-ja-fn-traitit">Kaapattujen arvojen siirtäminen sulkeumasta ja <code>Fn</code>-traitit</a></h3>
-<p>Kun sulkeuma on siepannut viittauksen tai ottanut omistajuuden arvosta sulkeuman määrittelypaikan
-ympäristöstä (vaikuttaen siihen, mitä, jos mitään, siirretään sulkeumaan <em>sisään</em>), sulkeuman
-rungon koodi määrittää, mitä viittauksille tai arvoille tapahtuu, kun sulkeuma arvioidaan myöhemmin
-(vaikuttaen siihen, mitä, jos mitään, siirretään sulkeumasta <em>ulos</em>). Sulkeuman runko voi tehdä
-mitä tahansa seuraavista: siirtää siepatun arvon sulkeumasta ulos, mutatoida siepattua arvoa,
-ei siirtää eikä mutatoida arvoa, tai olla alun perin sieppaamatta mitään ympäristöstä.</p>
-<p>Tapa, jolla sulkeuma sieppaa ja käsittelee arvoja ympäristöstä, vaikuttaa siihen, mitä traitteja
-sulkeuma toteuttaa, ja traittien avulla funktiot ja rakenteet voivat määrittää, millaisia sulkeumia
-ne voivat käyttää. Sulkeumat toteuttavat automaattisesti yhden, kaksi tai kaikki kolme näistä
-<code>Fn</code>-traiteista additiivisesti sen perusteella, miten sulkeuman runko käsittelee arvoja:</p>
-<ol>
-<li><code>FnOnce</code> koskee sulkeumia, joita voidaan kutsua kerran. Kaikki sulkeumat toteuttavat
-vähintään tämän traitin, koska kaikkia sulkeumia voidaan kutsua. Sulkeuma, joka siirtää
+<a id="moving-captured-values-out-of-the-closure-and-the-fn-traits"></a>
+<a id="moving-captured-values-out-of-closures-and-the-fn-traits"></a></p>
+<h3 id="siepatun-arvon-siirtäminen-sulkeisesta-ulos"><a class="header" href="#siepatun-arvon-siirtäminen-sulkeisesta-ulos">Siepatun arvon siirtäminen sulkeisesta ulos</a></h3>
+<p>Kun sulkeinen on siepannut viittauksen tai ottanut omistajuuden arvosta sulkeisen määrittelypaikan
+ympäristöstä (vaikuttaen siihen, mitä, jos mitään, siirretään sulkeiseen <em>sisään</em>), sulkeisen
+rungon koodi määrittää, mitä viittauksille tai arvoille tapahtuu, kun sulkeinen arvioidaan myöhemmin
+(vaikuttaen siihen, mitä, jos mitään, siirretään sulkeisesta <em>ulos</em>).</p>
+<p>Sulkeisen runko voi tehdä mitä tahansa seuraavista: siirtää siepatun arvon sulkeisesta ulos,
+mutatoida siepattua arvoa, ei siirtää eikä mutatoida arvoa, tai olla alun perin sieppaamatta
+mitään ympäristöstä.</p>
+<p>Tapa, jolla sulkeinen sieppaa ja käsittelee arvoja ympäristöstä, vaikuttaa siihen, mitä traitteja
+sulkeinen toteuttaa, ja traittien avulla funktiot ja rakenteet voivat määrittää, millaisia sulkeisia
+ne voivat käyttää. Sulkeiset toteuttavat automaattisesti yhden, kaksi tai kaikki kolme näistä
+<code>Fn</code>-traiteista additiivisesti sen perusteella, miten sulkeisen runko käsittelee arvoja:</p>
+<ul>
+<li><code>FnOnce</code> koskee sulkeisia, joita voidaan kutsua kerran. Kaikki sulkeiset toteuttavat
+vähintään tämän traitin, koska kaikkia sulkeisia voidaan kutsua. Sulkeinen, joka siirtää
 siepatut arvot rungostaan ulos, toteuttaa vain <code>FnOnce</code>-traitin eikä mitään muista <code>Fn</code>-traiteista,
 koska sitä voidaan kutsua vain kerran.</li>
-<li><code>FnMut</code> koskee sulkeumia, jotka eivät siirrä siepattuja arvoja rungostaan ulos, mutta
-jotka saattavat mutatoida siepattuja arvoja. Näitä sulkeumia voidaan kutsua useammin kuin
+<li><code>FnMut</code> koskee sulkeisia, jotka eivät siirrä siepattuja arvoja rungostaan ulos, mutta
+jotka saattavat mutatoida siepattuja arvoja. Näitä sulkeisia voidaan kutsua useammin kuin
 kerran.</li>
-<li><code>Fn</code> koskee sulkeumia, jotka eivät siirrä siepattuja arvoja rungostaan ulos eivätkä mutatoi
-siepattuja arvoja, sekä sulkeumia, jotka eivät sieppaa mitään ympäristöstään. Näitä sulkeumia
+<li><code>Fn</code> koskee sulkeisia, jotka eivät siirrä siepattuja arvoja rungostaan ulos eivätkä mutatoi
+siepattuja arvoja, sekä sulkeisia, jotka eivät sieppaa mitään ympäristöstään. Näitä sulkeisia
 voidaan kutsua useammin kuin kerran mutatoimatta ympäristöään, mikä on tärkeää tapauksissa,
-kuten sulkeuman kutsumisessa useita kertoja rinnakkain.</li>
-</ol>
+kuten sulkeisen kutsumisessa useita kertoja rinnakkain.</li>
+</ul>
 <p>Katsotaan <code>unwrap_or_else</code>-metodin määrittelyä tyypille <code>Option&lt;T&gt;</code>, jota käytimme listauksessa 13-1:</p>
 <pre><code class="language-rust ignore">impl&lt;T&gt; Option&lt;T&gt; {
     pub fn unwrap_or_else&lt;F&gt;(self, f: F) -&gt; T
@@ -395,87 +424,88 @@ kuten sulkeuman kutsumisessa useita kertoja rinnakkain.</li>
 Tyyppi <code>T</code> on myös <code>unwrap_or_else</code>-funktion palautustyyppi: koodi, joka kutsuu <code>unwrap_or_else</code>-metodia
 <code>Option&lt;String&gt;</code>-arvolla, esimerkiksi, saa <code>String</code>-arvon.</p>
 <p>Seuraavaksi huomaa, että <code>unwrap_or_else</code>-funktiolla on lisägeneerinen tyyppiparametri <code>F</code>. <code>F</code>-tyyppi
-on parametrin <code>f</code> tyyppi, joka on sulkeuma, jonka annamme kutsuessamme <code>unwrap_or_else</code>-metodia.</p>
+on parametrin <code>f</code> tyyppi, joka on sulkeinen, jonka annamme kutsuessamme <code>unwrap_or_else</code>-metodia.</p>
 <p>Geneeriselle tyypille <code>F</code> määritelty trait-raja on <code>FnOnce() -&gt; T</code>, mikä tarkoittaa, että <code>F</code>:n
 täytyy voida kutsua kerran, olla ilman argumentteja ja palauttaa <code>T</code>. <code>FnOnce</code>-traitin käyttö
-trait-rajassa ilmaisee rajoitteen, että <code>unwrap_or_else</code> kutsuu <code>f</code>:ää korkeintaan kerran.
+trait-rajassa ilmaisee rajoitteen, että <code>unwrap_or_else</code> ei kutsu <code>f</code>:ää useammin kuin kerran.
 <code>unwrap_or_else</code>-metodin rungossa näemme, että jos <code>Option</code> on <code>Some</code>, <code>f</code>:ää ei kutsuta. Jos
-<code>Option</code> on <code>None</code>, <code>f</code>:ää kutsutaan kerran. Koska kaikki sulkeumat toteuttavat <code>FnOnce</code>-traitin,
-<code>unwrap_or_else</code> hyväksyy kaikki kolme sulkeumatyyppiä ja on niin joustava kuin mahdollista.</p>
+<code>Option</code> on <code>None</code>, <code>f</code>:ää kutsutaan kerran. Koska kaikki sulkeiset toteuttavat <code>FnOnce</code>-traitin,
+<code>unwrap_or_else</code> hyväksyy kaikki kolme sulkeistyyppiä ja on niin joustava kuin mahdollista.</p>
 <blockquote>
 <p>Huom: Jos haluamamme ei vaadi arvon sieppaamista ympäristöstä, voimme käyttää funktion nimeä
-sulkeuman sijaan. Voimme esimerkiksi kutsua <code>unwrap_or_else(Vec::new)</code>-metodia <code>Option&lt;Vec&lt;T&gt;&gt;</code>-arvolla
-saadaksemme uuden tyhjän vektorin, jos arvo on <code>None</code>. Kääntäjä toteuttaa automaattisesti sen
-<code>Fn</code>-traiteista, joka soveltuu funktion määrittelyyn.</p>
+sulkeisen sijaan siellä, missä tarvitsemme jotain, joka toteuttaa jonkin <code>Fn</code>-traiteista. Voimme
+esimerkiksi kutsua <code>unwrap_or_else(Vec::new)</code>-metodia <code>Option&lt;Vec&lt;T&gt;&gt;</code>-arvolla saadaksemme uuden
+tyhjän vektorin, jos arvo on <code>None</code>. Kääntäjä toteuttaa automaattisesti sen <code>Fn</code>-traiteista,
+joka soveltuu funktion määrittelyyn.</p>
 </blockquote>
 <p>Katsotaan nyt standardikirjaston <code>sort_by_key</code>-metodin määrittelyä viipaleille nähdäksemme, miten
 se eroaa <code>unwrap_or_else</code>-metodista ja miksi <code>sort_by_key</code> käyttää <code>FnMut</code>-traitia <code>FnOnce</code>-traitin
-sijaan trait-rajana. Sulkeuma saa yhden argumentin viittauksena tarkasteltavan viipaleen nykyiseen
+sijaan trait-rajana. Sulkeinen saa yhden argumentin viittauksena tarkasteltavan viipaleen nykyiseen
 alkioon ja palauttaa järjestettävän tyypin <code>K</code> arvon. Tämä funktio on hyödyllinen, kun haluat
 järjestää viipaleen jonkin kunkin alkion ominaisuuden mukaan. Listauksessa 13-7 meillä on lista
 <code>Rectangle</code>-instansseja, ja käytämme <code>sort_by_key</code>-metodia järjestääksemme ne <code>width</code>-ominaisuuden
-mukaan alhaalta ylös:</p>
-<figure class="listing">
+mukaan alhaalta ylös.</p>
+<figure class="listing" id="listing-13-7">
 <span class="file-name">Filename: src/main.rs</span>
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+<pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>{{#rustdoc_include ../listings/ch13-functional-features/listing-13-07/src/main.rs}}
-<span class="boring">}</span></code></pre></pre>
-<figcaption>Listing 13-7: <code>sort_by_key</code>-metodin käyttö suorakulmioiden järjestämiseen leveyden mukaan</figcaption>
+<span class="boring">}</span></code></pre>
+<figcaption><a href="#listing-13-7">Listing 13-7</a>: <code>sort_by_key</code>-metodin käyttö suorakulmioiden järjestämiseen leveyden mukaan</figcaption>
 </figure>
 <p>Tämä koodi tulostaa:</p>
 <pre><code class="language-console">{{#include ../listings/ch13-functional-features/listing-13-07/output.txt}}
 </code></pre>
-<p>Syy siihen, että <code>sort_by_key</code> on määritelty ottamaan <code>FnMut</code>-sulkeuma, on se, että se kutsuu
-sulkeumaa useita kertoja: kerran kullekin viipaleen alkiolle. Sulkeuma <code>|r| r.width</code> ei sieppaa,
+<p>Syy siihen, että <code>sort_by_key</code> on määritelty ottamaan <code>FnMut</code>-sulkeinen, on se, että se kutsuu
+sulkeista useita kertoja: kerran kullekin viipaleen alkiolle. Sulkeinen <code>|r| r.width</code> ei sieppaa,
 mutatoi tai siirrä mitään ulos ympäristöstään, joten se täyttää trait-rajavaatimukset.</p>
-<p>Sitä vastoin listaus 13-8 näyttää esimerkin sulkeumasta, joka toteuttaa vain <code>FnOnce</code>-traitin,
-koska se siirtää arvon ympäristöstään ulos. Kääntäjä ei anna meidän käyttää tätä sulkeumaa
-<code>sort_by_key</code>-metodin kanssa:</p>
-<figure class="listing">
+<p>Sitä vastoin listaus 13-8 näyttää esimerkin sulkeisesta, joka toteuttaa vain <code>FnOnce</code>-traitin,
+koska se siirtää arvon ympäristöstään ulos. Kääntäjä ei anna meidän käyttää tätä sulkeista
+<code>sort_by_key</code>-metodin kanssa.</p>
+<figure class="listing" id="listing-13-8">
 <span class="file-name">Filename: src/main.rs</span>
 <pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch13-functional-features/listing-13-08/src/main.rs}}</code></pre>
-<figcaption>Listing 13-8: Yritys käyttää <code>FnOnce</code>-sulkeumaa <code>sort_by_key</code>-metodin kanssa</figcaption>
+<figcaption><a href="#listing-13-8">Listing 13-8</a>: Yritys käyttää <code>FnOnce</code>-sulkeista <code>sort_by_key</code>-metodin kanssa</figcaption>
 </figure>
 <p>Tämä on keinotekoinen, mutkikas tapa (joka ei toimi) yrittää laskea, kuinka monta kertaa
-<code>sort_by_key</code> kutsuu sulkeumaa järjestäessään <code>list</code>-muuttujaa. Tämä koodi yrittää tehdä
-tämän laskennan työntämällä <code>value</code>-muuttujan — <code>String</code>-arvon sulkeuman ympäristöstä —
-<code>sort_operations</code>-vektoriin. Sulkeuma sieppaa <code>value</code>-muuttujan ja siirtää sen sitten sulkeumasta
-ulos siirtämällä <code>value</code>-muuttujan omistajuuden <code>sort_operations</code>-vektoriin. Tätä sulkeumaa
+<code>sort_by_key</code> kutsuu sulkeista järjestäessään <code>list</code>-muuttujaa. Tämä koodi yrittää tehdä
+tämän laskennan työntämällä <code>value</code>-muuttujan — <code>String</code>-arvon sulkeisen ympäristöstä —
+<code>sort_operations</code>-vektoriin. Sulkeinen sieppaa <code>value</code>-muuttujan ja siirtää sen sitten sulkeisesta
+ulos siirtämällä <code>value</code>-muuttujan omistajuuden <code>sort_operations</code>-vektoriin. Tätä sulkeista
 voidaan kutsua kerran; yritys kutsua sitä toisen kerran ei toimisi, koska <code>value</code> ei olisi
-enää ympäristössä työnnettäväksi <code>sort_operations</code>-vektoriin uudelleen! Siksi tämä sulkeuma
+enää ympäristössä työnnettäväksi <code>sort_operations</code>-vektoriin uudelleen! Siksi tämä sulkeinen
 toteuttaa vain <code>FnOnce</code>-traitin. Kun yritämme kääntää tämän koodin, saamme tämän virheen,
-että <code>value</code>-muuttujaa ei voi siirtää sulkeumasta ulos, koska sulkeuman täytyy toteuttaa <code>FnMut</code>:</p>
+että <code>value</code>-muuttujaa ei voi siirtää sulkeisesta ulos, koska sulkeisen täytyy toteuttaa <code>FnMut</code>:</p>
 <pre><code class="language-console">{{#include ../listings/ch13-functional-features/listing-13-08/output.txt}}
 </code></pre>
-<p>Virhe osoittaa sulkeuman rungon rivin, joka siirtää <code>value</code>-muuttujan ympäristöstä ulos.
-Korjataksemme tämän meidän täytyy muuttaa sulkeuman runkoa niin, ettei se siirrä arvoja
-ympäristöstä ulos. Laskeaksemme, kuinka monta kertaa sulkeumaa kutsutaan, laskurin pitäminen
-ympäristössä ja sen arvon kasvattaminen sulkeuman rungossa on suoraviivaisempi tapa laskea se.
-Listauksen 13-9 sulkeuma toimii <code>sort_by_key</code>-metodin kanssa, koska se sieppaa vain muuttuvan
-viittauksen <code>num_sort_operations</code>-laskuriin ja voidaan siksi kutsua useammin kuin kerran:</p>
-<figure class="listing">
+<p>Virhe osoittaa sulkeisen rungon rivin, joka siirtää <code>value</code>-muuttujan ympäristöstä ulos.
+Korjataksemme tämän meidän täytyy muuttaa sulkeisen runkoa niin, ettei se siirrä arvoja
+ympäristöstä ulos. Laskeaksemme, kuinka monta kertaa sulkeista kutsutaan, laskurin pitäminen
+ympäristössä ja sen arvon kasvattaminen sulkeisen rungossa on suoraviivaisempi tapa. Listauksen
+13-9 sulkeinen toimii <code>sort_by_key</code>-metodin kanssa, koska se sieppaa vain muuttuvan
+viittauksen <code>num_sort_operations</code>-laskuriin ja voidaan siksi kutsua useammin kuin kerran.</p>
+<figure class="listing" id="listing-13-9">
 <span class="file-name">Filename: src/main.rs</span>
-<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+<pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>{{#rustdoc_include ../listings/ch13-functional-features/listing-13-09/src/main.rs}}
-<span class="boring">}</span></code></pre></pre>
-<figcaption>Listing 13-9: <code>FnMut</code>-sulkeuman käyttö <code>sort_by_key</code>-metodin kanssa on sallittua</figcaption>
+<span class="boring">}</span></code></pre>
+<figcaption><a href="#listing-13-9">Listing 13-9</a>: <code>FnMut</code>-sulkeisen käyttö <code>sort_by_key</code>-metodin kanssa on sallittua</figcaption>
 </figure>
 <p><code>Fn</code>-traitit ovat tärkeitä, kun määritellään tai käytetään funktioita tai tyyppejä, jotka
-käyttävät sulkeumia. Seuraavassa osiossa käsittelemme iteraattoreita. Monet iteraattorimetodit
-ottavat sulkeuma-argumentteja, joten pidä nämä sulkeumien yksityiskohdat mielessä jatkaessamme!</p>
+käyttävät sulkeisia. Seuraavassa osiossa käsittelemme iteraattoreita. Monet iteraattorimetodit
+ottavat sulkeisargumentteja, joten pidä nämä sulkeisten yksityiskohdat mielessä jatkaessamme!</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                             <a rel="prev" href="ch13-00-functional-features.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                                <i class="fa fa-angle-left"></i>
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
                             <a rel="next prefetch" href="ch13-02-iterators.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
                         <div style="clear: both"></div>
@@ -485,16 +515,21 @@ ottavat sulkeuma-argumentteja, joten pidä nämä sulkeumien yksityiskohdat miel
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                     <a rel="prev" href="ch13-00-functional-features.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                        <i class="fa fa-angle-left"></i>
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
                     <a rel="next prefetch" href="ch13-02-iterators.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>
 
         </div>
 
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
 
 
 
@@ -503,16 +538,17 @@ ottavat sulkeuma-argumentteja, joten pidä nämä sulkeumien yksityiskohdat miel
         </script>
 
 
-        <script src="elasticlunr.min.js"></script>
-        <script src="mark.min.js"></script>
-        <script src="searcher.js"></script>
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-c2a407aa.js"></script>
 
-        <script src="clipboard.min.js"></script>
-        <script src="highlight.js"></script>
-        <script src="book.js"></script>
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-abc7f01d.js"></script>
+        <script src="book-a0b12cfe.js"></script>
 
         <!-- Custom JS scripts -->
-        <script src="ferris.js"></script>
+        <script src="ferris-2317480c.js"></script>
+
 
 
     </div>
