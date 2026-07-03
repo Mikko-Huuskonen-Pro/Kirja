@@ -39,7 +39,9 @@ jobs:
           echo "$(pwd)/bin" >> "${GITHUB_PATH}"
 
       - name: Build book
-        run: mdbook build
+        run: |
+          cp book-fi.toml book.toml
+          mdbook build
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5

@@ -11,7 +11,8 @@ src = "src/fi"
 [output.html]
 additional-css = ["ferris.css", "theme/2018-edition.css", "theme/semantic-notes.css", "theme/listing.css"]
 additional-js = ["ferris.js"]
-git-repository-url = "https://github.com/rust-lang/book"
+git-repository-url = "https://github.com/Mikko-Huuskonen-Pro/Kirja"
+site-url = "/Kirja/"
 
 [output.html.search]
 use-boolean-and = true
