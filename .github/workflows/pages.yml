@@ -26,6 +26,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Install Rust
+        run: |
+          rustup set profile minimal
+          rustup toolchain install 1.96 -c rust-docs
+          rustup default 1.96
+
       - name: Install mdBook
         run: |
           mkdir -p bin
