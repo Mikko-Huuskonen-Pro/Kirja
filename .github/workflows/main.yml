@@ -9,7 +9,7 @@ jobs:
     name: Run tests
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@master
+    - uses: actions/checkout@v4
     - name: Update rustup
       run: rustup self update
     - name: Install Rust
@@ -44,7 +44,7 @@ jobs:
     name: Run package tests
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@master
+    - uses: actions/checkout@v4
     - name: Update rustup
       run: rustup self update
     - name: Install Rust
@@ -63,7 +63,7 @@ jobs:
     name: Run lints
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@master
+    - uses: actions/checkout@v4
     - name: Update rustup
       run: rustup self update
     - name: Install Rust
