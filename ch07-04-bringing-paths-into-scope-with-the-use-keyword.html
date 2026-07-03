@@ -1,0 +1,332 @@
+<!DOCTYPE HTML>
+<html lang="fi" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Polkujen tuominen näkyvyysalueeseen use-avainsanalla - Rust-ohjelmointikieli</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="ferris.css">
+        <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rust-ohjelmointikieli</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/rust-lang/book" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2 id="polkujen-tuominen-laajuuteen-use-avainsanalla"><a class="header" href="#polkujen-tuominen-laajuuteen-use-avainsanalla">Polkujen tuominen laajuuteen <code>use</code>-avainsanalla</a></h2>
+<p>Funktioiden kutsuminen polkuja kirjoittamalla voi tuntua hankalalta ja toistavalta. Listauksessa 7-7, riippumatta siitä, valitsimmeko absoluuttisen vai suhteellisen polun <code>add_to_waitlist</code>-funktioon, jouduimme aina määrittämään myös <code>front_of_house</code>- ja <code>hosting</code>-moduulit, kun halusimme kutsua <code>add_to_waitlist</code>-funktiota. Onneksi on olemassa tapa yksinkertaistaa tätä prosessia: voimme luoda polulle lyhenteen <code>use</code>-avainsanalla kerran ja käyttää sitten lyhyempää nimeä kaikkialla muualla laajuudessa.</p>
+<p>Listauksessa 7-11 tuomme <code>crate::front_of_house::hosting</code>-moduulin <code>eat_at_restaurant</code>-funktion laajuuteen, joten meidän tarvitsee vain määrittää <code>hosting::add_to_waitlist</code> kutsuaksemme <code>add_to_waitlist</code>-funktiota funktiossa <code>eat_at_restaurant</code>.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
+<pre><code class="language-rust noplayground test_harness">{{#rustdoc_include ../listings/ch07-managing-growing-projects/listing-07-11/src/lib.rs}}</code></pre>
+<figcaption>Listing 7-11: Moduulin tuominen laajuuteen <code>use</code>:lla</figcaption>
+</figure>
+<p><code>use</code>-avainsanan ja polun lisääminen laajuuteen on samankaltaista kuin symbolisen linkin luominen tiedostojärjestelmässä. Lisäämällä <code>use crate::front_of_house::hosting</code> crate-juureen, <code>hosting</code> on nyt kelvollinen nimi siinä laajuudessa, ikään kuin <code>hosting</code>-moduuli olisi määritelty crate-juuressa. <code>use</code>:lla laajuuteen tuodut polut tarkistavat myös yksityisyyden, kuten muutkin polut.</p>
+<p>Huomaa, että <code>use</code> luo lyhenteen vain siihen laajuuteen, jossa <code>use</code> esiintyy. Listausta 7-12 siirtää <code>eat_at_restaurant</code>-funktion uuteen lapsimoduuliin nimeltä <code>customer</code>, joka on sitten eri laajuudessa kuin <code>use</code>-lauseke, joten funktion runko ei käänny.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
+<pre><code class="language-rust noplayground test_harness does_not_compile ignore">{{#rustdoc_include ../listings/ch07-managing-growing-projects/listing-07-12/src/lib.rs}}</code></pre>
+<figcaption>Listing 7-12: <code>use</code>-lauseke pätee vain laajuudessa, jossa se on.</figcaption>
+</figure>
+<p>Kääntäjän virhe näyttää, että lyhenne ei enää päde <code>customer</code>-moduulissa:</p>
+<pre><code class="language-console">{{#include ../listings/ch07-managing-growing-projects/listing-07-12/output.txt}}
+</code></pre>
+<p>Huomaa, että on myös varoitus siitä, että <code>use</code> ei ole enää käytössä laajuudessaan! Korjataksesi tämän ongelman, siirrä <code>use</code> myös <code>customer</code>-moduulin sisään, tai viittaa lyhenteeseen emomoduulissa <code>super::hosting</code>:lla <code>customer</code>-lapsimoduulissa.</p>
+<h3 id="idiomaattisten-use-polkujen-luominen"><a class="header" href="#idiomaattisten-use-polkujen-luominen">Idiomaattisten <code>use</code>-polkujen luominen</a></h3>
+<p>Listauksessa 7-11 saatoit ihmetellä, miksi määritimme <code>use crate::front_of_house::hosting</code> ja kutsuimme sitten <code>hosting::add_to_waitlist</code> funktiossa <code>eat_at_restaurant</code>, sen sijaan että määrittäisimme <code>use</code>-polun aina <code>add_to_waitlist</code>-funktioon saakka saavuttaaksemme saman tuloksen, kuten Listauksessa 7-13.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
+<pre><code class="language-rust noplayground test_harness">{{#rustdoc_include ../listings/ch07-managing-growing-projects/listing-07-13/src/lib.rs}}</code></pre>
+<figcaption>Listing 7-13: <code>add_to_waitlist</code>-funktion tuominen laajuuteen <code>use</code>:lla, mikä ei ole idiomaattista</figcaption>
+</figure>
+<p>Vaikka sekä Listausta 7-11 että Listausta 7-13 saavuttavat saman tehtävän, Listausta 7-11 on idiomaattinen tapa tuoda funktio laajuuteen <code>use</code>:lla. Funktion emomoduulin tuominen laajuuteen <code>use</code>:lla tarkoittaa, että meidän täytyy määrittää emomoduuli funktiota kutsuttaessa. Emomoduulin määrittäminen funktiota kutsuttaessa tekee selväksi, ettei funktio ole määritelty paikallisesti, mutta silti minimoidaan koko polun toistuminen. Listauksen 7-13 koodi ei kerro selvästi, mistä <code>add_to_waitlist</code> on määritelty.</p>
+<p>Toisaalta, kun tuomme rakenteita, enumeja ja muita kohteita <code>use</code>:lla, on idiomaattista määrittää koko polku. Listausta 7-14 näyttää idiomaattisen tavan tuoda standardikirjaston <code>HashMap</code>-rakenne binääricraten laajuuteen.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch07-managing-growing-projects/listing-07-14/src/main.rs}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 7-14: <code>HashMap</code>:n tuominen laajuuteen idiomaattisella tavalla</figcaption>
+</figure>
+<p>Tämän idiooman takana ei ole vahvaa syytä: se on vain vakiintunut käytäntö, johon ihmiset ovat tottuneet lukemaan ja kirjoittamaan Rust-koodia tällä tavalla.</p>
+<p>Poikkeus tähän idioomaan on, jos tuomme kaksi samaa nimeä käyttävää kohdetta laajuuteen <code>use</code>-lausekkeilla, koska Rust ei salli sitä. Listausta 7-15 näyttää, miten tuodaan kaksi <code>Result</code>-tyyppiä, joilla on sama nimi mutta eri emomoduulit, ja miten niihin viitataan.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
+<pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch07-managing-growing-projects/listing-07-15/src/lib.rs:here}}</code></pre>
+<figcaption>Listing 7-15: Kahden saman nimisen tyypin tuominen samaan laajuuteen vaatii niiden emomoduulien käyttöä.</figcaption>
+</figure>
+<p>Kuten näet, emomoduulien käyttö erottaa kaksi <code>Result</code>-tyyppiä toisistaan. Jos sen sijaan määrittäisimme <code>use std::fmt::Result</code> ja <code>use std::io::Result</code>, meillä olisi kaksi <code>Result</code>-tyyppiä samassa laajuudessa, eikä Rust tietäisi, kumpaa tarkoitamme, kun käytämme <code>Result</code>:ia.</p>
+<h3 id="uusien-nimien-antaminen-as-avainsanalla"><a class="header" href="#uusien-nimien-antaminen-as-avainsanalla">Uusien nimien antaminen <code>as</code>-avainsanalla</a></h3>
+<p>On olemassa toinen ratkaisu ongelmaan, jossa tuodaan kaksi samaa nimeä käyttävää tyyppiä samaan laajuuteen <code>use</code>:lla: polun jälkeen voimme määrittää <code>as</code> ja uuden paikallisen nimen, eli <em>aliasin</em>, tyypille. Listausta 7-16 näyttää toisen tavan kirjoittaa Listauksen 7-15 koodi uudelleennimeämällä toinen kahdesta <code>Result</code>-tyypistä <code>as</code>:lla.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
+<pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch07-managing-growing-projects/listing-07-16/src/lib.rs:here}}</code></pre>
+<figcaption>Listing 7-16: Tyypin uudelleennimeäminen, kun se tuodaan laajuuteen <code>as</code>-avainsanalla</figcaption>
+</figure>
+<p>Toisessa <code>use</code>-lausekkeessa valitsimme uuden nimen <code>IoResult</code> tyypille <code>std::io::Result</code>, joka ei ole ristiriidassa <code>std::fmt</code>:n <code>Result</code>-tyypin kanssa, jonka olemme myös tuoneet laajuuteen. Listausta 7-15 ja Listausta 7-16 pidetään idiomaattisina, joten valinta on sinun!</p>
+<h3 id="nimien-uudelleenjulkaisu-pub-usella"><a class="header" href="#nimien-uudelleenjulkaisu-pub-usella">Nimien uudelleenjulkaisu <code>pub use</code>:lla</a></h3>
+<p>Kun tuomme nimen laajuuteen <code>use</code>-avainsanalla, uudessa laajuudessa käytettävissä oleva nimi on yksityinen. Jotta koodi, joka kutsuu koodiamme, voisi viitata kyseiseen nimeen ikään kuin se olisi määritelty sen koodin laajuudessa, voimme yhdistää <code>pub</code> ja <code>use</code>. Tätä tekniikkaa kutsutaan <em>uudelleenjulkaisuksi</em>, koska tuomme kohteen laajuuteen mutta teemme sen myös muiden saataville tuotavaksi heidän laajuuteensa.</p>
+<p>Listausta 7-17 näyttää Listauksen 7-11 koodin, jossa juurimoduulin <code>use</code> on muutettu muotoon <code>pub use</code>.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
+<pre><code class="language-rust noplayground test_harness">{{#rustdoc_include ../listings/ch07-managing-growing-projects/listing-07-17/src/lib.rs}}</code></pre>
+<figcaption>Listing 7-17: Nimen saataville asettaminen kaikelle koodille uudesta laajuudesta <code>pub use</code>:lla</figcaption>
+</figure>
+<p>Ennen tätä muutosta ulkoisen koodin olisi pitänyt kutsua <code>add_to_waitlist</code>-funktiota polulla <code>restaurant::front_of_house::hosting::add_to_waitlist()</code>, mikä olisi myös vaatinut <code>front_of_house</code>-moduulin merkitsemistä <code>pub</code>:iksi. Nyt kun tämä <code>pub use</code> on uudelleenjulkaissut <code>hosting</code>-moduulin juurimoduulista, ulkoinen koodi voi käyttää polkua <code>restaurant::hosting::add_to_waitlist()</code> sen sijaan.</p>
+<p>Uudelleenjulkaisu on hyödyllistä, kun koodisi sisäinen rakenne poikkeaa siitä, miten koodiasi kutsuvat ohjelmoijat ajattelevat toimialuetta. Esimerkiksi tässä ravintolametaforassa ravintolaa pyörittävät ihmiset ajattelevat ”etutaloa” ja ”takataloa”. Ravintolaa vierailevat asiakkaat eivät kuitenkaan todennäköisesti ajattele ravintolan osia näillä termeillä. <code>pub use</code>:lla voimme kirjoittaa koodimme yhdellä rakenteella mutta paljastaa erilaisen rakenteen. Näin kirjastomme on hyvin organisoitu sekä kirjastoa työstäville ohjelmoijille että kirjastoa kutsuville ohjelmoijille. Katsomme toisen esimerkin <code>pub use</code>:sta ja sen vaikutuksesta craten dokumentaatioon <a href="ch14-02-publishing-to-crates-io.html#exporting-a-convenient-public-api-with-pub-use">”Kätevän julkisen API:n vienti <code>pub use</code>:lla”</a><!-- ignore --> -osiossa Luvussa 14.</p>
+<h3 id="ulkoisten-pakettien-käyttäminen"><a class="header" href="#ulkoisten-pakettien-käyttäminen">Ulkoisten pakettien käyttäminen</a></h3>
+<p>Luvussa 2 ohjelmoimme arvauspeliprojektin, joka käytti ulkoista pakettia nimeltä <code>rand</code> satunnaislukujen saamiseen. Käyttääksemme <code>rand</code>:ia projektissamme lisäsimme tämän rivin tiedostoon <em>Cargo.toml</em>:</p>
+<!-- When updating the version of `rand` used, also update the version of
+`rand` used in these files so they all match:
+* ch02-00-guessing-game-tutorial.md
+* ch14-03-cargo-workspaces.md
+-->
+<figure class="listing">
+<span class="file-name">Filename: Cargo.toml</span>
+<pre><code class="language-toml">{{#include ../listings/ch02-guessing-game-tutorial/listing-02-02/Cargo.toml:9:}}
+</code></pre>
+</figure>
+<p><code>rand</code>:in lisääminen riippuvuudeksi tiedostoon <em>Cargo.toml</em> kertoo Cargolle lataamaan <code>rand</code>-paketin ja sen riippuvuudet osoitteesta <a href="https://crates.io/">crates.io</a> ja tekemään <code>rand</code>:in saataville projektillemme.</p>
+<p>Sitten tuodaksemme <code>rand</code>:in määrittelyt pakettimme laajuuteen lisäsimme <code>use</code>-rivin, joka alkaa craten nimellä <code>rand</code>, ja listasimme kohteet, jotka halusimme tuoda laajuuteen. Muista, että <a href="ch02-00-guessing-game-tutorial.html#generating-a-random-number">”Satunnaisluvun generointi”</a><!-- ignore --> -osiossa Luvussa 2 toimme <code>Rng</code>-traitin laajuuteen ja kutsuimme <code>rand::thread_rng</code>-funktiota:</p>
+<pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch02-guessing-game-tutorial/listing-02-03/src/main.rs:ch07-04}}</code></pre>
+<p>Rust-yhteisön jäsenet ovat tehneet monia paketteja saataville osoitteessa <a href="https://crates.io/">crates.io</a>, ja minkä tahansa niistä tuominen pakettiisi sisältää samat vaiheet: niiden listaaminen pakettisi tiedostossa <em>Cargo.toml</em> ja <code>use</code>:n käyttö kohteiden tuomiseen laajuuteen niiden crateista.</p>
+<p>Huomaa, että standardikirjasto <code>std</code> on myös paketti, joka on ulkoinen pakettimme suhteen. Koska standardikirjasto toimitetaan Rust-kielen mukana, meidän ei tarvitse muuttaa tiedostoa <em>Cargo.toml</em> sisällyttääksemme <code>std</code>:n. Meidän täytyy kuitenkin viitata siihen <code>use</code>:lla tuodaksemme kohteita sieltä pakettimme laajuuteen. Esimerkiksi <code>HashMap</code>:n kohdalla käyttäisimme tätä riviä:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use std::collections::HashMap;
+<span class="boring">}</span></code></pre></pre>
+<p>Tämä on absoluuttinen polku, joka alkaa <code>std</code>:llä, standardikirjaston craten nimellä.</p>
+<h3 id="sisäkkäisten-polkujen-käyttö-suurten-use-listojen-siistimiseen"><a class="header" href="#sisäkkäisten-polkujen-käyttö-suurten-use-listojen-siistimiseen">Sisäkkäisten polkujen käyttö suurten <code>use</code>-listojen siistimiseen</a></h3>
+<p>Jos käytämme useita samassa cratessa tai moduulissa määriteltyjä kohteita, kunkin kohteen listaaminen omalle rivilleen voi viedä paljon pystysuuntaista tilaa tiedostoissamme. Esimerkiksi nämä kaksi <code>use</code>-lauseketta, joita käytimme arvauspelissä Listauksessa 2-4, tuovat kohteita <code>std</code>:stä laajuuteen:</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch07-managing-growing-projects/no-listing-01-use-std-unnested/src/main.rs:here}}</code></pre>
+</figure>
+<p>Sen sijaan voimme käyttää sisäkkäisiä polkuja tuodaksemme samat kohteet laajuuteen yhdellä rivillä. Teemme tämän määrittämällä polun yhteisen osan, jota seuraa kaksoispiste ja sitten aaltosulkeet eri polkujen osien listan ympärillä, kuten Listauksessa 7-18 on esitetty.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch07-managing-growing-projects/listing-07-18/src/main.rs:here}}</code></pre>
+<figcaption>Listing 7-18: Sisäkkäisen polun määrittäminen useiden saman etuliitteen omaavien kohteiden tuomiseksi laajuuteen</figcaption>
+</figure>
+<p>Suuremmissa ohjelmissa monien kohteiden tuominen laajuuteen samasta cratesta tai moduulista sisäkkäisiä polkuja käyttäen voi vähentää erillisten <code>use</code>-lausekkeiden määrää huomattavasti!</p>
+<p>Voimme käyttää sisäkkäistä polkua millaisella tahansa polun tasolla, mikä on hyödyllistä, kun yhdistämme kaksi <code>use</code>-lauseketta, joilla on yhteinen alipolku. Esimerkiksi Listausta 7-19 näyttää kaksi <code>use</code>-lauseketta: toinen tuo <code>std::io</code>:n laajuuteen ja toinen tuo <code>std::io::Write</code>:n laajuuteen.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
+<pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch07-managing-growing-projects/listing-07-19/src/lib.rs}}</code></pre>
+<figcaption>Listing 7-19: Kaksi <code>use</code>-lauseketta, joista toinen on toisen alipolku</figcaption>
+</figure>
+<p>Näiden kahden polun yhteinen osa on <code>std::io</code>, ja se on koko ensimmäinen polku. Yhdistääksemme nämä kaksi polkua yhdeksi <code>use</code>-lausekkeeksi voimme käyttää <code>self</code>:ää sisäkkäisessä polussa, kuten Listauksessa 7-20 on esitetty.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
+<pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch07-managing-growing-projects/listing-07-20/src/lib.rs}}</code></pre>
+<figcaption>Listing 7-20: Listauksen 7-19 polut yhdistettynä yhdeksi <code>use</code>-lausekkeeksi</figcaption>
+</figure>
+<p>Tämä rivi tuo <code>std::io</code>:n ja <code>std::io::Write</code>:n laajuuteen.</p>
+<h3 id="glob-operaattori"><a class="header" href="#glob-operaattori">Glob-operaattori</a></h3>
+<p>Jos haluamme tuoda <em>kaikki</em> polussa määritellyt julkiset kohteet laajuuteen, voimme määrittää kyseisen polun, jota seuraa <code>*</code>-glob-operaattori:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use std::collections::*;
+<span class="boring">}</span></code></pre></pre>
+<p>Tämä <code>use</code>-lauseke tuo kaikki <code>std::collections</code>:ssa määritellyt julkiset kohteet nykyiseen laajuuteen. Ole varovainen käyttäessäsi glob-operaattoria! Glob voi vaikeuttaa sen tunnistamista, mitkä nimet ovat laajuudessa ja mistä ohjelmassasi käytetty nimi on määritelty.</p>
+<p>Glob-operaattoria käytetään usein testauksessa tuomaan kaikki testattava <code>tests</code>-moduuliin; puhumme siitä <a href="ch11-01-writing-tests.html#how-to-write-tests">”Testien kirjoittaminen”</a><!-- ignore --> -osiossa Luvussa 11. Glob-operaattoria käytetään joskus myös osana preludimallia: katso <a href="../std/prelude/index.html#other-preludes">standardikirjaston dokumentaatio</a><!-- ignore --> lisätietoja tästä mallista.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="ch07-03-paths-for-referring-to-an-item-in-the-module-tree.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="ch07-05-separating-modules-into-different-files.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="ch07-03-paths-for-referring-to-an-item-in-the-module-tree.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="ch07-05-separating-modules-into-different-files.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="ferris.js"></script>
+
+
+    </div>
+    </body>
+</html>

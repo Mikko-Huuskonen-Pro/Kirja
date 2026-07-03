@@ -1,0 +1,488 @@
+<!DOCTYPE HTML>
+<html lang="fi" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Geneeriset tietotyypit - Rust-ohjelmointikieli</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="ferris.css">
+        <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rust-ohjelmointikieli</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/rust-lang/book" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2 id="geneeriset-tietotyypit"><a class="header" href="#geneeriset-tietotyypit">Geneeriset tietotyypit</a></h2>
+<p>Käytämme geneerisiä tyyppejä luodaksemme määrityksiä esimerkiksi funktioiden
+allekirjoituksille tai rakenteille, joita voimme sitten käyttää monien erilaisten
+konkreettisten tietotyyppien kanssa. Katsotaan ensin, miten määritellään
+funktioita, rakenteita, luetteloita ja metodeja käyttämällä geneerisiä tyyppejä.
+Sen jälkeen keskustelemme siitä, miten geneerisyys vaikuttaa koodin suorituskykyyn.</p>
+<h3 id="funktiomäärityksissä"><a class="header" href="#funktiomäärityksissä">Funktiomäärityksissä</a></h3>
+<p>Kun määrittelemme geneerisiä tyyppejä käyttävän funktion, sijoitamme geneeriset
+tyypit funktion allekirjoitukseen sinne, missä yleensä määrittelemme parametrien
+ja paluuarvon tietotyypit. Näin koodistamme tulee joustavampaa ja se tarjoaa
+enemmän toiminnallisuutta funktioidemme kutsumisille samalla kun estää koodin
+toistumisen.</p>
+<p>Jatkamme <code>largest</code>-funktiollamme. Listaus 10-4 näyttää kaksi funktiota, jotka
+molemmat etsivät suurimman arvon viipaleesta. Yhdistämme ne sitten yhdeksi
+geneerisiä tyyppejä käyttäväksi funktioksi.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch10-generic-types-traits-and-lifetimes/listing-10-04/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 10-4: Kaksi funktiota, jotka eroavat vain nimissään ja allekirjoituksensa tyypeissä</figcaption>
+</figure>
+<p><code>largest_i32</code>-funktio on se, jonka erotimme listauksesta 10-3 ja joka etsii
+suurimman <code>i32</code>-arvon viipaleesta. <code>largest_char</code>-funktio etsii suurimman
+<code>char</code>-arvon viipaleesta. Funktioiden rungot sisältävät saman koodin, joten
+poistetaan toisto ottamalla käyttöön geneerinen tyyppiparametri yhdessä
+funktiossa.</p>
+<p>Parametroidaksemme tyypit uudessa yksittäisessä funktiossa meidän täytyy nimetä
+tyyppiparametri, aivan kuten teemme arvoparametreille funktiossa. Voit käyttää
+mitä tahansa tunnistetta tyyppiparametrin nimenä. Käytämme kuitenkin <code>T</code>:tä,
+koska Rustin tapana on, että tyyppiparametrien nimet ovat lyhyitä, usein vain
+yksi kirjain, ja Rustin tyyppien nimeämiskäytäntö on CamelCase. Lyhenne sanasta
+<em>type</em>, <code>T</code> on useimpien Rust-ohjelmoijien oletusvalinta.</p>
+<p>Kun käytämme parametria funktion rungossa, meidän täytyy ilmoittaa parametrin
+nimi allekirjoituksessa, jotta kääntäjä tietää, mitä tuo nimi tarkoittaa.
+Vastaavasti, kun käytämme tyyppiparametrin nimeä funktion allekirjoituksessa,
+meidän täytyy ilmoittaa tyyppiparametrin nimi ennen sen käyttöä. Määritelläksemme
+geneerisen <code>largest</code>-funktion sijoitamme tyyppinimien ilmoitukset kulmasulkeisiin
+<code>&lt;&gt;</code>, funktion nimen ja parametrilistan väliin, näin:</p>
+<pre><code class="language-rust ignore">fn largest&lt;T&gt;(list: &amp;[T]) -&gt; &amp;T {</code></pre>
+<p>Luemme tämän määrityksen näin: funktio <code>largest</code> on geneerinen jonkin tyypin
+<code>T</code> suhteen. Tällä funktiolla on yksi parametri nimeltä <code>list</code>, joka on
+viipale arvoista tyyppiä <code>T</code>. <code>largest</code>-funktio palauttaa viittauksen arvoon
+samaa tyyppiä <code>T</code>.</p>
+<p>Listaus 10-5 näyttää yhdistetyn <code>largest</code>-funktiomäärityksen, joka käyttää
+geneeristä tietotyyppiä allekirjoituksessaan. Listaus näyttää myös, miten
+voimme kutsua funktiota joko <code>i32</code>-arvojen tai <code>char</code>-arvojen viipaleella.
+Huomaa, että tämä koodi ei vielä käänny, mutta korjaamme sen myöhemmin tässä
+luvussa.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch10-generic-types-traits-and-lifetimes/listing-10-05/src/main.rs}}</code></pre>
+<figcaption>Listing 10-5: <code>largest</code>-funktio geneerisillä tyyppiparametreilla; tämä ei vielä käänny</figcaption>
+</figure>
+<p>Jos käännämme tämän koodin nyt, saamme tämän virheen:</p>
+<pre><code class="language-console">{{#include ../listings/ch10-generic-types-traits-and-lifetimes/listing-10-05/output.txt}}
+</code></pre>
+<p>Ohjeteksti mainitsee <code>std::cmp::PartialOrd</code>, joka on <em>trait</em>, ja käsittelemme
+traitteja seuraavassa osiossa. Toistaiseksi tiedä, että tämä virhe kertoo,
+että <code>largest</code>-funktion runko ei toimi kaikille mahdollisille tyypeille, joita
+<code>T</code> voisi olla. Koska haluamme vertailla tyyppiä <code>T</code> olevia arvoja rungossa,
+voimme käyttää vain tyyppejä, joiden arvoja voidaan järjestää. Vertailujen
+mahdollistamiseksi standardikirjastossa on <code>std::cmp::PartialOrd</code>-trait, jonka
+voit toteuttaa tyypeille (katso lisätietoja liitteestä C). Seuraamalla
+ohjetekstin ehdotusta rajoitamme <code>T</code>:lle kelvolliset tyypit vain niihin, jotka
+toteuttavat <code>PartialOrd</code>-traitin, ja tämä esimerkki kääntyy, koska
+standardikirjasto toteuttaa <code>PartialOrd</code>-traitin sekä <code>i32</code>- että <code>char</code>-tyypeille.</p>
+<h3 id="rakentemäärityksissä"><a class="header" href="#rakentemäärityksissä">Rakentemäärityksissä</a></h3>
+<p>Voimme myös määritellä rakenteita käyttämään geneeristä tyyppiparametria
+yhdessä tai useammassa kentässä <code>&lt;&gt;</code>-syntaksilla. Listaus 10-6 määrittelee
+<code>Point&lt;T&gt;</code>-rakenteen <code>x</code>- ja <code>y</code>-koordinaattiarvojen tallentamiseen millä
+tahansa tyypillä.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch10-generic-types-traits-and-lifetimes/listing-10-06/src/main.rs}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 10-6: <code>Point&lt;T&gt;</code>-rakenne, joka pitää <code>x</code>- ja <code>y</code>-arvot tyyppiä <code>T</code></figcaption>
+</figure>
+<p>Geneeristen tyyppien käyttösyntaksi rakentemäärityksissä on samanlainen kuin
+funktiomäärityksissä käytetty. Ensin ilmoitamme tyyppiparametrin nimen
+kulmasulkeissa heti rakenteen nimen jälkeen. Sitten käytämme geneeristä tyyppiä
+rakenteen määrityksessä siinä, missä muuten määrittelisimme konkreettiset
+tietotyypit.</p>
+<p>Huomaa, että koska olemme käyttäneet vain yhtä geneeristä tyyppiä määritellessämme
+<code>Point&lt;T&gt;</code>-rakennetta, tämä määritys sanoo, että <code>Point&lt;T&gt;</code>-rakenne on geneerinen
+jonkin tyypin <code>T</code> suhteen, ja kentät <code>x</code> ja <code>y</code> ovat <em>molemmat</em> samaa tyyppiä,
+mikä tuo tyyppi sitten onkin. Jos luomme <code>Point&lt;T&gt;</code>-instanssin, jolla on eri
+tyyppisiä arvoja, kuten listauksessa 10-7, koodimme ei käänny.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch10-generic-types-traits-and-lifetimes/listing-10-07/src/main.rs}}</code></pre>
+<figcaption>Listing 10-7: Kenttien <code>x</code> ja <code>y</code> täytyy olla samaa tyyppiä, koska molemmilla on sama geneerinen tietotyyppi <code>T</code></figcaption>
+</figure>
+<p>Tässä esimerkissä, kun annamme kokonaislukuarvon <code>5</code> muuttujalle <code>x</code>, kerromme
+kääntäjälle, että geneerinen tyyppi <code>T</code> on kokonaisluku tälle <code>Point&lt;T&gt;</code>-instanssille.
+Kun määrittelemme sitten <code>4.0</code> muuttujalle <code>y</code>, jonka olemme määritelty olevan
+samaa tyyppiä kuin <code>x</code>, saamme tyyppien yhteensopimattomuusvirheen, joka näyttää
+tältä:</p>
+<pre><code class="language-console">{{#include ../listings/ch10-generic-types-traits-and-lifetimes/listing-10-07/output.txt}}
+</code></pre>
+<p>Määritelläksemme <code>Point</code>-rakenteen, jossa <code>x</code> ja <code>y</code> ovat molemmat geneerisiä
+mutta voivat olla eri tyyppejä, voimme käyttää useita geneerisiä tyyppiparametreja.
+Esimerkiksi listauksessa 10-8 muutamme <code>Point</code>-rakenteen määrityksen olemaan
+geneerinen tyypeille <code>T</code> ja <code>U</code>, joissa <code>x</code> on tyyppiä <code>T</code> ja <code>y</code> on tyyppiä <code>U</code>.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch10-generic-types-traits-and-lifetimes/listing-10-08/src/main.rs}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 10-8: <code>Point&lt;T, U&gt;</code> geneerinen kahden tyypin suhteen, jotta <code>x</code> ja <code>y</code> voivat olla eri tyyppisiä arvoja</figcaption>
+</figure>
+<p>Nyt kaikki näytetyt <code>Point</code>-instanssit ovat sallittuja! Voit käyttää määrityksessä
+niin monta geneeristä tyyppiparametria kuin haluat, mutta useamman kuin muutaman
+käyttö tekee koodistasi vaikeasti luettavaa. Jos huomaat tarvitsevasi paljon
+geneerisiä tyyppejä koodissasi, se voi viitata siihen, että koodisi täytyy
+uudelleenjärjestää pienempiin osiin.</p>
+<h3 id="luettelomäärityksissä"><a class="header" href="#luettelomäärityksissä">Luettelomäärityksissä</a></h3>
+<p>Kuten rakenteiden kohdalla, voimme määritellä luetteloita pitämään geneerisiä
+tietotyyppejä muunnelmissaan. Katsotaan vielä kerran standardikirjaston
+tarjoamaa <code>Option&lt;T&gt;</code>-luetteloa, jota käytimme luvussa 6:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>enum Option&lt;T&gt; {
+    Some(T),
+    None,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Tämän määrityksen pitäisi nyt olla ymmärrettävämpi. Kuten näet, <code>Option&lt;T&gt;</code>-luettelo
+on geneerinen tyypin <code>T</code> suhteen ja sillä on kaksi muunnelmaa: <code>Some</code>, joka
+pitää yhden arvon tyyppiä <code>T</code>, ja <code>None</code>-muunnelma, joka ei pidä mitään arvoa.
+Käyttämällä <code>Option&lt;T&gt;</code>-luetteloa voimme ilmaista valinnaisen arvon abstraktin
+käsitteen, ja koska <code>Option&lt;T&gt;</code> on geneerinen, voimme käyttää tätä abstraktiota
+riippumatta siitä, mikä valinnaisen arvon tyyppi on.</p>
+<p>Luettelot voivat käyttää useita geneerisiä tyyppejä myös. Luvussa 9 käyttämämme
+<code>Result</code>-luettelon määritys on yksi esimerkki:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>enum Result&lt;T, E&gt; {
+    Ok(T),
+    Err(E),
+}
+<span class="boring">}</span></code></pre></pre>
+<p><code>Result</code>-luettelo on geneerinen kahden tyypin, <code>T</code> ja <code>E</code>, suhteen, ja sillä on
+kaksi muunnelmaa: <code>Ok</code>, joka pitää arvon tyyppiä <code>T</code>, ja <code>Err</code>, joka pitää arvon
+tyyppiä <code>E</code>. Tämä määritys tekee käteväksi käyttää <code>Result</code>-luetteloa missä
+tahansa, missä meillä on operaatio, joka voi onnistua (palauttaa arvon jonkin
+tyypin <code>T</code>) tai epäonnistua (palauttaa virheen jonkin tyypin <code>E</code>). Itse asiassa
+tätä käytimme tiedoston avaamiseen listauksessa 9-3, jossa <code>T</code> täytettiin
+tyypillä <code>std::fs::File</code>, kun tiedosto avattiin onnistuneesti, ja <code>E</code> täytettiin
+tyypillä <code>std::io::Error</code>, kun tiedoston avaamisessa oli ongelmia.</p>
+<p>Kun tunnistat koodissasi tilanteita, joissa on useita rakenne- tai luettelomäärityksiä,
+jotka eroavat vain niiden pitämien arvojen tyypeissä, voit välttää toiston
+käyttämällä geneerisiä tyyppejä sen sijaan.</p>
+<h3 id="metodimäärityksissä"><a class="header" href="#metodimäärityksissä">Metodimäärityksissä</a></h3>
+<p>Voimme toteuttaa metodeja rakenteille ja luetteloille (kuten teimme luvussa 5) ja
+käyttää geneerisiä tyyppejä niiden määrityksissä myös. Listaus 10-9 näyttää
+listauksessa 10-6 määrittelemämme <code>Point&lt;T&gt;</code>-rakenteen, jolle on toteutettu
+metodi nimeltä <code>x</code>.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch10-generic-types-traits-and-lifetimes/listing-10-09/src/main.rs}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 10-9: Metodin <code>x</code> toteuttaminen <code>Point&lt;T&gt;</code>-rakenteelle, joka palauttaa viittauksen kenttään <code>x</code> tyyppiä <code>T</code></figcaption>
+</figure>
+<p>Tässä olemme määritelleet metodin nimeltä <code>x</code> tyypille <code>Point&lt;T&gt;</code>, joka palauttaa
+viittauksen kentän <code>x</code> dataan.</p>
+<p>Huomaa, että meidän täytyy ilmoittaa <code>T</code> heti <code>impl</code>-avainsanan jälkeen, jotta
+voimme käyttää <code>T</code>:tä määrittääksemme, että toteutamme metodeja tyypille
+<code>Point&lt;T&gt;</code>. Ilmoittamalla <code>T</code>:n geneeriseksi tyypiksi <code>impl</code>:n jälkeen Rust voi
+tunnistaa, että <code>Point</code>:in kulmasulkeissa oleva tyyppi on geneerinen tyyppi
+eikä konkreettinen tyyppi. Olisimme voineet valita eri nimen tälle geneeriselle
+parametrille kuin rakenteen määrityksessä ilmoitettu geneerinen parametri, mutta
+saman nimen käyttäminen on tapana. Jos kirjoitat metodin <code>impl</code>-lohkossa, joka
+ilmoittaa geneerisen tyypin, tuo metodi määritellään minkä tahansa tyypin
+instanssille riippumatta siitä, mikä konkreettinen tyyppi korvaa geneerisen
+tyypin lopulta.</p>
+<p>Voimme myös määrittää rajoituksia geneerisille tyypeille määritellessämme
+metodeja tyypille. Voisimme esimerkiksi toteuttaa metodeja vain <code>Point&lt;f32&gt;</code>-instansseille
+eikä <code>Point&lt;T&gt;</code>-instansseille millä tahansa geneerisellä tyypillä. Listauksessa
+10-10 käytämme konkreettista tyyppiä <code>f32</code>, mikä tarkoittaa, että emme ilmoita
+mitään tyyppejä <code>impl</code>:n jälkeen.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch10-generic-types-traits-and-lifetimes/listing-10-10/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 10-10: <code>impl</code>-lohko, joka koskee vain rakennetta, jolla on tietty konkreettinen tyyppi geneeriselle tyyppiparametrille <code>T</code></figcaption>
+</figure>
+<p>Tämä koodi tarkoittaa, että tyypillä <code>Point&lt;f32&gt;</code> on <code>distance_from_origin</code>-metodi;
+muilla <code>Point&lt;T&gt;</code>-instansseilla, joissa <code>T</code> ei ole tyyppiä <code>f32</code>, tätä metodia
+ei ole määritelty. Metodi mittaa, kuinka kaukana pisteemme on pisteestä
+koordinaateissa (0.0, 0.0), ja käyttää matemaattisia operaatioita, jotka ovat
+käytettävissä vain liukulukutyypeille.</p>
+<p>Rakenteen määrityksessä olevat geneeriset tyyppiparametrit eivät aina ole samoja
+kuin saman rakenteen metodien allekirjoituksissa käytetyt. Listaus 10-11 käyttää
+geneerisiä tyyppejä <code>X1</code> ja <code>Y1</code> <code>Point</code>-rakenteelle ja <code>X2</code> <code>Y2</code> <code>mixup</code>-metodin
+allekirjoitukselle tehdäkseen esimerkistä selkeämmän. Metodi luo uuden <code>Point</code>-instanssin,
+jossa <code>x</code>-arvo tulee <code>self</code>-<code>Point</code>:ista (tyyppiä <code>X1</code>) ja <code>y</code>-arvo annetusta
+<code>Point</code>-oliosta (tyyppiä <code>Y2</code>).</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch10-generic-types-traits-and-lifetimes/listing-10-11/src/main.rs}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 10-11: Metodi, joka käyttää geneerisiä tyyppejä, jotka eroavat rakenteen määrityksestä</figcaption>
+</figure>
+<p><code>main</code>-funktiossa olemme määritelleet <code>Point</code>:in, jolla on <code>i32</code> <code>x</code>:lle (arvolla
+<code>5</code>) ja <code>f64</code> <code>y</code>:lle (arvolla <code>10.4</code>). Muuttuja <code>p2</code> on <code>Point</code>-rakenne, jolla
+on merkkijonoviipale <code>x</code>:lle (arvolla <code>"Hello"</code>) ja <code>char</code> <code>y</code>:lle (arvolla
+<code>c</code>). Kutsumalla <code>mixup</code>-metodia <code>p1</code>:llä argumentilla <code>p2</code> saamme <code>p3</code>:n, jolla
+on <code>i32</code> <code>x</code>:lle, koska <code>x</code> tuli <code>p1</code>:stä. Muuttujalla <code>p3</code> on <code>char</code> <code>y</code>:lle,
+koska <code>y</code> tuli <code>p2</code>:sta. <code>println!</code>-makrokutsu tulostaa <code>p3.x = 5, p3.y = c</code>.</p>
+<p>Tämän esimerkin tarkoitus on havainnollistaa tilanne, jossa jotkut geneeriset
+parametrit ilmoitetaan <code>impl</code>:llä ja jotkut metodin määrityksessä. Tässä
+geneeriset parametrit <code>X1</code> ja <code>Y1</code> ilmoitetaan <code>impl</code>:n jälkeen, koska ne
+liittyvät rakenteen määritykseen. Geneeriset parametrit <code>X2</code> ja <code>Y2</code> ilmoitetaan
+<code>fn mixup</code>:n jälkeen, koska ne ovat merkityksellisiä vain metodille.</p>
+<h3 id="geneerisiä-tyyppejä-käyttävän-koodin-suorituskyky"><a class="header" href="#geneerisiä-tyyppejä-käyttävän-koodin-suorituskyky">Geneerisiä tyyppejä käyttävän koodin suorituskyky</a></h3>
+<p>Saatat miettiä, onko geneeristen tyyppiparametrien käytöllä ajonaikainen hinta.
+Hyvä uutinen on, että geneeristen tyyppien käyttö ei tee ohjelmastasi hitaampaa
+kuin se olisi konkreettisilla tyypeillä.</p>
+<p>Rust saavuttaa tämän suorittamalla geneerisiä tyyppejä käyttävän koodin
+monomorfisoinnin käännösaikana. <em>Monomorfisointi</em> on prosessi, jossa geneerinen
+koodi muunnetaan tiettyyn koodiksi täyttämällä konkreettiset tyypit, joita
+käytetään käännöksen aikana. Tässä prosessissa kääntäjä tekee päinvastaisen
+kuin ne vaiheet, joita käytimme geneerisen funktion luomiseen listauksessa 10-5:
+kääntäjä katsoo kaikki kohdat, joissa geneeristä koodia kutsutaan, ja generoi
+koodin niille konkreettisille tyypeille, joilla geneeristä koodia kutsutaan.</p>
+<p>Katsotaan, miten tämä toimii käyttämällä standardikirjaston geneeristä
+<code>Option&lt;T&gt;</code>-luetteloa:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let integer = Some(5);
+let float = Some(5.0);
+<span class="boring">}</span></code></pre></pre>
+<p>Kun Rust kääntää tämän koodin, se suorittaa monomorfisoinnin. Tämän prosessin
+aikana kääntäjä lukee arvot, joita on käytetty <code>Option&lt;T&gt;</code>-instansseissa, ja
+tunnistaa kaksi <code>Option&lt;T&gt;</code>-lajia: yksi on <code>i32</code> ja toinen on <code>f64</code>. Näin ollen
+se laajentaa <code>Option&lt;T&gt;</code>-luettelon geneerisen määrityksen kahteen määritykseen,
+jotka on erikoistettu tyypeille <code>i32</code> ja <code>f64</code>, korvaten geneerisen määrityksen
+näillä tiettyillä määrityksillä.</p>
+<p>Koodin monomorfisoitu versio näyttää suunnilleen seuraavalta (kääntäjä käyttää
+eri nimiä kuin mitä käytämme tässä havainnollistukseen):</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust edition2024">enum Option_i32 {
+    Some(i32),
+    None,
+}
+
+enum Option_f64 {
+    Some(f64),
+    None,
+}
+
+fn main() {
+    let integer = Option_i32::Some(5);
+    let float = Option_f64::Some(5.0);
+}</code></pre></pre>
+</figure>
+<p>Geneerinen <code>Option&lt;T&gt;</code> korvataan kääntäjän luomilla tiettyillä määrityksillä.
+Koska Rust kääntää geneerisen koodin koodiksi, joka määrittää tyypin jokaisessa
+instanssissa, emme maksa ajonaikaista hintaa geneeristen tyyppien käytöstä. Kun
+koodi suoritetaan, se toimii aivan kuten toimisi, jos olisimme kopioineet
+jokaisen määrityksen käsin. Monomorfisointiprosessi tekee Rustin geneerisistä
+tyypeistä erittäin tehokkaita ajonaikana.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="ch10-00-generics.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="ch10-02-traits.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="ch10-00-generics.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="ch10-02-traits.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="ferris.js"></script>
+
+
+    </div>
+    </body>
+</html>

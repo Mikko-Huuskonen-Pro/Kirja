@@ -1,0 +1,374 @@
+<!DOCTYPE HTML>
+<html lang="fi" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Rakenteiden määrittäminen ja instanssien luominen - Rust-ohjelmointikieli</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="ferris.css">
+        <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rust-ohjelmointikieli</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/rust-lang/book" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2 id="rakenteiden-määrittely-ja-instanssien-luominen"><a class="header" href="#rakenteiden-määrittely-ja-instanssien-luominen">Rakenteiden määrittely ja instanssien luominen</a></h2>
+<p>Rakenteet ovat samankaltaisia kuin tuplat, joita käsiteltiin <a href="ch03-02-data-types.html#the-tuple-type">”Tuplatyyppi”</a><!-- ignore --> -osiossa, siinä mielessä, että molemmat pitävät useita toisiinsa liittyviä arvoja. Kuten tuplissa, rakenteen osat voivat olla eri tyyppejä. Toisin kuin tuplissa, rakenteessa nimeät jokaisen datan osan, jotta arvojen merkitys on selvä. Näiden nimien lisääminen tarkoittaa, että rakenteet ovat joustavampia kuin tuplat: sinun ei tarvitse luottaa datan järjestykseen määrittääksesi tai käyttääksesi instanssin arvoja.</p>
+<p>Määrittääksesi rakenteen, kirjoitat avainsanan <code>struct</code> ja nimeät koko rakenteen. Rakenteen nimen pitäisi kuvata yhdessä ryhmiteltyjen datan osien merkitystä. Sitten aaltosulkeiden sisällä määrittelemme datan osien nimet ja tyypit, joita kutsumme <em>kentiksi</em>. Esimerkiksi Listausta 5-1 näyttää rakenteen, joka tallentaa tietoja käyttäjätilistä.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch05-using-structs-to-structure-related-data/listing-05-01/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 5-1: <code>User</code>-rakenteen määrittely</figcaption>
+</figure>
+<p>Käyttääksemme rakennetta sen määrittelyn jälkeen, luomme kyseisen rakenteen <em>instanssin</em> määrittämällä konkreettiset arvot jokaiselle kentälle. Luomme instanssin ilmoittamalla rakenteen nimen ja lisäämällä aaltosulkeet, jotka sisältävät <em>avain: arvo</em> -pareja, joissa avaimet ovat kenttien nimiä ja arvot ovat dataa, jonka haluamme tallentaa näihin kenttiin. Emme tarvitse määrittää kenttiä samassa järjestyksessä, jossa ilmoitimme ne rakenteessa. Toisin sanoen rakenteen määrittely on kuin yleinen malli tyypille, ja instanssit täyttävät mallin tietyllä datalla luodakseen tyypin arvoja. Esimerkiksi voimme ilmoittaa tietyn käyttäjän kuten Listauksessa 5-2 on esitetty.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch05-using-structs-to-structure-related-data/listing-05-02/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 5-2: <code>User</code>-rakenteen instanssin luominen</figcaption>
+</figure>
+<p>Saadaksemme tietyn arvon rakenteesta, käytämme pistesyntaksia. Esimerkiksi käyttääksemme tämän käyttäjän sähköpostiosoitetta, käytämme <code>user1.email</code>. Jos instanssi on muuttuva, voimme muuttaa arvoa käyttämällä pistesyntaksia ja sijoittamalla tiettyyn kenttään. Listausta 5-3 näyttää, miten muutetaan <code>email</code>-kentän arvoa muuttuvassa <code>User</code>-instanssissa.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch05-using-structs-to-structure-related-data/listing-05-03/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 5-3: <code>email</code>-kentän arvon muuttaminen <code>User</code>-instanssissa</figcaption>
+</figure>
+<p>Huomaa, että koko instanssin täytyy olla muuttuva; Rust ei salli meidän merkitä vain tiettyjä kenttiä muuttuviksi. Kuten minkä tahansa lausekkeen kanssa, voimme rakentaa uuden instanssin rakenteesta funktion rungon viimeisenä lausekkeena palauttaaksemme implisiittisesti kyseisen uuden instanssin.</p>
+<p>Listausta 5-4 näyttää <code>build_user</code>-funktion, joka palauttaa <code>User</code>-instanssin annetulla sähköpostilla ja käyttäjänimellä. <code>active</code>-kenttä saa arvon <code>true</code>, ja <code>sign_in_count</code> saa arvon <code>1</code>.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch05-using-structs-to-structure-related-data/listing-05-04/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 5-4: <code>build_user</code>-funktio, joka ottaa sähköpostin ja käyttäjänimen ja palauttaa <code>User</code>-instanssin</figcaption>
+</figure>
+<p>On järkevää nimetä funktion parametrit samalla nimellä kuin rakenteen kentät, mutta <code>email</code>- ja <code>username</code>-kenttien ja -muuttujien toistaminen on hieman työlästä. Jos rakenteella olisi enemmän kenttiä, jokaisen nimen toistaminen olisi vieläkin ärsyttävämpää. Onneksi on kätevä lyhenne!</p>
+<!-- Old heading. Do not remove or links may break. -->
+<p><a id="using-the-field-init-shorthand-when-variables-and-fields-have-the-same-name"></a></p>
+<h3 id="kentän-alustuksen-lyhenteen-käyttö"><a class="header" href="#kentän-alustuksen-lyhenteen-käyttö">Kentän alustuksen lyhenteen käyttö</a></h3>
+<p>Koska parametrien nimet ja rakenteen kenttien nimet ovat täsmälleen samat Listauksessa 5-4, voimme käyttää <em>kentän alustuksen lyhenne</em>-syntaksia kirjoittaaksemme <code>build_user</code>-funktion uudelleen niin, että se käyttäytyy täsmälleen samalla tavalla, mutta ilman <code>username</code>- ja <code>email</code>-toistoa, kuten Listauksessa 5-5 on esitetty.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch05-using-structs-to-structure-related-data/listing-05-05/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 5-5: <code>build_user</code>-funktio, joka käyttää kentän alustuksen lyhennettä, koska <code>username</code>- ja <code>email</code>-parametreilla on sama nimi kuin rakenteen kentillä</figcaption>
+</figure>
+<p>Tässä luomme uuden <code>User</code>-rakenteen instanssin, jolla on kenttä nimeltä <code>email</code>. Haluamme asettaa <code>email</code>-kentän arvoksi <code>build_user</code>-funktion <code>email</code>-parametrin arvon. Koska <code>email</code>-kentällä ja <code>email</code>-parametrilla on sama nimi, meidän tarvitsee kirjoittaa vain <code>email</code> eikä <code>email: email</code>.</p>
+<h3 id="instanssien-luominen-toisista-instansseista-rakenteen-päivityssyntaksilla"><a class="header" href="#instanssien-luominen-toisista-instansseista-rakenteen-päivityssyntaksilla">Instanssien luominen toisista instansseista rakenteen päivityssyntaksilla</a></h3>
+<p>On usein hyödyllistä luoda uusi instanssi rakenteesta, joka sisältää suurimman osan arvoista toisesta instanssista, mutta muuttaa joitakin. Voit tehdä tämän käyttämällä <em>rakenteen päivityssyntaksia</em>.</p>
+<p>Ensin Listauksessa 5-6 näytämme, miten luodaan uusi <code>User</code>-instanssi <code>user2</code>:ssa tavallisesti ilman päivityssyntaksia. Asetamme uuden arvon <code>email</code>-kentälle, mutta käytämme muuten samoja arvoja <code>user1</code>:stä, jonka loimme Listauksessa 5-2.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch05-using-structs-to-structure-related-data/listing-05-06/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 5-6: Uuden <code>User</code>-instanssin luominen käyttäen kaikkia paitsi yhtä arvoa <code>user1</code>:stä</figcaption>
+</figure>
+<p>Käyttämällä rakenteen päivityssyntaksia voimme saavuttaa saman vaikutuksen vähemmällä koodilla, kuten Listauksessa 5-7 on esitetty. <code>..</code>-syntaksi määrittää, että jäljellä olevilla kentillä, joita ei ole eksplisiittisesti asetettu, pitäisi olla sama arvo kuin annetun instanssin kentillä.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch05-using-structs-to-structure-related-data/listing-05-07/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 5-7: Rakenteen päivityssyntaksin käyttö uuden <code>email</code>-arvon asettamiseksi <code>User</code>-instanssille, mutta muiden arvojen käyttämiseksi <code>user1</code>:stä</figcaption>
+</figure>
+<p>Listauksen 5-7 koodi luo myös instanssin <code>user2</code>:ssa, jolla on eri arvo <code>email</code>-kentälle, mutta samat arvot <code>username</code>-, <code>active</code>- ja <code>sign_in_count</code>-kentille <code>user1</code>:stä. <code>..user1</code> täytyy tulla viimeisenä määrittämään, että jäljellä olevat kentät saavat arvonsa <code>user1</code>:n vastaavista kentistä, mutta voimme valita määrittää arvoja niin monelle kentälle kuin haluamme missä tahansa järjestyksessä riippumatta kenttien järjestyksestä rakenteen määrittelyssä.</p>
+<p>Huomaa, että rakenteen päivityssyntaksi käyttää <code>=</code>-merkkiä kuten sijoituslauseke; tämä johtuu siitä, että se siirtää datan, kuten näimme <a href="ch04-01-what-is-ownership.html#variables-and-data-interacting-with-move">”Muuttujat ja data vuorovaikutuksessa siirron kanssa”</a><!-- ignore --> -osiossa. Tässä esimerkissä emme voi enää käyttää <code>user1</code>:tä <code>user2</code>:n luomisen jälkeen, koska <code>user1</code>:n <code>username</code>-kentän <code>String</code> siirrettiin <code>user2</code>:een. Jos olisimme antaneet <code>user2</code>:lle uudet <code>String</code>-arvot sekä <code>email</code>- että <code>username</code>-kentille, ja siten käyttäneet vain <code>active</code>- ja <code>sign_in_count</code>-arvoja <code>user1</code>:stä, <code>user1</code> olisi edelleen kelvollinen <code>user2</code>:n luomisen jälkeen. Sekä <code>active</code> että <code>sign_in_count</code> ovat tyyppejä, jotka toteuttavat <code>Copy</code>-traitin, joten <a href="ch04-01-what-is-ownership.html#stack-only-data-copy">”Vain pinossa oleva data: Copy”</a><!-- ignore --> -osiossa käsittelemämme käyttäytyminen pätee. Voimme edelleen käyttää <code>user1.email</code> tässä esimerkissä, koska sen arvoa <em>ei</em> siirretty pois.</p>
+<h3 id="tuple-rakenteiden-käyttö-nimeämättömillä-kentillä-eri-tyyppien-luomiseksi"><a class="header" href="#tuple-rakenteiden-käyttö-nimeämättömillä-kentillä-eri-tyyppien-luomiseksi">Tuple-rakenteiden käyttö nimeämättömillä kentillä eri tyyppien luomiseksi</a></h3>
+<p>Rust tukee myös rakenteita, jotka näyttävät samankaltaisilta kuin tuplat, ja joita kutsutaan <em>tuple-rakenteiksi</em>. Tuple-rakenteilla on rakenteen nimen tuoma lisämerkitys, mutta niillä ei ole nimiä liitettynä kenttiinsä; niillä on vain kenttien tyypit. Tuple-rakenteet ovat hyödyllisiä, kun haluat antaa koko tuplalle nimen ja tehdä tuplasta eri tyypin kuin muista tuplista, ja kun jokaisen kentän nimeäminen kuten tavallisessa rakenteessa olisi puhelias tai tarpeeton.</p>
+<p>Määrittääksesi tuple-rakenteen, aloita <code>struct</code>-avainsanalla ja rakenteen nimellä, jota seuraa tuplan tyypit. Esimerkiksi tässä määrittelemme ja käytämme kahta tuple-rakennetta nimeltä <code>Color</code> ja <code>Point</code>:</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch05-using-structs-to-structure-related-data/no-listing-01-tuple-structs/src/main.rs}}
+<span class="boring">}</span></code></pre></pre>
+</figure>
+<p>Huomaa, että <code>black</code>- ja <code>origin</code>-arvot ovat eri tyyppejä, koska ne ovat eri tuple-rakenteiden instansseja. Jokainen määrittelemäsi rakenne on oma tyypinsä, vaikka rakenteen kentät saattaisivat olla samoja tyyppejä. Esimerkiksi funktio, joka ottaa parametrin tyypillä <code>Color</code>, ei voi ottaa <code>Point</code>-argumenttia, vaikka molemmat tyypit koostuvat kolmesta <code>i32</code>-arvosta. Muuten tuple-rakenneinstanssit ovat samankaltaisia kuin tuplat siinä mielessä, että voit purkaa ne yksittäisiin osiinsa, ja voit käyttää <code>.</code>-merkkiä, jota seuraa indeksi, päästäksesi yksittäiseen arvoon. Toisin kuin tuplat, tuple-rakenteet vaativat sinua nimeämään rakenteen tyypin, kun purat ne. Esimerkiksi kirjoittaisimme <code>let Point(x, y, z) = point</code>.</p>
+<h3 id="yksikkömäiset-rakenteet-ilman-kenttiä"><a class="header" href="#yksikkömäiset-rakenteet-ilman-kenttiä">Yksikkömäiset rakenteet ilman kenttiä</a></h3>
+<p>Voit myös määritellä rakenteita, joilla ei ole lainkaan kenttiä! Näitä kutsutaan <em>yksikkömäisiksi rakenteiksi</em>, koska ne käyttäytyvät samankaltaisesti kuin <code>()</code>, yksikkötyyppi, josta mainitsimme <a href="ch03-02-data-types.html#the-tuple-type">”Tuplatyyppi”</a><!-- ignore --> -osiossa. Yksikkömäiset rakenteet voivat olla hyödyllisiä, kun sinun täytyy toteuttaa trait jollekin tyypille, mutta sinulla ei ole dataa, jonka haluaisit tallentaa itse tyyppiin. Käsittelemme traitteja Luvussa 10. Tässä on esimerkki yksikkörakenteen nimeltä <code>AlwaysEqual</code> ilmoittamisesta ja instanssin luomisesta:</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch05-using-structs-to-structure-related-data/no-listing-04-unit-like-structs/src/main.rs}}
+<span class="boring">}</span></code></pre></pre>
+</figure>
+<p>Määrittääksemme <code>AlwaysEqual</code>:in, käytämme <code>struct</code>-avainsanaa, haluamaamme nimeä ja sitten puolipistettä. Ei tarvetta aaltosulkeille tai sulkeille! Sitten voimme saada <code>AlwaysEqual</code>-instanssin <code>subject</code>-muuttujaan samalla tavalla: käyttämällä määrittelemäämme nimeä ilman aaltosulkeita tai sulkeita. Kuvittele, että myöhemmin toteutamme käyttäytymistä tälle tyypille siten, että jokainen <code>AlwaysEqual</code>-instanssi on aina yhtä suuri kuin minkä tahansa muun tyypin instanssi, ehkä testaustarkoituksiin tunnetun tuloksen saamiseksi. Emme tarvitsisi dataa toteuttaaksemme tuota käyttäytymistä! Näet Luvussa 10, miten määritellä traitteja ja toteuttaa ne mille tahansa tyypille, mukaan lukien yksikkömäiset rakenteet.</p>
+<section class="note" aria-role="note">
+<h3 id="rakenteen-datan-omistajuus"><a class="header" href="#rakenteen-datan-omistajuus">Rakenteen datan omistajuus</a></h3>
+<p><code>User</code>-rakenteen määrittelyssä Listauksessa 5-1 käytimme omistettua <code>String</code>-tyyppiä <code>&amp;str</code>-merkkijonoviipaletyypin sijaan. Tämä on tarkoituksellinen valinta, koska haluamme jokaisen tämän rakenteen instanssin omistavan kaiken datansa ja datan olevan kelvollinen niin kauan kuin koko rakenne on kelvollinen.</p>
+<p>On myös mahdollista, että rakenteet tallentavat viittauksia muualla omistettuun dataan, mutta se vaatii <em>elinaikojen</em> käyttöä, Rust-ominaisuutta, jota käsittelemme Luvussa 10. Elinaika varmistavat, että rakenteen viittaama data on kelvollinen niin kauan kuin rakenne on. Sanotaan, että yrität tallentaa viittauksen rakenteeseen määrittämättä elinaikoja, kuten seuraavassa; tämä ei toimi:</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<!-- CAN'T EXTRACT SEE https://github.com/rust-lang/mdBook/issues/1127 -->
+<pre><code class="language-rust ignore does_not_compile">struct User {
+    active: bool,
+    username: &amp;str,
+    email: &amp;str,
+    sign_in_count: u64,
+}
+
+fn main() {
+    let user1 = User {
+        active: true,
+        username: "someusername123",
+        email: "someone@example.com",
+        sign_in_count: 1,
+    };
+}</code></pre>
+</figure>
+<p>Kääntäjä valittaa, että se tarvitsee elinaikamäärittimet:</p>
+<pre><code class="language-console">$ cargo run
+   Compiling structs v0.1.0 (file:///projects/structs)
+error[E0106]: missing lifetime specifier
+ --&gt; src/main.rs:3:15
+  |
+3 |     username: &amp;str,
+  |               ^ expected named lifetime parameter
+  |
+help: consider introducing a named lifetime parameter
+  |
+1 ~ struct User&lt;'a&gt; {
+2 |     active: bool,
+3 ~     username: &amp;'a str,
+  |
+
+error[E0106]: missing lifetime specifier
+ --&gt; src/main.rs:4:12
+  |
+4 |     email: &amp;str,
+  |            ^ expected named lifetime parameter
+  |
+help: consider introducing a named lifetime parameter
+  |
+1 ~ struct User&lt;'a&gt; {
+2 |     active: bool,
+3 |     username: &amp;str,
+4 ~     email: &amp;'a str,
+  |
+
+For more information about this error, try `rustc --explain E0106`.
+error: could not compile `structs` (bin "structs") due to 2 previous errors
+</code></pre>
+<p>Luvussa 10 käsittelemme, miten korjata nämä virheet, jotta voit tallentaa viittauksia rakenteisiin, mutta toistaiseksi korjaamme tällaiset virheet käyttämällä omistettuja tyyppejä kuten <code>String</code> viittausten kuten <code>&amp;str</code> sijaan.</p>
+</section>
+<!-- manual-regeneration
+for the error above
+after running update-rustc.sh:
+pbcopy < listings/ch05-using-structs-to-structure-related-data/no-listing-02-reference-in-struct/output.txt
+paste above
+add `> ` before every line -->
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="ch05-00-structs.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="ch05-02-example-structs.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="ch05-00-structs.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="ch05-02-example-structs.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="ferris.js"></script>
+
+
+    </div>
+    </body>
+</html>

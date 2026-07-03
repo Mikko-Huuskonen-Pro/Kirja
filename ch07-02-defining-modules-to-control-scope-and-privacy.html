@@ -1,0 +1,359 @@
+<!DOCTYPE HTML>
+<html lang="fi" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Moduulien määrittäminen laajuuden ja yksityisyyden hallitsemiseksi - Rust-ohjelmointikieli</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="ferris.css">
+        <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rust-ohjelmointikieli</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/rust-lang/book" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2 id="moduulien-määrittäminen-laajuuden-ja-yksityisyyden-hallitsemiseksi"><a class="header" href="#moduulien-määrittäminen-laajuuden-ja-yksityisyyden-hallitsemiseksi">Moduulien määrittäminen laajuuden ja yksityisyyden hallitsemiseksi</a></h2>
+<p>Tässä osiossa käsittelemme moduuleja ja muita moduulijärjestelmän osia,
+eli <em>polkuja</em> (paths), joiden avulla voit nimetä kohteita; <code>use</code>-avainsanaa, joka
+tuo polun näkyvyysalueeseen; ja <code>pub</code>-avainsanaa, joka tekee kohteet julkisiksi.
+Käsittelemme myös <code>as</code>-avainsanaa, ulkoisia paketteja ja glob-operaattoria.</p>
+<h3 id="moduulien-pikaopas"><a class="header" href="#moduulien-pikaopas">Moduulien pikaopas</a></h3>
+<p>Ennen kuin siirrymme moduulien ja polkujen yksityiskohtiin, tässä on nopea
+viite siitä, miten moduulit, polut, <code>use</code>-avainsana ja <code>pub</code>-avainsana toimivat
+kääntäjässä ja miten useimmat kehittäjät järjestävät koodinsa. Käymme läpi
+esimerkkejä näistä säännöistä tämän luvun aikana, mutta tämä on hyvä paikka
+viitata muistutuksena siitä, miten moduulit toimivat.</p>
+<ul>
+<li><strong>Aloita crate-juuresta</strong>: Kun kääntäjä kääntää craten, se etsii ensin
+koodia kääntääkseen crate-juuritiedostosta (yleensä <em>src/lib.rs</em> kirjastocratelle tai
+<em>src/main.rs</em> binääricratelle).</li>
+<li><strong>Moduulien määrittäminen</strong>: Crate-juuritiedostossa voit määrittää uusia moduuleja;
+esimerkiksi voit määrittää “garden”-moduulin komennolla <code>mod garden;</code>. Kääntäjä etsii
+moduulin koodia näistä paikoista:
+<ul>
+<li>Inline, aaltosulkeiden sisällä, jotka korvaavat <code>mod garden</code>-komennon
+jälkeisen puolipisteen</li>
+<li>Tiedostossa <em>src/garden.rs</em></li>
+<li>Tiedostossa <em>src/garden/mod.rs</em></li>
+</ul>
+</li>
+<li><strong>Alimoduulien määrittäminen</strong>: Missä tahansa muussa tiedostossa kuin crate-juurissa voit
+määrittää alimoduuleja. Esimerkiksi voit määrittää <code>mod vegetables;</code> tiedostossa
+<em>src/garden.rs</em>. Kääntäjä etsii alimoduulin koodia vanhemman moduulin nimeämästä
+hakemistosta näistä paikoista:
+<ul>
+<li>Inline, suoraan <code>mod vegetables</code>-komennon jälkeen, aaltosulkeiden sisällä
+puolipisteen sijaan</li>
+<li>Tiedostossa <em>src/garden/vegetables.rs</em></li>
+<li>Tiedostossa <em>src/garden/vegetables/mod.rs</em></li>
+</ul>
+</li>
+<li><strong>Polut moduulien koodiin</strong>: Kun moduuli on osa crateasi, voit viitata
+siinä olevaan koodiin mistä tahansa muusta paikasta samassa cratessa, niin kauan
+kuin yksityisyyssäännöt sen sallivat, käyttämällä koodin polkua. Esimerkiksi
+<code>Asparagus</code>-tyyppi puutarhan vihannemoduulissa löytyisi polusta
+<code>crate::garden::vegetables::Asparagus</code>.</li>
+<li><strong>Yksityinen vs. julkinen</strong>: Moduulin sisällä oleva koodi on yksityistä sen
+vanhempien moduulien näkökulmasta oletusarvoisesti. Tehdäksesi moduulin julkiseksi,
+määritä se <code>pub mod</code>-komennolla <code>mod</code>-komennon sijaan. Tehdäksesi julkisen moduulin
+sisällä olevat kohteet julkisiksi, käytä <code>pub</code>-avainsanaa ennen niiden määrittelyjä.</li>
+<li><strong><code>use</code>-avainsana</strong>: Näkyvyysalueen sisällä <code>use</code>-avainsana luo oikoteitä
+kohteisiin vähentääkseen pitkien polkujen toistoa. Missä tahansa näkyvyysalueessa,
+joka voi viitata <code>crate::garden::vegetables::Asparagus</code>-tyyppiin, voit luoda
+oikotien komennolla <code>use crate::garden::vegetables::Asparagus;</code> ja sen jälkeen
+sinun tarvitsee vain kirjoittaa <code>Asparagus</code> käyttääksesi kyseistä tyyppiä
+näkyvyysalueessa.</li>
+</ul>
+<p>Tässä luomme binääricraten nimeltä <code>backyard</code>, joka havainnollistaa näitä sääntöjä.
+Craten hakemisto, myös nimeltään <code>backyard</code>, sisältää nämä tiedostot ja
+hakemistot:</p>
+<pre><code class="language-text">backyard
+├── Cargo.lock
+├── Cargo.toml
+└── src
+    ├── garden
+    │   └── vegetables.rs
+    ├── garden.rs
+    └── main.rs
+</code></pre>
+<p>Crate-juuritiedosto on tässä tapauksessa <em>src/main.rs</em>, ja se sisältää:</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><code class="language-rust noplayground ignore">{{#rustdoc_include ../listings/ch07-managing-growing-projects/quick-reference-example/src/main.rs}}</code></pre>
+</figure>
+<p>Rivi <code>pub mod garden;</code> kertoo kääntäjälle sisällyttää koodin, jonka se löytää
+tiedostosta <em>src/garden.rs</em>, joka on:</p>
+<figure class="listing">
+<span class="file-name">Filename: src/garden.rs</span>
+<pre><code class="language-rust noplayground ignore">{{#rustdoc_include ../listings/ch07-managing-growing-projects/quick-reference-example/src/garden.rs}}</code></pre>
+</figure>
+<p>Tässä <code>pub mod vegetables;</code> tarkoittaa, että myös tiedoston <em>src/garden/vegetables.rs</em>
+koodi sisällytetään. Tuo koodi on:</p>
+<pre><code class="language-rust noplayground ignore">{{#rustdoc_include ../listings/ch07-managing-growing-projects/quick-reference-example/src/garden/vegetables.rs}}</code></pre>
+<p>Siirrytään nyt näiden sääntöjen yksityiskohtiin ja demonstroidaan niitä käytännössä!</p>
+<h3 id="liittyvän-koodin-ryhmittely-moduuleihin"><a class="header" href="#liittyvän-koodin-ryhmittely-moduuleihin">Liittyvän koodin ryhmittely moduuleihin</a></h3>
+<p><em>Moduulit</em> (Modules) antavat meille mahdollisuuden järjestää koodi craten sisällä
+luettavuuden ja helpon uudelleenkäytön vuoksi. Moduulit antavat meille myös
+mahdollisuuden hallita kohteiden <em>yksityisyyttä</em> (privacy), koska moduulin sisällä
+oleva koodi on yksityistä oletusarvoisesti. Yksityiset kohteet ovat sisäisiä
+toteutusyksityiskohtia, jotka eivät ole saatavilla ulkoiseen käyttöön. Voimme
+valita tehdä moduulit ja niiden sisällä olevat kohteet julkisiksi, mikä paljastaa
+ne sallien ulkoisen koodin käyttää ja riippua niistä.</p>
+<p>Esimerkkinä kirjoitamme kirjastocraten, joka tarjoaa ravintolan toiminnallisuuden.
+Määrittelemme funktioiden allekirjoitukset, mutta jätämme niiden rungot tyhjiksi
+keskittyäksemme koodin järjestelyyn ravintolan toteutuksen sijaan.</p>
+<p>Ravintola-alalla joitakin ravintolan osia kutsutaan <em>etualueeksi</em> (front of house)
+ja toisia <em>takapihoiksi</em> (back of house). Etualue on siellä, missä asiakkaat ovat;
+tämä kattaa paikat, joissa isännät istuttavat asiakkaat, tarjoilijat ottavat
+tilauksia ja maksuja, ja baarimikot tekevät juomia. Takapihoilla kokit ja keittäjät
+työskentelevät keittiössä, tiskarit siivoavat, ja johtajat tekevät hallinnollista työtä.</p>
+<p>Järjestääksemme craten tällä tavalla, voimme järjestää sen funktiot sisäkkäisiin
+moduuleihin. Luo uusi kirjasto nimeltä <code>restaurant</code> suorittamalla <code>cargo new restaurant --lib</code>. Syötä sitten koodi Listauksesta 7-1 tiedostoon <em>src/lib.rs</em>
+määrittääksesi joitakin moduuleja ja funktioiden allekirjoituksia; tämä koodi on
+etualueen osio.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
+<pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch07-managing-growing-projects/listing-07-01/src/lib.rs}}</code></pre>
+<figcaption>Listing 7-1: <code>front_of_house</code>-moduuli, joka sisältää muita moduuleja, jotka puolestaan sisältävät funktioita</figcaption>
+</figure>
+<p>Määrittelemme moduulin <code>mod</code>-avainsanalla, jota seuraa moduulin nimi
+(tässä tapauksessa <code>front_of_house</code>). Moduulin runko menee sitten aaltosulkeiden
+sisään. Moduulien sisällä voimme sijoittaa muita moduuleja, kuten tässä tapauksessa
+moduulit <code>hosting</code> ja <code>serving</code>. Moduulit voivat myös sisältää määrittelyjä muille
+kohteille, kuten rakenteille (structs), luettelotyypeille (enums), vakioille,
+traiteille ja—kuten Listauksessa 7-1—funktioille.</p>
+<p>Käyttämällä moduuleja voimme ryhmitellä liittyvät määrittelyt yhteen ja nimetä,
+miksi ne liittyvät toisiinsa. Ohjelmoijat, jotka käyttävät tätä koodia, voivat
+navigoida koodissa ryhmien perusteella sen sijaan, että heidän täytyisi lukea
+läpi kaikki määrittelyt, mikä helpottaa heidän löytääkseen heille relevantit
+määrittelyt. Ohjelmoijat, jotka lisäävät uutta toiminnallisuutta tähän koodiin,
+tietäisivät, mihin sijoittaa koodi pitääkseen ohjelman järjestäytyneenä.</p>
+<p>Aiemmin mainitsimme, että <em>src/main.rs</em> ja <em>src/lib.rs</em> kutsutaan crate-juuriksi.
+Nimen syy on, että kummankin näistä kahdesta tiedostosta sisältö muodostaa moduulin
+nimeltä <code>crate</code> craten moduulirakenteen juuressa, joka tunnetaan nimellä
+<em>moduulipuu</em> (module tree).</p>
+<p>Listaus 7-2 näyttää moduulipuun Listauksen 7-1 rakenteelle.</p>
+<figure class="listing">
+<pre><code class="language-text">crate
+ └── front_of_house
+     ├── hosting
+     │   ├── add_to_waitlist
+     │   └── seat_at_table
+     └── serving
+         ├── take_order
+         ├── serve_order
+         └── take_payment
+</code></pre>
+<figcaption>Listing 7-2: Moduulipuu Listauksen 7-1 koodille</figcaption>
+</figure>
+<p>Tämä puu näyttää, miten jotkut moduulit pesiytyvät muiden moduulien sisään; esimerkiksi
+<code>hosting</code> pesiytyy <code>front_of_house</code>-moduulin sisään. Puu näyttää myös, että jotkut
+moduulit ovat <em>sisarusmoduuleja</em> (siblings), mikä tarkoittaa, että ne on määritelty
+samassa moduulissa; <code>hosting</code> ja <code>serving</code> ovat sisarusmoduuleja, jotka on määritelty
+<code>front_of_house</code>-moduulin sisällä. Jos moduuli A on moduulin B sisällä, sanomme,
+että moduuli A on moduulin B <em>lapsi</em> ja että moduuli B on moduulin A <em>vanhempi</em>.
+Huomaa, että koko moduulipuu on juurettu implisiittisen <code>crate</code>-nimisen moduulin alle.</p>
+<p>Moduulipuu saattaa muistuttaa tietokoneesi tiedostojärjestelmän hakemistopuuta;
+tämä on erittäin osuva vertaus! Aivan kuten hakemistot tiedostojärjestelmässä,
+käytät moduuleja järjestääksesi koodisi. Ja aivan kuten tiedostot hakemistossa,
+tarvitsemme tavan löytää moduulimme.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="ch07-01-packages-and-crates.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="ch07-03-paths-for-referring-to-an-item-in-the-module-tree.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="ch07-01-packages-and-crates.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="ch07-03-paths-for-referring-to-an-item-in-the-module-tree.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="ferris.js"></script>
+
+
+    </div>
+    </body>
+</html>

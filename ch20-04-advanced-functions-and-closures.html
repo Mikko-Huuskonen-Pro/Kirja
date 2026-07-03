@@ -1,0 +1,257 @@
+<!DOCTYPE HTML>
+<html lang="fi" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Kehittyneet funktiot ja sulkeiset - Rust-ohjelmointikieli</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="ferris.css">
+        <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rust-ohjelmointikieli</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/rust-lang/book" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2 id="kehittyneet-funktiot-ja-sulkeiset"><a class="header" href="#kehittyneet-funktiot-ja-sulkeiset">Kehittyneet funktiot ja sulkeiset</a></h2>
+<p>Tässä osiossa tarkastelemme kehittyneitä ominaisuuksia, jotka liittyvät funktioihin ja sulkeisiin,
+mukaan lukien funktiomerkintätyypit (<code>fn</code>-tyyppi) ja sulkeisten palauttaminen funktioista.</p>
+<h3 id="funktiomerkintätyypit-fn-tyyppi"><a class="header" href="#funktiomerkintätyypit-fn-tyyppi">Funktiomerkintätyypit (<code>fn</code>-tyyppi)</a></h3>
+<p>Aiemmin käsittelimme, kuinka sulkeisia voi välittää funktioille. Voit myös välittää tavallisia funktioita funktioille! Tämä on hyödyllistä, kun haluat käyttää jo määriteltyä funktiota sen sijaan, että loisit uuden sulkeisen. Funktiot muuttuvat automaattisesti tyypiksi <code>fn</code> (pienellä alkukirjaimella), jota ei pidä sekoittaa <code>Fn</code>-traitiin. <code>fn</code>-tyyppiä kutsutaan <em>funktiomerkintätyypiksi</em>.</p>
+<p>Seuraavassa esimerkissä määrittelemme <code>add_one</code>-funktion, joka lisää annetun arvon yhdellä. <code>do_twice</code>-funktio ottaa kaksi parametria: funktiomerkintätyypin, joka ottaa yhden <code>i32</code>-tyyppisen arvon ja palauttaa <code>i32</code>, sekä yhden <code>i32</code>-arvon. <code>do_twice</code> kutsuu parametrina saatua funktiota kahdesti ja laskee summan:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-28/src/main.rs}}
+<span class="boring">}</span></code></pre></pre>
+<p>Tämä tulostaa <code>The answer is: 12</code>. <code>do_twice</code>-funktion parametri <code>f</code> on määritelty <code>fn</code>-tyyppiseksi, mikä tarkoittaa, että sitä voidaan kutsua <code>do_twice</code>-funktion sisällä.</p>
+<p>Toisin kuin sulkeiset, <code>fn</code> on tyyppi eikä trait, joten voimme käyttää sitä suoraan parametrin tyyppinä ilman geneeristä trait-sidontaa.</p>
+<p>Funktiomerkintätyypit toteuttavat kaikki kolme sulkeistraitia (<code>Fn</code>, <code>FnMut</code> ja <code>FnOnce</code>), joten funktiomerkintöjä voi käyttää aina siellä, missä sulkeisia odotetaan. Yleensä on kuitenkin hyvä tapa käyttää geneeristä tyyppiä ja <code>Fn</code>-traitia, jotta funktiot voivat vastaanottaa sekä tavallisia funktioita että sulkeisia.</p>
+<p>Joskus on hyödyllistä hyväksyä vain <code>fn</code>-tyyppejä, mutta ei sulkeisia. Tämä voi olla tarpeen esimerkiksi, kun käytät ulkoisia kieliä, kuten C:tä, jossa funktiot voidaan välittää parametreina, mutta sulkeisia ei ole.</p>
+<p>Seuraavassa esimerkissä näytetään, kuinka <code>map</code>-metodia voidaan käyttää joko sulkeisen tai nimettyä funktiota käyttäen:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch20-advanced-features/no-listing-15-map-closure/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<p>Voimme myös käyttää <code>map</code>-funktiota nimetyllä funktiolla:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch20-advanced-features/no-listing-16-map-function/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<p>Koska <code>to_string</code> on saatavilla useista eri konteksteista, käytämme täysin määriteltyä syntaksia sen kutsumiseen. Tässä käytämme <code>ToString</code>-traitin <code>to_string</code>-metodia, joka on toteutettu kaikille <code>Display</code>-traitin toteuttaville tyypeille.</p>
+<p>Lisäksi <code>enum</code>-varianttien nimet toimivat myös alustusfunktioina, joita voidaan käyttää funktiomerkintöinä:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch20-advanced-features/no-listing-17-map-initializer/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<p>Tässä luomme <code>Status::Value</code>-instanssit <code>map</code>-funktion sisällä käyttämällä <code>Status::Value</code>-varianttia funktiomerkintänä.</p>
+<h3 id="sulkeisten-palauttaminen-funktioista"><a class="header" href="#sulkeisten-palauttaminen-funktioista">Sulkeisten palauttaminen funktioista</a></h3>
+<p>Sulkeiset toteutetaan Rustissa traitien avulla, joten niitä ei voi palauttaa suoraan funktioista. Useimmissa tapauksissa, joissa haluat palauttaa traitin, voit sen sijaan käyttää konkreettista tyyppiä, joka toteuttaa kyseisen traitin. Sulkeisten tapauksessa tämä on kuitenkin harvoin mahdollista, koska niillä ei yleensä ole konkreettista tyyppiä, joka voidaan palauttaa.</p>
+<p>Rust ei salli funktiomerkinnän <code>fn</code> käyttöä paluuarvona, jos sulkeinen kaappaa arvoja ympäristöstään.</p>
+<p>Sen sijaan voimme käyttää <code>impl Trait</code> -syntaksia:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch20-advanced-features/no-listing-18-returns-closure/src/lib.rs}}
+<span class="boring">}</span></code></pre></pre>
+<p>Jos haluat työskennellä useiden eri sulkeisten kanssa, jotka jakavat saman funktion allekirjoituksen mutta eri toteutukset, voit käyttää trait-olioita (<code>dyn Trait</code>):</p>
+<pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch20-advanced-features/no-listing-19-returns-closure-trait-object/src/main.rs}}</code></pre>
+<p>Tämä koodi toimii, mutta se ei toimisi, jos yrittäisimme käyttää <code>impl Fn(i32) -&gt; i32</code> -paluuarvoa, koska jokaisella sulkeisella on oma erillinen tyyppinsä.</p>
+<p>Seuraavaksi tarkastelemme makroja!</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="ch20-03-advanced-types.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="ch20-05-macros.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="ch20-03-advanced-types.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="ch20-05-macros.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="ferris.js"></script>
+
+
+    </div>
+    </body>
+</html>

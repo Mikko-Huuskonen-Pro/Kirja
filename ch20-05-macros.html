@@ -1,0 +1,488 @@
+<!DOCTYPE HTML>
+<html lang="fi" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Makrot - Rust-ohjelmointikieli</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="ferris.css">
+        <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rust-ohjelmointikieli</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/rust-lang/book" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2 id="makrot"><a class="header" href="#makrot">Makrot</a></h2>
+<p>Olemme käyttäneet makroja kuten <code>println!</code> läpi tämän kirjan, mutta emme ole täysin tutkineet, mikä makro on ja miten se toimii.
+Termi <em>makro</em> viittaa Rustin ominaisuusperheeseen: <em>deklaratiiviset</em> makrot <code>macro_rules!</code>-rakenteella ja kolmelaista <em>proseduraalista</em> makroa:</p>
+<ul>
+<li>Mukautetut <code>#[derive]</code>-makrot, jotka määrittävät <code>derive</code>-attribuutilla lisättävän koodin structeille ja enumeille</li>
+<li>Attribuuttimaiset makrot, jotka määrittelevät mukautettuja attribuutteja käytettäviksi millä tahansa kohteella</li>
+<li>Funktiomaiset makrot, jotka näyttävät funktiokutsuilta mutta toimivat argumenteina annetuilla tokeneilla</li>
+</ul>
+<p>Käsittelemme jokaisen näistä vuorollaan, mutta ensin katsotaan, miksi tarvitsemme makroja, kun meillä on jo funktiot.</p>
+<h3 id="ero-makrojen-ja-funktioiden-välillä"><a class="header" href="#ero-makrojen-ja-funktioiden-välillä">Ero makrojen ja funktioiden välillä</a></h3>
+<p>Pohjimmiltaan makrot ovat tapa kirjoittaa koodia, joka kirjoittaa muuta koodia, mikä tunnetaan nimellä <em>metaprogrammointi</em>.
+Liitteessä C käsittelemme <code>derive</code>-attribuuttia, joka luo erilaisten traitien toteutuksia puolestasi.
+Olemme myös käyttäneet <code>println!</code>- ja <code>vec!</code>-makroja läpi kirjan. Kaikki nämä makrot <em>laajenevat</em> tuottaakseen enemmän koodia
+kuin mitä olet kirjoittanut manuaalisesti.</p>
+<p>Metaprogrammointi on hyödyllistä vähentämään kirjoitettavan ja ylläpidettävän koodin määrää, mikä on myös yksi funktioiden tehtävistä.
+Makroilla on kuitenkin joitakin lisävoimia, joita funktioilla ei ole.</p>
+<p>Funktion signatuurissa täytyy ilmoittaa parametrien määrä ja tyyppi. Makrot puolestaan voivat ottaa vaihtelevan määrän parametreja:
+voimme kutsua <code>println!("hello")</code> yhdellä argumentilla tai <code>println!("hello {}", name)</code> kahdella argumentilla.
+Lisäksi makrot laajenevat ennen kuin kääntäjä tulkitsee koodin merkityksen, joten makro voi esimerkiksi toteuttaa traitin annetulle tyypille.
+Funktio ei voi, koska sitä kutsutaan suorituksen aikana ja trait täytyy toteuttaa käännösaikana.</p>
+<p>Makron toteuttamisen haittapuoli funktion sijaan on, että makromäärittelyt ovat monimutkaisempia kuin funktiomäärittelyt,
+koska kirjoitat Rust-koodia, joka kirjoittaa Rust-koodia. Tämän epäsuoruuden vuoksi makromäärittelyt ovat yleensä
+vaikeampia lukea, ymmärtää ja ylläpitää kuin funktiomäärittelyt.</p>
+<p>Toinen tärkeä ero makrojen ja funktioiden välillä on, että makrot täytyy määritellä tai tuoda näkyvyysalueelle <em>ennen</em>
+kuin kutsut niitä tiedostossa, toisin kuin funktiot, jotka voi määritellä missä tahansa ja kutsua missä tahansa.</p>
+<h3 id="deklaratiiviset-makrot-macro_rules-rakenteella-yleiseen-metaprogrammointiin"><a class="header" href="#deklaratiiviset-makrot-macro_rules-rakenteella-yleiseen-metaprogrammointiin">Deklaratiiviset makrot <code>macro_rules!</code>-rakenteella yleiseen metaprogrammointiin</a></h3>
+<p>Yleisin makrojen muoto Rustissa on <em>deklaratiivinen makro</em>. Näitä kutsutaan joskus myös ”makroiksi esimerkin kautta”,
+”<code>macro_rules!</code>-makroiksi” tai pelkästään ”makroiksi”. Ytimessään deklaratiiviset makrot antavat kirjoittaa jotain,
+mikä muistuttaa Rustin <code>match</code>-lauseketta. Kuten käsittelimme Luvussa 6, <code>match</code>-lausekkeet ovat ohjausrakenteita,
+jotka ottavat lausekkeen, vertaavat lausekkeen tulosarvoa kuvioihin ja suorittavat sitten kuvioon liittyvän koodin.
+Makrot vertaavat myös arvoa kuhunkin tiettyyn koodiin liittyviin kuvioihin: tässä tilanteessa arvo on makrolle välitetty
+kirjaimellinen Rust-lähdekoodi; kuviot verrataan kyseisen lähdekoodin rakenteeseen; ja kuhunkin kuvioon liittyvä koodi,
+kun se täsmää, korvaa makrolle välitetyn koodin. Kaikki tämä tapahtuu käännöksen aikana.</p>
+<p>Makron määrittelyssä käytetään <code>macro_rules!</code>-rakennetta. Tutkitaan <code>macro_rules!</code>-rakenteen käyttöä katsomalla,
+miten <code>vec!</code>-makro on määritelty. Luku 8 käsitteli <code>vec!</code>-makron käyttöä uuden vektorin luomiseen tietyillä arvoilla.
+Esimerkiksi seuraava makro luo uuden vektorin, joka sisältää kolme kokonaislukua:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let v: Vec&lt;u32&gt; = vec![1, 2, 3];
+<span class="boring">}</span></code></pre></pre>
+<p>Voimme käyttää <code>vec!</code>-makroa myös kahden kokonaisluvun vektorin tai viiden merkkijonoviipaleen vektorin luomiseen.
+Emme voisi tehdä samaa funktiolla, koska emme tietäisi etukäteen arvojen määrää tai tyyppiä.</p>
+<p>Listaus 20-29 näyttää hieman yksinkertaistetun <code>vec!</code>-makron määrittelyn.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
+<pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-29/src/lib.rs}}</code></pre>
+<figcaption>Listing 20-29: Yksinkertaistettu versio <code>vec!</code>-makron määrittelystä</figcaption>
+</figure>
+<blockquote>
+<p>Huom: Standardikirjaston todellinen <code>vec!</code>-makron määrittely sisältää koodia oikean muistimäärän varaamiseksi etukäteen.
+Tuo koodi on optimointi, jota emme sisällytä tähän esimerkin yksinkertaistamiseksi.</p>
+</blockquote>
+<p><code>#[macro_export]</code>-annotaatio ilmaisee, että tämä makro tulisi olla käytettävissä aina, kun makron määrittelevä crate tuodaan näkyvyysalueelle.
+Ilman tätä annotaatiota makroa ei voi tuoda näkyvyysalueelle.</p>
+<p>Aloitamme sitten makromäärittelyn <code>macro_rules!</code>-rakenteella ja määrittelemämme makron nimellä <em>ilman</em> huutomerkkiä.
+Nimi, tässä tapauksessa <code>vec</code>, on seurattu aaltosulkeilla, jotka ilmaisevat makromäärittelyn rungon.</p>
+<p><code>vec!</code>-makron rungon rakenne on samanlainen kuin <code>match</code>-lausekkeen rakenne. Tässä meillä on yksi haara kuviolla <code>( $( $x:expr ),* )</code>,
+jota seuraa <code>=&gt;</code> ja tähän kuvioon liittyvä koodilohko. Jos kuvio täsmää, siihen liittyvä koodilohko emitoidaan.
+Koska tämä on ainoa kuvio tässä makrossa, on vain yksi kelvollinen täsmäystapa; mikä tahansa muu kuvio johtaa virheeseen.
+Monimutkaisemmilla makroilla on useampi kuin yksi haara.</p>
+<p>Kelvollinen kuviosyntaksi makromäärittelyissä eroaa Luvussa 19 käsitellystä kuviosyntaksista, koska makrokuviot täsmätään
+Rust-koodin rakenteeseen arvojen sijaan. Käydään läpi, mitä Listauksen 20-29 kuvion osat tarkoittavat; täydellisestä makrokuviosyntaksista
+katso <a href="../reference/macros-by-example.html">Rust Reference</a>.</p>
+<p>Ensin käytämme sulkeita kattamaan koko kuvion. Käytämme dollarimerkkiä (<code>$</code>) ilmoittamaan muuttujan makrojärjestelmässä,
+joka sisältää kuvioon täsmäävän Rust-koodin. Dollarimerkki tekee selväksi, että kyseessä on makromuuttuja tavallisen Rust-muuttujan sijaan.
+Seuraavaksi tulee sulkeet, jotka kaappaavat arvot, jotka täsmäävät sulkeiden sisällä olevaan kuvioon, korvauskoodin käyttöön.
+<code>$()</code>-rakenteen sisällä on <code>$x:expr</code>, joka täsmää mihin tahansa Rust-lausekkeeseen ja antaa lausekkeelle nimen <code>$x</code>.</p>
+<p><code>$()</code>-rakenteen jälkeen oleva pilkku ilmaisee, että literaalinen pilkkuerotin täytyy esiintyä jokaisen <code>$()</code>-rakenteen sisällä olevaan
+koodiin täsmäävän instanssin välissä. <code>*</code> määrittää, että kuvio täsmää nolla tai useampaan kertaan siihen, mikä edeltää <code>*</code>-merkkiä.</p>
+<p>Kun kutsumme tätä makroa <code>vec![1, 2, 3];</code>, <code>$x</code>-kuvio täsmää kolme kertaa lausekkeisiin <code>1</code>, <code>2</code> ja <code>3</code>.</p>
+<p>Katsotaan nyt kuviota tämän haaran rungossa olevan koodin yhteydessä: <code>temp_vec.push()</code> <code>$()*</code>-rakenteen sisällä generoidaan
+jokaiselle <code>$()</code>-kuvion osalle, joka täsmää, nolla tai useampi kertaa riippuen siitä, kuinka monta kertaa kuvio täsmää.
+<code>$x</code> korvataan jokaisella täsmäävällä lausekkeella. Kun kutsumme tätä makroa <code>vec![1, 2, 3];</code>, tämän makrokutsun korvaava generoitu koodi on seuraava:</p>
+<pre><code class="language-rust ignore">{
+    let mut temp_vec = Vec::new();
+    temp_vec.push(1);
+    temp_vec.push(2);
+    temp_vec.push(3);
+    temp_vec
+}</code></pre>
+<p>Olemme määritelleet makron, joka voi ottaa minkä tahansa määrän argumentteja minkä tahansa tyypin ja generoida koodin vektorin luomiseksi määritellyillä alkioilla.</p>
+<p>Opi lisää makrojen kirjoittamisesta verkko-dokumentaatiosta tai muista lähteistä, kuten Daniel Keepin aloittamasta ja Lukas Wirthin jatkamasta
+<a href="https://veykril.github.io/tlborm/">”The Little Book of Rust Macros”</a> -oppaasta.</p>
+<h3 id="proseduraaliset-makrot-koodin-generointiin-attribuuteista"><a class="header" href="#proseduraaliset-makrot-koodin-generointiin-attribuuteista">Proseduraaliset makrot koodin generointiin attribuuteista</a></h3>
+<p>Makrojen toinen muoto on <em>proseduraalinen makro</em>, joka toimii enemmän funktion tavoin (ja on eräänlaista proseduuria).
+Proseduraaliset makrot ottavat koodia syötteenä, käsittelevät sitä ja tuottavat koodia tulosteena sen sijaan,
+että ne täsmäisivät kuvioihin ja korvaisivat koodin muulla koodilla kuten deklaratiiviset makrot.
+Kolme proseduraalisen makron lajia ovat mukautettu derive, attribuuttimainen ja funktiomaiset, ja kaikki toimivat samankaltaisesti.</p>
+<p>Proseduraalisia makroja luotaessa määrittelyjen täytyy sijaita omassa cratessaan erityisellä crate-tyypillä.
+Tämä johtuu monimutkaisista teknisistä syistä, joita toivomme poistavamme tulevaisuudessa. Listauksessa 20-30 näytämme,
+miten proseduraalinen makro määritellään, jossa <code>some_attribute</code> on paikkamerkki tietyn makrolajin käytölle.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
+<pre><code class="language-rust ignore">use proc_macro;
+
+#[some_attribute]
+pub fn some_name(input: TokenStream) -&gt; TokenStream {
+}</code></pre>
+<figcaption>Listing 20-30: Esimerkki proseduraalisen makron määrittelystä</figcaption>
+</figure>
+<p>Proseduraalisen makron määrittelevä funktio ottaa <code>TokenStream</code>-tyypin syötteenä ja tuottaa <code>TokenStream</code>-tyypin tulosteena.
+<code>TokenStream</code>-tyyppi on määritelty Rustin mukana tulevassa <code>proc_macro</code>-cratessa ja edustaa tokenien jonoa.
+Tämä on makron ydin: lähdekoodi, jolla makro toimii, muodostaa syöte-<code>TokenStream</code>-tyypin,
+ja makron tuottama koodi on tuloste-<code>TokenStream</code>-tyyppi. Funktioon on liitetty attribuutti, joka määrittää,
+minkälaisen proseduraalisen makron luomme. Samassa cratessa voi olla useita proseduraalisen makron lajeja.</p>
+<p>Katsotaan eri proseduraalisen makron lajeja. Aloitamme mukautetulla derive-makrolla ja selitämme sitten pienet erot,
+jotka tekevät muista muodoista erilaisia.</p>
+<h3 id="mukautetun-derive-makron-kirjoittaminen"><a class="header" href="#mukautetun-derive-makron-kirjoittaminen">Mukautetun <code>derive</code>-makron kirjoittaminen</a></h3>
+<p>Luodaan crate nimeltä <code>hello_macro</code>, joka määrittelee traitin nimeltä <code>HelloMacro</code> yhdellä liitetyllä funktiolla nimeltä <code>hello_macro</code>.
+Sen sijaan, että pakottaisimme käyttäjiämme toteuttamaan <code>HelloMacro</code>-traitin jokaiselle tyypeilleen, tarjoamme proseduraalisen makron,
+jotta käyttäjät voivat annotoida tyypin <code>#[derive(HelloMacro)]</code>-attribuutilla saadakseen oletustoteutuksen <code>hello_macro</code>-funktiolle.
+Oletustoteutus tulostaa <code>Hello, Macro! My name is TypeName!</code>, jossa <code>TypeName</code> on tyypin nimi, jolle tämä trait on määritelty.
+Toisin sanoen kirjoitamme craten, joka mahdollistaa toisen ohjelmoijan kirjoittaa Listauksen 20-31 kaltaista koodia käyttäen crateamme.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-31/src/main.rs}}</code></pre>
+<figcaption>Listing 20-31: Koodi, jonka crateamme käyttäjä voi kirjoittaa proseduraalista makroamme käyttäen</figcaption>
+</figure>
+<p>Tämä koodi tulostaa <code>Hello, Macro! My name is Pancakes!</code>, kun olemme valmiita. Ensimmäinen askel on luoda uusi kirjastocrate näin:</p>
+<pre><code class="language-console">$ cargo new hello_macro --lib
+</code></pre>
+<p>Seuraavaksi määrittelemme <code>HelloMacro</code>-traitin ja sen liitetyn funktion:</p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
+<pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch20-advanced-features/no-listing-20-impl-hellomacro-for-pancakes/hello_macro/src/lib.rs}}</code></pre>
+</figure>
+<p>Meillä on trait ja sen funktio. Tässä vaiheessa crateamme käyttäjä voisi toteuttaa traitin saavuttaakseen halutun toiminnallisuuden näin:</p>
+<pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch20-advanced-features/no-listing-20-impl-hellomacro-for-pancakes/pancakes/src/main.rs}}</code></pre>
+<p>Heidän täytyisi kuitenkin kirjoittaa toteutuslohko jokaiselle tyypille, jota he haluavat käyttää <code>hello_macro</code>-funktion kanssa;
+haluamme säästää heidät tältä työltä.</p>
+<p>Lisäksi emme voi vielä tarjota <code>hello_macro</code>-funktiolle oletustoteutusta, joka tulostaisi tyypin nimen, jolle trait on toteutettu:
+Rustilla ei ole reflektio-ominaisuuksia, joten se ei voi etsiä tyypin nimeä suorituksen aikana. Tarvitsemme makron generoimaan koodia käännösaikana.</p>
+<p>Seuraava askel on määritellä proseduraalinen makro. Kirjoitushetkellä proseduraalisten makrojen täytyy olla omassa cratessaan.
+Tämä rajoitus saattaa poistua tulevaisuudessa. Cratejen ja makrocratejen rakentelun käytäntö on seuraava:
+crate nimeltä <code>foo</code> käyttää mukautetun derive-proseduraalisen makron cratena nimeä <code>foo_derive</code>.
+Aloitetaan uusi crate nimeltä <code>hello_macro_derive</code> <code>hello_macro</code>-projektimme sisällä:</p>
+<pre><code class="language-console">$ cargo new hello_macro_derive --lib
+</code></pre>
+<p>Kaksi crateamme liittyy tiiviisti toisiinsa, joten luomme proseduraalisen makrocraten <code>hello_macro</code>-craten hakemistoon.
+Jos muutamme <code>hello_macro</code>-craten trait-määrittelyä, meidän täytyy muuttaa myös <code>hello_macro_derive</code>-craten proseduraalisen makron toteutusta.
+Kaksi cratea täytyy julkaista erikseen, ja näitä crateja käyttävien ohjelmoijien täytyy lisätä molemmat riippuvuuksiksi
+ja tuoda molemmat näkyvyysalueelle. Voisimme sen sijaan antaa <code>hello_macro</code>-craten käyttää <code>hello_macro_derive</code>-cratea riippuvuutena
+ja uudelleenviedä proseduraalisen makron koodin. Projektin rakenne kuitenkin mahdollistaa ohjelmoijien käyttää <code>hello_macro</code>-cratea,
+vaikka he eivät haluaisi <code>derive</code>-toiminnallisuutta.</p>
+<p>Meidän täytyy ilmoittaa <code>hello_macro_derive</code>-crate proseduraalisen makron cratena. Tarvitsemme myös toiminnallisuutta
+<code>syn</code>- ja <code>quote</code>-crateista, kuten näet hetken kuluttua, joten ne täytyy lisätä riippuvuuksiksi. Lisää seuraava
+<code>hello_macro_derive</code>-craten <em>Cargo.toml</em>-tiedostoon:</p>
+<figure class="listing">
+<span class="file-name">Filename: hello_macro_derive/Cargo.toml</span>
+<pre><code class="language-toml">{{#include ../listings/ch20-advanced-features/listing-20-32/hello_macro/hello_macro_derive/Cargo.toml:6:12}}
+</code></pre>
+</figure>
+<p>Aloittaaksesi proseduraalisen makron määrittelyn, sijoita Listauksen 20-32 koodi <code>hello_macro_derive</code>-craten <em>src/lib.rs</em>-tiedostoon.
+Huomaa, että tämä koodi ei käänny, ennen kuin lisäämme määrittelyn <code>impl_hello_macro</code>-funktiolle.</p>
+<figure class="listing">
+<span class="file-name">Filename: hello_macro_derive/src/lib.rs</span>
+<pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-32/hello_macro/hello_macro_derive/src/lib.rs}}</code></pre>
+<figcaption>Listing 20-32: Koodi, jota useimmat proseduraalisen makron cratet tarvitsevat Rust-koodin käsittelyyn</figcaption>
+</figure>
+<p>Huomaa, että olemme jakaneet koodin <code>hello_macro_derive</code>-funktioon, joka vastaa <code>TokenStream</code>-tyypin jäsentämisestä,
+ja <code>impl_hello_macro</code>-funktioon, joka vastaa syntaksipuun muuntamisesta: tämä tekee proseduraalisen makron kirjoittamisesta kätevämpää.
+Ulomman funktion (<code>hello_macro_derive</code> tässä tapauksessa) koodi on sama lähes jokaisessa näkemässäsi tai luomassasi proseduraalisen makron cratessa.
+Sisemmän funktion rungossa (<code>impl_hello_macro</code> tässä tapauksessa) määrittelemäsi koodi on erilainen proseduraalisen makron tarkoituksen mukaan.</p>
+<p>Olemme esitelleet kolme uutta cratea: <code>proc_macro</code>, <a href="https://crates.io/crates/syn"><code>syn</code></a> ja <a href="https://crates.io/crates/quote"><code>quote</code></a>. <code>proc_macro</code>-crate tulee Rustin mukana,
+joten sitä ei tarvinnut lisätä <em>Cargo.toml</em>-tiedoston riippuvuuksiin. <code>proc_macro</code>-crate on kääntäjän API,
+jonka avulla voimme lukea ja käsitellä Rust-koodia omasta koodistamme.</p>
+<p><code>syn</code>-crate jäsentää Rust-koodin merkkijonosta tietorakenteeksi, jolla voimme suorittaa operaatioita.
+<code>quote</code>-crate muuntaa <code>syn</code>-tietorakenteet takaisin Rust-koodiksi. Nämä cratet yksinkertaistavat merkittävästi
+minkä tahansa Rust-koodin jäsentämistä, jota saatamme haluta käsitellä: täydellisen jäsentimen kirjoittaminen Rust-koodille ei ole yksinkertainen tehtävä.</p>
+<p><code>hello_macro_derive</code>-funktiota kutsutaan, kun kirjastomme käyttäjä määrittää <code>#[derive(HelloMacro)]</code>-attribuutin tyypille.
+Tämä on mahdollista, koska olemme merkinneet <code>hello_macro_derive</code>-funktion <code>proc_macro_derive</code>-attribuutilla
+ja määrittäneet nimen <code>HelloMacro</code>, joka vastaa traitimme nimeä; tämä on käytäntö, jota useimmat proseduraaliset makrot noudattavat.</p>
+<p><code>hello_macro_derive</code>-funktio muuntaa ensin <code>input</code>-arvon <code>TokenStream</code>-tyypistä tietorakenteeksi, jota voimme sitten tulkita ja käsitellä.
+Tässä <code>syn</code> tulee kuvaan. <code>syn</code>-craten <code>parse</code>-funktio ottaa <code>TokenStream</code>-tyypin ja palauttaa <code>DeriveInput</code>-structin,
+joka edustaa jäsennettyä Rust-koodia. Listaus 20-33 näyttää olennaiset osat <code>DeriveInput</code>-structista,
+jonka saamme jäsentämällä merkkijonon <code>struct Pancakes;</code>:</p>
+<figure class="listing">
+<pre><code class="language-rust ignore">DeriveInput {
+    // --snip--
+
+    ident: Ident {
+        ident: "Pancakes",
+        span: #0 bytes(95..103)
+    },
+    data: Struct(
+        DataStruct {
+            struct_token: Struct,
+            fields: Unit,
+            semi_token: Some(
+                Semi
+            )
+        }
+    )
+}</code></pre>
+<figcaption>Listing 20-33: <code>DeriveInput</code>-instanssi, jonka saamme jäsentäessämme Listauksen 20-31 makroattribuutin sisältävän koodin</figcaption>
+</figure>
+<p>Tämän structin kentät osoittavat, että jäsentämämme Rust-koodi on yksikköstruct tunnisteella (<code>ident</code>, tunnistin eli nimi) <code>Pancakes</code>.
+Structilla on lisää kenttiä erilaisten Rust-koodien kuvaamiseen; katso <a href="https://docs.rs/syn/2.0/syn/struct.DeriveInput.html"><code>syn</code>-dokumentaatio <code>DeriveInput</code>-structille</a> lisätietoja.</p>
+<p>Määrittelemme pian <code>impl_hello_macro</code>-funktion, jossa rakennamme uutta Rust-koodia, jonka haluamme sisällyttää. Ennen sitä huomaa,
+että derive-makromme tuloste on myös <code>TokenStream</code>-tyyppi. Palautettu <code>TokenStream</code>-tyyppi lisätään crateamme käyttäjien kirjoittamaan koodiin,
+joten kun he kääntävät craten, he saavat lisätoiminnallisuuden, jonka tarjoamme muokatussa <code>TokenStream</code>-tyypissä.</p>
+<p>Saatat huomata, että kutsumme <code>unwrap</code>-metodia aiheuttaaksemme <code>hello_macro_derive</code>-funktion kaatumisen,
+jos <code>syn::parse</code>-funktion kutsu epäonnistuu tässä. Proseduraalisen makromme täytyy kaatua virheissä,
+koska <code>proc_macro_derive</code>-funktioiden täytyy palauttaa <code>TokenStream</code> <code>Result</code>-tyypin sijaan proseduraalisen makron API:n mukaisuuden vuoksi.
+Olemme yksinkertaistaneet tämän esimerkin käyttämällä <code>unwrap</code>-metodia; tuotantokoodissa sinun pitäisi antaa tarkempia virheilmoituksia
+siitä, mikä meni pieleen, käyttämällä <code>panic!</code>- tai <code>expect</code>-makroa.</p>
+<p>Nyt kun meillä on koodi, joka muuntaa annotoidun Rust-koodin <code>TokenStream</code>-tyypistä <code>DeriveInput</code>-instanssiksi,
+generoidaan koodi, joka toteuttaa <code>HelloMacro</code>-traitin annotoidulle tyypille, kuten Listauksessa 20-34 näytetään.</p>
+<figure class="listing">
+<span class="file-name">Filename: hello_macro_derive/src/lib.rs</span>
+<pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-34/hello_macro/hello_macro_derive/src/lib.rs:here}}</code></pre>
+<figcaption>Listing 20-34: <code>HelloMacro</code>-traitin toteuttaminen jäsennetyn Rust-koodin avulla</figcaption>
+</figure>
+<p>Saamme <code>Ident</code>-struct-instanssin, joka sisältää annotoidun tyypin nimen (tunnisteen), käyttämällä <code>ast.ident</code>-kenttää.
+Listauksen 20-33 struct osoittaa, että kun ajamme <code>impl_hello_macro</code>-funktion Listauksen 20-31 koodille,
+saamamme <code>ident</code> sisältää <code>ident</code>-kentän arvolla <code>"Pancakes"</code>. Näin ollen Listauksen 20-34 <code>name</code>-muuttuja sisältää <code>Ident</code>-struct-instanssin,
+joka tulostettaessa on merkkijono <code>"Pancakes"</code>, Listauksen 20-31 structin nimi.</p>
+<p><code>quote!</code>-makro antaa meidän määritellä Rust-koodin, jonka haluamme palauttaa. Kääntäjä odottaa jotain erilaista kuin <code>quote!</code>-makron
+suorituksen suora tulos, joten meidän täytyy muuntaa se <code>TokenStream</code>-tyypiksi. Teemme tämän kutsumalla <code>into</code>-metodia,
+joka kuluttaa tämän välisen esityksen ja palauttaa vaaditun <code>TokenStream</code>-tyypin arvon.</p>
+<p><code>quote!</code>-makro tarjoaa myös erittäin hienoja mallipohjamekaniikkoja: voimme kirjoittaa <code>#name</code>, ja <code>quote!</code> korvaa sen muuttujan <code>name</code> arvolla.
+Voit jopa tehdä toistoa samankaltaisesti kuin tavalliset makrot. Katso <a href="https://docs.rs/quote">quote-craten dokumentaatio</a> perusteellinen johdanto.</p>
+<p>Haluamme proseduraalisen makromme generoivan <code>HelloMacro</code>-traitin toteutuksen käyttäjän annotoimalle tyypille, jonka saamme <code>#name</code>-rakenteella.
+Traitin toteutuksessa on yksi funktio <code>hello_macro</code>, jonka runko sisältää tarjoamamme toiminnallisuuden: tulostaa <code>Hello, Macro! My name is</code>
+ja sitten annotoidun tyypin nimen.</p>
+<p>Tässä käytetty <code>stringify!</code>-makro on sisäänrakennettu Rustiin. Se ottaa Rust-lausekkeen, kuten <code>1 + 2</code>, ja muuntaa lausekkeen käännösaikana
+merkkijonoliteraaliksi, kuten <code>"1 + 2"</code>. Tämä eroaa <code>format!</code>- tai <code>println!</code>-makroista, jotka evaluoivat lausekkeen ja muuntavat tuloksen <code>String</code>-tyypiksi.
+On mahdollista, että <code>#name</code>-syöte on lauseke, joka tulostetaan kirjaimellisesti, joten käytämme <code>stringify!</code>-makroa.
+<code>stringify!</code>-makron käyttö säästää myös allokoinnin muuntamalla <code>#name</code>:n merkkijonoliteraaliksi käännösaikana.</p>
+<p>Tässä vaiheessa <code>cargo build</code> pitäisi onnistua sekä <code>hello_macro</code>- että <code>hello_macro_derive</code>-crateissa. Kytketään nämä cratet
+Listauksen 20-31 koodiin nähdäksemme proseduraalisen makron toiminnassa! Luo uusi binääriprojekti <em>projects</em>-hakemistoosi
+komennolla <code>cargo new pancakes</code>. Meidän täytyy lisätä <code>hello_macro</code> ja <code>hello_macro_derive</code> riippuvuuksiksi <code>pancakes</code>-craten <em>Cargo.toml</em>-tiedostoon.
+Jos julkaiset <code>hello_macro</code>- ja <code>hello_macro_derive</code>-versiosi <a href="https://crates.io/">crates.io</a>-sivustolle, ne olisivat tavallisia riippuvuuksia;
+jos et, voit määrittää ne <code>path</code>-riippuvuuksiksi seuraavasti:</p>
+<pre><code class="language-toml">{{#include ../listings/ch20-advanced-features/no-listing-21-pancakes/pancakes/Cargo.toml:7:9}}
+</code></pre>
+<p>Sijoita Listauksen 20-31 koodi <em>src/main.rs</em>-tiedostoon ja aja <code>cargo run</code>: sen pitäisi tulostaa <code>Hello, Macro! My name is Pancakes!</code>
+<code>HelloMacro</code>-traitin toteutus proseduraalisesta makrosta sisällytettiin ilman, että <code>pancakes</code>-craten täytyi toteuttaa sitä;
+<code>#[derive(HelloMacro)]</code> lisäsi traitin toteutuksen.</p>
+<p>Seuraavaksi tutkitaan, miten muut proseduraalisen makron lajit eroavat mukautetuista derive-makroista.</p>
+<h3 id="attribuuttimaiset-makrot"><a class="header" href="#attribuuttimaiset-makrot">Attribuuttimaiset makrot</a></h3>
+<p>Attribuuttimaiset makrot ovat samanlaisia kuin mukautetut derive-makrot, mutta sen sijaan, että ne generoisivat koodia <code>derive</code>-attribuutille,
+ne antavat luoda uusia attribuutteja. Ne ovat myös joustavampia: <code>derive</code> toimii vain structeille ja enumeille;
+attribuutteja voi soveltaa myös muihin kohteisiin, kuten funktioihin. Tässä on esimerkki attribuuttimaisen makron käytöstä:
+oletetaan, että sinulla on <code>route</code>-niminen attribuutti, joka annotoi funktioita web-sovelluskehyksen käytössä:</p>
+<pre><code class="language-rust ignore">#[route(GET, "/")]
+fn index() {</code></pre>
+<p>Tämä <code>#[route]</code>-attribuutti olisi kehyksen määrittelemä proseduraalinen makro. Makromäärittelyfunktion signatuuri näyttäisi tältä:</p>
+<pre><code class="language-rust ignore">#[proc_macro_attribute]
+pub fn route(attr: TokenStream, item: TokenStream) -&gt; TokenStream {</code></pre>
+<p>Tässä meillä on kaksi <code>TokenStream</code>-tyypin parametria. Ensimmäinen on attribuutin sisällölle: <code>GET, "/"</code> -osa.
+Toinen on kohteen runko, johon attribuutti on liitetty: tässä tapauksessa <code>fn index() {}</code> ja funktion rungon loppuosa.</p>
+<p>Muuten attribuuttimaiset makrot toimivat samalla tavalla kuin mukautetut derive-makrot: luot craten <code>proc-macro</code>-crate-tyypillä
+ja toteutat funktion, joka generoi haluamasi koodin!</p>
+<h3 id="funktiomaiset-makrot"><a class="header" href="#funktiomaiset-makrot">Funktiomaiset makrot</a></h3>
+<p>Funktiomaiset makrot määrittelevät makroja, jotka näyttävät funktiokutsuilta. Samankaltaisesti kuin <code>macro_rules!</code>-makrot,
+ne ovat joustavampia kuin funktiot; esimerkiksi ne voivat ottaa tuntemattoman määrän argumentteja. <code>macro_rules!</code>-makroja voi kuitenkin
+määritellä vain käyttämällä aiemmin käsittelemäämme <code>match</code>-tyylistä syntaksia
+<a href="#declarative-macros-with-macro_rules-for-general-metaprogramming">”Deklaratiiviset makrot <code>macro_rules!</code>-rakenteella yleiseen metaprogrammointiin”</a><!-- ignore --> -osiossa.
+Funktiomaiset makrot ottavat <code>TokenStream</code>-parametrin, ja niiden määrittely käsittelee tuota <code>TokenStream</code>-tyyppiä Rust-koodilla
+samalla tavalla kuin muut kaksi proseduraalisen makron tyyppiä. Esimerkki funktiomaisesta makrosta on <code>sql!</code>-makro,
+jota voisi kutsua näin:</p>
+<pre><code class="language-rust ignore">let sql = sql!(SELECT * FROM posts WHERE id=1);</code></pre>
+<p>Tämä makro jäsentäisi sen sisällä olevan SQL-lausekkeen ja tarkistaisi, että se on syntaktisesti oikein, mikä on paljon monimutkaisempaa
+käsittelyä kuin <code>macro_rules!</code>-makro pystyy tekemään. <code>sql!</code>-makro määriteltäisiin näin:</p>
+<pre><code class="language-rust ignore">#[proc_macro]
+pub fn sql(input: TokenStream) -&gt; TokenStream {</code></pre>
+<p>Tämä määrittely on samanlainen kuin mukautetun derive-makron signatuuri: saamme sulkeiden sisällä olevat tokenit ja palautamme generoimamme koodin.</p>
+<h2 id="yhteenveto"><a class="header" href="#yhteenveto">Yhteenveto</a></h2>
+<p>Huh! Nyt sinulla on työkalupakissa joitakin Rust-ominaisuuksia, joita et todennäköisesti käytä usein,
+mutta tiedät, että ne ovat saatavilla hyvin erityisissä tilanteissa. Olemme esitelleet useita monimutkaisia aiheita,
+jotta kun kohtaat niitä virheilmoitusten ehdotuksissa tai muiden ihmisten koodissa, tunnistat nämä käsitteet ja syntaksin.
+Käytä tätä lukua viitteenä ratkaisujen löytämiseen.</p>
+<p>Seuraavaksi otamme käyttöön kaiken, mitä olemme käsitelleet läpi kirjan, ja teemme vielä yhden projektin!</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="ch20-04-advanced-functions-and-closures.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="ch21-00-final-project-a-web-server.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="ch20-04-advanced-functions-and-closures.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="ch21-00-final-project-a-web-server.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="ferris.js"></script>
+
+
+    </div>
+    </body>
+</html>

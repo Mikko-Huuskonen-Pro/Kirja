@@ -1,0 +1,300 @@
+<!DOCTYPE HTML>
+<html lang="fi" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Polut moduulipuun kohteen viittaamiseen - Rust-ohjelmointikieli</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="ferris.css">
+        <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rust-ohjelmointikieli</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/rust-lang/book" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2 id="polut-kohteen-viittaamiseen-moduulipuussa"><a class="header" href="#polut-kohteen-viittaamiseen-moduulipuussa">Polut kohteen viittaamiseen moduulipuussa</a></h2>
+<p>Näyttääksemme Rustille, mistä kohde löytyy moduulipuussa, käytämme polkua samalla tavalla kuin käytämme polkua tiedostojärjestelmässä navigoidessamme. Kutsuaksemme funktiota meidän täytyy tietää sen polku.</p>
+<p>Polulla voi olla kaksi muotoa:</p>
+<ul>
+<li><em>Absoluuttinen polku</em> on täysi polku, joka alkaa crate-juuresta; ulkoisen craten koodille absoluuttinen polku alkaa craten nimellä, ja nykyisen craten koodille se alkaa literaalilla <code>crate</code>.</li>
+<li><em>Suhteellinen polku</em> alkaa nykyisestä moduulista ja käyttää <code>self</code>:ää, <code>super</code>:ia tai tunnistetta nykyisessä moduulissa.</li>
+</ul>
+<p>Molempia absoluuttisia ja suhteellisia polkuja seuraa yksi tai useampi tunniste, jotka on erotettu kaksoispisteillä (<code>::</code>).</p>
+<p>Palatkaamme Listaukseen 7-1 ja sanokaamme, että haluamme kutsua <code>add_to_waitlist</code>-funktiota. Tämä on sama kuin kysyisi: mikä on <code>add_to_waitlist</code>-funktion polku? Listausta 7-3 sisältää Listauksen 7-1, josta on poistettu joitakin moduuleja ja funktioita.</p>
+<p>Näytämme kaksi tapaa kutsua <code>add_to_waitlist</code>-funktiota uudesta funktiosta, <code>eat_at_restaurant</code>, joka on määritelty crate-juuressa. Nämä polut ovat oikein, mutta on jäljellä toinen ongelma, joka estää tämän esimerkin kääntymisen sellaisenaan. Selitämme miksi hetken kuluttua.</p>
+<p><code>eat_at_restaurant</code>-funktio on osa kirjastocratemme julkista API:a, joten merkitsemme sen <code>pub</code>-avainsanalla. <a href="ch07-03-paths-for-referring-to-an-item-in-the-module-tree.html#exposing-paths-with-the-pub-keyword">”Polkujen paljastaminen <code>pub</code>-avainsanalla”</a><!-- ignore --> -osiossa käsittelemme <code>pub</code>:ia tarkemmin.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
+<pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch07-managing-growing-projects/listing-07-03/src/lib.rs}}</code></pre>
+<figcaption>Listing 7-3: <code>add_to_waitlist</code>-funktion kutsuminen absoluuttisia ja suhteellisia polkuja käyttäen</figcaption>
+</figure>
+<p>Ensimmäisellä kerralla kun kutsumme <code>add_to_waitlist</code>-funktiota <code>eat_at_restaurant</code>:ssa, käytämme absoluuttista polkua. <code>add_to_waitlist</code>-funktio on määritelty samassa cratessa kuin <code>eat_at_restaurant</code>, mikä tarkoittaa, että voimme käyttää <code>crate</code>-avainsanaa aloittaaksemme absoluuttisen polun. Sisällytämme sitten jokaisen peräkkäisen moduulin, kunnes pääsemme <code>add_to_waitlist</code>:iin. Voit kuvitella tiedostojärjestelmän samalla rakenteella: määrittäisimme polun <code>/front_of_house/hosting/add_to_waitlist</code> suorittaaksemme <code>add_to_waitlist</code>-ohjelman; <code>crate</code>-nimen käyttö aloittaaksemme crate-juuresta on kuin <code>/</code>:n käyttö aloittaaksemme tiedostojärjestelmän juuresta komentorivilläsi.</p>
+<p>Toisella kerralla kun kutsumme <code>add_to_waitlist</code>:ia <code>eat_at_restaurant</code>:ssa, käytämme suhteellista polkua. Polku alkaa <code>front_of_house</code>:sta, moduulin nimestä, joka on määritelty samalla tasolla moduulipuussa kuin <code>eat_at_restaurant</code>. Tässä tiedostojärjestelmän vastine olisi polun <code>front_of_house/hosting/add_to_waitlist</code> käyttö. Moduulin nimellä aloittaminen tarkoittaa, että polku on suhteellinen.</p>
+<p>Valinta suhteellisen tai absoluuttisen polun käytöstä on päätös, jonka teet projektisi perusteella, ja se riippuu siitä, siirrätkö todennäköisemmin kohteen määrittelykoodia erillään vai yhdessä koodin kanssa, joka käyttää kohdetta. Esimerkiksi, jos siirtäisimme <code>front_of_house</code>-moduulin ja <code>eat_at_restaurant</code>-funktion moduuliin nimeltä <code>customer_experience</code>, meidän täytyisi päivittää absoluuttinen polku <code>add_to_waitlist</code>:iin, mutta suhteellinen polku olisi edelleen kelvollinen. Jos kuitenkin siirtäisimme <code>eat_at_restaurant</code>-funktion erillään moduuliin nimeltä <code>dining</code>, absoluuttinen polku <code>add_to_waitlist</code>-kutsuun pysyisi samana, mutta suhteellinen polku täytyisi päivittää. Yleinen mieltymyksemme on määrittää absoluuttiset polut, koska on todennäköisempää, että haluamme siirtää koodimäärittelyjä ja kohteen kutsuja toisistaan riippumatta.</p>
+<p>Yritetään kääntää Listausta 7-3 ja selvitetään, miksi se ei vielä käänny! Virheet, jotka saamme, on esitetty Listauksessa 7-4.</p>
+<figure class="listing">
+<pre><code class="language-console">{{#include ../listings/ch07-managing-growing-projects/listing-07-03/output.txt}}
+</code></pre>
+<figcaption>Listing 7-4: Kääntäjävirheet Listauksen 7-3 koodin kääntämisestä</figcaption>
+</figure>
+<p>Virheilmoitukset sanovat, että moduuli <code>hosting</code> on yksityinen. Toisin sanoen meillä on oikeat polut <code>hosting</code>-moduulille ja <code>add_to_waitlist</code>-funktiolle, mutta Rust ei anna meidän käyttää niitä, koska sillä ei ole pääsyä yksityisiin osiin. Rustissa kaikki kohteet (funktiot, metodit, rakenteet, enumit, moduulit ja vakiot) ovat oletuksena yksityisiä emomoduuleilleen. Jos haluat tehdä kohteesta kuten funktiosta tai rakenteesta yksityisen, laitat sen moduuliin.</p>
+<p>Emomoduulin kohteet eivät voi käyttää lapsimoduulien yksityisiä kohteita, mutta lapsimoduulien kohteet voivat käyttää esi-isämoduuliensa kohteita. Tämä johtuu siitä, että lapsimoduulit käärivät ja piilottavat toteutuksensa yksityiskohdat, mutta lapsimoduulit näkevät kontekstin, jossa ne on määritelty. Jatkaaksemme metaforaamme, ajattele yksityisyyssääntöjä kuin ravintolan takaosastoa: siellä tapahtuva on yksityistä ravintolan asiakkaille, mutta toimistopäälliköt näkevät ja voivat tehdä kaiken ravintolassa, jota he operoivat.</p>
+<p>Rust valitsi moduulijärjestelmän toimivan näin, jotta sisäisten toteutuksen yksityiskohtien piilottaminen on oletus. Näin tiedät, mitä sisäisen koodin osia voit muuttaa rikkomatta ulkoista koodia. Rust antaa kuitenkin mahdollisuuden paljastaa lapsimoduulien koodin sisäisiä osia ulkoisille esi-isämoduuleille käyttämällä <code>pub</code>-avainsanaa tehdäksesi kohteen julkiseksi.</p>
+<h3 id="polkujen-paljastaminen-pub-avainsanalla"><a class="header" href="#polkujen-paljastaminen-pub-avainsanalla">Polkujen paljastaminen <code>pub</code>-avainsanalla</a></h3>
+<p>Palataan Listauksen 7-4 virheeseen, joka kertoi, että <code>hosting</code>-moduuli on yksityinen. Haluamme, että emomoduulin <code>eat_at_restaurant</code>-funktiolla on pääsy <code>add_to_waitlist</code>-funktioon lapsimoduulissa, joten merkitsemme <code>hosting</code>-moduulin <code>pub</code>-avainsanalla, kuten Listauksessa 7-5 on esitetty.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
+<pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch07-managing-growing-projects/listing-07-05/src/lib.rs:here}}</code></pre>
+<figcaption>Listing 7-5: <code>hosting</code>-moduulin julistaminen <code>pub</code>:iksi sen käyttämiseksi <code>eat_at_restaurant</code>:sta</figcaption>
+</figure>
+<p>Valitettavasti Listauksen 7-5 koodi tuottaa edelleen kääntäjävirheitä, kuten Listauksessa 7-6 on esitetty.</p>
+<figure class="listing">
+<pre><code class="language-console">{{#include ../listings/ch07-managing-growing-projects/listing-07-05/output.txt}}
+</code></pre>
+<figcaption>Listing 7-6: Kääntäjävirheet Listauksen 7-5 koodin kääntämisestä</figcaption>
+</figure>
+<p>Mitä tapahtui? <code>pub</code>-avainsanan lisääminen <code>mod hosting</code>:n eteen tekee moduulista julkisen. Tämän muutoksen jälkeen, jos pääsemme <code>front_of_house</code>:iin, pääsemme <code>hosting</code>:iin. Mutta <code>hosting</code>:in <em>sisältö</em> on edelleen yksityistä; moduulin tekeminen julkiseksi ei tee sen sisällöstä julkista. <code>pub</code>-avainsana moduulissa antaa vain sen esi-isämoduulien koodin viitata siihen, ei käyttää sen sisäistä koodia. Koska moduulit ovat säiliöitä, emme voi tehdä paljon pelkällä moduulin tekemisellä julkiseksi; meidän täytyy mennä pidemmälle ja valita tehdä yhdestä tai useammasta moduulin sisällä olevasta kohteesta julkisia.</p>
+<p>Listauksen 7-6 virheet sanovat, että <code>add_to_waitlist</code>-funktio on yksityinen. Yksityisyyssäännöt pätevät rakenteisiin, enumeihin, funktioihin ja metodeihin sekä moduuleihin.</p>
+<p>Tehdään myös <code>add_to_waitlist</code>-funktiosta julkinen lisäämällä <code>pub</code>-avainsana sen määrittelyn eteen, kuten Listauksessa 7-7.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
+<pre><code class="language-rust noplayground test_harness">{{#rustdoc_include ../listings/ch07-managing-growing-projects/listing-07-07/src/lib.rs:here}}</code></pre>
+<figcaption>Listing 7-7: <code>pub</code>-avainsanan lisääminen <code>mod hosting</code>:iin ja <code>fn add_to_waitlist</code>:iin antaa meille mahdollisuuden kutsua funktiota <code>eat_at_restaurant</code>:sta</figcaption>
+</figure>
+<p>Nyt koodi kääntyy! Nähdäksemme, miksi <code>pub</code>-avainsanan lisääminen antaa meidän käyttää näitä polkuja <code>eat_at_restaurant</code>:ssa yksityisyyssääntöjen suhteen, katsotaan absoluuttista ja suhteellista polkua.</p>
+<p>Absoluuttisessa polussa aloitamme <code>crate</code>:sta, cratemme moduulipuun juuresta. <code>front_of_house</code>-moduuli on määritelty crate-juuressa. Vaikka <code>front_of_house</code> ei ole julkinen, koska <code>eat_at_restaurant</code>-funktio on määritelty samassa moduulissa kuin <code>front_of_house</code> (eli <code>eat_at_restaurant</code> ja <code>front_of_house</code> ovat sisaruksia), voimme viitata <code>front_of_house</code>:iin <code>eat_at_restaurant</code>:sta. Seuraavaksi on <code>hosting</code>-moduuli, joka on merkitty <code>pub</code>:illa. Pääsemme <code>hosting</code>:in emomoduuliin, joten pääsemme <code>hosting</code>:iin. Lopuksi <code>add_to_waitlist</code>-funktio on merkitty <code>pub</code>:illa ja pääsemme sen emomoduuliin, joten tämä funktiokutsu toimii!</p>
+<p>Suhteellisessa polussa logiikka on sama kuin absoluuttisessa polussa paitsi ensimmäinen askel: sen sijaan, että aloittaisimme crate-juuresta, polku alkaa <code>front_of_house</code>:sta. <code>front_of_house</code>-moduuli on määritelty samassa moduulissa kuin <code>eat_at_restaurant</code>, joten suhteellinen polku, joka alkaa moduulista, jossa <code>eat_at_restaurant</code> on määritelty, toimii. Sitten, koska <code>hosting</code> ja <code>add_to_waitlist</code> on merkitty <code>pub</code>:illa, loppu polusta toimii, ja tämä funktiokutsu on kelvollinen!</p>
+<p>Jos aiot jakaa kirjastocratesi, jotta muut projektit voivat käyttää koodiasi, julkinen API on sopimuksesi craten käyttäjien kanssa, joka määrittää, miten he voivat olla vuorovaikutuksessa koodisi kanssa. Julkisen API:n muutosten hallintaan liittyy monia näkökohtia, jotta craten käyttäminen olisi helpompaa. Nämä näkökohdat ovat tämän kirjan laajuuden ulkopuolella; jos olet kiinnostunut tästä aiheesta, katso <a href="https://rust-lang.github.io/api-guidelines/">The Rust API Guidelines</a>.</p>
+<section class="note" aria-role="note">
+<h4 id="parhaat-käytännöt-paketeille-joissa-on-binääri-ja-kirjasto"><a class="header" href="#parhaat-käytännöt-paketeille-joissa-on-binääri-ja-kirjasto">Parhaat käytännöt paketeille, joissa on binääri ja kirjasto</a></h4>
+<p>Mainitsimme, että paketti voi sisältää sekä <em>src/main.rs</em>-binääricrate-juuren että <em>src/lib.rs</em>-kirjastocrate-juuren, ja molemmilla crateilla on oletuksena paketin nimi. Tyypillisesti paketit, joissa on tämä malli sisältäen sekä kirjasto- että binääricraten, sisältävät binääricratessa vain tarpeeksi koodia käynnistääkseen suoritettavan, joka kutsuu kirjastocraten koodia. Tämä antaa muiden projektien hyötyä suurimmasta osasta paketin tarjoamaa toiminnallisuutta, koska kirjastocraten koodia voidaan jakaa.</p>
+<p>Moduulipuu pitäisi määritellä <em>src/lib.rs</em>:ssä. Sitten mitkä tahansa julkiset kohteet voidaan käyttää binääricratessa aloittamalla polut paketin nimellä. Binääricratesta tulee kirjastocraten käyttäjä aivan kuten täysin ulkoinen crate käyttäisi kirjastocratetta: se voi käyttää vain julkista API:a. Tämä auttaa sinua suunnittelemaan hyvän API:n; et ole vain tekijä, olet myös asiakas!</p>
+<p>Luvussa 12<!-- ignore --> demonstroimme tätä organisointikäytäntöä komentorivi-ohjelmalla, joka sisältää sekä binääri- että kirjastocraten.</p>
+</section>
+<h3 id="suhteellisten-polkujen-aloittaminen-superlla"><a class="header" href="#suhteellisten-polkujen-aloittaminen-superlla">Suhteellisten polkujen aloittaminen <code>super</code>:lla</a></h3>
+<p>Voimme rakentaa suhteellisia polkuja, jotka alkavat emomoduulista nykyisen moduulin tai crate-juuren sijaan, käyttämällä <code>super</code>:ia polun alussa. Tämä on kuin tiedostojärjestelmäpolun aloittaminen <code>..</code>-syntaksilla. <code>super</code>:n käyttö antaa meille mahdollisuuden viitata kohteeseen, jonka tiedämme olevan emomoduulissa, mikä voi helpottaa moduulipuun uudelleenjärjestelyä, kun moduuli liittyy läheisesti emomoduuliin, mutta emomoduuli saatetaan siirtää muualle moduulipuussa jonain päivänä.</p>
+<p>Harkitse Listauksen 7-8 koodia, joka mallintaa tilannetta, jossa kokki korjaa virheellisen tilauksen ja tuo sen henkilökohtaisesti asiakkaalle. <code>back_of_house</code>-moduulissa määritelty <code>fix_incorrect_order</code>-funktio kutsuu emomoduulissa määriteltyä <code>deliver_order</code>-funktiota määrittämällä polun <code>deliver_order</code>:iin aloittaen <code>super</code>:lla.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
+<pre><code class="language-rust noplayground test_harness">{{#rustdoc_include ../listings/ch07-managing-growing-projects/listing-07-08/src/lib.rs}}</code></pre>
+<figcaption>Listing 7-8: Funktion kutsuminen suhteellisella polulla, joka alkaa <code>super</code>:lla</figcaption>
+</figure>
+<p><code>fix_incorrect_order</code>-funktio on <code>back_of_house</code>-moduulissa, joten voimme käyttää <code>super</code>:ia siirtyäksemme <code>back_of_house</code>:n emomoduuliin, joka tässä tapauksessa on <code>crate</code>, juuri. Sieltä etsimme <code>deliver_order</code>:ia ja löydämme sen. Onnistui! Uskomme, että <code>back_of_house</code>-moduuli ja <code>deliver_order</code>-funktio pysyvät todennäköisesti samassa suhteessa toisiinsa ja siirretään yhdessä, jos päätämme järjestellä craten moduulipuuta uudelleen. Siksi käytimme <code>super</code>:ia, jotta meillä olisi vähemmän paikkoja päivittää koodia tulevaisuudessa, jos tämä koodi siirretään eri moduuliin.</p>
+<h3 id="rakenteiden-ja-enumien-tekeminen-julkisiksi"><a class="header" href="#rakenteiden-ja-enumien-tekeminen-julkisiksi">Rakenteiden ja enumien tekeminen julkisiksi</a></h3>
+<p>Voimme myös käyttää <code>pub</code>:ia merkitsemään rakenteet ja enumit julkisiksi, mutta <code>pub</code>:in käytössä rakenteiden ja enumien kanssa on muutamia ylimääräisiä yksityiskohtia. Jos käytämme <code>pub</code>:ia ennen rakennemäärittelyä, teemme rakenteesta julkisen, mutta rakenteen kentät ovat edelleen yksityisiä. Voimme tehdä jokaisesta kentästä julkisen tai ei tapauskohtaisesti. Listauksessa 7-9 olemme määritelleet julkisen <code>back_of_house::Breakfast</code>-rakenteen julkisella <code>toast</code>-kentällä mutta yksityisellä <code>seasonal_fruit</code>-kentällä. Tämä mallintaa ravintolatilannetta, jossa asiakas voi valita aterian kanssa tulevan leivän tyypin, mutta kokki päättää, mikä hedelmä seuraa ateriaa sen perusteella, mikä on sesongissa ja varastossa. Saatavilla olevat hedelmät vaihtuvat nopeasti, joten asiakkaat eivät voi valita hedelmää tai edes nähdä, minkä hedelmän he saavat.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
+<pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch07-managing-growing-projects/listing-07-09/src/lib.rs}}</code></pre>
+<figcaption>Listing 7-9: Rakenne, jossa on joitakin julkisia ja joitakin yksityisiä kenttiä</figcaption>
+</figure>
+<p>Koska <code>toast</code>-kenttä <code>back_of_house::Breakfast</code>-rakenteessa on julkinen, <code>eat_at_restaurant</code>:ssa voimme kirjoittaa ja lukea <code>toast</code>-kenttää käyttämällä pistesyntaksia. Huomaa, ettemme voi käyttää <code>seasonal_fruit</code>-kenttää <code>eat_at_restaurant</code>:ssa, koska <code>seasonal_fruit</code> on yksityinen. Kokeile poistaa kommentti riviltä, joka muokkaa <code>seasonal_fruit</code>-kentän arvoa, nähdäksesi minkä virheen saat!</p>
+<p>Huomaa myös, että koska <code>back_of_house::Breakfast</code>:lla on yksityinen kenttä, rakenteen täytyy tarjota julkinen liittyvä funktio, joka rakentaa <code>Breakfast</code>-instanssin (olemme nimenneet sen tässä <code>summer</code>:iksi). Jos <code>Breakfast</code>:lla ei olisi tällaista funktiota, emme voisi luoda <code>Breakfast</code>-instanssia <code>eat_at_restaurant</code>:ssa, koska emme voisi asettaa yksityisen <code>seasonal_fruit</code>-kentän arvoa <code>eat_at_restaurant</code>:ssa.</p>
+<p>Sitä vastoin, jos teemme enumista julkisen, kaikki sen variantit ovat sitten julkisia. Tarvitsemme vain <code>pub</code>:in <code>enum</code>-avainsanan eteen, kuten Listauksessa 7-10 on esitetty.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
+<pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch07-managing-growing-projects/listing-07-10/src/lib.rs}}</code></pre>
+<figcaption>Listing 7-10: Enumin merkitseminen julkiseksi tekee kaikista sen varianteista julkisia.</figcaption>
+</figure>
+<p>Koska teimme <code>Appetizer</code>-enumista julkisen, voimme käyttää <code>Soup</code>- ja <code>Salad</code>-variantteja <code>eat_at_restaurant</code>:ssa.</p>
+<p>Enumit eivät ole kovin hyödyllisiä, elleivät niiden variantit ole julkisia; olisi ärsyttävää joutua merkitsemään kaikki enum-variantit <code>pub</code>:illa joka tapauksessa, joten enum-varianttien oletus on olla julkisia. Rakenteet ovat usein hyödyllisiä ilman, että niiden kentät ovat julkisia, joten rakennekentät noudattavat yleistä sääntöä, että kaikki on oletuksena yksityistä, ellei niitä ole merkitty <code>pub</code>:illa.</p>
+<p>On vielä yksi tilanne, jossa <code>pub</code> on mukana, jota emme ole käsitelleet, ja se on viimeinen moduulijärjestelmämme ominaisuus: <code>use</code>-avainsana. Käsittelemme <code>use</code>:n erikseen ensin, ja sitten näytämme, miten yhdistää <code>pub</code> ja <code>use</code>.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="ch07-02-defining-modules-to-control-scope-and-privacy.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="ch07-04-bringing-paths-into-scope-with-the-use-keyword.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="ch07-02-defining-modules-to-control-scope-and-privacy.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="ch07-04-bringing-paths-into-scope-with-the-use-keyword.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="ferris.js"></script>
+
+
+    </div>
+    </body>
+</html>

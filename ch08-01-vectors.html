@@ -1,0 +1,275 @@
+<!DOCTYPE HTML>
+<html lang="fi" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Arvojen listojen tallentaminen vektoreilla - Rust-ohjelmointikieli</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="ferris.css">
+        <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rust-ohjelmointikieli</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/rust-lang/book" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2 id="arvolistojen-tallentaminen-vektoreilla"><a class="header" href="#arvolistojen-tallentaminen-vektoreilla">Arvolistojen tallentaminen vektoreilla</a></h2>
+<p>Ensimmäinen kokoelmatyyppi, jota tarkastelemme, on <code>Vec&lt;T&gt;</code>, eli <strong>vektori</strong>. Vektorit mahdollistavat useamman arvon tallentamisen yhteen tietorakenteeseen, jossa kaikki arvot sijaitsevat vierekkäin muistissa. Vektorit voivat tallentaa vain saman tyyppisiä arvoja. Ne ovat hyödyllisiä esimerkiksi silloin, kun sinulla on lista kohteista, kuten tiedoston tekstirivit tai ostoskorin tuotteiden hinnat.</p>
+<h3 id="uuden-vektorin-luominen"><a class="header" href="#uuden-vektorin-luominen">Uuden vektorin luominen</a></h3>
+<p>Uuden tyhjän vektorin luomiseen käytetään <code>Vec::new</code>-funktiota, kuten alla olevassa esimerkissä:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch08-common-collections/listing-08-01/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<p>Huomaa, että tässä käytetään tyyppimääritystä. Koska emme lisää vektoriin heti mitään arvoja, Rust ei voi päätellä sen sisältämää tyyppiä. Vektorit on toteutettu geneerisillä tyypeillä; käsittelemme geneerisiä tyyppejä tarkemmin luvussa 10. Tässä tapauksessa olemme kertoneet Rustille, että <code>Vec&lt;T&gt;</code> vektorissa <code>v</code> tallennetaan <code>i32</code>-tyyppisiä arvoja.</p>
+<p>Useimmiten vektorit luodaan kuitenkin alustusarvoilla, jolloin Rust päättelee arvon tyypin automaattisesti. Rust tarjoaa <code>vec!</code>-makron, joka luo uuden vektorin annetuilla arvoilla:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch08-common-collections/listing-08-02/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<p>Koska alustusarvoina on <code>i32</code>-tyyppisiä lukuja, Rust päättelee <code>v</code>-vektorin tyypiksi <code>Vec&lt;i32&gt;</code>, eikä erillistä tyyppimääritystä tarvita.</p>
+<h3 id="vektorin-päivittäminen"><a class="header" href="#vektorin-päivittäminen">Vektorin päivittäminen</a></h3>
+<p>Vektoriin voidaan lisätä uusia arvoja <code>push</code>-metodilla, kuten alla olevassa esimerkissä:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch08-common-collections/listing-08-03/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<p>Kuten kaikissa muuttujissa, vektorin arvon muuttaminen edellyttää sen määrittämistä <code>mut</code>-avainsanalla.</p>
+<h3 id="vektorin-alkioiden-lukeminen"><a class="header" href="#vektorin-alkioiden-lukeminen">Vektorin alkioiden lukeminen</a></h3>
+<p>Vektorin arvoihin voidaan viitata kahdella tavalla: käyttämällä indeksiä tai <code>get</code>-metodia. Alla oleva esimerkki havainnollistaa molempia tapoja:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch08-common-collections/listing-08-04/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<p>Rust tarjoaa nämä kaksi tapaa, jotta voit hallita ohjelman toimintaa, jos yritetään käyttää olematonta indeksiä. Jos esimerkiksi viitataan vektorin 100. alkioon, kun vektorissa on vain viisi alkiota, ohjelma kaatuu <code>[]</code>-syntaksin käytön yhteydessä, mutta <code>get</code>-metodi palauttaa <code>None</code> eikä aiheuta virhettä:</p>
+<pre><pre class="playground"><code class="language-rust should_panic panics edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch08-common-collections/listing-08-05/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<p>Joskus on hyödyllistä antaa käyttäjälle toinen mahdollisuus syöttää oikea indeksi sen sijaan, että ohjelma kaatuisi.</p>
+<h3 id="vektorin-iteroiminen"><a class="header" href="#vektorin-iteroiminen">Vektorin iteroiminen</a></h3>
+<p>Vektorin arvoja voidaan käydä läpi <code>for</code>-silmukalla. Alla oleva esimerkki käy läpi <code>i32</code>-tyyppisen vektorin arvot ja tulostaa ne:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch08-common-collections/listing-08-07/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<p>Jos haluamme muuttaa jokaisen arvon, voimme käyttää <code>for</code>-silmukkaa yhdessä muuttuvien viittausten kanssa:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch08-common-collections/listing-08-08/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<p>Koska <code>i</code> on viittaus vektorin arvoon, meidän täytyy käyttää <code>*</code>-operaattoria (<em>dereference operator</em>) päästäksemme käsiksi todelliseen arvoon.</p>
+<h3 id="enumien-käyttö-vektoreissa-eri-tyyppisten-arvojen-tallentamiseen"><a class="header" href="#enumien-käyttö-vektoreissa-eri-tyyppisten-arvojen-tallentamiseen">Enumien käyttö vektoreissa eri tyyppisten arvojen tallentamiseen</a></h3>
+<p>Vektorit voivat tallentaa vain saman tyyppisiä arvoja, mutta joskus haluamme tallentaa erilaisten tietotyyppien arvoja samaan listaan. Tällöin voimme käyttää <code>enum</code>-tietotyyppiä, joka mahdollistaa useiden eri tietotyyppien yhdistämisen:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch08-common-collections/listing-08-09/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<p>Koska <code>SpreadsheetCell</code>-enum on yksi tietotyyppi, voimme tallentaa sitä sisältäviä arvoja vektoriin. Rust varmistaa käännösaikana, että kaikki tapaukset on käsitelty oikein.</p>
+<h3 id="vektorin-vapauttaminen"><a class="header" href="#vektorin-vapauttaminen">Vektorin vapauttaminen</a></h3>
+<p>Kuten kaikki <code>struct</code>-tyyppiset tietorakenteet, vektori vapautetaan muistista, kun se poistuu laajuudestaan. Alla oleva esimerkki havainnollistaa tätä:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch08-common-collections/listing-08-10/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<p>Kun vektori vapautetaan, myös sen sisältämät arvot vapautetaan muistista.</p>
+<p>Seuraavaksi tutustumme toiseen yleiseen kokoelmaan: <code>String</code>-tietotyyppiin!</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="ch08-00-common-collections.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="ch08-02-strings.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="ch08-00-common-collections.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="ch08-02-strings.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="ferris.js"></script>
+
+
+    </div>
+    </body>
+</html>

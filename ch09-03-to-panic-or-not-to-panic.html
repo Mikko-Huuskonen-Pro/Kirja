@@ -1,0 +1,272 @@
+<!DOCTYPE HTML>
+<html lang="fi" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>panic! vai ei panic!? - Rust-ohjelmointikieli</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="ferris.css">
+        <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rust-ohjelmointikieli</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/rust-lang/book" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2 id="käyttääkö-panic-makroa-vai-ei"><a class="header" href="#käyttääkö-panic-makroa-vai-ei">Käyttääkö <code>panic!</code>-makroa vai ei?</a></h2>
+<p>Miten päättää, milloin <code>panic!</code>-makroa tulisi käyttää ja milloin tulisi palauttaa <code>Result</code>? Kun koodi käyttää <code>panic!</code>, virheestä ei voi palautua. Voit kutsua <code>panic!</code>-makroa missä tahansa virhetilanteessa, mutta tällöin päätät kutsuvan koodin puolesta, että tilanne on palauttamaton. Jos sen sijaan palautat <code>Result</code>-arvon, annat kutsuvalle koodille mahdollisuuden valita, kuinka virhe käsitellään. Kutsuva koodi voi yrittää palautua tilanteesta tai päättää, että virhe on kriittinen ja kutsua <code>panic!</code>…</p>
+<p>Esimerkeissä, prototyyppikoodissa ja testeissä on usein sopivampaa käyttää <code>panic!</code>-makroa <code>Result</code>-arvon palauttamisen sijaan. Tarkastellaan, miksi näin on, ja käsitellään tilanteita, joissa kääntäjä ei voi tietää, että virhe on mahdoton, mutta ihminen voi. Lopuksi annamme yleisiä ohjeita siitä, milloin kirjastoissa kannattaa käyttää <code>panic!</code>-makroa.</p>
+<h3 id="esimerkit-prototyypit-ja-testit"><a class="header" href="#esimerkit-prototyypit-ja-testit">Esimerkit, prototyypit ja testit</a></h3>
+<p>Kun kirjoitat esimerkkejä selittämään jotain konseptia, virheenkäsittelykoodin lisääminen voi tehdä esimerkistä vaikeaselkoisemman. Esimerkeissä on ymmärrettävää käyttää <code>unwrap</code>-kutsuja, jotka voivat aiheuttaa paniikkitilan. Ne toimivat <strong>paikkamerkkeinä</strong> ja osoittavat, että virheenkäsittelyyn kannattaa kiinnittää huomiota tuotantokoodia kirjoitettaessa.</p>
+<p>Samoin <code>unwrap</code> ja <code>expect</code> ovat käteviä prototyyppivaiheessa, kun et ole vielä päättänyt, miten virheet tulisi käsitellä. Ne jättävät selkeitä merkkejä koodiin ja auttavat tekemään siitä robustimpaa myöhemmin.</p>
+<p>Testitilanteissa on usein tarkoituksenmukaista käyttää <code>panic!</code>-makroa, koska testin epäonnistuminen tarkoittaa, että virhe havaittiin. Siksi <code>unwrap</code> ja <code>expect</code> ovat hyödyllisiä testikoodissa.</p>
+<h3 id="tilanteet-joissa-sinulla-on-enemmän-tietoa-kuin-kääntäjällä"><a class="header" href="#tilanteet-joissa-sinulla-on-enemmän-tietoa-kuin-kääntäjällä">Tilanteet, joissa sinulla on enemmän tietoa kuin kääntäjällä</a></h3>
+<p>On myös tilanteita, joissa <code>unwrap</code> tai <code>expect</code> on perusteltu, koska <strong>tiedät</strong>, että <code>Result</code>-arvo on aina <code>Ok</code>, vaikka kääntäjä ei voi sitä päätellä. Tällöin voit silti joutua käsittelemään <code>Result</code>-arvon, koska kutsuttu funktio voi <strong>yleisesti ottaen</strong> epäonnistua, vaikka sinun tapauksessasi se ei voi tapahtua.</p>
+<p>Esimerkiksi seuraavassa tapauksessa <code>expect</code>-metodin käyttö on perusteltua:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch09-error-handling/no-listing-08-unwrap-that-cant-fail/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<p>Tässä <code>IpAddr</code>-instanssi luodaan <strong>kovakoodatusta merkkijonosta</strong>. Tiedämme, että <code>"127.0.0.1"</code> on <strong>aina</strong> kelvollinen IP-osoite. Kääntäjä ei kuitenkaan ymmärrä tätä, joten meidän on silti käsiteltävä <code>Result</code>. <code>expect</code>-metodin käyttö on tässä perusteltua, mutta on hyvä dokumentoida syy, miksi <code>expect</code> ei voi epäonnistua.</p>
+<p>Jos merkkijono olisi saatu käyttäjän syötteenä, meidän olisi ehdottomasti käytettävä <code>Result</code>-tyypin virheenkäsittelyä, koska virhe voisi tapahtua.</p>
+<h3 id="virheenkäsittelyn-suuntaviivat"><a class="header" href="#virheenkäsittelyn-suuntaviivat">Virheenkäsittelyn suuntaviivat</a></h3>
+<p>Panic-tilan käyttö on suositeltavaa silloin, kun koodi voi päätyä <strong>huonoon tilaan</strong> (<em>bad state</em>). Tällainen tilanne syntyy, kun:</p>
+<ul>
+<li>Jokin <strong>oletus, sopimus tai sääntö</strong> on rikkoutunut (esim. virheellisiä tai ristiriitaisia arvoja on syötetty).</li>
+<li>Tilanne on <strong>ennalta arvaamaton</strong>, eikä kyse ole vain esimerkiksi käyttäjän virheellisestä syötteestä.</li>
+<li>Koodin suorittaminen <strong>ei voi jatkua turvallisesti</strong> tämän jälkeen.</li>
+<li>Tätä tilannetta <strong>ei voi kuvata selkeästi</strong> Rustin tyyppejä käyttäen.</li>
+</ul>
+<p>Jos joku kutsuu funktiotasi väärillä arvoilla, on yleensä parempi <strong>palauttaa virhe</strong> <code>Result</code>-arvona, jotta kutsuva koodi voi päättää, mitä tehdä. Jos kuitenkin jatkaminen olisi <strong>epäturvallista tai haitallista</strong>, paras vaihtoehto voi olla <code>panic!</code>, jolloin ohjelmoija huomaa ongelman kehitysvaiheessa.</p>
+<p>Samoin <code>panic!</code> voi olla hyvä valinta, jos kutsumasi ulkoinen koodi palauttaa <strong>kelvottoman tilan</strong>, jota et voi itse korjata.</p>
+<h3 id="panic-vs-result"><a class="header" href="#panic-vs-result"><code>panic!</code> vs. <code>Result</code></a></h3>
+<p>Jos virhe on <strong>ennakoitavissa</strong>, on yleensä parempi <strong>palauttaa <code>Result</code></strong> kuin käyttää <code>panic!</code>-makroa. Esimerkiksi:</p>
+<ul>
+<li>Jos parseri saa <strong>virheellistä dataa</strong>, <code>Result</code> on parempi.</li>
+<li>Jos verkkopyyntö <strong>ylittää nopeusrajan</strong>, <code>Result</code> on parempi.</li>
+</ul>
+<p>Tällaisissa tapauksissa <code>Result</code> kertoo kutsuvalle koodille, että virhe on <strong>odotettavissa</strong> ja se voi päättää, miten se käsittelee sen.</p>
+<p>Jos taas operaatio voi vaarantaa ohjelman käyttäjän, kannattaa käyttää <code>panic!</code>-makroa. Esimerkiksi Rustin standardikirjasto <strong>pysäyttää ohjelman</strong>, jos yrität käyttää taulukon rajojen ulkopuolista indeksiä. Tämä on tietoturvasyistä, sillä muistin ulkopuolelle meneminen voi aiheuttaa haavoittuvuuksia.</p>
+<h3 id="räätälöityjen-tyyppien-käyttäminen-validoinnissa"><a class="header" href="#räätälöityjen-tyyppien-käyttäminen-validoinnissa">Räätälöityjen tyyppien käyttäminen validoinnissa</a></h3>
+<p>Rustin tyyppijärjestelmää voi käyttää virheiden estämiseen jo käännösaikana. Esimerkiksi:</p>
+<ul>
+<li><code>Option&lt;T&gt;</code> kertoo, että arvo voi puuttua.</li>
+<li><code>u32</code> varmistaa, että arvo ei voi olla negatiivinen.</li>
+</ul>
+<p>Tämä vähentää tarvetta virheiden tarkistamiseen ajonaikana.</p>
+<p>Esimerkkinä katsotaan <strong>luvunarvauspeliä</strong> luvusta 2. Oletetaan, että ohjelma pyytää käyttäjää arvaamaan luvun <strong>1 ja 100 välillä</strong>. Voimme lisätä tarkistuksen, joka varmistaa, että annettu arvo on sallitulla alueella:</p>
+<pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch09-error-handling/no-listing-09-guess-out-of-range/src/main.rs:here}}</code></pre>
+<p>Tämä toimii, mutta tarkistus on toistettava jokaisessa paikassa, jossa arvoa käytetään. Parempi tapa on luoda <strong>oma tyyppi</strong>, joka <strong>takuulla</strong> sisältää vain luvut 1 ja 100 välillä:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch09-error-handling/listing-09-13/src/lib.rs}}
+<span class="boring">}</span></code></pre></pre>
+<p>Tässä <code>Guess</code>-rakenne varmistaa, että arvo on <strong>aina</strong> validi. <code>new</code>-metodi <strong>estää</strong> virheellisten arvojen luonnin. Näin muut funktiot voivat turvallisesti käyttää <code>Guess</code>-tyyppiä ilman ylimääräisiä tarkistuksia.</p>
+<hr />
+<h2 id="yhteenveto"><a class="header" href="#yhteenveto">Yhteenveto</a></h2>
+<p>Rustin virheenkäsittely auttaa tekemään koodista <strong>luotettavampaa</strong>:</p>
+<ul>
+<li><code>panic!</code> <strong>pysäyttää ohjelman</strong>, kun jatkaminen ei ole turvallista.</li>
+<li><code>Result</code> antaa mahdollisuuden <strong>palautua virheestä</strong>.</li>
+<li>Rustin <strong>tyyppijärjestelmä</strong> voi auttaa ehkäisemään virheitä jo käännösaikana.</li>
+</ul>
+<p>Seuraavaksi tutustumme <strong>geneerisiin tyyppeihin</strong>, joita käytetään laajalti Rustin standardikirjastossa.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="ch09-02-recoverable-errors-with-result.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="ch10-00-generics.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="ch09-02-recoverable-errors-with-result.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="ch10-00-generics.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="ferris.js"></script>
+
+
+    </div>
+    </body>
+</html>

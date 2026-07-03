@@ -1,0 +1,256 @@
+<!DOCTYPE HTML>
+<html lang="fi" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Box&lt;T&gt;:n käyttö osoittamaan pinomuistin tietoihin - Rust-ohjelmointikieli</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="ferris.css">
+        <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rust-ohjelmointikieli</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/rust-lang/book" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2 id="boxt-tyypin-käyttäminen-keolle-sijoitettavan-datan-osoittamiseen"><a class="header" href="#boxt-tyypin-käyttäminen-keolle-sijoitettavan-datan-osoittamiseen"><code>Box&lt;T&gt;</code>-tyypin käyttäminen keolle sijoitettavan datan osoittamiseen</a></h2>
+<p>Yksi yksinkertaisimmista älykkäistä osoittimista on <em>box</em>, jonka tyyppi on <code>Box&lt;T&gt;</code>. Box mahdollistaa datan tallentamisen keolle sen sijaan, että se sijaitsee pinossa. Pinoon jää vain osoitin keolla olevaan dataan. Luvussa 4 käsiteltiin pinon ja keon eroa, joten voit palata siihen tarvittaessa.</p>
+<p>Box ei aiheuta suorituskykyhaittaa, lukuun ottamatta sitä, että sen data tallennetaan keolle pinoon sijaan. Se ei myöskään tarjoa erityisiä lisäominaisuuksia. Useimmiten käytät boxia seuraavissa tilanteissa:</p>
+<ul>
+<li>Kun sinulla on tyyppi, jonka kokoa ei voida määrittää käännösaikana, mutta haluat käyttää sitä kontekstissa, jossa tarvitaan tarkka koko.</li>
+<li>Kun sinulla on suuri määrä dataa ja haluat siirtää omistajuuden ilman, että dataa kopioidaan.</li>
+<li>Kun haluat omistaa arvon ja tarvitset vain sen toteuttavan tietyn traitin, etkä välitä sen tarkasta tyypistä.</li>
+</ul>
+<p>Ensimmäistä tapausta käsitellään osiossa <a href="#rekursiivisten-tyyppien-mahdollistaminen-boxilla">“Rekursiivisten tyyppien mahdollistaminen Boxilla”</a>. Toisessa tapauksessa suuren tietomäärän omistajuuden siirtäminen voi olla hidasta, koska data kopioidaan pinoon. Voit parantaa suorituskykyä sijoittamalla tiedon keolle boxiin, jolloin vain osoitin kopioidaan, mutta varsinainen data pysyy paikallaan. Kolmas tapaus tunnetaan <em>trait-oliona</em>, jota käsitellään tarkemmin luvussa 18.</p>
+<h3 id="boxt-tyypin-käyttäminen-keolle-tallennettavaan-dataan"><a class="header" href="#boxt-tyypin-käyttäminen-keolle-tallennettavaan-dataan"><code>Box&lt;T&gt;</code>-tyypin käyttäminen keolle tallennettavaan dataan</a></h3>
+<p>Ennen kuin käsittelemme <code>Box&lt;T&gt;</code>:n käyttöä keon hyödyntämisessä, käydään läpi sen syntaksi ja kuinka sen sisältämää dataa käytetään.</p>
+<p>Seuraavassa esimerkissä (Listing 15-1) tallennetaan <code>i32</code>-tyyppinen arvo keolle käyttäen boxia:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch15-smart-pointers/listing-15-01/src/main.rs}}
+<span class="boring">}</span></code></pre></pre>
+<p>Tässä määritetään muuttuja <code>b</code>, joka on <code>Box</code>, joka osoittaa arvoon <code>5</code>, joka on sijoitettu keolle. Ohjelma tulostaa <code>b = 5</code>. Boxin sisältöä voidaan käyttää samalla tavalla kuin pinossa olevaa arvoa. Kun <code>b</code> poistuu laajuudesta, sekä box (pinoon tallennettu osoitin) että keolla oleva data vapautetaan.</p>
+<p>Yksittäisen arvon sijoittaminen keolle ei yleensä ole hyödyllistä, joten tätä tapaa ei käytetä usein. Useimmissa tapauksissa on parempi pitää yksittäiset arvot pinossa. Katsotaan seuraavaksi tapaus, jossa box mahdollistaa tyypin määrittelyn, jota ei muuten voisi tehdä.</p>
+<h3 id="rekursiivisten-tyyppien-mahdollistaminen-boxilla"><a class="header" href="#rekursiivisten-tyyppien-mahdollistaminen-boxilla">Rekursiivisten tyyppien mahdollistaminen Boxilla</a></h3>
+<p><em>Rekursiivinen tyyppi</em> sisältää arvon, joka on samaa tyyppiä kuin itse tyyppi. Rekursiiviset tyypit aiheuttavat ongelman, koska Rustin on tiedettävä tyypin koko käännösaikana. Koska rekursiivinen tyyppi voi periaatteessa jatkua äärettömästi, Rust ei voi määrittää sen vaatimaa muistimäärää. Koska boxilla on aina tunnettu koko, voimme ratkaista tämän sijoittamalla rekursiivisen tyypin sisään boxin.</p>
+<p>Esimerkkinä tarkastellaan <em>cons-listaa</em>, joka on yleinen tietorakenne funktionaalisissa ohjelmointikielissä.</p>
+<h4 id="cons-listan-taustaa"><a class="header" href="#cons-listan-taustaa">Cons-listan taustaa</a></h4>
+<p><em>Cons-lista</em> tulee Lisp-ohjelmointikielestä ja sen muunnelmista. Se koostuu sisäkkäisistä pareista ja toimii linkitetyn listan tapaan. Sen nimi tulee Lispin <code>cons</code>-funktiosta, joka luo uuden parin kahdesta argumentistaan. Esimerkiksi seuraava pseudokoodi kuvaa cons-listaa, joka sisältää luvut 1, 2 ja 3:</p>
+<pre><code class="language-text">(1, (2, (3, Nil)))
+</code></pre>
+<p>Jokainen alkio sisältää kaksi elementtiä: nykyisen arvon ja seuraavan alkion. Viimeinen alkio sisältää vain arvon <code>Nil</code>, joka merkitsee listan loppua.</p>
+<h3 id="boxtn-käyttäminen-rekursiivisten-tyyppien-kanssa"><a class="header" href="#boxtn-käyttäminen-rekursiivisten-tyyppien-kanssa"><code>Box&lt;T&gt;</code>:n käyttäminen rekursiivisten tyyppien kanssa</a></h3>
+<p>Rust ei osaa määrittää, kuinka paljon muistia rekursiivinen tyyppi tarvitsee. Seuraava käännösvirhe kertoo tästä:</p>
+<pre><code class="language-text">help: insert some indirection (e.g., a `Box`, `Rc`, or `&amp;`) to break the cycle
+  |
+2 |     Cons(i32, Box&lt;List&gt;),
+  |               ++++    +
+</code></pre>
+<p>Tästä saamme vinkin käyttää <code>Box&lt;T&gt;</code>:tä. Koska <code>Box&lt;T&gt;</code> on osoitin, sen koko on aina tiedossa. Voimme siis sijoittaa <code>Box&lt;T&gt;</code>:n <code>Cons</code>-variantin sisään estääksemme rekursion aiheuttaman ongelman.</p>
+<p>Seuraavassa on korjattu <code>List</code>-enum, joka käyttää <code>Box&lt;T&gt;</code>:tä:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch15-smart-pointers/listing-15-05/src/main.rs}}
+<span class="boring">}</span></code></pre></pre>
+<p>Tässä <code>Cons</code>-variantti sisältää <code>i32</code>-arvon sekä osoittimen seuraavaan listan alkioon, joka sijaitsee keolla. Tällä tavoin vältämme äärettömän rekursion ja Rust pystyy määrittämään muistin koon.</p>
+<p>Box tarjoaa vain osoittimen ja keolle allokoinnin, mutta ei muita erityisominaisuuksia. Se ei tuo suorituskykyhaittaa, ja sen avulla voidaan käsitellä tietorakenteita, joissa tarvitaan viittausta itsenäisesti sijaitsevaan dataan. <code>Box&lt;T&gt;</code> on älykäs osoitin, koska se toteuttaa <code>Deref</code>-traitin, jonka avulla <code>Box&lt;T&gt;</code>:tä voidaan käsitellä kuten viitteitä. Kun <code>Box&lt;T&gt;</code> poistuu laajuudesta, sen osoittama data keolla vapautetaan <code>Drop</code>-traitin ansiosta.</p>
+<p>Näitä kahta traitia (<code>Deref</code> ja <code>Drop</code>) käytetään myös muissa älykkäissä osoittimissa, joita käsittelemme myöhemmin tässä luvussa. Jatketaan seuraavaksi niiden tarkastelua!</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="ch15-00-smart-pointers.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="ch15-02-deref.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="ch15-00-smart-pointers.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="ch15-02-deref.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="ferris.js"></script>
+
+
+    </div>
+    </body>
+</html>

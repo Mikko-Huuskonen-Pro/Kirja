@@ -1,0 +1,239 @@
+<!DOCTYPE HTML>
+<html lang="fi" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Oliopohjaisten kielten ominaisuudet - Rust-ohjelmointikieli</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="ferris.css">
+        <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rust-ohjelmointikieli</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/rust-lang/book" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2 id="oliopohjaisten-kielten-ominaisuudet"><a class="header" href="#oliopohjaisten-kielten-ominaisuudet">Oliopohjaisten kielten ominaisuudet</a></h2>
+<p>Ohjelmointiyhteisössä ei ole yksimielisyyttä siitä, mitä ominaisuuksia kielen täytyy sisältää ollakseen oliopohjainen. Rustissa on vaikutteita monista ohjelmointiparadigmoista, mukaan lukien OOP. Esimerkiksi luvussa 13 tarkastelimme Rustin funktionaalisia ominaisuuksia. Monet OOP-kielet jakavat kuitenkin tiettyjä yhteisiä piirteitä, kuten oliot, kapseloinnin ja periytymisen. Tarkastellaan näitä ominaisuuksia yksityiskohtaisemmin ja sitä, miten Rust tukee niitä.</p>
+<h3 id="oliot-sisältävät-tietoa-ja-käyttäytymistä"><a class="header" href="#oliot-sisältävät-tietoa-ja-käyttäytymistä">Oliot sisältävät tietoa ja käyttäytymistä</a></h3>
+<p>Erich Gammalta, Richard Helmilta, Ralph Johnsonilta ja John Vlissidesilta peräisin oleva kirja <em>Design Patterns: Elements of Reusable Object-Oriented Software</em> (Addison-Wesley Professional, 1994), joka tunnetaan myös nimellä <em>The Gang of Four</em> -kirja, määrittelee oliopohjaisen ohjelmoinnin seuraavasti:</p>
+<blockquote>
+<p>Oliopohjaiset ohjelmat koostuvat olioista. <strong>Olio</strong> yhdistää sekä tiedon että sitä käsittelevät proseduurit. Näitä proseduurien kutsutaan tyypillisesti <strong>metodeiksi</strong> tai <strong>operaatioiksi</strong>.</p>
+</blockquote>
+<p>Tämän määritelmän perusteella Rust on oliopohjainen: rakenne (<code>struct</code>) ja luettelotyypit (<code>enum</code>) voivat sisältää tietoa, ja <code>impl</code>-lohkot mahdollistavat metodien määrittelyn niille. Vaikka Rust ei nimeltä kutsu niitä olioiksi, ne tarjoavat samaa toiminnallisuutta kuin Gang of Four -määritelmän mukaiset oliot.</p>
+<h3 id="kapselointi-piilottaa-toteutuksen-yksityiskohdat"><a class="header" href="#kapselointi-piilottaa-toteutuksen-yksityiskohdat">Kapselointi piilottaa toteutuksen yksityiskohdat</a></h3>
+<p>Toinen OOP:hen yleisesti liittyvä käsite on <em>kapselointi</em>, joka tarkoittaa, että olion toteutuksen yksityiskohdat eivät ole suoraan käytettävissä ulkopuolisesta koodista. Olion kanssa voidaan olla vuorovaikutuksessa vain sen julkisen rajapinnan kautta, mikä estää suoraa pääsyä sisäiseen tietoon ja varmistaa tietojen eheyden.</p>
+<p>Rustissa kapselointi hallitaan <code>pub</code>-avainsanalla, kuten käsittelimme luvussa 7. Oletusarvoisesti kaikki on yksityistä, ja voimme päättää, mitkä moduulit, tyypit, funktiot ja metodit ovat julkisia. Seuraavassa esimerkissä määritellään <code>AveragedCollection</code>, joka sisältää <code>i32</code>-lukujen vektorin sekä lasketun keskiarvon:</p>
+<pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch18-oop/listing-18-01/src/lib.rs}}</code></pre>
+<p>Struktuuri on <code>pub</code>, jotta muut voivat käyttää sitä, mutta sen kentät pysyvät yksityisinä. Tämä varmistaa, että kun arvo lisätään tai poistetaan listasta, keskiarvo päivittyy automaattisesti seuraavalla tavalla:</p>
+<pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch18-oop/listing-18-02/src/lib.rs:here}}</code></pre>
+<p>Koska <code>list</code> ja <code>average</code> ovat yksityisiä, niitä ei voi muokata suoraan ulkopuolisesta koodista. Tämä mahdollistaa turvallisen kapseloinnin.</p>
+<h3 id="periytyminen-tyyppijärjestelmänä-ja-koodin-uudelleenkäyttönä"><a class="header" href="#periytyminen-tyyppijärjestelmänä-ja-koodin-uudelleenkäyttönä">Periytyminen tyyppijärjestelmänä ja koodin uudelleenkäyttönä</a></h3>
+<p><em>Periytyminen</em> on mekanismi, jossa olio voi periä toisen olion määrittelyn ja siten saada käyttöönsä sen tiedot ja käyttäytymisen ilman erillistä määrittelyä.</p>
+<p>Jos periytymisen täytyy olla osa ohjelmointikieltä, jotta se olisi oliopohjainen, Rust ei täytä tätä vaatimusta. Rust ei tarjoa mahdollisuutta periyttää rakenteen kenttiä ja metodeja ilman makrojen käyttöä.</p>
+<p>Periytymisen tarkoituksena on kaksi pääkäyttötapaa: koodin uudelleenkäyttö ja polymorfismi.</p>
+<p>Rust mahdollistaa koodin uudelleenkäytön <em>traitien oletusmetodeilla</em>. Kun esimerkiksi toteutimme <code>Summary</code>-traitin metodin <code>summarize</code> oletustoteutuksen (kuten luvussa 10-14), kaikki <code>Summary</code>-traitin toteuttavat tyypit saivat tämän metodin käyttöönsä ilman lisäkoodia. Tämä vastaa periytymistä siinä mielessä, että alaluokka perisi yläluokan metodin toteutuksen, mutta Rustissa se tehdään traitien avulla.</p>
+<p>Polymorfismi mahdollistaa sen, että sama koodi voi toimia useiden eri tyyppisten tietojen kanssa. Rust ei käytä periytymistä polymorfismin saavuttamiseksi, vaan hyödyntää geneerisyyttä ja trait-sidontoja, mikä tunnetaan <em>rajoitetuksi parametriseksi polymorfismiksi</em>.</p>
+<p>Periytyminen on menettänyt suosiotaan ohjelmointikielten suunnittelussa, koska se voi johtaa tarpeettoman laajaan koodin jakamiseen ja vähentää joustavuutta. Monissa kielissä esiintyy <em>yksinkertainen periytyminen</em> (subclass voi periä vain yhdestä luokasta), mikä rajoittaa ohjelman suunnittelun joustavuutta.</p>
+<p>Tästä syystä Rust käyttää periytymisen sijaan trait-olioita polymorfismin toteuttamiseen.</p>
+<hr />
+<p>Seuraavaksi tarkastelemme, kuinka trait-oliot mahdollistavat polymorfismin Rustissa.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="ch18-00-oop.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="ch18-02-trait-objects.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="ch18-00-oop.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="ch18-02-trait-objects.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="ferris.js"></script>
+
+
+    </div>
+    </body>
+</html>

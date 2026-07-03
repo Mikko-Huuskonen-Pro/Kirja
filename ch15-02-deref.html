@@ -1,0 +1,425 @@
+<!DOCTYPE HTML>
+<html lang="fi" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Älykkäiden osoittimien käsitteleminen tavallisina viitteinä Deref-traitin avulla - Rust-ohjelmointikieli</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="ferris.css">
+        <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rust-ohjelmointikieli</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/rust-lang/book" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2 id="Älykkäiden-osoittimien-käsittely-kuten-tavallisia-viitteitä-deref-traitin-avulla"><a class="header" href="#Älykkäiden-osoittimien-käsittely-kuten-tavallisia-viitteitä-deref-traitin-avulla">Älykkäiden osoittimien käsittely kuten tavallisia viitteitä <code>Deref</code>-traitin avulla</a></h2>
+<p>Toteuttamalla <code>Deref</code>-traitin voit mukauttaa <em>dereferenssioperaattorin</em> <code>*</code> käyttäytymistä (ei pidä sekoittaa kertolasku- tai globaalioperaattoriin). Kun toteutat <code>Deref</code>-traitin niin, että älykästä osoitinta voidaan käsitellä tavallisen viitteen tapaan, voit kirjoittaa koodia, joka toimii viitteillä, ja käyttää sitä koodia myös älykkäiden osoittimien kanssa.</p>
+<p>Katsotaan ensin, miten dereferenssioperaattori toimii tavallisten viitteiden kanssa.
+Sitten yritämme määrittää oman tyypin, joka käyttäytyy kuten <code>Box&lt;T&gt;</code>, ja näemme, miksi
+dereferenssioperaattori ei toimi viitteen tavoin juuri määrittämässämme tyypissä. Tutkimme,
+miten <code>Deref</code>-traitin toteuttaminen mahdollistaa älykkäiden osoittimien toiminnan
+viitteiden tapaan. Lopuksi katsomme Rustin <em>deref-muunnosta</em> (<code>deref coercion</code>) ja sitä,
+miten se antaa meidän työskennellä joko viitteiden tai älykkäiden osoittimien kanssa.</p>
+<blockquote>
+<p>Huom: Rakennettavassa <code>MyBox&lt;T&gt;</code>-tyypissä on yksi suuri ero oikeaan <code>Box&lt;T&gt;</code>:ään verrattuna: versiomme ei tallenna dataa keolle.
+Keskitymme tässä esimerkissä <code>Deref</code>-traitiin, joten datan varsinaisen tallennuspaikan
+merkitys on vähemmän tärkeä kuin osoitinmaiselle käyttäytymiselle.</p>
+</blockquote>
+<!-- Old link, do not remove -->
+<p><a id="following-the-pointer-to-the-value-with-the-dereference-operator"></a></p>
+<h3 id="osoittimen-seuraaminen-arvon-luo"><a class="header" href="#osoittimen-seuraaminen-arvon-luo">Osoittimen seuraaminen arvon luo</a></h3>
+<p>Tavallinen viite on eräs osoitintyyppi, ja yksi tapa ajatella osoitinta on nuolena
+jossain muualla tallennettuun arvoon. Listauksessa 15-6 luomme viitteen <code>i32</code>-arvoon ja
+käytämme dereferenssioperaattoria seurataksemme viitettä arvoon:</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch15-smart-pointers/listing-15-06/src/main.rs}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 15-6: Dereferenssioperaattorin käyttö viitteen seuraamiseen <code>i32</code>-arvoon</figcaption>
+</figure>
+<p>Muuttuja <code>x</code> sisältää <code>i32</code>-arvon <code>5</code>. Asetamme <code>y</code>:n viittaamaan <code>x</code>:ään. Voimme
+varmistaa, että <code>x</code> on yhtä suuri kuin <code>5</code>. Jos haluamme kuitenkin tehdä väittämän
+<code>y</code>:n arvosta, meidän on käytettävä <code>*y</code>:tä seurataksemme viitettä arvoon, johon se
+osoittaa (siksi <em>dereferenssi</em>), jotta kääntäjä voi vertailla varsinaista arvoa. Kun
+olemme dereferoineet <code>y</code>:n, pääsemme käsiksi kokonaislukuun, johon <code>y</code> osoittaa, ja
+voimme vertailla sitä lukuun <code>5</code>.</p>
+<p>Jos yrittäisimme kirjoittaa <code>assert_eq!(5, y);</code> sen sijaan, saisimme tämän käännösvirheen:</p>
+<pre><code class="language-console">{{#include ../listings/ch15-smart-pointers/output-only-01-comparing-to-reference/output.txt}}
+</code></pre>
+<p>Luvun ja viittauksen lukuun vertaileminen ei ole sallittua, koska ne ovat eri tyyppejä.
+Meidän on käytettävä dereferenssioperaattoria seurataksemme viitettä arvoon, johon se
+osoittaa.</p>
+<h3 id="boxtn-käyttäminen-kuten-viitettä"><a class="header" href="#boxtn-käyttäminen-kuten-viitettä"><code>Box&lt;T&gt;</code>:n käyttäminen kuten viitettä</a></h3>
+<p>Voimme kirjoittaa Listauksen 15-6 koodin uudelleen käyttämään <code>Box&lt;T&gt;</code>:tä viitteen
+sijaan; Listauksessa 15-7 <code>Box&lt;T&gt;</code>:ään käytetty dereferenssioperaattori toimii samalla
+tavalla kuin Listauksessa 15-6 viitteeseen käytetty dereferenssioperaattori:</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch15-smart-pointers/listing-15-07/src/main.rs}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 15-7: Dereferenssioperaattorin käyttö <code>Box&lt;i32&gt;</code>:llä</figcaption>
+</figure>
+<p>Listauksen 15-7 ja Listauksen 15-6 pääero on, että tässä asetamme <code>y</code>:n olevan
+<code>Box&lt;T&gt;</code>-instanssi, joka osoittaa <code>x</code>:n kopioidun arvon, eikä viite, joka osoittaa
+<code>x</code>:n arvoon. Viimeisessä väittämässä voimme käyttää dereferenssioperaattoria
+seurataksemme <code>Box&lt;T&gt;</code>:n osoitinta samalla tavalla kuin silloin, kun <code>y</code> oli viite.
+Seuraavaksi tutkimme, mikä <code>Box&lt;T&gt;</code>:ssä on erityistä ja mahdollistaa dereferenssioperaattorin
+käytön määrittelemällä oman tyypin.</p>
+<h3 id="oman-älykkään-osoittimen-määrittely"><a class="header" href="#oman-älykkään-osoittimen-määrittely">Oman älykkään osoittimen määrittely</a></h3>
+<p>Rakennetaan älykäs osoitin, joka on samanlainen kuin standardikirjaston tarjoama
+<code>Box&lt;T&gt;</code>-tyyppi, jotta näemme, miten älykkäät osoittimet käyttäytyvät oletuksena
+erilailla kuin viitteet. Sitten katsomme, miten lisätään kyky käyttää dereferenssioperaattoria.</p>
+<p><code>Box&lt;T&gt;</code>-tyyppi on lopulta määritelty yhden elementin tuple-structina, joten Listauksessa
+15-8 määritellään <code>MyBox&lt;T&gt;</code>-tyyppi samalla tavalla. Määrittelemme myös <code>new</code>-funktion
+vastaamaan <code>Box&lt;T&gt;</code>:ään määriteltyä <code>new</code>-funktiota.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch15-smart-pointers/listing-15-08/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 15-8: <code>MyBox&lt;T&gt;</code>-tyypin määrittely</figcaption>
+</figure>
+<p>Määrittelemme structin nimeltä <code>MyBox</code> ja ilmoitamme geneerisen parametrin <code>T</code>, koska
+haluamme tyypin voivan sisältää minkä tahansa tyyppisiä arvoja. <code>MyBox</code>-tyyppi on
+tuple-struct, jossa on yksi <code>T</code>-tyyppinen elementti. <code>MyBox::new</code>-funktio ottaa yhden
+<code>T</code>-tyyppisen parametrin ja palauttaa <code>MyBox</code>-instanssin, joka sisältää annetun arvon.</p>
+<p>Yritetään lisätä Listauksen 15-7 <code>main</code>-funktio Listaukseen 15-8 ja muuttaa se käyttämään
+määrittämäämme <code>MyBox&lt;T&gt;</code>-tyyppiä <code>Box&lt;T&gt;</code>:n sijaan. Listauksen 15-9 koodi ei käänny,
+koska Rust ei tiedä, miten <code>MyBox</code>:ia dereferoidaan.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch15-smart-pointers/listing-15-09/src/main.rs:here}}</code></pre>
+<figcaption>Listing 15-9: Yritys käyttää <code>MyBox&lt;T&gt;</code>:tä samalla tavalla kuin viitteitä ja <code>Box&lt;T&gt;</code>:tä</figcaption>
+</figure>
+<p>Tässä on tuloksena oleva käännösvirhe:</p>
+<pre><code class="language-console">{{#include ../listings/ch15-smart-pointers/listing-15-09/output.txt}}
+</code></pre>
+<p><code>MyBox&lt;T&gt;</code>-tyyppiä ei voi dereferoida, koska emme ole toteuttaneet sitä kykyä tyypille.
+Jotta dereferointi <code>*</code>-operaattorilla onnistuisi, toteutamme <code>Deref</code>-traitin.</p>
+<!-- Old link, do not remove -->
+<p><a id="treating-a-type-like-a-reference-by-implementing-the-deref-trait"></a></p>
+<h3 id="deref-traitin-toteuttaminen"><a class="header" href="#deref-traitin-toteuttaminen"><code>Deref</code>-traitin toteuttaminen</a></h3>
+<p>Kuten käsiteltiin <a href="ch10-02-traits.html#implementing-a-trait-on-a-type">”Traitin toteuttaminen tyypille”</a><!-- ignore --> -osiossa
+Luvussa 10, traitin toteuttamiseksi meidän on annettava toteutukset traitin vaatimille
+metodeille. Standardikirjaston tarjoama <code>Deref</code>-trait vaatii meitä toteuttamaan yhden
+metodin nimeltä <code>deref</code>, joka lainaa <code>self</code>:n ja palauttaa viitteen sisäiseen dataan.
+Listauksessa 15-10 on <code>Deref</code>-toteutus, joka lisätään <code>MyBox&lt;T&gt;</code>:n määrittelyyn:</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch15-smart-pointers/listing-15-10/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 15-10: <code>Deref</code>-traitin toteuttaminen <code>MyBox&lt;T&gt;</code>:lle</figcaption>
+</figure>
+<p><code>type Target = T;</code> -syntaksi määrittelee assosioitun tyypin, jota <code>Deref</code>-trait käyttää.
+Assosioituneet tyypit ovat hieman erilainen tapa ilmoittaa geneerinen parametri, mutta
+sinun ei tarvitse huolehtia niistä nyt; käsittelemme niitä tarkemmin Luvussa 20.</p>
+<p>Täytämme <code>deref</code>-metodin rungon arvolla <code>&amp;self.0</code>, jotta <code>deref</code> palauttaa viitteen
+arvoon, johon haluamme päästä <code>*</code>-operaattorilla; muista Luvun 5 osiosta <a href="ch05-01-defining-structs.html#using-tuple-structs-without-named-fields-to-create-different-types">”Tuple-structien
+käyttö ilman nimettyjä kenttiä eri tyyppien luomiseen”</a><!-- ignore -->, että
+<code>.0</code> pääsee tuple-structin ensimmäiseen arvoon. Listauksen 15-9 <code>main</code>-funktio, joka
+kutsuu <code>*</code>:ää <code>MyBox&lt;T&gt;</code>-arvolla, kääntyy nyt, ja väittämät menevät läpi!</p>
+<p>Ilman <code>Deref</code>-traitia kääntäjä voi dereferoida vain <code>&amp;</code>-viitteitä. <code>deref</code>-metodi antaa
+kääntäjälle kyvyn ottaa mikä tahansa <code>Deref</code>-traitin toteuttava tyyppi ja kutsua <code>deref</code>-metodia
+saadakseen <code>&amp;</code>-viitteen, jonka dereferointi se osaa.</p>
+<p>Kun kirjoitimme <code>*y</code> Listauksessa 15-9, Rust suoritti kulissien takana tämän koodin:</p>
+<pre><code class="language-rust ignore">*(y.deref())</code></pre>
+<p>Rust korvaa <code>*</code>-operaattorin kutsulla <code>deref</code>-metodiin ja sitten tavallisella dereferoinnilla,
+jotta meidän ei tarvitse miettiä, pitääkö <code>deref</code>-metodia kutsua. Tämä Rustin ominaisuus
+antaa meidän kirjoittaa koodia, joka toimii identtisesti riippumatta siitä, onko meillä
+tavallinen viite vai <code>Deref</code>-traitin toteuttava tyyppi.</p>
+<p>Syy siihen, miksi <code>deref</code>-metodi palauttaa viitteen arvoon ja miksi tavallinen dereferointi
+sulkujen ulkopuolella lausekkeessa <code>*(y.deref())</code> on silti tarpeen, liittyy omistajuusjärjestelmään.
+Jos <code>deref</code>-metodi palauttaisi arvon suoraan viittauksen sijaan, arvo siirtyisi pois
+<code>self</code>:stä. Emme halua ottaa omistajuutta <code>MyBox&lt;T&gt;</code>:n sisäisestä arvosta tässä tapauksessa
+eikä useimmissa tapauksissa, joissa käytämme dereferenssioperaattoria.</p>
+<p>Huomaa, että <code>*</code>-operaattori korvataan kutsulla <code>deref</code>-metodiin ja sitten kutsulla
+<code>*</code>-operaattoriin vain kerran joka kerta, kun käytämme <code>*</code>:ää koodissamme. Koska <code>*</code>-operaattorin
+korvaaminen ei toistu loputtomasti, päädymme lopulta <code>i32</code>-tyyppiseen dataan, joka vastaa
+Listauksen 15-9 <code>assert_eq!</code>-lausekkeen <code>5</code>:ttä.</p>
+<h3 id="implisiittinen-deref-muunnos-funktioiden-ja-metodien-kanssa"><a class="header" href="#implisiittinen-deref-muunnos-funktioiden-ja-metodien-kanssa">Implisiittinen deref-muunnos funktioiden ja metodien kanssa</a></h3>
+<p><em>Deref-muunnos</em> muuntaa viitteen tyypille, joka toteuttaa <code>Deref</code>-traitin, viitteeksi
+toiseen tyyppiin. Esimerkiksi deref-muunnos voi muuntaa <code>&amp;String</code>:n <code>&amp;str</code>:ksi, koska
+<code>String</code> toteuttaa <code>Deref</code>-traitin niin, että se palauttaa <code>&amp;str</code>:n. Deref-muunnos on
+Rustin tarjoama kätevyys funktioiden ja metodien argumenteille, ja se toimii vain tyypeille,
+jotka toteuttavat <code>Deref</code>-traitin. Se tapahtuu automaattisesi, kun välitämme viitteen
+tietyn tyypin arvoon funktiolle tai metodille, joka ei vastaa funktion tai metodin
+määrittelyssä olevaa parametrietyyppiä. Sarja kutsuja <code>deref</code>-metodiin muuntaa antamamme
+tyypin parametrin vaatimaan tyyppiin.</p>
+<p>Deref-muunnos lisättiin Rustiin, jotta funktio- ja metodikutsuja kirjoittavat ohjelmoijat
+eivät joutuisi lisäämään yhtä monta eksplisiittistä viitettä ja dereferenssiä <code>&amp;</code>- ja
+<code>*</code>-operaattoreilla. Deref-muunnos antaa myös kirjoittaa enemmän koodia, joka toimii
+joko viitteillä tai älykkäillä osoittimilla.</p>
+<p>Nähdäksemme deref-muunnoksen toiminnassa, käytetään Listauksessa 15-8 määriteltyä
+<code>MyBox&lt;T&gt;</code>-tyyppiä sekä Listauksessa 15-10 lisättyä <code>Deref</code>-toteutusta. Listauksessa 15-11
+on funktion määrittely, jolla on merkkijonoviipaleparametri:</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch15-smart-pointers/listing-15-11/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 15-11: <code>hello</code>-funktio, jonka parametrilla <code>name</code> on tyyppi <code>&amp;str</code></figcaption>
+</figure>
+<p>Voimme kutsua <code>hello</code>-funktiota merkkijonoviipaleargumentilla, esimerkiksi <code>hello("Rust");</code>.
+Deref-muunnos mahdollistaa <code>hello</code>-funktion kutsumisen viitteellä <code>MyBox&lt;String&gt;</code>-tyyppiseen
+arvoon, kuten Listauksessa 15-12 näytetään:</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch15-smart-pointers/listing-15-12/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 15-12: <code>hello</code>-funktion kutsuminen viitteellä <code>MyBox&lt;String&gt;</code>-arvoon, mikä toimii deref-muunnoksen ansiosta</figcaption>
+</figure>
+<p>Tässä kutsumme <code>hello</code>-funktiota argumentilla <code>&amp;m</code>, joka on viite <code>MyBox&lt;String&gt;</code>-arvoon.
+Koska toteutimme <code>Deref</code>-traitin <code>MyBox&lt;T&gt;</code>:lle Listauksessa 15-10, Rust voi muuntaa
+<code>&amp;MyBox&lt;String&gt;</code>:n <code>&amp;String</code>:ksi kutsumalla <code>deref</code>:iä. Standardikirjasto tarjoaa <code>Deref</code>-toteutuksen
+<code>String</code>:lle, joka palauttaa merkkijonoviipaleen, ja tämä on <code>Deref</code>:in API-dokumentaatiossa.
+Rust kutsuu <code>deref</code>:iä uudelleen muuntaakseen <code>&amp;String</code>:n <code>&amp;str</code>:ksi, mikä vastaa <code>hello</code>-funktion
+määrittelyä.</p>
+<p>Jos Rust ei toteuttaisi deref-muunnosta, meidän pitäisi kirjoittaa Listauksen 15-13 koodi
+Listauksen 15-12 koodin sijaan kutsuaksemme <code>hello</code>:a <code>&amp;MyBox&lt;String&gt;</code>-tyyppisellä arvolla.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch15-smart-pointers/listing-15-13/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 15-13: Koodi, jonka meidän pitäisi kirjoittaa, jos Rustissa ei olisi deref-muunnosta</figcaption>
+</figure>
+<p><code>(*m)</code> dereferoi <code>MyBox&lt;String&gt;</code>:n <code>String</code>:ksi. Sitten <code>&amp;</code> ja <code>[..]</code> ottavat <code>String</code>:stä
+merkkijonoviipaleen, joka on koko merkkijono, vastatakseen <code>hello</code>:n signatuuria. Tämä
+koodi ilman deref-muunnoksia on vaikeampi lukea, kirjoittaa ja ymmärtää kaikkine näine
+symboleineen. Deref-muunnos antaa Rustin käsitellä nämä muunnokset automaattisesti puolestamme.</p>
+<p>Kun <code>Deref</code>-trait on määritelty mukana oleville tyypeille, Rust analysoi tyypit ja käyttää
+<code>Deref::deref</code>:iä niin monta kertaa kuin tarvitaan saadakseen viitteen vastaamaan parametrin
+tyyppiä. <code>Deref::deref</code>:in lisäysten määrä ratkaistaan käännösaikana, joten deref-muunnoksen
+hyödyntämisestä ei ole suorituskykyhaittaa ajonaikana!</p>
+<h3 id="miten-deref-muunnos-vaikuttaa-mutabiliteettiin"><a class="header" href="#miten-deref-muunnos-vaikuttaa-mutabiliteettiin">Miten deref-muunnos vaikuttaa mutabiliteettiin</a></h3>
+<p>Samalla tavalla kuin käytät <code>Deref</code>-traitia korvaamaan <code>*</code>-operaattorin muuttumattomilla
+viitteillä, voit käyttää <code>DerefMut</code>-traitia korvaamaan <code>*</code>-operaattorin muuttuvilla viitteillä.</p>
+<p>Rust tekee deref-muunnoksen, kun se löytää tyypit ja trait-toteutukset kolmessa tapauksessa:</p>
+<ol>
+<li><code>&amp;T</code>:stä <code>&amp;U</code>:ksi, kun <code>T: Deref&lt;Target=U&gt;</code></li>
+<li><code>&amp;mut T</code>:stä <code>&amp;mut U</code>:ksi, kun <code>T: DerefMut&lt;Target=U&gt;</code></li>
+<li><code>&amp;mut T</code>:stä <code>&amp;U</code>:ksi, kun <code>T: Deref&lt;Target=U&gt;</code></li>
+</ol>
+<p>Kaksi ensimmäistä tapausta ovat samanlaiset paitsi että toinen toteuttaa mutabiliteetin.
+Ensimmäinen tapaus sanoo, että jos sinulla on <code>&amp;T</code> ja <code>T</code> toteuttaa <code>Deref</code>:in johonkin
+tyyppiin <code>U</code>, voit saada <code>&amp;U</code>:n läpinäkyvästi. Toinen tapaus sanoo, että sama deref-muunnos
+tapahtuu muuttuville viitteille.</p>
+<p>Kolmas tapaus on hankalampi: Rust muuntaa myös muuttuvan viitteen muuttumattomaksi. Mutta
+päinvastainen <em>ei</em> ole mahdollista: muuttumattomia viitteitä ei koskaan muunneta muuttuviksi
+viitteiksi. Lainaussääntöjen vuoksi, jos sinulla on muuttuva viite, sen täytyy olla ainoa
+viite kyseiseen dataan (muuten ohjelma ei kääntyisi). Yhden muuttuvan viitteen muuntaminen
+yhteen muuttumattomaan viitteeseen ei koskaan riko lainaussääntöjä. Muuttumattoman viitteen
+muuntaminen muuttuvaksi viitteeksi vaatisi, että alkuperäinen muuttumaton viite on ainoa
+muuttumaton viite kyseiseen dataan, mutta lainaussäännöt eivät takaa sitä. Siksi Rust ei
+voi olettaa, että muuttumattoman viitteen muuntaminen muuttuvaksi viitteeksi on mahdollista.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="ch15-01-box.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="ch15-03-drop.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="ch15-01-box.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="ch15-03-drop.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="ferris.js"></script>
+
+
+    </div>
+    </body>
+</html>

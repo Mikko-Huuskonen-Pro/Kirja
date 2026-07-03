@@ -1,0 +1,456 @@
+<!DOCTYPE HTML>
+<html lang="fi" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>RefCell&lt;T&gt; ja sisäisen muuttuvuuden malli - Rust-ohjelmointikieli</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="ferris.css">
+        <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rust-ohjelmointikieli</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/rust-lang/book" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2 id="refcellt-ja-sisäisen-mutabiliteetin-malli"><a class="header" href="#refcellt-ja-sisäisen-mutabiliteetin-malli"><code>RefCell&lt;T&gt;</code> ja sisäisen mutabiliteetin malli</a></h2>
+<p><em>Sisäinen mutabiliteetti</em> on Rustin suunnittelumalli, joka sallii datan muuttamisen
+vaikka dataan olisi muuttumattomia viittauksia; normaalisti lainaussäännöt kieltävät
+tämän. Datan muuttamiseksi malli käyttää <code>unsafe</code>-koodia tietorakenteen sisällä
+taivuttaakseen Rustin tavanomaisia sääntöjä, jotka hallitsevat muuttamista ja lainaamista.
+Unsafe-koodi kertoo kääntäjälle, että tarkistamme säännöt käsin sen sijaan, että
+luottaisimme kääntäjään niiden tarkistamisessa; käsittelemme unsafe-koodia tarkemmin
+Luvussa 20.</p>
+<p>Voimme käyttää sisäisen mutabiliteetin mallia käyttäviä tyyppejä vain, kun voimme
+varmistaa, että lainaussääntöjä noudatetaan ajonaikana, vaikka kääntäjä ei voi sitä
+taata. Mukana oleva <code>unsafe</code>-koodi kääritään sitten turvalliseen API:in, ja ulompi
+tyyppi on silti muuttumaton.</p>
+<p>Tutkitaan tätä käsitettä katsomalla <code>RefCell&lt;T&gt;</code>-tyyppiä, joka noudattaa sisäisen
+mutabiliteetin mallia.</p>
+<h3 id="lainaussääntöjen-pakottaminen-ajonaikana-refcelltllä"><a class="header" href="#lainaussääntöjen-pakottaminen-ajonaikana-refcelltllä">Lainaussääntöjen pakottaminen ajonaikana <code>RefCell&lt;T&gt;</code>:llä</a></h3>
+<p>Toisin kuin <code>Rc&lt;T&gt;</code>, <code>RefCell&lt;T&gt;</code>-tyyppi edustaa yksittäistä omistajuutta sen sisältämään
+dataan. Mikä siis tekee <code>RefCell&lt;T&gt;</code>:stä erilaisen kuin esimerkiksi <code>Box&lt;T&gt;</code>? Muista
+Luvussa 4 opitut lainaussäännöt:</p>
+<ul>
+<li>Milloin tahansa sinulla voi olla <em>joko</em> (mutta ei molempia) yksi muuttuva viite
+tai mikä tahansa määrä muuttumattomia viitteitä.</li>
+<li>Viitteiden on aina oltava kelvollisia.</li>
+</ul>
+<p>Viitteillä ja <code>Box&lt;T&gt;</code>:llä lainaussääntöjen invariantit pakotetaan käännösaikana.
+<code>RefCell&lt;T&gt;</code>:llä nämä invariantit pakotetaan <em>ajonaikana</em>. Viitteillä, jos rikot nämä
+säännöt, saat käännösvirheen. <code>RefCell&lt;T&gt;</code>:llä, jos rikot nämä säännöt, ohjelmasi
+kaatuu paniikkiin ja päättyy.</p>
+<p>Käännösaikaisen lainaussääntöjen tarkistuksen etuja ovat, että virheet havaitaan
+aikaisemmin kehitysprosessissa, eikä suorituskykyyn ole vaikutusta, koska kaikki
+analyysi tehdään etukäteen. Näistä syistä lainaussääntöjen tarkistaminen käännösaikana
+on paras valinta useimmissa tapauksissa, minkä vuoksi se on Rustin oletus.</p>
+<p>Ajonaikaisen lainaussääntöjen tarkistuksen etu on, että tiettyjä muistiturvallisia
+tilanteita sallitaan, joissa käännösaikaiset tarkistukset olisivat kieltäneet ne.
+Staattinen analyysi, kuten Rustin kääntäjä, on luonnostaan konservatiivinen. Joitakin
+koodin ominaisuuksia on mahdotonta havaita analysoimalla koodia: kuuluisin esimerkki
+on pysähtymisongelma (Halting Problem), joka on tämän kirjan ulkopuolella mutta on
+mielenkiintoinen tutkimuskohde.</p>
+<p>Koska jotkin analyysit ovat mahdottomia, jos Rustin kääntäjä ei voi olla varma, että
+koodi noudattaa omistajuussääntöjä, se saattaa hylätä oikean ohjelman; tällä tavalla
+se on konservatiivinen. Jos Rust hyväksyisi virheellisen ohjelman, käyttäjät eivät
+voisi luottaa Rustin antamiin takuisiin. Jos Rust kuitenkin hylkää oikean ohjelman,
+ohjelmoijaa vaivataan, mutta mitään katastrofaalista ei voi tapahtua. <code>RefCell&lt;T&gt;</code>-tyyppi
+on hyödyllinen, kun olet varma, että koodisi noudattaa lainaussääntöjä, mutta kääntäjä
+ei pysty ymmärtämään ja takaamaan sitä.</p>
+<p>Samoin kuin <code>Rc&lt;T&gt;</code>, <code>RefCell&lt;T&gt;</code> on vain yksisäikeisiin tilanteisiin, ja se antaa
+käännösaikaisen virheen, jos yrität käyttää sitä monisäikeisessä kontekstissa. Puhumme
+siitä, miten saada <code>RefCell&lt;T&gt;</code>:n toiminnallisuus monisäikeisessä ohjelmassa Luvussa 16.</p>
+<p>Tässä yhteenveto syistä valita <code>Box&lt;T&gt;</code>, <code>Rc&lt;T&gt;</code> tai <code>RefCell&lt;T&gt;</code>:</p>
+<ul>
+<li><code>Rc&lt;T&gt;</code> mahdollistaa useita omistajia samalle datalle; <code>Box&lt;T&gt;</code>:llä ja <code>RefCell&lt;T&gt;</code>:llä
+on yksittäiset omistajat.</li>
+<li><code>Box&lt;T&gt;</code> sallii muuttumattomat tai muuttuvat lainaukset, jotka tarkistetaan käännösaikana;
+<code>Rc&lt;T&gt;</code> sallii vain muuttumattomat lainaukset, jotka tarkistetaan käännösaikana;
+<code>RefCell&lt;T&gt;</code> sallii muuttumattomat tai muuttuvat lainaukset, jotka tarkistetaan ajonaikana.</li>
+<li>Koska <code>RefCell&lt;T&gt;</code> sallii muuttuvat lainaukset, jotka tarkistetaan ajonaikana, voit
+muuttaa <code>RefCell&lt;T&gt;</code>:n sisällä olevaa arvoa vaikka <code>RefCell&lt;T&gt;</code> olisi muuttumaton.</li>
+</ul>
+<p>Arvon sisällä olevan arvon muuttaminen muuttumattomassa arvossa on <em>sisäisen mutabiliteetin</em>
+malli. Katsotaan tilannetta, jossa sisäinen mutabiliteetti on hyödyllinen, ja tutkitaan,
+miten se on mahdollista.</p>
+<h3 id="sisäinen-mutabiliteetti-muuttuva-lainaus-muuttumattomaan-arvoon"><a class="header" href="#sisäinen-mutabiliteetti-muuttuva-lainaus-muuttumattomaan-arvoon">Sisäinen mutabiliteetti: muuttuva lainaus muuttumattomaan arvoon</a></h3>
+<p>Lainaussääntöjen seuraus on, että kun sinulla on muuttumaton arvo, et voi lainata sitä
+muuttuvasti. Esimerkiksi tämä koodi ei käänny:</p>
+<pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch15-smart-pointers/no-listing-01-cant-borrow-immutable-as-mutable/src/main.rs}}</code></pre>
+<p>Jos yrittäisit kääntää tämän koodin, saisit seuraavan virheen:</p>
+<pre><code class="language-console">{{#include ../listings/ch15-smart-pointers/no-listing-01-cant-borrow-immutable-as-mutable/output.txt}}
+</code></pre>
+<p>On kuitenkin tilanteita, joissa olisi hyödyllistä, että arvo muuttaisi itseään metodeissaan
+mutta näyttäisi muuttumattomalta muulle koodille. Arvon metodien ulkopuolella oleva koodi
+ei voisi muuttaa arvoa. <code>RefCell&lt;T&gt;</code>:n käyttö on yksi tapa saada sisäinen mutabiliteetti,
+mutta <code>RefCell&lt;T&gt;</code> ei kierrä lainaussääntöjä kokonaan: kääntäjän lainaustarkistin sallii
+tämän sisäisen mutabiliteetin, ja lainaussäännöt tarkistetaan ajonaikana käännösaian sijaan.
+Jos rikot sääntöjä, saat <code>panic!</code>:n käännösvirheen sijaan.</p>
+<p>Käydään läpi käytännön esimerkki, jossa voimme käyttää <code>RefCell&lt;T&gt;</code>:tä muuttamaan
+muuttumatonta arvoa, ja katsotaan, miksi se on hyödyllistä.</p>
+<h4 id="sisäisen-mutabiliteetin-käyttötapaus-mock-oliot"><a class="header" href="#sisäisen-mutabiliteetin-käyttötapaus-mock-oliot">Sisäisen mutabiliteetin käyttötapaus: mock-oliot</a></h4>
+<p>Joskus testauksen aikana ohjelmoija käyttää yhtä tyyppiä toisen tilalla havaitakseen
+tiettyä käyttäytymistä ja varmistaakseen, että se on toteutettu oikein. Tätä paikkamerkkityyppiä
+kutsutaan <em>testikakaksi</em> (<code>test double</code>). Ajattele sitä elokuvan ”sijaisnäyttelijän”
+(<code>stunt double</code>) merkityksessä, jossa henkilö astuu esiin ja korvaa näyttelijän tekemään
+tietyn hankalan kohtauksen. Testikakut korvaavat muita tyyppejä testejä ajettaessa.
+<em>Mock-oliot</em> ovat erityisiä testikakkujen tyyppejä, jotka tallentavat testin aikana
+tapahtuvat asiat, jotta voit varmistaa, että oikeat toiminnot tapahtuivat.</p>
+<p>Rustissa ei ole olioita samassa merkityksessä kuin muissa kielissä, eikä Rustissa ole
+mock-olioiden toiminnallisuutta sisäänrakennettuna standardikirjastoon kuten joissakin
+muissa kielissä. Voit kuitenkin ehdottomasti luoda structin, joka palvelee samoja tarkoituksia
+kuin mock-olio.</p>
+<p>Tässä on skenaario, jota testaamme: luomme kirjaston, joka seuraa arvoa suhteessa
+enimmäisarvoon ja lähettää viestejä sen mukaan, kuinka lähellä enimmäisarvoa nykyinen
+arvo on. Tätä kirjastoa voitaisiin käyttää esimerkiksi seuraamaan käyttäjän kiintiötä
+sallittujen API-kutsujen määrälle.</p>
+<p>Kirjastomme tarjoaa vain toiminnallisuuden seurata, kuinka lähellä enimmäisarvoa arvo
+on ja mitä viestejä pitäisi lähettää milloinkin. Kirjastoamme käyttäviltä sovelluksilta
+odotetaan viestien lähetysmekanismin tarjoamista: sovellus voisi näyttää viestin sovelluksessa,
+lähettää sähköpostin, lähettää tekstiviestin tai tehdä jotain muuta. Kirjaston ei tarvitse
+tietää tuota yksityiskohtaa. Sen tarvitsee vain jotain, joka toteuttaa tarjoamamme
+traitin nimeltä <code>Messenger</code>. Listauksessa 15-20 on kirjaston koodi:</p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
+<pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch15-smart-pointers/listing-15-20/src/lib.rs}}</code></pre>
+<figcaption>Listing 15-20: Kirjasto, joka seuraa kuinka lähellä arvo on enimmäisarvoa ja varoittaa, kun arvo on tietyillä tasoilla</figcaption>
+</figure>
+<p>Yksi tärkeä osa tässä koodissa on, että <code>Messenger</code>-traitilla on yksi metodi nimeltä
+<code>send</code>, joka ottaa muuttumattoman viitteen <code>self</code>:ään ja viestin tekstin. Tämä trait
+on rajapinta, jonka mock-oliomme täytyy toteuttaa, jotta mockia voidaan käyttää samalla
+tavalla kuin oikeaa oliota. Toinen tärkeä osa on, että haluamme testata <code>LimitTracker</code>:n
+<code>set_value</code>-metodin käyttäytymistä. Voimme muuttaa <code>value</code>-parametrille välittämäämme
+arvoa, mutta <code>set_value</code> ei palauta mitään, josta voisimme tehdä väittämiä. Haluamme
+voida sanoa, että jos luomme <code>LimitTracker</code>:in jollain, joka toteuttaa <code>Messenger</code>-traitin,
+ja tietyllä <code>max</code>-arvolla, kun välitämme eri lukuja <code>value</code>:lle, messengerille kerrotaan
+lähettää sopivat viestit.</p>
+<p>Tarvitsemme mock-olion, joka <code>send</code>-kutsun sijaan ei lähetä sähköpostia tai tekstiviestiä,
+vaan vain seuraa viestejä, joita sille kerrotaan lähettää. Voimme luoda uuden mock-olioinstanssin,
+luoda <code>LimitTracker</code>:in, joka käyttää mock-oliota, kutsua <code>set_value</code>-metodia <code>LimitTracker</code>:lla
+ja tarkistaa, että mock-oliolla on odottamamme viestit. Listauksessa 15-21 on yritys
+toteuttaa mock-olio juuri tätä varten, mutta lainaustarkistin ei salli sitä:</p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
+<pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch15-smart-pointers/listing-15-21/src/lib.rs:here}}</code></pre>
+<figcaption>Listing 15-21: Yritys toteuttaa <code>MockMessenger</code>, jota lainaustarkistin ei salli</figcaption>
+</figure>
+<p>Tämä testikoodi määrittelee <code>MockMessenger</code>-structin, jolla on <code>sent_messages</code>-kenttä
+<code>Vec&lt;String&gt;</code>-arvojen kanssa seuratakseen viestejä, joita sille kerrotaan lähettää.
+Määrittelemme myös assosioituneen funktion <code>new</code>, jotta uusien <code>MockMessenger</code>-arvojen
+luominen tyhjällä viestiluettelolla on kätevää. Toteutamme sitten <code>Messenger</code>-traitin
+<code>MockMessenger</code>:lle, jotta voimme antaa <code>MockMessenger</code>:in <code>LimitTracker</code>:ille. <code>send</code>-metodin
+määrittelyssä otamme parametrina välitetyn viestin ja tallennamme sen <code>MockMessenger</code>:in
+<code>sent_messages</code>-luetteloon.</p>
+<p>Testissä testaamme, mitä tapahtuu, kun <code>LimitTracker</code>:lle kerrotaan asettamaan <code>value</code>
+joksikin, joka on yli 75 prosenttia <code>max</code>-arvosta. Ensin luomme uuden <code>MockMessenger</code>:in,
+joka alkaa tyhjällä viestiluettelolla. Sitten luomme uuden <code>LimitTracker</code>:in ja annamme
+sille viitteen uuteen <code>MockMessenger</code>:iin ja <code>max</code>-arvon 100. Kutsumme <code>set_value</code>-metodia
+<code>LimitTracker</code>:lla arvolla 80, joka on yli 75 prosenttia luvusta 100. Sitten varmistamme,
+että <code>MockMessenger</code>:in seuraamassa viestiluettelossa pitäisi nyt olla yksi viesti.</p>
+<p>Tässä testissä on kuitenkin yksi ongelma, kuten tässä näytetään:</p>
+<pre><code class="language-console">{{#include ../listings/ch15-smart-pointers/listing-15-21/output.txt}}
+</code></pre>
+<p>Emme voi muokata <code>MockMessenger</code>:ia seurataksemme viestejä, koska <code>send</code>-metodi ottaa
+muuttumattoman viitteen <code>self</code>:ään. Emme myöskään voi noudattaa virhetekstin ehdotusta
+käyttää <code>&amp;mut self</code>:ää sekä <code>impl</code>-metodissa että <code>trait</code>-määrittelyssä. Emme halua
+muuttaa <code>Messenger</code>-traitia pelkästään testauksen vuoksi. Sen sijaan meidän täytyy löytää
+tapa saada testikoodimme toimimaan oikein olemassa olevan suunnittelumme kanssa.</p>
+<p>Tämä on tilanne, jossa sisäinen mutabiliteetti voi auttaa! Tallennamme <code>sent_messages</code>:in
+<code>RefCell&lt;T&gt;</code>:n sisään, ja sitten <code>send</code>-metodi voi muokata <code>sent_messages</code>:ia tallentaakseen
+näkemämme viestit. Listauksessa 15-22 näkyy, miltä se näyttää:</p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
+<pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch15-smart-pointers/listing-15-22/src/lib.rs:here}}</code></pre>
+<figcaption>Listing 15-22: <code>RefCell&lt;T&gt;</code>:n käyttö sisäisen arvon muuttamiseen, kun ulompi arvo katsotaan muuttumattomaksi</figcaption>
+</figure>
+<p><code>sent_messages</code>-kenttä on nyt tyyppiä <code>RefCell&lt;Vec&lt;String&gt;&gt;</code> <code>Vec&lt;String&gt;</code>:n sijaan.
+<code>new</code>-funktiossa luomme uuden <code>RefCell&lt;Vec&lt;String&gt;&gt;</code>-instanssin tyhjän vektorin ympärille.</p>
+<p><code>send</code>-metodin toteutuksessa ensimmäinen parametri on silti muuttumaton lainaus <code>self</code>:stä,
+mikä vastaa trait-määrittelyä. Kutsumme <code>borrow_mut</code>:ia <code>RefCell&lt;Vec&lt;String&gt;&gt;</code>:ssa
+<code>self.sent_messages</code>:issa saadaksemme muuttuvan viitteen <code>RefCell&lt;Vec&lt;String&gt;&gt;</code>:n sisällä
+olevaan arvoon, joka on vektori. Sitten voimme kutsua <code>push</code>:ia vektorin muuttuvalla
+viitteellä seurataksemme testin aikana lähetettyjä viestejä.</p>
+<p>Viimeinen muutos, jonka meidän täytyy tehdä, on väittämässä: nähdäksemme, kuinka monta
+alkiota sisäisessä vektorissa on, kutsumme <code>borrow</code>:ia <code>RefCell&lt;Vec&lt;String&gt;&gt;</code>:ssa saadaksemme
+muuttumattoman viitteen vektoriin.</p>
+<p>Nyt kun olet nähnyt, miten <code>RefCell&lt;T&gt;</code>:tä käytetään, kaivaudutaan siihen, miten se toimii!</p>
+<h4 id="lainausten-seuranta-ajonaikana-refcelltllä"><a class="header" href="#lainausten-seuranta-ajonaikana-refcelltllä">Lainausten seuranta ajonaikana <code>RefCell&lt;T&gt;</code>:llä</a></h4>
+<p>Kun luomme muuttumattomia ja muuttuvia viitteitä, käytämme <code>&amp;</code>- ja <code>&amp;mut</code>-syntaksia.
+<code>RefCell&lt;T&gt;</code>:llä käytämme <code>borrow</code>- ja <code>borrow_mut</code>-metodeja, jotka kuuluvat <code>RefCell&lt;T&gt;</code>:n
+turvalliseen API:in. <code>borrow</code>-metodi palauttaa älykkään osoittimen tyypin <code>Ref&lt;T&gt;</code>, ja
+<code>borrow_mut</code> palauttaa älykkään osoittimen tyypin <code>RefMut&lt;T&gt;</code>. Molemmat tyypit toteuttavat
+<code>Deref</code>:in, joten voimme käsitellä niitä kuten tavallisia viitteitä.</p>
+<p><code>RefCell&lt;T&gt;</code> seuraa, kuinka monta <code>Ref&lt;T&gt;</code>- ja <code>RefMut&lt;T&gt;</code>-älykästä osoitinta on tällä
+hetkellä aktiivisia. Joka kerta kun kutsumme <code>borrow</code>:ia, <code>RefCell&lt;T&gt;</code> kasvattaa laskuriaan
+siitä, kuinka monta muuttumatonta lainausta on aktiivisia. Kun <code>Ref&lt;T&gt;</code>-arvo poistuu
+laajuudesta, muuttumattomien lainausten määrä vähenee yhdellä. Aivan kuten käännösaikaiset
+lainaussäännöt, <code>RefCell&lt;T&gt;</code> sallii meidän olla monta muuttumatonta lainausta tai yksi
+muuttuva lainaus milloin tahansa.</p>
+<p>Jos yritämme rikkoa näitä sääntöjä, sen sijaan että saisimme käännösvirheen kuten viitteillä,
+<code>RefCell&lt;T&gt;</code>:n toteutus kaatuu ajonaikana. Listauksessa 15-23 on muokattu <code>send</code>-toteutus
+Listauksesta 15-22. Yritämme tarkoituksella luoda kaksi muuttuvaa lainausta aktiivisiksi
+samaan laajuuteen havainnollistaaksemme, että <code>RefCell&lt;T&gt;</code> estää meitä tekemästä tätä
+ajonaikana.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
+<pre><code class="language-rust ignore panics">{{#rustdoc_include ../listings/ch15-smart-pointers/listing-15-23/src/lib.rs:here}}</code></pre>
+<figcaption>Listing 15-23: Kahden muuttuvan viitteen luominen samaan laajuuteen nähdäksemme, että <code>RefCell&lt;T&gt;</code> kaatuu paniikkiin</figcaption>
+</figure>
+<p>Luomme muuttujan <code>one_borrow</code> <code>borrow_mut</code>:ista palautetulle <code>RefMut&lt;T&gt;</code>-älykkäälle osoittimelle.
+Sitten luomme toisen muuttuvan lainauksen samalla tavalla muuttujaan <code>two_borrow</code>. Tämä
+tekee kaksi muuttuvaa viitettä samaan laajuuteen, mikä ei ole sallittua. Kun ajamme
+kirjastomme testit, Listauksen 15-23 koodi kääntyy ilman virheitä, mutta testi epäonnistuu:</p>
+<pre><code class="language-console">{{#include ../listings/ch15-smart-pointers/listing-15-23/output.txt}}
+</code></pre>
+<p>Huomaa, että koodi kaatui viestillä <code>already borrowed: BorrowMutError</code>. Näin <code>RefCell&lt;T&gt;</code>
+käsittelee lainaussääntöjen rikkomukset ajonaikana.</p>
+<p>Valinta lainausvirheiden havaitsemisesta ajonaikana käännösaian sijaan, kuten teimme
+tässä, tarkoittaa, että virheet saatetaan löytää myöhemmin kehitysprosessissa: mahdollisesti
+vasta kun koodi on otettu tuotantoon. Lisäksi koodiin tulee pieni suorituskykyrangaistus
+lainausten seurannasta ajonaikana käännösaian sijaan. <code>RefCell&lt;T&gt;</code>:n käyttö mahdollistaa
+kuitenkin mock-olion kirjoittamisen, joka voi muokata itseään seuratakseen näkemiään
+viestejä kontekstissa, jossa vain muuttumattomat arvot ovat sallittuja. Voit käyttää
+<code>RefCell&lt;T&gt;</code>:tä sen kompromisseista huolimatta saadaksesi enemmän toiminnallisuutta kuin
+tavalliset viitteet tarjoavat.</p>
+<h3 id="useita-omistajia-muuttuvalla-datalle-yhdistämällä-rct-ja-refcellt"><a class="header" href="#useita-omistajia-muuttuvalla-datalle-yhdistämällä-rct-ja-refcellt">Useita omistajia muuttuvalla datalle yhdistämällä <code>Rc&lt;T&gt;</code> ja <code>RefCell&lt;T&gt;</code></a></h3>
+<p>Yleinen tapa käyttää <code>RefCell&lt;T&gt;</code>:tä on yhdistelmässä <code>Rc&lt;T&gt;</code>:n kanssa. Muista, että
+<code>Rc&lt;T&gt;</code> antaa sinulle useita omistajia jollekin datalle, mutta se antaa vain muuttumattoman
+pääsyn kyseiseen dataan. Jos sinulla on <code>Rc&lt;T&gt;</code>, joka sisältää <code>RefCell&lt;T&gt;</code>:n, voit
+saada arvon, jolla voi olla useita omistajia <em>ja</em> jota voit muuttaa!</p>
+<p>Esimerkiksi muista cons-listan esimerkki Listauksessa 15-18, jossa käytimme <code>Rc&lt;T&gt;</code>:tä
+salliaksemme useiden listojen jakaa toisen listan omistajuuden. Koska <code>Rc&lt;T&gt;</code> sisältää
+vain muuttumattomia arvoja, emme voi muuttaa mitään listojen arvoista, kun olemme luoneet
+ne. Lisätään <code>RefCell&lt;T&gt;</code> saadaksemme kyky muuttaa listojen arvoja. Listauksessa 15-24
+näytetään, että käyttämällä <code>RefCell&lt;T&gt;</code>:tä <code>Cons</code>-määrittelyssä voimme muokata kaikissa
+listoissa tallennettua arvoa:</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch15-smart-pointers/listing-15-24/src/main.rs}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 15-24: <code>Rc&lt;RefCell&lt;i32&gt;&gt;</code>:n käyttö muokattavan <code>List</code>:n luomiseen</figcaption>
+</figure>
+<p>Luomme arvon, joka on <code>Rc&lt;RefCell&lt;i32&gt;&gt;</code>-instanssi, ja tallennamme sen muuttujaan
+<code>value</code>, jotta pääsemme siihen suoraan myöhemmin. Sitten luomme <code>List</code>:n <code>a</code>:ssa
+<code>Cons</code>-variantilla, joka sisältää <code>value</code>:n. Meidän täytyy kloonata <code>value</code>, jotta sekä
+<code>a</code> että <code>value</code> omistavat sisäisen arvon <code>5</code> sen sijaan, että omistajuus siirtyisi
+<code>value</code>:sta <code>a</code>:han tai <code>a</code> lainaisi <code>value</code>:sta.</p>
+<p>Käärimme listan <code>a</code> <code>Rc&lt;T&gt;</code>:hen, jotta kun luomme listat <code>b</code> ja <code>c</code>, ne voivat molemmat
+viitata <code>a</code>:han, kuten teimme Listauksessa 15-18.</p>
+<p>Kun olemme luoneet listat <code>a</code>:ssa, <code>b</code>:ssä ja <code>c</code>:ssä, haluamme lisätä 10 arvoon <code>value</code>:ssa.
+Teemme tämän kutsumalla <code>borrow_mut</code>:ia <code>value</code>:lla, joka käyttää automaattista dereferointiominaisuutta,
+josta puhuimme Luvussa 5 (katso <a href="ch05-03-method-syntax.html#wheres-the---operator">”Missä on <code>-&gt;</code>-operaattori?”</a><!-- ignore -->)
+dereferoidakseen <code>Rc&lt;T&gt;</code>:n sisäiseen <code>RefCell&lt;T&gt;</code>-arvoon. <code>borrow_mut</code>-metodi palauttaa
+<code>RefMut&lt;T&gt;</code>-älykkään osoittimen, ja käytämme dereferenssioperaattoria sen päällä ja
+muutamme sisäistä arvoa.</p>
+<p>Kun tulostamme <code>a</code>:n, <code>b</code>:n ja <code>c</code>:n, näemme, että niillä kaikilla on muokattu arvo
+15 eikä 5:</p>
+<pre><code class="language-console">{{#include ../listings/ch15-smart-pointers/listing-15-24/output.txt}}
+</code></pre>
+<p>Tämä tekniikka on melko siisti! Käyttämällä <code>RefCell&lt;T&gt;</code>:tä meillä on ulospäin muuttumaton
+<code>List</code>-arvo. Mutta voimme käyttää <code>RefCell&lt;T&gt;</code>:n metodeja, jotka tarjoavat pääsyn sen
+sisäiseen mutabiliteettiin, jotta voimme muokata dataamme tarvittaessa. Lainaussääntöjen
+ajonaikaiset tarkistukset suojaavat meitä datakilpailuilta, ja joskus on syytä vaihtaa
+hieman nopeutta tämän joustavuuden vuoksi tietorakenteissamme. Huomaa, että <code>RefCell&lt;T&gt;</code>
+ei toimi monisäikeisessä koodissa! <code>Mutex&lt;T&gt;</code> on <code>RefCell&lt;T&gt;</code>:n säieystävällinen versio,
+ja käsittelemme <code>Mutex&lt;T&gt;</code>:tä Luvussa 16.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="ch15-04-rc.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="ch15-06-reference-cycles.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="ch15-04-rc.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="ch15-06-reference-cycles.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="ferris.js"></script>
+
+
+    </div>
+    </body>
+</html>

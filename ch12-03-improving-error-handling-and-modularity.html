@@ -1,0 +1,369 @@
+<!DOCTYPE HTML>
+<html lang="fi" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Refaktorointi: parempi modulariteetti ja virheenkäsittely - Rust-ohjelmointikieli</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="ferris.css">
+        <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rust-ohjelmointikieli</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/rust-lang/book" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2 id="refaktorointi-modulariteetin-ja-virheenkäsittelyn-parantamiseksi"><a class="header" href="#refaktorointi-modulariteetin-ja-virheenkäsittelyn-parantamiseksi">Refaktorointi modulariteetin ja virheenkäsittelyn parantamiseksi</a></h2>
+<p>Parantaaksemme ohjelmaamme korjaamme neljä ongelmaa, jotka liittyvät ohjelman rakenteeseen ja siihen, miten se käsittelee mahdollisia virheitä. Ensinnäkin <code>main</code>-funktiomme suorittaa nyt kaksi tehtävää: se jäsentää argumentit ja lukee tiedostoja. Ohjelman kasvaessa <code>main</code>-funktion käsittelemien erillisten tehtävien määrä kasvaa. Kun funktio saa lisää vastuita, sitä on vaikeampi ymmärtää, vaikeampi testata ja vaikeampi muuttaa rikkomatta jotakin sen osista. On parasta erottaa toiminnallisuus niin, että jokainen funktio vastaa yhdestä tehtävästä.</p>
+<p>Tämä ongelma liittyy myös toiseen ongelmaan: vaikka <code>query</code> ja <code>file_path</code> ovat ohjelman konfiguraatiomuuttujia, muuttujat kuten <code>contents</code> käytetään ohjelman logiikan suorittamiseen. Mitä pidempi <code>main</code> on, sitä enemmän muuttujia meidän täytyy tuoda näkyvyysalueelle; mitä enemmän muuttujia on näkyvyysalueella, sitä vaikeampaa on pitää kirjaa kunkin tarkoituksesta. On parasta ryhmitellä konfiguraatiomuuttujat yhteen rakenteeseen, jotta niiden tarkoitus on selvä.</p>
+<p>Kolmas ongelma on se, että olemme käyttäneet <code>expect</code>-kutsua tulostaaksemme virheilmoituksen, kun tiedoston lukeminen epäonnistuu, mutta virheilmoitus tulostaa vain <code>Should have been able to read the file</code>. Tiedoston lukeminen voi epäonnistua monella tavalla: esimerkiksi tiedosto voi puuttua tai meillä ei ehkä ole oikeutta avata sitä. Tällä hetkellä tulostaisimme saman virheilmoituksen kaikissa tilanteissa, mikä ei antaisi käyttäjälle mitään hyödyllistä tietoa!</p>
+<p>Neljäs ongelma on se, että käytämme <code>expect</code>-kutsua virheen käsittelyyn, ja jos käyttäjä ajaa ohjelman määrittämättä tarpeeksi argumentteja, hän saa Rustilta <code>index out of bounds</code> -virheen, joka ei selkeästi selitä ongelmaa. Olisi parasta, jos kaikki virheenkäsittelykoodi olisi yhdessä paikassa, jotta tulevat ylläpitäjät voisivat tarvittaessa muuttaa virheenkäsittelylogiikkaa yhdestä paikasta. Kun kaikki virheenkäsittelykoodi on yhdessä paikassa, varmistamme myös, että tulostamme viestejä, jotka ovat merkityksellisiä loppukäyttäjillemme.</p>
+<p>Korjataan nämä neljä ongelmaa refaktoroimalla projektimme.</p>
+<h3 id="vastuujen-erottelu-binääriprojekteissa"><a class="header" href="#vastuujen-erottelu-binääriprojekteissa">Vastuujen erottelu binääriprojekteissa</a></h3>
+<p>Organisatorinen ongelma useiden tehtävien vastuiden antamisesta <code>main</code>-funktiolle on yleinen monissa binääriprojekteissa. Tämän vuoksi Rust-yhteisö on kehittänyt ohjeita binääriohjelman erillisten huolenaiheiden jakamiseen, kun <code>main</code> alkaa kasvaa liian suureksi. Tämä prosessi sisältää seuraavat vaiheet:</p>
+<ul>
+<li>Jaa ohjelmasi <em>main.rs</em>- ja <em>lib.rs</em>-tiedostoihin ja siirrä ohjelman logiikka <em>lib.rs</em>-tiedostoon.</li>
+<li>Niin kauan kuin komentoriviargumenttien jäsentämislogiikka on pieni, se voi pysyä <em>main.rs</em>-tiedostossa.</li>
+<li>Kun komentoriviargumenttien jäsentämislogiikka alkaa monimutkaistua, erota se <em>main.rs</em>-tiedostosta ja siirrä se <em>lib.rs</em>-tiedostoon.</li>
+</ul>
+<p><code>main</code>-funktiossa jäljelle jäävät vastuut tämän prosessin jälkeen pitäisi rajoittua seuraaviin:</p>
+<ul>
+<li>Komentoriviargumenttien jäsentämislogiikan kutsuminen argumenttiarvoilla</li>
+<li>Muun konfiguraation asettaminen</li>
+<li><code>run</code>-funktion kutsuminen <em>lib.rs</em>-tiedostossa</li>
+<li>Virheen käsittely, jos <code>run</code> palauttaa virheen</li>
+</ul>
+<p>Tämä malli koskee huolenaiheiden erottamista: <em>main.rs</em> hoitaa ohjelman ajamisen ja <em>lib.rs</em> hoitaa kaiken käsiteltävän tehtävän logiikan. Koska et voi testata <code>main</code>-funktiota suoraan, tämä rakenne antaa sinun testata kaiken ohjelman logiikan siirtämällä sen funktioihin <em>lib.rs</em>-tiedostossa. <em>main.rs</em>-tiedostoon jäävä koodi on tarpeeksi pieni sen oikeellisuuden varmistamiseksi lukemalla. Muokataan ohjelmaamme noudattamalla tätä prosessia.</p>
+<h4 id="argumenttien-jäsentäjän-erottaminen"><a class="header" href="#argumenttien-jäsentäjän-erottaminen">Argumenttien jäsentäjän erottaminen</a></h4>
+<p>Erotamme argumenttien jäsentämiseen liittyvän toiminnallisuuden funktioon, jota <code>main</code> kutsuu valmistautuakseen siirtämään komentoriviargumenttien jäsentämislogiikan <em>src/lib.rs</em>-tiedostoon. Listausta 12-5 näyttää uuden <code>main</code>-funktion alun, joka kutsuu uutta <code>parse_config</code>-funktiota, jonka määrittelemme toistaiseksi <em>src/main.rs</em>-tiedostossa.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch12-an-io-project/listing-12-05/src/main.rs:here}}</code></pre>
+<figcaption>Listing 12-5: <code>parse_config</code>-funktion erottaminen <code>main</code>-funktiosta</figcaption>
+</figure>
+<p>Keräämme edelleen komentoriviargumentit vektoriin, mutta sen sijaan, että määrittäisimme indeksin 1 argumenttiarvon muuttujalle <code>query</code> ja indeksin 2 argumenttiarvon muuttujalle <code>file_path</code> <code>main</code>-funktiossa, välitämme koko vektorin <code>parse_config</code>-funktiolle. <code>parse_config</code>-funktio sisältää sitten logiikan, joka määrittää, mikä argumentti menee mihinkin muuttujaan, ja palauttaa arvot takaisin <code>main</code>-funktiolle. Luomme edelleen <code>query</code>- ja <code>file_path</code>-muuttujat <code>main</code>-funktiossa, mutta <code>main</code> ei enää vastaa siitä, miten komentoriviargumentit ja muuttujat vastaavat toisiaan.</p>
+<p>Tämä refaktorointi saattaa tuntua liialliselta pienelle ohjelmallemme, mutta refaktoroimme pienin, inkrementaalisin askelin. Tämän muutoksen jälkeen aja ohjelma uudelleen varmistaaksesi, että argumenttien jäsentäminen toimii edelleen. On hyvä tarkistaa edistymisesi usein, jotta ongelmien syy on helpompi tunnistaa, kun ne ilmenevät.</p>
+<h4 id="konfiguraatioarvojen-ryhmittely"><a class="header" href="#konfiguraatioarvojen-ryhmittely">Konfiguraatioarvojen ryhmittely</a></h4>
+<p>Voimme tehdä vielä yhden pienen parannuksen <code>parse_config</code>-funktioon. Tällä hetkellä palautamme monikon, mutta hajotamme sen heti uudelleen erillisiin osiin. Tämä on merkki siitä, että meillä ei ehkä ole vielä oikeaa abstraktiota.</p>
+<p>Toinen merkki siitä, että parannettavaa on, on <code>parse_config</code>-nimen <code>config</code>-osa, joka viittaa siihen, että palauttamamme kaksi arvoa liittyvät toisiinsa ja ovat molemmat osa yhtä konfiguraatioarvoa. Emme tällä hetkellä välitä tätä merkitystä datan rakenteessa muuten kuin ryhmittelemällä kaksi arvoa monikkoon; sijoitamme sen sijaan kaksi arvoa yhteen struct-rakenteeseen ja annamme jokaiselle struct-kentälle merkityksellisen nimen. Näin tulevien tämän koodin ylläpitäjien on helpompi ymmärtää, miten eri arvot liittyvät toisiinsa ja mikä niiden tarkoitus on.</p>
+<p>Listausta 12-6 näyttää parannukset <code>parse_config</code>-funktioon.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><code class="language-rust should_panic noplayground">{{#rustdoc_include ../listings/ch12-an-io-project/listing-12-06/src/main.rs:here}}</code></pre>
+<figcaption>Listing 12-6: <code>parse_config</code>-funktion refaktorointi palauttamaan <code>Config</code>-structin instanssi</figcaption>
+</figure>
+<p>Olemme lisänneet <code>Config</code>-nimisen struct-rakenteen, jolla on kentät <code>query</code> ja <code>file_path</code>. <code>parse_config</code>-funktion signatuuri ilmaisee nyt, että se palauttaa <code>Config</code>-arvon. <code>parse_config</code>-funktion rungossa, jossa aiemmin palautimme merkkijonoviipaleita, jotka viittasivat <code>String</code>-arvoihin <code>args</code>-vektorissa, määrittelemme nyt <code>Config</code>-rakenteen sisältämään omistettuja <code>String</code>-arvoja. <code>args</code>-muuttuja <code>main</code>-funktiossa omistaa argumenttiarvot ja antaa <code>parse_config</code>-funktion vain lainata niitä, mikä tarkoittaa, että rikkoisimme Rustin lainaussääntöjä, jos <code>Config</code> yrittäisi ottaa omistajuuden <code>args</code>-vektorin arvoista.</p>
+<p>On useita tapoja hallita <code>String</code>-dataa; helpoin, vaikkakin hieman tehottomampi tapa on kutsua <code>clone</code>-metodia arvoilla. Tämä tekee täydellisen kopion datasta <code>Config</code>-instanssin omistettavaksi, mikä vie enemmän aikaa ja muistia kuin viitteen tallentaminen merkkijonodataan. Datan kloonaaminen tekee koodistamme kuitenkin hyvin suoraviivaisen, koska meidän ei tarvitse hallita viitteiden elinaikoja; tässä tilanteessa hieman suorituskyvyn uhraaminen yksinkertaisuuden vuoksi on kannattava kompromissi.</p>
+<section class="note" aria-role="note">
+<h3 id="clone-käytön-kompromissit"><a class="header" href="#clone-käytön-kompromissit"><code>clone</code>-käytön kompromissit</a></h3>
+<p>Monilla rustaceaneilla on taipumus välttää <code>clone</code>-käyttöä omistajuusongelmien korjaamiseen sen ajonaikaisen kustannuksen vuoksi. <a href="ch13-00-functional-features.html">Luvussa 13</a><!-- ignore --> opit tehokkaampia tapoja tämänkaltaisissa tilanteissa. Mutta toistaiseksi on ihan ok kopioida muutama merkkijono jatkaaksesi edistymistä, koska teet nämä kopiot vain kerran ja tiedostopolku- ja hakumerkkijonosi ovat hyvin pieniä. On parempi olla toimiva ohjelma, joka on hieman tehoton, kuin yrittää hyperoptimoida koodia ensimmäisellä yrityksellä. Kun saat enemmän kokemusta Rustista, on helpompaa aloittaa tehokkaimmalla ratkaisulla, mutta toistaiseksi on täysin hyväksyttävää kutsua <code>clone</code>-metodia.</p>
+</section>
+<p>Olemme päivittäneet <code>main</code>-funktion niin, että se sijoittaa <code>parse_config</code>-funktion palauttaman <code>Config</code>-instanssin muuttujaan nimeltä <code>config</code>, ja olemme päivittäneet koodin, joka aiemmin käytti erillisiä <code>query</code>- ja <code>file_path</code>-muuttujia, käyttämään nyt <code>Config</code>-structin kenttiä.</p>
+<p>Nyt koodimme välittää selkeämmin, että <code>query</code> ja <code>file_path</code> liittyvät toisiinsa ja että niiden tarkoitus on määrittää, miten ohjelma toimii. Kaikki koodi, joka käyttää näitä arvoja, tietää etsiä ne <code>config</code>-instanssista kentistä, jotka on nimetty niiden tarkoituksen mukaan.</p>
+<h4 id="config-rakenteen-konstruktorin-luominen"><a class="header" href="#config-rakenteen-konstruktorin-luominen"><code>Config</code>-rakenteen konstruktorin luominen</a></h4>
+<p>Tähän asti olemme erottaneet komentoriviargumenttien jäsentämiseen liittyvän logiikan <code>main</code>-funktiosta ja sijoittaneet sen <code>parse_config</code>-funktioon. Tämä auttoi meitä näkemään, että <code>query</code>- ja <code>file_path</code>-arvot liittyivät toisiinsa, ja tämän suhteen pitäisi näkyä koodissamme. Lisäsimme sitten <code>Config</code>-struct-rakenteen nimeämään <code>query</code>- ja <code>file_path</code>-arvojen yhteisen tarkoituksen ja voidaksemme palauttaa arvojen nimet struct-kenttien niminä <code>parse_config</code>-funktiosta.</p>
+<p>Nyt kun <code>parse_config</code>-funktion tarkoitus on luoda <code>Config</code>-instanssi, voimme muuttaa <code>parse_config</code>-funktion tavallisesta funktiosta <code>new</code>-nimiseksi funktioksi, joka liittyy <code>Config</code>-struct-rakenteeseen. Tämä muutos tekee koodista idiomaattisemman. Voimme luoda tyyppien instansseja standardikirjastossa, kuten <code>String</code>, kutsumalla <code>String::new</code>-metodia. Vastaavasti muuttamalla <code>parse_config</code>-funktion <code>new</code>-funktioksi, joka liittyy <code>Config</code>-rakenteeseen, voimme luoda <code>Config</code>-instansseja kutsumalla <code>Config::new</code>-metodia. Listausta 12-7 näyttää tarvittavat muutokset.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><code class="language-rust should_panic noplayground">{{#rustdoc_include ../listings/ch12-an-io-project/listing-12-07/src/main.rs:here}}</code></pre>
+<figcaption>Listing 12-7: <code>parse_config</code>-funktion muuttaminen <code>Config::new</code>-metodiksi</figcaption>
+</figure>
+<p>Olemme päivittäneet <code>main</code>-funktion kohdassa, jossa kutsuimme <code>parse_config</code>-funktiota, kutsumaan sen sijaan <code>Config::new</code>-metodia. Olemme muuttaneet <code>parse_config</code>-funktion nimen <code>new</code>-nimeksi ja siirtäneet sen <code>impl</code>-lohkoon, joka liittää <code>new</code>-funktion <code>Config</code>-rakenteeseen. Kokeile kääntää tämä koodi uudelleen varmistaaksesi, että se toimii.</p>
+<h3 id="virheenkäsittelyn-korjaaminen"><a class="header" href="#virheenkäsittelyn-korjaaminen">Virheenkäsittelyn korjaaminen</a></h3>
+<p>Nyt työskentelemme virheenkäsittelyn korjaamiseksi. Muista, että <code>args</code>-vektorin arvojen käyttäminen indeksissä 1 tai 2 aiheuttaa ohjelman paniikin, jos vektorissa on alle kolme kohdetta. Kokeile ajaa ohjelma ilman argumentteja; se näyttää suunnilleen tältä:</p>
+<pre><code class="language-console">{{#include ../listings/ch12-an-io-project/listing-12-07/output.txt}}
+</code></pre>
+<p>Rivi <code>index out of bounds: the len is 1 but the index is 1</code> on ohjelmoijille tarkoitettu virheilmoitus. Se ei auta loppukäyttäjiämme ymmärtämään, mitä heidän pitäisi tehdä sen sijaan. Korjataan se nyt.</p>
+<h4 id="virheilmoituksen-parantaminen"><a class="header" href="#virheilmoituksen-parantaminen">Virheilmoituksen parantaminen</a></h4>
+<p>Listauksessa 12-8 lisäämme <code>new</code>-funktioon tarkistuksen, joka varmistaa, että viipale on tarpeeksi pitkä ennen indeksien 1 ja 2 käyttöä. Jos viipale ei ole tarpeeksi pitkä, ohjelma panikoi ja näyttää paremman virheilmoituksen.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch12-an-io-project/listing-12-08/src/main.rs:here}}</code></pre>
+<figcaption>Listing 12-8: Tarkistuksen lisääminen argumenttien määrälle</figcaption>
+</figure>
+<p>Tämä koodi on samankaltainen kuin <a href="ch09-03-to-panic-or-not-to-panic.html#creating-custom-types-for-validation">listauksessa 9-13 kirjoittamamme <code>Guess::new</code>-funktio</a><!-- ignore -->, jossa kutsuimme <code>panic!</code>-makroa, kun <code>value</code>-argumentti oli kelvollisten arvojen alueen ulkopuolella. Sen sijaan, että tarkistaisimme arvoalueen täällä, tarkistamme, että <code>args</code>-vektorin pituus on vähintään <code>3</code>, ja funktion loppuosa voi toimia olettaen, että tämä ehto on täyttynyt. Jos <code>args</code>-vektorissa on alle kolme kohdetta, tämä ehto on tosi ja kutsumme <code>panic!</code>-makroa lopettaaksemme ohjelman välittömästi.</p>
+<p>Näillä muutamilla lisärivillä <code>new</code>-funktiossa ajetaan ohjelma uudelleen ilman argumentteja ja katsotaan, miltä virhe näyttää nyt:</p>
+<pre><code class="language-console">{{#include ../listings/ch12-an-io-project/listing-12-08/output.txt}}
+</code></pre>
+<p>Tämä tuloste on parempi: meillä on nyt järkevä virheilmoitus. Meillä on kuitenkin myös ylimääräistä tietoa, jota emme halua antaa käyttäjillemme. Ehkä listauksessa 9-13 käyttämämme tekniikka ei ole paras tähän: <code>panic!</code>-kutsu sopii paremmin ohjelmointiongelmaan kuin käyttöongelmaan, <a href="ch09-03-to-panic-or-not-to-panic.html#guidelines-for-error-handling">kuten luvussa 9 keskusteltiin</a><!-- ignore -->. Sen sijaan käytämme toista luvussa 9 oppimaasi tekniikkaa — <a href="ch09-02-recoverable-errors-with-result.html">palautamme <code>Result</code>-arvon</a><!-- ignore -->, joka ilmaisee joko onnistumisen tai virheen.</p>
+<!-- Old headings. Do not remove or links may break. -->
+<p><a id="returning-a-result-from-new-instead-of-calling-panic"></a></p>
+<h4 id="result-arvon-palauttaminen-panic-kutsun-sijaan"><a class="header" href="#result-arvon-palauttaminen-panic-kutsun-sijaan"><code>Result</code>-arvon palauttaminen <code>panic!</code>-kutsun sijaan</a></h4>
+<p>Voimme sen sijaan palauttaa <code>Result</code>-arvon, joka sisältää <code>Config</code>-instanssin onnistumistapauksessa ja kuvaa ongelman virhetapauksessa. Muutamme myös funktion nimen <code>new</code>-nimestä <code>build</code>-nimeksi, koska monet ohjelmoijat odottavat <code>new</code>-funktioiden eivät koskaan epäonnistuvan. Kun <code>Config::build</code> kommunikoi <code>main</code>-funktion kanssa, voimme käyttää <code>Result</code>-tyyppiä ilmaisemaan, että ongelma ilmeni. Sitten voimme muuttaa <code>main</code>-funktion muuntamaan <code>Err</code>-variantin käytännöllisemmäksi virheeksi käyttäjillemme ilman <code>thread 'main'</code>- ja <code>RUST_BACKTRACE</code>-tekstiä, jonka <code>panic!</code>-kutsu aiheuttaa.</p>
+<p>Listausta 12-9 näyttää muutokset, jotka meidän täytyy tehdä funktion, jota kutsumme nyt <code>Config::build</code>-metodiksi, paluuarvoon ja funktion runkoon, jotta se palauttaa <code>Result</code>-arvon. Huomaa, että tämä ei käänny ennen kuin päivitämme myös <code>main</code>-funktion, minkä teemme seuraavassa listauksessa.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch12-an-io-project/listing-12-09/src/main.rs:here}}</code></pre>
+<figcaption>Listing 12-9: <code>Result</code>-arvon palauttaminen <code>Config::build</code>-metodista</figcaption>
+</figure>
+<p><code>build</code>-funktiomme palauttaa <code>Result</code>-arvon, jossa on <code>Config</code>-instanssi onnistumistapauksessa ja merkkijonoliteraali virhetapauksessa. Virhearvomme ovat aina <code>'static</code>-elinaikaisia merkkijonoliteraaleja.</p>
+<p>Olemme tehneet kaksi muutosta funktion rungossa: sen sijaan, että kutsuisimme <code>panic!</code>-makroa, kun käyttäjä ei anna tarpeeksi argumentteja, palautamme nyt <code>Err</code>-arvon, ja olemme käärineet <code>Config</code>-paluuarvon <code>Ok</code>-arvoon. Nämä muutokset saavat funktion vastaamaan uutta tyyppisignatuuriaan.</p>
+<p><code>Err</code>-arvon palauttaminen <code>Config::build</code>-metodista antaa <code>main</code>-funktion käsitellä <code>build</code>-funktion palauttaman <code>Result</code>-arvon ja lopettaa prosessin siistimmin virhetapauksessa.</p>
+<!-- Old headings. Do not remove or links may break. -->
+<p><a id="calling-confignew-and-handling-errors"></a></p>
+<h4 id="configbuild-metodin-kutsuminen-ja-virheiden-käsittely"><a class="header" href="#configbuild-metodin-kutsuminen-ja-virheiden-käsittely"><code>Config::build</code>-metodin kutsuminen ja virheiden käsittely</a></h4>
+<p>Käsitelläksemme virhetapauksen ja tulostaaksemme käyttäjäystävällisen viestin, meidän täytyy päivittää <code>main</code>-funktio käsittelemään <code>Config::build</code>-metodin palauttama <code>Result</code>-arvo, kuten listauksessa 12-10. Otamme myös vastuun komentorivityökalun lopettamisesta nollasta poikkeavalla virhekoodilla pois <code>panic!</code>-kutsulta ja toteutamme sen itse. Nollasta poikkeava poistumistila on käytäntö, jolla ilmoitetaan prosessille, joka kutsui ohjelmaamme, että ohjelma lopetti virhetilassa.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch12-an-io-project/listing-12-10/src/main.rs:here}}</code></pre>
+<figcaption>Listing 12-10: Poistuminen virhekoodilla, jos <code>Config</code>-rakenteen luominen epäonnistuu</figcaption>
+</figure>
+<p>Tässä listauksessa olemme käyttäneet metodia, jota emme ole käsitelleet yksityiskohtaisesti: <code>unwrap_or_else</code>, joka on määritelty <code>Result&lt;T, E&gt;</code>-tyypille standardikirjastossa. <code>unwrap_or_else</code>-käyttö antaa meille mahdollisuuden määritellä mukautetun, ei-<code>panic!</code>-pohjaisen virheenkäsittelyn. Jos <code>Result</code> on <code>Ok</code>-arvo, tämän metodin käyttäytyminen on samankaltaista kuin <code>unwrap</code>: se palauttaa <code>Ok</code>-arvon sisältämän sisäisen arvon. Jos arvo on kuitenkin <code>Err</code>-arvo, tämä metodi kutsuu <em>sulkeen</em> koodia, joka on anonyymi funktio, jonka määrittelemme ja välitämme argumenttina <code>unwrap_or_else</code>-metodille. Käsittelemme sulkeita tarkemmin <a href="ch13-00-functional-features.html">luvussa 13</a><!-- ignore -->. Toistaiseksi sinun tarvitsee vain tietää, että <code>unwrap_or_else</code> välittää <code>Err</code>-arvon sisäisen arvon, joka tässä tapauksessa on listauksessa 12-9 lisäämämme staattinen merkkijono <code>"not enough arguments"</code>, sulkeellemme argumentissa <code>err</code>, joka esiintyy pystyviivojen välissä. Sulkeen koodi voi sitten käyttää <code>err</code>-arvoa suorittaessaan.</p>
+<p>Olemme lisänneet uuden <code>use</code>-rivin tuomaan <code>process</code>-moduulin standardikirjastosta näkyvyysalueelle. Sulkeessa ajettava koodi virhetapauksessa on vain kaksi riviä: tulostamme <code>err</code>-arvon ja kutsumme sitten <code>process::exit</code>-funktiota. <code>process::exit</code>-funktio lopettaa ohjelman välittömästi ja palauttaa argumenttina annetun poistumistilakoodin. Tämä on samankaltaista kuin listauksessa 12-8 käyttämämme <code>panic!</code>-pohjainen käsittely, mutta emme enää saa kaikkea ylimääräistä tulostetta. Kokeillaan:</p>
+<pre><code class="language-console">{{#include ../listings/ch12-an-io-project/listing-12-10/output.txt}}
+</code></pre>
+<p>Hienoa! Tämä tuloste on paljon ystävällisempi käyttäjillemme.</p>
+<h3 id="logiikan-erottaminen-main-funktiosta"><a class="header" href="#logiikan-erottaminen-main-funktiosta">Logiikan erottaminen <code>main</code>-funktiosta</a></h3>
+<p>Nyt kun olemme saaneet konfiguraation jäsentämisen refaktoroinnin valmiiksi, käännymme ohjelman logiikan pariin. Kuten totesimme <a href="#separation-of-concerns-for-binary-projects">”Vastuujen erottelu binääriprojekteissa”</a><!-- ignore --> -osiossa, erotamme <code>run</code>-nimisen funktion, joka sisältää kaiken logiikan, joka on tällä hetkellä <code>main</code>-funktiossa mutta ei liity konfiguraation asettamiseen tai virheiden käsittelyyn. Kun olemme valmiit, <code>main</code> on ytimekäs ja helppo tarkistaa lukemalla, ja voimme kirjoittaa testejä kaikelle muulle logiikalle.</p>
+<p>Listausta 12-11 näyttää erotetun <code>run</code>-funktion. Toistaiseksi teemme vain pienen, inkrementaalisen parannuksen erottamalla funktion. Määrittelemme funktion edelleen <em>src/main.rs</em>-tiedostossa.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch12-an-io-project/listing-12-11/src/main.rs:here}}</code></pre>
+<figcaption>Listing 12-11: <code>run</code>-funktion erottaminen, joka sisältää loput ohjelman logiikasta</figcaption>
+</figure>
+<p><code>run</code>-funktio sisältää nyt kaiken jäljellä olevan logiikan <code>main</code>-funktiosta alkaen tiedoston lukemisesta. <code>run</code>-funktio ottaa <code>Config</code>-instanssin argumenttina.</p>
+<h4 id="virheiden-palauttaminen-run-funktiosta"><a class="header" href="#virheiden-palauttaminen-run-funktiosta">Virheiden palauttaminen <code>run</code>-funktiosta</a></h4>
+<p>Kun jäljellä oleva ohjelman logiikka on erotettu <code>run</code>-funktioon, voimme parantaa virheenkäsittelyä, kuten teimme <code>Config::build</code>-metodilla listauksessa 12-9. Sen sijaan, että antaisimme ohjelman panikoida kutsumalla <code>expect</code>-metodia, <code>run</code>-funktio palauttaa <code>Result&lt;T, E&gt;</code>-arvon, kun jokin menee pieleen. Tämä antaa meille mahdollisuuden koota virheenkäsittelylogiikkaa edelleen <code>main</code>-funktioon käyttäjäystävällisellä tavalla. Listausta 12-12 näyttää muutokset, jotka meidän täytyy tehdä <code>run</code>-funktion signatuuriin ja runkoon.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch12-an-io-project/listing-12-12/src/main.rs:here}}</code></pre>
+<figcaption>Listing 12-12: <code>run</code>-funktion muuttaminen palauttamaan <code>Result</code>-arvo</figcaption>
+</figure>
+<p>Olemme tehneet kolme merkittävää muutosta. Ensinnäkin olemme muuttaneet <code>run</code>-funktion paluutyypin <code>Result&lt;(), Box&lt;dyn Error&gt;&gt;</code>-tyypiksi. Tämä funktio palautti aiemmin yksikkötyypin <code>()</code>, ja pidämme sen <code>Ok</code>-tapauksen palautusarvona.</p>
+<p>Virhetyypiksi käytimme <em>trait-objektia</em> <code>Box&lt;dyn Error&gt;</code> (ja olemme tuoneet <code>std::error::Error</code>-traitin näkyvyysalueelle <code>use</code>-lauseella tiedoston alussa). Käsittelemme trait-objekteja <a href="ch18-00-oop.html">luvussa 18</a><!-- ignore -->. Toistaiseksi riittää tietää, että <code>Box&lt;dyn Error&gt;</code> tarkoittaa, että funktio palauttaa tyypin, joka toteuttaa <code>Error</code>-traitin, mutta meidän ei tarvitse määrittää, mikä tietty tyyppi palautusarvo on. Tämä antaa meille joustavuutta palauttaa eri tyyppisiä virhearvoja eri virhetapauksissa. <code>dyn</code>-avainsana on lyhenne sanasta <em>dynamic</em>.</p>
+<p>Toiseksi olemme poistaneet <code>expect</code>-kutsun ja käyttäneet sen sijaan <code>?</code>-operaattoria, kuten <a href="ch09-02-recoverable-errors-with-result.html#a-shortcut-for-propagating-errors-the--operator">luvussa 9</a><!-- ignore --> käsiteltiin. Sen sijaan, että <code>panic!</code> virheen sattuessa, <code>?</code> palauttaa virhearvon nykyisestä funktiosta kutsujan käsiteltäväksi.</p>
+<p>Kolmanneksi <code>run</code>-funktio palauttaa nyt <code>Ok</code>-arvon onnistumistapauksessa. Olemme määritelleet <code>run</code>-funktion onnistumistyypiksi <code>()</code> signatuurissa, mikä tarkoittaa, että meidän täytyy kääriä yksikkötyyppiarvo <code>Ok</code>-arvoon. Tämä <code>Ok(())</code>-syntaksi saattaa aluksi näyttää hieman oudolta, mutta <code>()</code>-tyypin käyttö tällä tavalla on idiomaattinen tapa ilmaista, että kutsumme <code>run</code>-funktiota vain sen sivuvaikutuksia varten; se ei palauta arvoa, jota tarvitsemme.</p>
+<p>Kun ajat tämän koodin, se kääntyy mutta näyttää varoituksen:</p>
+<pre><code class="language-console">{{#include ../listings/ch12-an-io-project/listing-12-12/output.txt}}
+</code></pre>
+<p>Rust kertoo meille, että koodimme jätti huomiotta <code>Result</code>-arvon ja <code>Result</code>-arvo saattaa ilmaista, että virhe tapahtui. Mutta emme tarkista, tapahtuiko virhe, ja kääntäjä muistuttaa meitä, että meidän piti todennäköisesti olla virheenkäsittelykoodia täällä! Korjataan tämä ongelma nyt.</p>
+<h4 id="run-funktion-palauttamien-virheiden-käsittely-main-funktiossa"><a class="header" href="#run-funktion-palauttamien-virheiden-käsittely-main-funktiossa"><code>run</code>-funktion palauttamien virheiden käsittely <code>main</code>-funktiossa</a></h4>
+<p>Tarkistamme virheet ja käsittelemme ne tekniikalla, joka on samankaltainen kuin <code>Config::build</code>-metodilla listauksessa 12-10, mutta pienellä erolla:</p>
+<p><span class="filename">Filename: src/main.rs</span></p>
+<pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch12-an-io-project/no-listing-01-handling-errors-in-main/src/main.rs:here}}</code></pre>
+<p>Käytämme <code>if let</code>-lausetta <code>unwrap_or_else</code>-metodin sijaan tarkistaaksemme, palauttaako <code>run</code> <code>Err</code>-arvon, ja kutsumme <code>process::exit(1)</code>-funktiota, jos se palauttaa. <code>run</code>-funktio ei palauta arvoa, jota haluaisimme <code>unwrap</code>-metodilla purkaa samalla tavalla kuin <code>Config::build</code> palauttaa <code>Config</code>-instanssin. Koska <code>run</code> palauttaa <code>()</code> onnistumistapauksessa, välitämme vain virheen havaitsemisesta, joten emme tarvitse <code>unwrap_or_else</code>-metodia palauttamaan purettua arvoa, joka olisi vain <code>()</code>.</p>
+<p><code>if let</code>-lausekkeen ja <code>unwrap_or_else</code>-funktioiden rungot ovat molemmissa tapauksissa samat: tulostamme virheen ja lopetamme.</p>
+<h3 id="koodin-jakaminen-kirjastokrateiksi"><a class="header" href="#koodin-jakaminen-kirjastokrateiksi">Koodin jakaminen kirjastokrateiksi</a></h3>
+<p><code>minigrep</code>-projektimme näyttää hyvältä tähän asti! Nyt jaamme <em>src/main.rs</em>-tiedoston ja siirrämme osan koodista <em>src/lib.rs</em>-tiedostoon. Näin voimme testata koodia ja meillä on <em>src/main.rs</em>-tiedosto, jolla on vähemmän vastuita.</p>
+<p>Siirretään kaikki koodi, joka ei ole <code>main</code>-funktiossa, <em>src/main.rs</em>-tiedostosta <em>src/lib.rs</em>-tiedostoon:</p>
+<ul>
+<li><code>run</code>-funktion määritelmä</li>
+<li>Asiaankuuluvat <code>use</code>-lauseet</li>
+<li><code>Config</code>-rakenteen määritelmä</li>
+<li><code>Config::build</code>-funktion määritelmä</li>
+</ul>
+<p><em>src/lib.rs</em>-tiedoston sisällössä pitäisi olla listauksessa 12-13 näytetyt signatuurit (olemme jättäneet funktioiden rungot pois lyhyyden vuoksi). Huomaa, että tämä ei käänny ennen kuin muokkaamme <em>src/main.rs</em>-tiedostoa listauksessa 12-14.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
+<pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch12-an-io-project/listing-12-13/src/lib.rs:here}}</code></pre>
+<figcaption>Listing 12-13: <code>Config</code>- ja <code>run</code>-siirto <em>src/lib.rs</em>-tiedostoon</figcaption>
+</figure>
+<p>Olemme käyttäneet runsaasti <code>pub</code>-avainsanaa: <code>Config</code>-rakenteessa, sen kentissä ja <code>build</code>-metodissa sekä <code>run</code>-funktiossa. Meillä on nyt kirjastokrate, jolla on julkinen API, jota voimme testata!</p>
+<p>Nyt meidän täytyy tuoda koodi, jonka siirsimme <em>src/lib.rs</em>-tiedostoon, binäärikrateen näkyvyysalueelle <em>src/main.rs</em>-tiedostossa, kuten listauksessa 12-14.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch12-an-io-project/listing-12-14/src/main.rs:here}}</code></pre>
+<figcaption>Listing 12-14: <code>minigrep</code>-kirjastokrateen käyttö <em>src/main.rs</em>-tiedostossa</figcaption>
+</figure>
+<p>Lisäämme <code>use minigrep::Config</code>-rivin tuomaan <code>Config</code>-tyypin kirjastokrateesta binäärikrateen näkyvyysalueelle, ja etuliitämme <code>run</code>-funktion crate-nimellämme. Nyt kaiken toiminnallisuuden pitäisi olla yhdistetty ja toimia. Aja ohjelma <code>cargo run</code> -komennolla ja varmista, että kaikki toimii oikein.</p>
+<p>Huh! Sitä oli paljon työtä, mutta olemme asettaneet itsellemme pohjan tulevaisuuden menestykseen. Nyt virheiden käsittely on paljon helpompaa, ja olemme tehneet koodista modulaarisempaa. Lähes kaikki työmme tehdään tästä lähtien <em>src/lib.rs</em>-tiedostossa.</p>
+<p>Hyödynnetään tätä uutta modulaarisuutta tekemällä jotain, mikä olisi ollut vaikeaa vanhalla koodilla mutta on helppoa uudella koodilla: kirjoitamme testejä!</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="ch12-02-reading-a-file.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="ch12-04-testing-the-librarys-functionality.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="ch12-02-reading-a-file.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="ch12-04-testing-the-librarys-functionality.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="ferris.js"></script>
+
+
+    </div>
+    </body>
+</html>

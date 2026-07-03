@@ -1,0 +1,411 @@
+<!DOCTYPE HTML>
+<html lang="fi" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Lähempi tarkastelu async-traitteihin - Rust-ohjelmointikieli</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="ferris.css">
+        <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rust-ohjelmointikieli</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/rust-lang/book" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2 id="tarkempi-katsaus-asynkronisuuden-traitteihin"><a class="header" href="#tarkempi-katsaus-asynkronisuuden-traitteihin">Tarkempi katsaus asynkronisuuden traitteihin</a></h2>
+<!-- Old headings. Do not remove or links may break. -->
+<p><a id="digging-into-the-traits-for-async"></a></p>
+<p>Koko luvun ajan olemme käyttäneet <code>Future</code>-, <code>Pin</code>-, <code>Unpin</code>-, <code>Stream</code>- ja <code>StreamExt</code>-traitteja eri tavoin. Tähän asti olemme kuitenkin vältelleet sukeltamasta liian syvälle niiden toiminnan tai yhteensopivuuden yksityiskohtiin, mikä on useimmiten ihan hyvä päivittäisessä Rust-työssäsi. Joskus kohtaat kuitenkin tilanteita, joissa sinun täytyy ymmärtää hieman enemmän näitä yksityiskohtia. Tässä osiossa syvennymme juuri sen verran, että ne auttavat näissä tilanteissa, jättäen <em>todella</em> syvän sukelluksen muulle dokumentaatiolle.</p>
+<!-- Old headings. Do not remove or links may break. -->
+<p><a id="future"></a></p>
+<h3 id="future-trait"><a class="header" href="#future-trait"><code>Future</code>-trait</a></h3>
+<p>Aloitetaan tarkastelemalla tarkemmin, miten <code>Future</code>-trait toimii. Näin Rust määrittelee sen:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use std::pin::Pin;
+use std::task::{Context, Poll};
+
+pub trait Future {
+    type Output;
+
+    fn poll(self: Pin&lt;&amp;mut Self&gt;, cx: &amp;mut Context&lt;'_&gt;) -&gt; Poll&lt;Self::Output&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Tämä trait-määritelmä sisältää joukon uusia tyyppejä ja myös syntaksia, jota emme ole nähneet aiemmin, joten käydään määritelmä läpi pala kerrallaan.</p>
+<p>Ensinnäkin <code>Future</code>-traitin assosioitu tyyppi <code>Output</code> kertoo, mihin future ratkeaa. Tämä on analoginen <code>Iterator</code>-traitin assosioituneelle tyypille <code>Item</code>. Toiseksi <code>Future</code>-traitilla on myös <code>poll</code>-metodi, joka ottaa erityisen <code>Pin</code>-viitteen <code>self</code>-parametrilleen ja muuttuvan viitteen <code>Context</code>-tyyppiin, ja palauttaa <code>Poll&lt;Self::Output&gt;</code>-tyypin. Puhumme <code>Pin</code>- ja <code>Context</code>-tyypeistä hetken kuluttua. Toistaiseksi keskitytään siihen, mitä metodi palauttaa, eli <code>Poll</code>-tyyppiin:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>enum Poll&lt;T&gt; {
+    Ready(T),
+    Pending,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Tämä <code>Poll</code>-tyyppi on samankaltainen kuin <code>Option</code>. Siinä on yksi variantti, jolla on arvo, <code>Ready(T)</code>, ja yksi, jolla ei ole, <code>Pending</code>. <code>Poll</code> tarkoittaa kuitenkin jotain aivan erilaista kuin <code>Option</code>! <code>Pending</code>-variantti ilmaisee, että futuurilla on vielä työtä tekemättä, joten kutsujan täytyy tarkistaa uudelleen myöhemmin. <code>Ready</code>-variantti ilmaisee, että future on saanut työnsä valmiiksi ja <code>T</code>-arvo on saatavilla.</p>
+<blockquote>
+<p>Huom: Useimmilla futuureilla kutsujan ei pitäisi kutsua <code>poll</code>-metodia uudelleen sen jälkeen, kun future on palauttanut <code>Ready</code>-arvon. Monet futuurit panikoivat, jos niitä pollataan uudelleen valmiiksi tultuaan. Futuurit, joita on turvallista pollata uudelleen, sanovat sen eksplisiittisesti dokumentaatiossaan. Tämä on samankaltaista kuin <code>Iterator::next</code>-metodin käyttäytyminen.</p>
+</blockquote>
+<p>Kun näet koodia, joka käyttää <code>await</code>-avainsanaa, Rust kääntää sen kulissien takana koodiksi, joka kutsuu <code>poll</code>-metodia. Jos katsot takaisin listaukseen 17-4, jossa tulostimme yhden URL-osoitteen sivun otsikon sen ratkettua, Rust kääntää sen joksikin tämän kaltaiseksi (vaikkakaan ei täsmälleen tällaiseksi):</p>
+<pre><code class="language-rust ignore">match page_title(url).poll() {
+    Ready(page_title) =&gt; match page_title {
+        Some(title) =&gt; println!("The title for {url} was {title}"),
+        None =&gt; println!("{url} had no title"),
+    }
+    Pending =&gt; {
+        // But what goes here?
+    }
+}</code></pre>
+<p>Mitä meidän pitäisi tehdä, kun future on vielä <code>Pending</code>-tilassa? Tarvitsemme jonkin tavan yrittää uudelleen, ja uudelleen, ja uudelleen, kunnes future on vihdoin valmis. Toisin sanoen tarvitsemme silmukan:</p>
+<pre><code class="language-rust ignore">let mut page_title_fut = page_title(url);
+loop {
+    match page_title_fut.poll() {
+        Ready(value) =&gt; match page_title {
+            Some(title) =&gt; println!("The title for {url} was {title}"),
+            None =&gt; println!("{url} had no title"),
+        }
+        Pending =&gt; {
+            // continue
+        }
+    }
+}</code></pre>
+<p>Jos Rust kääntäisi sen täsmälleen tällaiseksi koodiksi, jokainen <code>await</code> estäisi suorituksen — juuri päinvastoin kuin mitä tavoittelimme! Sen sijaan Rust varmistaa, että silmukka voi luovuttaa hallinnan jollekin, joka voi keskeyttää työn tämän futuurin parissa tehdäkseen työtä muiden futuurien kanssa ja tarkistaakseen tämän futuurin uudelleen myöhemmin. Kuten olemme nähneet, tämä jokin on asynkroninen ajoaikamalli, ja tämä ajoitus- ja koordinointityö on yksi sen päätehtävistä.</p>
+<p>Aikaisemmin luvussa kuvasimme odottamista <code>rx.recv</code>-kutsun parissa. <code>recv</code>-kutsu palauttaa futuurin, ja futuurin odottaminen pollaa sitä. Huomasimme, että ajoaikamalli keskeyttää futuurin, kunnes se on valmis joko <code>Some(message)</code>- tai <code>None</code>-arvolla, kun kanava sulkeutuu. Syvemmällä ymmärryksellämme <code>Future</code>-traitista, ja erityisesti <code>Future::poll</code>-metodista, näemme miten se toimii. Ajoaikamalli tietää, että future ei ole valmis, kun se palauttaa <code>Poll::Pending</code>-arvon. Päinvastoin ajoaikamalli tietää, että future <em>on</em> valmis ja edistää sitä, kun <code>poll</code> palauttaa <code>Poll::Ready(Some(message))</code>- tai <code>Poll::Ready(None)</code>-arvon.</p>
+<p>Tarkat yksityiskohdat siitä, miten ajoaikamalli tekee tämän, ylittävät tämän kirjan laajuuden, mutta keskeistä on nähdä futuurien perusmekaniikka: ajoaikamalli <em>pollaa</em> jokaista futuuria, josta se on vastuussa, ja laittaa futuurin takaisin nukkumaan, kun se ei ole vielä valmis.</p>
+<!-- Old headings. Do not remove or links may break. -->
+<p><a id="pinning-and-the-pin-and-unpin-traits"></a></p>
+<h3 id="pin--ja-unpin-traitit"><a class="header" href="#pin--ja-unpin-traitit"><code>Pin</code>- ja <code>Unpin</code>-traitit</a></h3>
+<p>Kun esittelimme kiinnittämisen (<em>pinning</em>) idean listauksessa 17-16, kohtasimme hyvin mutkikkaan virheilmoituksen. Tässä on jälleen sen olennainen osa:</p>
+<!-- manual-regeneration
+cd listings/ch17-async-await/listing-17-16
+cargo build
+copy *only* the final `error` block from the errors
+-->
+<pre><code class="language-text">error[E0277]: `{async block@src/main.rs:10:23: 10:33}` cannot be unpinned
+  --&gt; src/main.rs:48:33
+   |
+48 |         trpl::join_all(futures).await;
+   |                                 ^^^^^ the trait `Unpin` is not implemented for `{async block@src/main.rs:10:23: 10:33}`
+   |
+   = note: consider using the `pin!` macro
+           consider using `Box::pin` if you need to access the pinned value outside of the current scope
+   = note: required for `Box&lt;{async block@src/main.rs:10:23: 10:33}&gt;` to implement `Future`
+note: required by a bound in `futures_util::future::join_all::JoinAll`
+  --&gt; file:///home/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/futures-util-0.3.30/src/future/join_all.rs:29:8
+   |
+27 | pub struct JoinAll&lt;F&gt;
+   |            ------- required by a bound in this struct
+28 | where
+29 |     F: Future,
+   |        ^^^^^^ required by this bound in `JoinAll`
+</code></pre>
+<p>Tämä virheilmoitus kertoo meille paitsi sen, että meidän täytyy kiinnittää arvot, myös sen, miksi kiinnittäminen vaaditaan. <code>trpl::join_all</code>-funktio palauttaa rakenteen nimeltä <code>JoinAll</code>. Tämä rakenne on geneerinen tyypin <code>F</code> suhteen, jota rajoitetaan toteuttamaan <code>Future</code>-trait. Futuurin suora odottaminen <code>await</code>-avainsanalla kiinnittää futuurin implisiittisesti. Siksi emme tarvitse <code>pin!</code>-makroa kaikkialla, missä haluamme odottaa futuureja.</p>
+<p>Emme kuitenkaan odota futuuria suoraan tässä. Sen sijaan rakennamme uuden futuurin, <code>JoinAll</code>-rakenteen, välittämällä futuurikokoelman <code>join_all</code>-funktiolle. <code>join_all</code>-funktion signatuuri vaatii, että kokoelman kohteiden tyypit kaikki toteuttavat <code>Future</code>-traitin, ja <code>Box&lt;T&gt;</code> toteuttaa <code>Future</code>-traitin vain, jos sen käärimä <code>T</code> on future, joka toteuttaa <code>Unpin</code>-traitin.</p>
+<p>Se on paljon sulattavaa! Ymmärtääksemme sen todella, sukeltakaamme hieman syvemmälle siihen, miten <code>Future</code>-trait oikeasti toimii, erityisesti <em>kiinnittämisen</em> (<em>pinning</em>) osalta.</p>
+<p>Katso jälleen <code>Future</code>-traitin määritelmää:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use std::pin::Pin;
+use std::task::{Context, Poll};
+
+pub trait Future {
+    type Output;
+
+    // Required method
+    fn poll(self: Pin&lt;&amp;mut Self&gt;, cx: &amp;mut Context&lt;'_&gt;) -&gt; Poll&lt;Self::Output&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<p><code>cx</code>-parametri ja sen <code>Context</code>-tyyppi ovat avain siihen, miten ajoaikamalli oikeasti tietää, milloin tarkistaa minkä tahansa futuurin ja silti pysyy laiskana. Taaskin, yksityiskohdat siitä, miten se toimii, ylittävät tämän luvun laajuuden, ja sinun täytyy yleensä ajatella tätä vain kirjoittaessasi mukautetun <code>Future</code>-toteutuksen. Keskitytään sen sijaan <code>self</code>-parametrin tyyppiin, koska tämä on ensimmäinen kerta, kun näemme metodin, jossa <code>self</code>:llä on tyyppiannotaatio. <code>self</code>-parametrin tyyppiannotaatio toimii kuten muidenkin funktioiden parametrien tyyppiannotaatiot, mutta kahdella keskeisellä erolla:</p>
+<ul>
+<li>
+<p>Se kertoo Rustille, minkä tyyppisen <code>self</code>-parametrin täytyy olla, jotta metodia voidaan kutsua.</p>
+</li>
+<li>
+<p>Se ei voi olla mikä tahansa tyyppi. Se on rajoitettu tyyppiin, jolle metodi on toteutettu, viitteeseen tai älykkääseen osoittimeen kyseiseen tyyppiin, tai <code>Pin</code>-rakenteeseen, joka käärii viitteen kyseiseen tyyppiin.</p>
+</li>
+</ul>
+<p>Näemme lisää tästä syntaksista <a href="ch18-00-oop.html">luvussa 18</a><!-- ignore -->. Toistaiseksi riittää tietää, että jos haluamme pollata futuuria tarkistaaksemme, onko se <code>Pending</code>- vai <code>Ready(Output)</code>-tilassa, tarvitsemme <code>Pin</code>-käärittyn muuttuvan viitteen tyyppiin.</p>
+<p><code>Pin</code> on kääre osoittimia muistuttaville tyypeille, kuten <code>&amp;</code>, <code>&amp;mut</code>, <code>Box</code> ja <code>Rc</code>. (Teknisesti <code>Pin</code> toimii tyyppien kanssa, jotka toteuttavat <code>Deref</code>- tai <code>DerefMut</code>-traitit, mutta tämä on käytännössä vastaavaa kuin työskentely pelkästään osoittimien kanssa.) <code>Pin</code> ei ole itse osoitin eikä sillä ole omaa käyttäytymistään kuten <code>Rc</code>- ja <code>Arc</code>-tyypeillä on viitelaskennan kanssa; se on puhtaasti työkalu, jota kääntäjä voi käyttää osoittimien käytön rajoitteiden pakottamiseen.</p>
+<p>Muistaessamme, että <code>await</code> toteutetaan <code>poll</code>-kutsujen kautta, alkaa selkiytyä aiemmin näkemämme virheilmoitus, mutta se oli <code>Unpin</code>-termin suhteen, ei <code>Pin</code>-termin. Miten <code>Pin</code> liittyy <code>Unpin</code>-traitiin, ja miksi <code>Future</code> tarvitsee <code>self</code>-parametrin olevan <code>Pin</code>-tyypissä <code>poll</code>-metodin kutsumiseksi?</p>
+<p>Muista tämän luvun aiemmasta osiosta, että futuurin odotuspisteet käännetään tilakoneeksi, ja kääntäjä varmistaa, että tilakone noudattaa kaikkia Rustin tavallisia turvallisuussääntöjä, mukaan lukien lainaamisen ja omistajuuden. Tämän toimimiseksi Rust katsoo, mitä dataa tarvitaan yhden odotuspisteen ja seuraavan odotuspisteen tai asynkronisen lohkon lopun välillä. Se luo sitten vastaavan variantin käännettyyn tilakoneeseen. Jokainen variantti saa tarvitsemansa pääsyn dataan, jota käytetään kyseisessä lähdekoodin osassa, joko ottamalla omistajuuden datasta tai saamalla muuttuvan tai muuttumattoman viitteen siihen.</p>
+<p>Tähän asti kaikki hyvin: jos teemme virheen omistajuudessa tai viitteissä tietyssä asynkronisessa lohkossa, lainaustarkistin kertoo meille. Kun haluamme siirtää futuuria, joka vastaa kyseistä lohkoa — kuten siirtää sen <code>Vec</code>-rakenteeseen välittääksemme sen <code>join_all</code>-funktiolle tai palauttaa sen funktiosta — asiat muuttuvat hankalammiksi.</p>
+<p>Kun siirrämme futuuria — joko työntämällä sen tietorakenteeseen käytettäväksi iteraattorina <code>join_all</code>-funktion kanssa tai palauttamalla sen funktiosta — se tarkoittaa itse asiassa Rustin luoman tilakoneen siirtämistä. Ja toisin kuin useimmat muut Rustin tyypit, Rustin luomat futuurit asynkronisille lohkoille voivat päättyä viitteisiin itseensä minkä tahansa variantin kentissä, kuten yksinkertaistetussa kuvassa kuvassa 17-4.</p>
+<figure>
+<img alt="A single-column, three-row table representing a future, fut1, which has data values 0 and 1 in the first two rows and an arrow pointing from the third row back to the second row, representing an internal reference within the future." src="img/trpl17-04.svg" class="center" />
+<figcaption>Kuva 17-4: Itseensä viittaava datatyyppi.</figcaption>
+</figure>
+<p>Oletuksena kuitenkin mikä tahansa objekti, jolla on viite itseensä, on turvatonta siirtää, koska viitteet osoittavat aina niihin viitattujen kohteiden todelliseen muistiosoitteeseen (katso kuva 17-5). Jos siirrät itse datarakenteen, nämä sisäiset viitteet jäävät osoittamaan vanhaa sijaintia. Tämä muistisijainti on kuitenkin nyt virheellinen. Ensinnäkin sen arvoa ei päivitetä, kun teet muutoksia datarakenteeseen. Toiseksi — ja tärkeämpänä — tietokone voi nyt käyttää tämän muistin uudelleen muihin tarkoituksiin! Saatat lopulta lukea täysin asiaan liittymätöntä dataa.</p>
+<p>Teoriassa Rust-kääntäjä voisi yrittää päivittää jokaisen viitteen objektiin aina kun sitä siirretään, mutta se voisi lisätä paljon suorituskykyyn liittyvää yleiskustannusta, erityisesti jos koko viiteverkko täytyy päivittää. Jos sen sijaan voisimme varmistaa, että kyseinen datarakenne <em>ei siirry muistissa</em>, meidän ei tarvitsisi päivittää viitteitä. Tämä on juuri se, mitä Rustin lainaustarkistin vaatii: turvallisessa koodissa se estää sinua siirtämästä mitään kohdetta, johon on aktiivinen viite.</p>
+<p><code>Pin</code> rakentuu tämän päälle antaakseen meille juuri tarvitsemamme takuun. Kun <em>kiinnitämme</em> arvon käärimällä osoittimen kyseiseen arvoon <code>Pin</code>-rakenteeseen, arvo ei voi enää siirtyä. Näin ollen, jos sinulla on <code>Pin&lt;Box&lt;SomeType&gt;&gt;</code>, kiinnität itse asiassa <code>SomeType</code>-arvon, <em>ei</em> <code>Box</code>-osoitinta. Kuva 17-6 havainnollistaa tätä prosessia.</p>
+<figure>
+<img alt="Three boxes laid out side by side. The first is labeled “Pin”, the second “b1”, and the third “pinned”. Within “pinned” is a table labeled “fut”, with a single column; it represents a future with cells for each part of the data structure. Its first cell has the value “0”, its second cell has an arrow coming out of it and pointing to the fourth and final cell, which has the value “1” in it, and the third cell has dashed lines and an ellipsis to indicate there may be other parts to the data structure. All together, the “fut” table represents a future which is self-referential. An arrow leaves the box labeled “Pin”, goes through the box labeled “b1” and has terminates inside the “pinned” box at the “fut” table." src="img/trpl17-06.svg" class="center" />
+<figcaption>Kuva 17-6: `Box`-osoittimen kiinnittäminen, joka osoittaa itseensä viittaavaan future-tyyppiin.</figcaption>
+</figure>
+<p>Itse asiassa <code>Box</code>-osoitin voi edelleen liikkua vapaasti. Muista: meidän täytyy varmistaa, että lopulta viitattu data pysyy paikallaan. Jos osoitin liikkuu, <em>mutta data, johon se osoittaa, on samassa paikassa</em>, kuten kuvassa 17-7, ongelmaa ei ole. Itsenäisenä harjoituksena tutustu tyyppien dokumentaatioon sekä <code>std::pin</code>-moduuliin ja yritä selvittää, miten tekisit tämän <code>Pin</code>-rakenteen käärimällä <code>Box</code>-osoittimen.) Keskeistä on, että itseensä viittaava tyyppi itsessään ei voi siirtyä, koska se on edelleen kiinnitetty.</p>
+<figure>
+<img alt="Four boxes laid out in three rough columns, identical to the previous diagram with a change to the second column. Now there are two boxes in the second column, labeled “b1” and “b2”, “b1” is grayed out, and the arrow from “Pin” goes through “b2” instead of “b1”, indicating that the pointer has moved from “b1” to “b2”, but the data in “pinned” has not moved." src="img/trpl17-07.svg" class="center" />
+<figcaption>Kuva 17-7: `Box`-osoittimen siirtäminen, joka osoittaa itseensä viittaavaan future-tyyppiin.</figcaption>
+</figure>
+<p>Useimmat tyypit ovat kuitenkin täysin turvallisia siirtää, vaikka ne sattuisivat olemaan <code>Pin</code>-kääreen takana. Meidän täytyy ajatella kiinnittämistä vain, kun kohteilla on sisäisiä viitteitä. Alkeisarvot kuten numerot ja totuusarvot eivät tietenkään sisällä sisäisiä viitteitä, joten ne ovat turvallisia. Eivätkä useimmat tyypit, joiden kanssa normaalisti työskentelet Rustissa. Voit esimerkiksi siirtää <code>Vec</code>-rakennetta huolehtimatta. Tähänastisen näkemämme perusteella, jos sinulla on <code>Pin&lt;Vec&lt;String&gt;&gt;</code>, joudut tekemään kaiken <code>Pin</code>-rakenteen tarjoamien turvallisten mutta rajoittavien API:en kautta, vaikka <code>Vec&lt;String&gt;</code> on aina turvallista siirtää, jos siihen ei ole muita viitteitä. Tarvitsemme tavan kertoa kääntäjälle, että on ihan ok siirtää kohteita tapauksissa kuten tämä — ja siihen <code>Unpin</code> tulee mukaan.</p>
+<p><code>Unpin</code> on merkintätrait (<em>marker trait</em>), samankaltainen kuin <code>Send</code>- ja <code>Sync</code>-traitit, joita näimme luvussa 16, eikä sillä siten ole omaa toiminnallisuutta. Merkintätraitit ovat olemassa vain kertoakseen kääntäjälle, että on turvallista käyttää tiettyä traitia toteuttavaa tyyppiä tietyssä kontekstissa. <code>Unpin</code> kertoo kääntäjälle, että tietyllä tyypillä <em>ei</em> tarvitse ylläpitää takuita siitä, voidaanko kyseinen arvo turvallisesti siirtää.</p>
+<!--
+  The inline `<code>` in the next block is to allow the inline `<em>` inside it,
+  matching what NoStarch does style-wise, and emphasizing within the text here
+  that it is something distinct from a normal type.
+-->
+<p>Aivan kuten <code>Send</code>- ja <code>Sync</code>-traitien kanssa, kääntäjä toteuttaa <code>Unpin</code>-traitin automaattisesti kaikille tyypeille, joille se voi todistaa sen olevan turvallista. Erityistapaus, jälleen samankaltainen kuin <code>Send</code>- ja <code>Sync</code>-traitien kanssa, on tilanne, jossa <code>Unpin</code>-traitia <em>ei</em> toteuteta tyypille. Tämän merkintä on <code>impl !Unpin for <em>SomeType</em></code>, missä
+<code><em>SomeType</em></code> on tyypin nimi, jonka <em>täytyy</em> ylläpitää näitä takuita turvallisuuden vuoksi aina kun osoitin kyseiseen tyyppiin käytetään <code>Pin</code>-rakenteessa.</p>
+<p>Toisin sanoen, <code>Pin</code>- ja <code>Unpin</code>-traitien suhteesta on pidettävä mielessä kaksi asiaa. Ensinnäkin <code>Unpin</code> on ”normaali” tapaus ja <code>!Unpin</code> on erikoistapaus. Toiseksi sillä, toteuttaako tyyppi <code>Unpin</code>- vai <code>!Unpin</code>-traitin, on merkitystä <em>vain</em> kun käytät kiinnitettyä osoitinta kyseiseen tyyppiin, kuten <code>Pin&lt;&amp;mut
+<em>SomeType</em>&gt;</code>.</p>
+<p>Tehdäksemme tästä konkreettisen, ajattele <code>String</code>-tyyppiä: sillä on pituus ja sitä muodostavat Unicode-merkit. Voimme kääriä <code>String</code>-tyypin <code>Pin</code>-rakenteeseen, kuten kuvassa 17-8. <code>String</code> toteuttaa kuitenkin automaattisesti <code>Unpin</code>-traitin, kuten useimmat muutkin Rustin tyypit.</p>
+<figure>
+<img alt="Concurrent work flow" src="img/trpl17-08.svg" class="center" />
+<figcaption>Kuva 17-8: `String`-tyypin kiinnittäminen; katkoviiva osoittaa, että `String` toteuttaa `Unpin`-traitin eikä siten ole kiinnitetty.</figcaption>
+</figure>
+<p>Tämän seurauksena voimme tehdä asioita, jotka olisivat laittomia, jos <code>String</code> toteuttaisi <code>!Unpin</code>-traitin sen sijaan, kuten korvata yhden merkkijonon toisella täsmälleen samassa muistisijainnissa kuten kuvassa 17-9. Tämä ei riko <code>Pin</code>-sopimusta, koska <code>String</code>-tyypillä ei ole sisäisiä viitteitä, jotka tekisivät sen siirtämisestä turvatonta! Siksi se toteuttaa <code>Unpin</code>-traitin eikä <code>!Unpin</code>-traitia.</p>
+<figure>
+<img alt="Concurrent work flow" src="img/trpl17-09.svg" class="center" />
+<figcaption>Kuva 17-9: `String`-tyypin korvaaminen täysin eri `String`-tyypillä muistissa.</figcaption>
+</figure>
+<p>Nyt tiedämme tarpeeksi ymmärtääksemme listauksen 17-17 <code>join_all</code>-kutsusta raportoidut virheet. Alun perin yritimme siirtää asynkronisten lohkojen tuottamat futuurit <code>Vec&lt;Box&lt;dyn Future&lt;Output = ()&gt;&gt;&gt;</code>-rakenteeseen, mutta kuten olemme nähneet, näillä futuureilla voi olla sisäisiä viitteitä, joten ne eivät toteuta <code>Unpin</code>-traitia. Ne täytyy kiinnittää, ja sitten voimme välittää <code>Pin</code>-tyypin <code>Vec</code>-rakenteeseen varmana siitä, että futuurien taustalla oleva data <em>ei</em> siirry.</p>
+<p><code>Pin</code>- ja <code>Unpin</code>-traitit ovat pääosin tärkeitä matalan tason kirjastojen rakentamisessa tai kun rakennat itse ajoaikamallia, eivät niinkään päivittäisessä Rust-koodissa. Kun näet näitä traitteja virheilmoituksissa, sinulla on nyt kuitenkin parempi käsitys siitä, miten korjata koodisi!</p>
+<blockquote>
+<p>Huom: Tämä <code>Pin</code>- ja <code>Unpin</code>-traitien yhdistelmä mahdollistaa kokonaisen luokan monimutkaisten tyyppien turvallisen toteuttamisen Rustissa, jotka muuten olisivat haastavia, koska ne ovat itseensä viittaavia. Tyypit, jotka vaativat <code>Pin</code>-traitin, esiintyvät yleisimmin asynkronisessa Rustissa nykyään, mutta silloin tällöin saatat nähdä niitä muissakin konteksteissa.</p>
+<p><code>Pin</code>- ja <code>Unpin</code>-traitien toiminnan ja niiden ylläpidettävien sääntöjen yksityiskohdat on käsitelty laajasti <code>std::pin</code>-moduulin API-dokumentaatiossa, joten jos haluat oppia lisää, se on erinomainen paikka aloittaa.</p>
+<p>Jos haluat ymmärtää asioita vielä tarkemmin kulissien takana, katso <a href="https://rust-lang.github.io/async-book/"><em>Asynchronous Programming in Rust</em></a> -kirjan <a href="https://rust-lang.github.io/async-book/02_execution/01_chapter.html">luvut 2</a> ja <a href="https://rust-lang.github.io/async-book/04_pinning/01_chapter.html">4</a>.</p>
+</blockquote>
+<h3 id="stream-trait"><a class="header" href="#stream-trait"><code>Stream</code>-trait</a></h3>
+<p>Nyt kun sinulla on syvempi käsitys <code>Future</code>-, <code>Pin</code>- ja <code>Unpin</code>-traitien toiminnasta, voimme kääntää huomiomme <code>Stream</code>-traitiin. Kuten opit aiemmin luvussa, streamit ovat samankaltaisia kuin asynkroniset iteraattorit. Toisin kuin <code>Iterator</code>- ja <code>Future</code>-traitit, <code>Stream</code>-traitilla ei kuitenkaan ole määritelmää standardikirjastossa tämän kirjoitushetkellä, mutta ekosysteemissä on <em>hyvin</em> yleinen määritelmä <code>futures</code>-kirjastosta.</p>
+<p>Katsotaan <code>Iterator</code>- ja <code>Future</code>-traitien määritelmiä ennen kuin tarkastelemme, miten <code>Stream</code>-trait voisi yhdistää ne. <code>Iterator</code>-traitista saamme idean sarjasta: sen <code>next</code>-metodi tarjoaa <code>Option&lt;Self::Item&gt;</code>-tyypin. <code>Future</code>-traitista saamme idean valmiudesta ajan myötä: sen <code>poll</code>-metodi tarjoaa <code>Poll&lt;Self::Output&gt;</code>-tyypin. Edustaaksemme kohteiden sarjaa, jotka valmistuvat ajan myötä, määrittelemme <code>Stream</code>-traitin, joka yhdistää nämä ominaisuudet:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use std::pin::Pin;
+use std::task::{Context, Poll};
+
+trait Stream {
+    type Item;
+
+    fn poll_next(
+        self: Pin&lt;&amp;mut Self&gt;,
+        cx: &amp;mut Context&lt;'_&gt;
+    ) -&gt; Poll&lt;Option&lt;Self::Item&gt;&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<p><code>Stream</code>-trait määrittelee assosioituneen tyypin <code>Item</code> streamin tuottamien kohteiden tyypille. Tämä on samankaltaista kuin <code>Iterator</code>-traitissa, jossa voi olla nollasta moneen kohdetta, ja erilaista kuin <code>Future</code>-traitissa, jossa on aina yksi <code>Output</code>, vaikka se olisi yksikkötyyppi <code>()</code>.</p>
+<p><code>Stream</code> määrittelee myös metodin näiden kohteiden hakemiseksi. Kutsumme sitä <code>poll_next</code>-metodiksi korostaaksemme, että se pollaa samalla tavalla kuin <code>Future::poll</code> ja tuottaa kohteiden sarjan samalla tavalla kuin <code>Iterator::next</code>. Sen paluutyyppi yhdistää <code>Poll</code>- ja <code>Option</code>-tyypit. Ulompi tyyppi on <code>Poll</code>, koska valmius täytyy tarkistaa aivan kuten futuurin kanssa. Sisempi tyyppi on <code>Option</code>, koska sen täytyy ilmaista, onko viestejä enemmän, aivan kuten iteraattorin kanssa.</p>
+<p>Jokin hyvin samankaltainen kuin tämä määritelmä päätyy todennäköisesti osaksi Rustin standardikirjastoa. Sillä välin se on osa useimpien ajoaikamallien työkalupakkia, joten voit luottaa siihen, ja kaiken sen, mitä käsittelemme seuraavaksi, pitäisi yleensä päteä!</p>
+<p>Streamausosiota esimerkissämme emme kuitenkaan käyttäneet <code>poll_next</code>-metodia <em>tai</em> <code>Stream</code>-traitia, vaan käytimme <code>next</code>-metodia ja <code>StreamExt</code>-traitia. Voisimme <em>tietysti</em> työskennellä suoraan <code>poll_next</code>-API:n kanssa kirjoittamalla omat <code>Stream</code>-tilakoneemme, aivan kuten voisimme työskennellä futuurien kanssa suoraan niiden <code>poll</code>-metodin kautta. <code>await</code>-avainsanan käyttö on kuitenkin paljon mukavampaa, ja <code>StreamExt</code>-trait tarjoaa <code>next</code>-metodin, jotta voimme tehdä juuri niin:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch17-async-await/no-listing-stream-ext/src/lib.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<!--
+TODO: update this if/when tokio/etc. update their MSRV and switch to using async functions
+in traits, since the lack thereof is the reason they do not yet have this.
+-->
+<blockquote>
+<p>Huom: Todellinen määritelmä, jota käytimme aiemmin luvussa, näyttää hieman erilaiselta kuin tämä, koska se tukee Rust-versioita, jotka eivät vielä tukeneet asynkronisten funktioiden käyttöä traitteissa. Tämän seurauksena se näyttää tältä:</p>
+<pre><code class="language-rust ignore">fn next(&amp;mut self) -&gt; Next&lt;'_, Self&gt; where Self: Unpin;</code></pre>
+<p><code>Next</code>-tyyppi on <code>struct</code>, joka toteuttaa <code>Future</code>-traitin ja antaa meille mahdollisuuden nimetä viitteen <code>self</code>-parametriin elinaikana <code>Next&lt;'_, Self&gt;</code>-syntaksilla, jotta <code>await</code> voi toimia tämän metodin kanssa.</p>
+</blockquote>
+<p><code>StreamExt</code>-trait on myös kaikkien streamien kanssa käytettävien mielenkiintoisten metodien koti. <code>StreamExt</code> toteutetaan automaattisesti jokaiselle tyypille, joka toteuttaa <code>Stream</code>-traitin, mutta nämä traitit on määritelty erikseen, jotta yhteisö voi iteroida kätevyys-API:en parissa vaikuttamatta perustavanlaatuiseen traitiin.</p>
+<p><code>trpl</code>-kirjastossa käytetyssä <code>StreamExt</code>-traitin versiossa trait ei ainoastaan määrittele <code>next</code>-metodia, vaan tarjoaa myös oletustoteutuksen <code>next</code>-metodille, joka käsittelee oikein <code>Stream::poll_next</code>-metodin kutsumisen yksityiskohdat. Tämä tarkoittaa, että vaikka sinun täytyy kirjoittaa oma streaming-datatyyppisi, sinun <em>täytyy</em> vain toteuttaa <code>Stream</code>-trait, ja kuka tahansa, joka käyttää datatyyppiäsi, voi käyttää <code>StreamExt</code>-traitia ja sen metodeja sen kanssa automaattisesti.</p>
+<p>Tämä on kaikki, mitä käsittelemme näiden traittien matalan tason yksityiskohdista. Lopuksi tarkastellaan, miten futuurit (mukaan lukien streamit), tehtävät ja säikeet sopivat yhteen!</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="ch17-04-streams.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="ch17-06-futures-tasks-threads.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="ch17-04-streams.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="ch17-06-futures-tasks-threads.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="ferris.js"></script>
+
+
+    </div>
+    </body>
+</html>

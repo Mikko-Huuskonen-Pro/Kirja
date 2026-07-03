@@ -1,0 +1,548 @@
+<!DOCTYPE HTML>
+<html lang="fi" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Rinnakkaisuuden soveltaminen async:lla - Rust-ohjelmointikieli</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="ferris.css">
+        <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rust-ohjelmointikieli</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/rust-lang/book" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2 id="rinnakkaisuuden-soveltaminen-asyncilla"><a class="header" href="#rinnakkaisuuden-soveltaminen-asyncilla">Rinnakkaisuuden soveltaminen asyncilla</a></h2>
+<!-- Old headings. Do not remove or links may break. -->
+<p><a id="concurrency-with-async"></a></p>
+<p>Tässä osiossa sovellamme asyncia samoihin rinnakkaisuushaasteisiin, joita
+käsittelimme säikeillä luvussa 16. Koska käsittelimme siellä jo monia keskeisiä
+ideoita, tässä osiossa keskitymme siihen, mikä eroaa säikeiden ja futuresien
+välillä.</p>
+<p>Monissa tapauksissa asyncilla rinnakkaisuuteen työskentelyn API:t ovat hyvin
+samanlaisia kuin säikeillä työskentelyn API:t. Toisissa tapauksissa ne ovat
+hyvin erilaisia. Vaikka API:t <em>näyttäisivätkin</em> samanlaisilta säikeiden ja
+asyncin välillä, niillä on usein erilainen käyttäytyminen — ja niillä on lähes
+aina erilaiset suorituskykyominaisuudet.</p>
+<!-- Old headings. Do not remove or links may break. -->
+<p><a id="counting"></a></p>
+<h3 id="uuden-tehtävän-luominen-spawn_task-funktiolla"><a class="header" href="#uuden-tehtävän-luominen-spawn_task-funktiolla">Uuden tehtävän luominen <code>spawn_task</code>-funktiolla</a></h3>
+<p>Ensimmäinen operaatio, jota käsittelimme osiossa <a href="ch16-01-threads.html#creating-a-new-thread-with-spawn">Uuden säikeen luominen
+<code>spawn</code>-funktiolla</a><!-- ignore -->, oli laskeminen kahdella erillisellä
+säikeellä. Tehdään sama asyncilla. <code>trpl</code>-crate tarjoaa <code>spawn_task</code>-funktion,
+joka näyttää hyvin samalta kuin <code>thread::spawn</code>-API, ja <code>sleep</code>-funktion, joka
+on async-versio <code>thread::sleep</code>-API:sta. Voimme käyttää näitä yhdessä
+laskuesimerkin toteuttamiseen, kuten Listauksessa 17-6.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch17-async-await/listing-17-06/src/main.rs:all}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 17-6: Uuden tehtävän luominen tulostamaan yhtä asiaa, kun päätehtävä tulostaa jotain muuta</figcaption>
+</figure>
+<p>Lähtökohtanamme asetamme <code>main</code>-funktion <code>trpl::run</code>-funktiolla, jotta
+ylätason funktiomme voi olla async.</p>
+<blockquote>
+<p>Huom: Tästä eteenpäin tässä luvussa jokainen esimerkki sisältää täsmälleen
+saman käärintäkoodin <code>trpl::run</code>-funktiolla <code>main</code>-funktiossa, joten ohitamme
+sen usein samalla tavalla kuin ohitamme <code>main</code>-funktion. Älä unohda sisällyttää
+sitä koodiisi!</p>
+</blockquote>
+<p>Sitten kirjoitamme kaksi silmukkaa kyseisen lohkon sisään, joista kummassakin on
+<code>trpl::sleep</code>-kutsu, joka odottaa puoli sekuntia (500 millisekuntia) ennen
+seuraavan viestin lähettämistä. Laitamme toisen silmukan <code>trpl::spawn_task</code>-funktion
+runkoon ja toisen ylätason <code>for</code>-silmukkaan. Lisäämme myös <code>await</code>-kutsun
+<code>sleep</code>-kutsujen jälkeen.</p>
+<p>Tämä koodi käyttäytyy samankaltaisesti kuin säikeisiin perustuva toteutus — mukaan
+lukien se, että saatat nähdä viestien ilmestyvän eri järjestyksessä omassa
+terminaalissasi, kun ajat sen:</p>
+<!-- Not extracting output because changes to this output aren't significant;
+the changes are likely to be due to the threads running differently rather than
+changes in the compiler -->
+<pre><code class="language-text">hi number 1 from the second task!
+hi number 1 from the first task!
+hi number 2 from the first task!
+hi number 2 from the second task!
+hi number 3 from the first task!
+hi number 3 from the second task!
+hi number 4 from the first task!
+hi number 4 from the second task!
+hi number 5 from the first task!
+</code></pre>
+<p>Tämä versio pysähtyy heti, kun pää-async-lohkon rungossa oleva <code>for</code>-silmukka
+päättyy, koska <code>spawn_task</code>-funktion luoma tehtävä sammutetaan, kun <code>main</code>-funktio
+päättyy. Jos haluat sen ajavan aina tehtävän valmistumiseen asti, sinun täytyy
+käyttää join-käsittelijää odottamaan ensimmäisen tehtävän valmistumista. Säikeiden
+kanssa käytimme <code>join</code>-metodia ”estääksemme” kunnes säie oli valmis. Listauksessa 17-7
+voimme käyttää <code>await</code>-avainsanaa samaan tarkoitukseen, koska tehtäväkäsittelijä
+itse on future. Sen <code>Output</code>-tyyppi on <code>Result</code>, joten puramme sen myös
+odotuksen jälkeen.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch17-async-await/listing-17-07/src/main.rs:handle}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 17-7: <code>await</code>-avainsanan käyttö join-käsittelijän kanssa tehtävän suorittamiseen loppuun</figcaption>
+</figure>
+<p>Tämä päivitetty versio ajaa, kunnes <em>molemmat</em> silmukat päättyvät.</p>
+<!-- Not extracting output because changes to this output aren't significant;
+the changes are likely to be due to the threads running differently rather than
+changes in the compiler -->
+<pre><code class="language-text">hi number 1 from the second task!
+hi number 1 from the first task!
+hi number 2 from the first task!
+hi number 2 from the second task!
+hi number 3 from the first task!
+hi number 3 from the second task!
+hi number 4 from the first task!
+hi number 4 from the second task!
+hi number 5 from the first task!
+hi number 6 from the first task!
+hi number 7 from the first task!
+hi number 8 from the first task!
+hi number 9 from the first task!
+</code></pre>
+<p>Tähän asti näyttää siltä, että async ja säikeet antavat meille samat perustulokset,
+vain eri syntaksilla: <code>await</code>-avainsanan käyttö <code>join</code>-metodin kutsumisen sijaan
+join-käsittelijälle ja <code>sleep</code>-kutsujen odottaminen.</p>
+<p>Suurempi ero on se, että emme tarvinneet toista käyttöjärjestelmän säiettä
+tähän. Itse asiassa emme edes tarvitse luoda tehtävää tässä. Koska async-lohkot
+kääntyvät anonyymeiksi futuresiksi, voimme laittaa kummankin silmukan async-lohkoon
+ja antaa ajoympäristön suorittaa molemmat loppuun käyttämällä <code>trpl::join</code>-funktiota.</p>
+<p>Osiossa <a href="ch16-01-threads.html#waiting-for-all-threads-to-finish-using-join-handles">Odottaminen kaikkien säikeiden valmistumiseen <code>join</code>-käsittelijöiden avulla</a><!-- ignore -->
+näytimme, miten käytetään <code>join</code>-metodia <code>JoinHandle</code>-tyypillä, jonka <code>std::thread::spawn</code>-kutsu
+palauttaa. <code>trpl::join</code>-funktio on samanlainen, mutta futuresille. Kun annat sille
+kaksi futurea, se tuottaa yhden uuden futuren, jonka tuloste on monikko, joka
+sisältää kummankin välittämäsi futuren tulosteen, kun ne <em>molemmat</em> valmistuvat.
+Näin ollen Listauksessa 17-8 käytämme <code>trpl::join</code>-funktiota odottamaan, että
+sekä <code>fut1</code> että <code>fut2</code> valmistuvat. Emme odota <code>fut1</code>- ja <code>fut2</code>-futuresia,
+vaan <code>trpl::join</code>-funktion tuottamaa uutta futurea. Jätämme tulosteen huomiotta,
+koska se on vain monikko, joka sisältää kaksi yksikköarvoa.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch17-async-await/listing-17-08/src/main.rs:join}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 17-8: <code>trpl::join</code>-funktion käyttö kahden anonyymin futuren odottamiseen</figcaption>
+</figure>
+<p>Kun ajamme tämän, näemme molempien futuresien ajavan loppuun:</p>
+<!-- Not extracting output because changes to this output aren't significant;
+the changes are likely to be due to the threads running differently rather than
+changes in the compiler -->
+<pre><code class="language-text">hi number 1 from the first task!
+hi number 1 from the second task!
+hi number 2 from the first task!
+hi number 2 from the second task!
+hi number 3 from the first task!
+hi number 3 from the second task!
+hi number 4 from the first task!
+hi number 4 from the second task!
+hi number 5 from the first task!
+hi number 6 from the first task!
+hi number 7 from the first task!
+hi number 8 from the first task!
+hi number 9 from the first task!
+</code></pre>
+<p>Nyt näet täsmälleen saman järjestyksen joka kerta, mikä on hyvin erilaista kuin
+mitä näimme säikeillä. Tämä johtuu siitä, että <code>trpl::join</code>-funktio on <em>reilu</em>,
+eli se tarkistaa jokaisen futuren yhtä usein, vuorotellen niiden välillä, eikä
+koskaan anna toisen kilpailla edelle, jos toinen on valmis. Säikeiden kanssa
+käyttöjärjestelmä päättää, mitä säiettä tarkistaa ja kuinka kauan antaa sen
+ajaa. Async-Rustissa ajoympäristö päättää, mitä tehtävää tarkistaa. (Käytännössä
+yksityiskohdat monimutkaistuvat, koska async-ajoympäristö saattaa käyttää
+käyttöjärjestelmän säikeitä taustalla osana rinnakkaisuuden hallintaa, joten
+reiluuden takaaminen voi olla enemmän työtä ajoympäristölle — mutta se on silti
+mahdollista!) Ajoympäristöjen ei tarvitse taata reiluutta millekään tietylle
+operaatiolle, ja ne tarjoavat usein eri API:ja, joiden avulla voit valita,
+haluatko reiluutta vai et.</p>
+<p>Kokeile joitakin näistä variaatioista futuresien odottamisessa ja katso, mitä ne tekevät:</p>
+<ul>
+<li>Poista async-lohko jommastakummasta tai molemmista silmukoista.</li>
+<li>Odota kutakin async-lohkoa heti sen määrittelyn jälkeen.</li>
+<li>Kääri vain ensimmäinen silmukka async-lohkoon ja odota tuloksena olevaa futurea
+toisen silmukan rungon jälkeen.</li>
+</ul>
+<p>Lisähaasteena yritä selvittää, mikä tuloste on kussakin tapauksessa <em>ennen</em>
+koodin ajamista!</p>
+<!-- Old headings. Do not remove or links may break. -->
+<p><a id="message-passing"></a></p>
+<h3 id="laskeminen-kahdella-tehtävällä-viestinvälityksen-avulla"><a class="header" href="#laskeminen-kahdella-tehtävällä-viestinvälityksen-avulla">Laskeminen kahdella tehtävällä viestinvälityksen avulla</a></h3>
+<p>Datan jakaminen futuresien välillä on myös tuttua: käytämme jälleen viestinvälitystä,
+mutta tällä kertaa async-versioita tyypeistä ja funktioista. Otamme hieman
+erilaisen polun kuin osiossa <a href="ch16-02-message-passing.html">Viestinvälitys datan siirtämiseksi säikeiden välillä</a><!-- ignore -->
+kuvataksemme joitakin keskeisiä eroja säikeisiin ja futuresiin perustuvan
+rinnakkaisuuden välillä. Listauksessa 17-9 aloitamme vain yhdellä async-lohkolla — <em>ilman</em>
+erillisen tehtävän luomista, kuten loimme erillisen säikeen.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch17-async-await/listing-17-09/src/main.rs:channel}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 17-9: Async-kanavan luominen ja kahden puoliskon antaminen <code>tx</code>- ja <code>rx</code>-muuttujille</figcaption>
+</figure>
+<p>Tässä käytämme <code>trpl::channel</code>-funktiota, async-versiota usean tuottajan,
+yhden kuluttajan kanava-API:sta, jota käytimme säikeillä takaisin Luvussa 16.
+Async-versio API:sta eroaa vain vähän säikeisiin perustuvasta versiosta: se
+käyttää muuttuvaa eikä muuttumatonta vastaanotinta <code>rx</code>, ja sen <code>recv</code>-metodi
+tuottaa futuren, jota meidän täytyy odottaa sen sijaan, että se tuottaisi arvon
+suoraan. Nyt voimme lähettää viestejä lähettäjältä vastaanottajalle. Huomaa,
+että emme tarvitse erillistä säiettä tai edes tehtävää; meidän täytyy vain odottaa
+<code>rx.recv</code>-kutsua.</p>
+<p>Synkroninen <code>Receiver::recv</code>-metodi <code>std::mpsc::channel</code>-kanavassa estää, kunnes
+se vastaanottaa viestin. <code>trpl::Receiver::recv</code>-metodi ei tee niin, koska se on
+async. Sen sijaan, että se estäisi, se palauttaa ohjauksen ajoympäristölle, kunnes
+joko viesti vastaanotetaan tai kanavan lähetyspuoli sulkeutuu. Sitä vastoin emme
+odota <code>send</code>-kutsua, koska se ei estä. Sen ei tarvitse, koska kanava, johon
+lähetämme, on rajoittamaton.</p>
+<blockquote>
+<p>Huom: Koska kaikki tämä async-koodi ajetaan async-lohkossa <code>trpl::run</code>-kutsussa,
+kaikki sen sisällä voi välttää estämisen. Koodi <em>sen ulkopuolella</em> kuitenkin
+estyy <code>run</code>-funktion paluuarvoa odottaessa. Siinä on koko <code>trpl::run</code>-funktion
+idea: se antaa sinun <em>valita</em>, missä estät jonkin async-koodin joukon, ja siten
+missä siirryt synkronisen ja asynkronisen koodin välillä. Useimmissa
+async-ajoympäristöissä <code>run</code> on itse asiassa nimetty <code>block_on</code> juuri tästä syystä.</p>
+</blockquote>
+<p>Huomaa tästä esimerkistä kaksi asiaa. Ensinnäkin viesti saapuu heti. Toiseksi,
+vaikka käytämme tässä futurea, rinnakkaisuutta ei ole vielä. Kaikki listauksessa
+tapahtuu peräkkäin, aivan kuten jos futuresia ei olisi mukana.</p>
+<p>Käsitellään ensimmäinen osa lähettämällä sarja viestejä ja nukkumalla niiden
+välissä, kuten Listauksessa 17-10.</p>
+<!-- We cannot test this one because it never stops! -->
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch17-async-await/listing-17-10/src/main.rs:many-messages}}</code></pre>
+<figcaption>Listing 17-10: Useiden viestien lähettäminen ja vastaanottaminen async-kanavan kautta ja nukkuminen <code>await</code>-avainsanalla jokaisen viestin välissä</figcaption>
+</figure>
+<p>Viestien lähettämisen lisäksi meidän täytyy vastaanottaa ne. Tässä tapauksessa,
+koska tiedämme kuinka monta viestiä on tulossa, voisimme tehdä sen käsin kutsumalla
+<code>rx.recv().await</code> neljä kertaa. Tosielämässä odotamme kuitenkin yleensä <em>tuntemattoman</em>
+määrän viestejä, joten meidän täytyy jatkaa odottamista, kunnes selviää, ettei
+viestejä enää tule.</p>
+<p>Listauksessa 16-10 käytimme <code>for</code>-silmukkaa käsittelemään kaikki synkroniselta
+kanavalta vastaanotetut kohteet. Rustilla ei ole vielä tapaa kirjoittaa <code>for</code>-silmukkaa
+<em>asynkronisen</em> kohteiden sarjan yli, joten meidän täytyy käyttää silmukkaa, jota
+emme ole vielä nähneet: <code>while let</code> -ehdosilmukkaa. Tämä on silmukkaversio
+<code>if let</code> -rakenteesta, jonka näimme takaisin osiossa <a href="ch06-03-if-let.html">Tiiviimpi ohjausrakenne <code>if let</code> ja <code>let else</code> -rakenteilla</a><!-- ignore -->. Silmukka jatkaa suorittamista niin kauan kuin
+sen määrittämä kuvio vastaa arvoa.</p>
+<p><code>rx.recv</code>-kutsu tuottaa futuren, jota odotamme. Ajoympäristö keskeyttää futuren,
+kunnes se on valmis. Kun viesti saapuu, future ratkeaa arvoksi <code>Some(message)</code> niin
+monta kertaa kuin viesti saapuu. Kun kanava sulkeutuu, riippumatta siitä, ovatko
+<em>viestit</em> saapuneet, future ratkeaa sen sijaan arvoksi <code>None</code> osoittaakseen, ettei
+arvoja ole enempää ja että meidän pitäisi lopettaa pollaaminen — eli lopettaa odottaminen.</p>
+<p><code>while let</code> -silmukka kokoaa kaiken tämän yhteen. Jos <code>rx.recv().await</code>-kutsun
+tulos on <code>Some(message)</code>, saamme käyttöön viestin ja voimme käyttää sitä silmukan
+rungossa, aivan kuten <code>if let</code> -rakenteella. Jos tulos on <code>None</code>, silmukka päättyy.
+Joka kerta kun silmukka valmistuu, se osuu odotuspisteeseen uudelleen, joten
+ajoympäristö keskeyttää sen uudelleen, kunnes toinen viesti saapuu.</p>
+<p>Koodi lähettää ja vastaanottaa nyt onnistuneesti kaikki viestit. Valitettavasti
+ongelmia on kuitenkin vielä pari. Ensinnäkin viestit eivät saavu puolen sekunnin
+välein. Ne saapuvat kaikki kerralla 2 sekunnin (2 000 millisekunnin) kuluttua
+ohjelman käynnistymisestä. Toiseksi tämä ohjelma ei myöskään koskaan päätty!
+Sen sijaan se odottaa ikuisesti uusia viestejä. Sinun täytyy sammuttaa se painamalla <span
+class="keystroke">ctrl-c</span>.</p>
+<p>Aloitetaan tutkimalla, miksi viestit saapuvat kaikki kerralla koko viiveen jälkeen
+eikä viiveiden välein. Tietyssä async-lohkossa <code>await</code>-avainsanojen esiintymisjärjestys
+koodissa on myös järjestys, jossa ne suoritetaan ohjelman ajossa.</p>
+<p>Listauksessa 17-10 on vain yksi async-lohko, joten kaikki sen sisällä ajetaan
+lineaarisesti. Rinnakkaisuutta ei ole vieläkään. Kaikki <code>tx.send</code>-kutsut tapahtuvat,
+<code>trpl::sleep</code>-kutsujen ja niihin liittyvien odotuspisteiden välissä. Vasta sen
+jälkeen <code>while let</code> -silmukka pääsee käymään läpi mitään <code>recv</code>-kutsujen odotuspisteitä.</p>
+<p>Saadaksemme haluamamme käyttäytymisen, jossa nukkumisviive tapahtuu jokaisen viestin
+välissä, meidän täytyy laittaa <code>tx</code>- ja <code>rx</code>-operaatiot omiin async-lohkoihinsa,
+kuten Listauksessa 17-11. Sitten ajoympäristö voi suorittaa kummankin erikseen
+käyttämällä <code>trpl::join</code>-funktiota, aivan kuten laskuesimerkissä. Taaskin odotamme
+<code>trpl::join</code>-kutsun tulosta, emme yksittäisiä futuresia. Jos odottaisimme yksittäisiä
+futuresia peräkkäin, päätyisimme takaisin peräkkäiseen suoritukseen — juuri sitä,
+mitä yritämme <em>välttää</em>.</p>
+<!-- We cannot test this one because it never stops! -->
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch17-async-await/listing-17-11/src/main.rs:futures}}</code></pre>
+<figcaption>Listing 17-11: <code>send</code>- ja <code>recv</code>-operaatioiden erottaminen omiin <code>async</code>-lohkoihinsa ja niiden futuresien odottaminen</figcaption>
+</figure>
+<p>Listauksen 17-11 päivitetyllä koodilla viestit tulostetaan 500 millisekunnin
+välein sen sijaan, että ne tulisivat kaikki kerralla 2 sekunnin kuluttua.</p>
+<p>Ohjelma ei kuitenkaan koskaan päätty, koska tavalla, jolla <code>while let</code> -silmukka
+vuorovaikuttaa <code>trpl::join</code>-funktion kanssa:</p>
+<ul>
+<li><code>trpl::join</code>-funktion palauttama future valmistuu vasta, kun <em>molemmat</em> sille
+välitetyt futuresit ovat valmiit.</li>
+<li><code>tx</code>-future valmistuu, kun se on nukkunut viimeisen viestin lähettämisen jälkeen
+<code>vals</code>-taulukosta.</li>
+<li><code>rx</code>-future ei valmistu, ennen kuin <code>while let</code> -silmukka päättyy.</li>
+<li><code>while let</code> -silmukka ei päätty, ennen kuin <code>rx.recv</code>-kutsun odottaminen tuottaa <code>None</code>-arvon.</li>
+<li><code>rx.recv</code>-kutsun odottaminen palauttaa <code>None</code>-arvon vasta, kun kanavan toinen pää on suljettu.</li>
+<li>Kanava sulkeutuu vain, jos kutsumme <code>rx.close</code>-funktiota tai kun lähetyspuoli
+<code>tx</code> pudotetaan.</li>
+<li>Emme kutsu <code>rx.close</code>-funktiota missään, eikä <code>tx</code> pudoteta ennen kuin
+<code>trpl::run</code>-funktiolle välitetty uloin async-lohko päättyy.</li>
+<li>Lohko ei voi päättyä, koska se on estynyt <code>trpl::join</code>-funktion valmistumista
+odottaessa, mikä vie meidät takaisin tämän listan alkuun.</li>
+</ul>
+<p>Voisimme sulkea <code>rx</code>-kanavan käsin kutsumalla <code>rx.close</code>-funktiota jossain, mutta
+se ei juuri järkeä. Pysähtyminen tietyn mielivaltaisen viestimäärän käsittelyn
+jälkeen saisi ohjelman sammumaan, mutta voisimme menettää viestejä. Tarvitsemme
+jonkin muun tavan varmistaa, että <code>tx</code> pudotetaan <em>ennen</em> funktion loppua.</p>
+<p>Tällä hetkellä viestejä lähettävä async-lohko lainaa vain <code>tx</code>-muuttujaa, koska
+viestin lähettäminen ei vaadi omistajuutta, mutta jos voisimme siirtää <code>tx</code>-muuttujan
+kyseiseen async-lohkoon, se pudotettaisiin, kun lohko päättyy. Luvun 13 osiossa
+<a href="ch13-01-closures.html#capturing-references-or-moving-ownership">Viitteiden tallentaminen ja omistajuuden siirtäminen</a><!-- ignore -->
+opit käyttämään <code>move</code>-avainsanaa sulkeisissa, ja kuten käsiteltiin Luvun 16 osiossa
+<a href="ch16-01-threads.html#using-move-closures-with-threads"><code>move</code>-sulkeiset säikeiden kanssa</a><!-- ignore
+-->, meidän täytyy usein siirtää data sulkeisiin säikeiden kanssa työskennellessä.
+Samat perusdynamiikat pätevät async-lohkoihin, joten <code>move</code>-avainsana toimii
+async-lohkoissa aivan kuten sulkeisissa.</p>
+<p>Listauksessa 17-12 muutamme viestejä lähettävän lohkon <code>async</code>-lohkosta <code>async move</code> -lohkoksi.
+Kun ajamme <em>tämän</em> version koodista, se sammuu siististi viimeisen viestin
+lähettämisen ja vastaanottamisen jälkeen.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch17-async-await/listing-17-12/src/main.rs:with-move}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 17-12: Listauksen 17-11 koodin tarkistettu versio, joka sammuu oikein valmistuessaan</figcaption>
+</figure>
+<p>Tämä async-kanava on myös usean tuottajan kanava, joten voimme kutsua <code>clone</code>-metodia
+<code>tx</code>-muuttujalle, jos haluamme lähettää viestejä useista futuresista, kuten Listauksessa 17-13.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch17-async-await/listing-17-13/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 17-13: Usean tuottajan käyttö async-lohkojen kanssa</figcaption>
+</figure>
+<p>Ensin kloonaamme <code>tx</code>-muuttujan luoden <code>tx1</code>-muuttujan ensimmäisen async-lohkon
+ulkopuolelle. Siirrämme <code>tx1</code>-muuttujan kyseiseen lohkoon samalla tavalla kuin
+aiemmin <code>tx</code>-muuttujan. Sitten myöhemmin siirrämme alkuperäisen <code>tx</code>-muuttujan
+<em>uuteen</em> async-lohkoon, jossa lähetämme lisää viestejä hieman hitaammalla viiveellä.
+Sattumalta laitamme tämän uuden async-lohkon vastaanottavien viestien async-lohkon
+jälkeen, mutta se voisi olla yhtä hyvin ennen sitä. Ratkaisevaa on järjestys, jossa
+futuresit odotetaan, ei järjestys, jossa ne luodaan.</p>
+<p>Molempien viestejä lähettävien async-lohkojen täytyy olla <code>async move</code> -lohkoja,
+jotta sekä <code>tx</code> että <code>tx1</code> pudotetaan, kun nämä lohkot päättyvät. Muuten päädymme
+takaisin samaan loputtomaan silmukkaan, jossa aloitimme. Lopuksi vaihdamme
+<code>trpl::join</code>-funktiosta <code>trpl::join3</code>-funktioon käsitelläksemme ylimääräisen futuren.</p>
+<p>Nyt näemme kaikki viestit molemmista lähettävistä futuresista, ja koska lähettävät
+futuresit käyttävät hieman erilaisia viiveitä lähettämisen jälkeen, viestit
+vastaanotetaan myös näillä eri aikaväleillä.</p>
+<!-- Not extracting output because changes to this output aren't significant;
+the changes are likely to be due to the threads running differently rather than
+changes in the compiler -->
+<pre><code class="language-text">received 'hi'
+received 'more'
+received 'from'
+received 'the'
+received 'messages'
+received 'future'
+received 'for'
+received 'you'
+</code></pre>
+<p>Tämä on hyvä alku, mutta se rajoittaa meidät vain pieneen määrään futuresia: kahteen
+<code>join</code>-funktiolla tai kolmeen <code>join3</code>-funktiolla. Katsotaan, miten voisimme työskennellä
+useampien futuresien kanssa.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="ch17-01-futures-and-syntax.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="ch17-03-more-futures.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="ch17-01-futures-and-syntax.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="ch17-03-more-futures.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="ferris.js"></script>
+
+
+    </div>
+    </body>
+</html>

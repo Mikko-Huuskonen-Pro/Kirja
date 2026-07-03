@@ -1,0 +1,297 @@
+<!DOCTYPE HTML>
+<html lang="fi" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Kehittyneet tyypit - Rust-ohjelmointikieli</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="ferris.css">
+        <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rust-ohjelmointikieli</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/rust-lang/book" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2 id="kehittyneitä-tyyppejä"><a class="header" href="#kehittyneitä-tyyppejä">Kehittyneitä tyyppejä</a></h2>
+<p>Rustin tyyppijärjestelmässä on joitakin ominaisuuksia, joita olemme tähän asti maininneet, mutta joita emme ole vielä käsitelleet. Aloitamme käsittelemällä newtype-kuvioita yleisesti ja tarkastelemalla, miksi newtypet ovat hyödyllisiä tyyppeinä. Siirrymme sitten tyyppialiasseihin, ominaisuuteen, joka on samanlainen kuin newtypet mutta hieman erilaisella semantiikalla. Käsittelemme myös <code>!</code>-tyyppiä ja dynaamisesti kokoisia tyyppejä.</p>
+<h3 id="newtype-kuvion-käyttäminen-tyyppiturvallisuuteen-ja-abstraktioon"><a class="header" href="#newtype-kuvion-käyttäminen-tyyppiturvallisuuteen-ja-abstraktioon">Newtype-kuvion käyttäminen tyyppiturvallisuuteen ja abstraktioon</a></h3>
+<p>Tämä osio olettaa, että olet lukenut aiemman osion <a href="ch20-02-advanced-traits.html#using-the-newtype-pattern-to-implement-external-traits-on-external-types">”Newtype-mallin käyttö ulkoisten traitien toteuttamiseen ulkoisille tyypeille.”</a><!--
+ignore --> Newtype-kuvio on hyödyllinen myös tehtäviin, joita emme ole vielä käsitelleet, mukaan lukien arvojen sekoittumisen staattinen estäminen ja arvon yksiköiden ilmaiseminen. Näitä arvojen yksiköiden ilmaisemiseen liittyvää newtype-käyttöä esitettiin Listauksessa 20-16: muistathan, että <code>Millimeters</code>- ja <code>Meters</code>-rakenteet käärivät <code>u32</code>-arvot newtypeen. Jos kirjoittaisimme funktion, jonka parametrin tyyppi on <code>Millimeters</code>, emme voisi kääntää ohjelmaa, joka yrittäisi vahingossa kutsua kyseistä funktiota <code>Meters</code>-tyyppisellä arvolla tai pelkällä <code>u32</code>:lla.</p>
+<p>Voimme käyttää newtype-kuviota myös piilottamaan tyypin toteutustietoja: uusi tyyppi voi tarjota julkisen rajapinnan, joka eroaa yksityisen sisätyypin rajapinnasta.</p>
+<p>Newtypet voivat myös piilottaa sisäisen toteutuksen. Esimerkiksi voisimme tarjota <code>People</code>-tyypin käärimään <code>HashMap&lt;i32, String&gt;</code>-rakenteen, joka tallentaa henkilön tunnuksen liitettynä hänen nimeensä. <code>People</code>-tyyppiä käyttävä koodi vuorovaikuttaisi vain tarjoamamme julkisen rajapinnan kanssa, kuten metodin, joka lisää nimirivin <code>People</code>-kokoelmaan; kyseisen koodin ei tarvitsisi tietää, että liitämme nimiin sisäisesti <code>i32</code>-tunnuksen. Newtype-kuvio on kevyt tapa saavuttaa kapselointi toteutustietojen piilottamiseksi, josta käsittelimme <a href="ch18-01-what-is-oo.html#encapsulation-that-hides-implementation-details">”Kapselointi, joka piilottaa toteutustiedot”</a><!--
+ignore --> -osiossa Luvussa 18.</p>
+<h3 id="tyyppisynonyymien-luominen-tyyppialiasseilla"><a class="header" href="#tyyppisynonyymien-luominen-tyyppialiasseilla">Tyyppisynonyymien luominen tyyppialiasseilla</a></h3>
+<p>Rust tarjoaa mahdollisuuden julistaa <em>tyyppialiasin</em> antaakseen olemassa olevalle tyypille toisen nimen. Tätä varten käytämme <code>type</code>-avainsanaa. Esimerkiksi voimme luoda aliasin <code>Kilometers</code> tyypille <code>i32</code> näin:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch20-advanced-features/no-listing-04-kilometers-alias/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<p>Nyt alias <code>Kilometers</code> on <em>synonyymi</em> tyypille <code>i32</code>; toisin kuin Listauksessa 20-16 luodut <code>Millimeters</code>- ja <code>Meters</code>-tyypit, <code>Kilometers</code> ei ole erillinen, uusi tyyppi. Arvoja, joiden tyyppi on <code>Kilometers</code>, käsitellään samalla tavalla kuin arvoja, joiden tyyppi on <code>i32</code>:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch20-advanced-features/no-listing-04-kilometers-alias/src/main.rs:there}}
+<span class="boring">}</span></code></pre></pre>
+<p>Koska <code>Kilometers</code> ja <code>i32</code> ovat sama tyyppi, voimme laskea yhteen molempien tyyppien arvoja ja välittää <code>Kilometers</code>-arvoja funktioille, jotka ottavat <code>i32</code>-parametreja. Tällä menetelmällä emme kuitenkaan saa tyyppitarkistuksen etuja, joita saamme aiemmin käsitellystä newtype-kuviosta. Toisin sanoen, jos sekoitamme <code>Kilometers</code>- ja <code>i32</code>-arvoja jossakin, kääntäjä ei anna meille virhettä.</p>
+<p>Tyyppisynonyymien pääasiallinen käyttötapaus on toiston vähentäminen. Esimerkiksi meillä saattaa olla pitkä tyyppi, kuten tämä:</p>
+<pre><code class="language-rust ignore">Box&lt;dyn Fn() + Send + 'static&gt;</code></pre>
+<p>Tämän pitkän tyypin kirjoittaminen funktiomerkintöihin ja tyyppihuomautuksiin koko koodissa voi olla työlästä ja virhealtista. Kuvittele projekti, joka on täynnä Listauksen 20-25 kaltaista koodia.</p>
+<figure class="listing">
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-25/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 20-25: Pitkän tyypin käyttö monessa paikassa</figcaption>
+</figure>
+<p>Tyyppialias tekee tästä koodista hallittavampaa vähentämällä toistoa. Listauksessa 20-26 olemme ottaneet käyttöön aliasin nimeltä <code>Thunk</code> pitkälle tyypille ja voimme korvata kaikki tyypin käytöt lyhyemmällä aliasilla <code>Thunk</code>.</p>
+<figure class="listing">
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-26/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 20-26: Tyyppialiasin <code>Thunk</code> käyttöönotto toiston vähentämiseksi</figcaption>
+</figure>
+<p>Tätä koodia on paljon helpompi lukea ja kirjoittaa! Tyyppialiasille merkityksellisen nimen valitseminen voi auttaa myös viestimään aikomuksestasi (<em>thunk</em> on sana koodille, joka arvioidaan myöhemmin, joten se on sopiva nimi tallennettavalle sulkeiselle).</p>
+<p>Tyyppialiasseja käytetään myös yleisesti <code>Result&lt;T, E&gt;</code>-tyypin kanssa toiston vähentämiseksi. Harkitse standardikirjaston <code>std::io</code>-moduulia. I/O-operaatiot palauttavat usein <code>Result&lt;T, E&gt;</code>-tyypin käsitelläkseen tilanteita, joissa operaatiot eivät onnistu. Tässä kirjastossa on <code>std::io::Error</code>-rakenne, joka edustaa kaikkia mahdollisia I/O-virheitä. Monet <code>std::io</code>-moduulin funktioista palauttavat <code>Result&lt;T, E&gt;</code>-tyypin, jossa <code>E</code> on <code>std::io::Error</code>, kuten nämä <code>Write</code>-traitin funktiot:</p>
+<pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch20-advanced-features/no-listing-05-write-trait/src/lib.rs}}</code></pre>
+<p><code>Result&lt;..., Error&gt;</code> toistuu paljon. Siksi <code>std::io</code>-moduulissa on tämä tyyppialiasjulistus:</p>
+<pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch20-advanced-features/no-listing-06-result-alias/src/lib.rs:here}}</code></pre>
+<p>Koska tämä julistus on <code>std::io</code>-moduulissa, voimme käyttää täysin määriteltyä aliasia <code>std::io::Result&lt;T&gt;</code>; eli <code>Result&lt;T, E&gt;</code>, jossa <code>E</code> on täytetty arvolla <code>std::io::Error</code>. <code>Write</code>-traitin funktiomerkinnät näyttävät lopulta tältä:</p>
+<pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch20-advanced-features/no-listing-06-result-alias/src/lib.rs:there}}</code></pre>
+<p>Tyyppialias auttaa kahdella tavalla: se tekee koodin kirjoittamisesta helpompaa <em>ja</em> antaa meille yhtenäisen rajapinnan koko <code>std::io</code>-moduulissa. Koska se on alias, se on vain toinen <code>Result&lt;T, E&gt;</code>, mikä tarkoittaa, että voimme käyttää sen kanssa kaikkia <code>Result&lt;T, E&gt;</code>-tyypille toimivia metodeja sekä erityissyntaksia, kuten <code>?</code>-operaattoria.</p>
+<h3 id="never-tyyppi-joka-ei-koskaan-palauta"><a class="header" href="#never-tyyppi-joka-ei-koskaan-palauta">Never-tyyppi, joka ei koskaan palauta</a></h3>
+<p>Rustissa on erityinen tyyppi nimeltä <code>!</code>, joka tunnetaan tyypinteoriassa <em>tyhjänä tyypinä</em>, koska sillä ei ole arvoja. Kutsumme sitä mieluummin <em>never-tyypiksi</em>, koska se on paluutyypin paikalla, kun funktio ei koskaan palauta. Tässä esimerkki:</p>
+<pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch20-advanced-features/no-listing-07-never-type/src/lib.rs:here}}</code></pre>
+<p>Tämä koodi luetaan ”funktio <code>bar</code> palauttaa never”. Funktioita, jotka eivät koskaan palauta, kutsutaan <em>divergoiviksi funktioiksi</em>. Emme voi luoda arvoja tyypille <code>!</code>, joten <code>bar</code> ei voi koskaan palauttaa.</p>
+<p>Mutta mitä hyötyä on tyypistä, jolle et voi koskaan luoda arvoja? Muista Listauksen 2-5 koodi, osa numeronarvailupelistä; olemme toistaneet osan siitä tässä Listauksessa 20-27.</p>
+<figure class="listing">
+<pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch02-guessing-game-tutorial/listing-02-05/src/main.rs:ch19}}</code></pre>
+<figcaption>Listing 20-27: <code>match</code>, jossa haara päättyy <code>continue</code>en</figcaption>
+</figure>
+<p>Tuolloin ohitimme tässä koodissa joitakin yksityiskohtia. <a href="ch06-02-match.html#the-match-control-flow-operator">”<code>match</code>-ohjausrakenne”</a><!-- ignore --> -osiossa Luvussa 6 käsittelimme, että <code>match</code>-haarojen on kaikkien palautettava sama tyyppi. Esimerkiksi seuraava koodi ei toimi:</p>
+<pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch20-advanced-features/no-listing-08-match-arms-different-types/src/main.rs:here}}</code></pre>
+<p>Muuttujan <code>guess</code> tyypin tässä koodissa pitäisi olla kokonaisluku <em>ja</em> merkkijono, ja Rust vaatii, että <code>guess</code>illä on vain yksi tyyppi. Mitä <code>continue</code> sitten palauttaa? Miten saimme palauttaa <code>u32</code>:n yhdestä haarasta ja toisessa haarassa Listauksessa 20-27 päättyä <code>continue</code>en?</p>
+<p>Kuten saatoit arvata, <code>continue</code>lla on <code>!</code>-arvo. Eli kun Rust laskee muuttujan <code>guess</code> tyypin, se katsoo molempia match-haaroja, joista ensimmäisessä on <code>u32</code>-arvo ja jälkimmäisessä <code>!</code>-arvo. Koska <code>!</code> ei voi koskaan saada arvoa, Rust päättää, että <code>guess</code>in tyyppi on <code>u32</code>.</p>
+<p>Tämän käyttäytymisen muodollinen kuvaus on, että <code>!</code>-tyyppiset lausekkeet voidaan pakottaa mihin tahansa muuhun tyyppiin. Saamme päättää tämän <code>match</code>-haaran <code>continue</code>lla, koska <code>continue</code> ei palauta arvoa; sen sijaan se siirtää ohjauksen takaisin silmukan alkuun, joten <code>Err</code>-tapauksessa emme koskaan anna arvoa muuttujalle <code>guess</code>.</p>
+<p>Never-tyyppi on hyödyllinen myös <code>panic!</code>-makron kanssa. Muista <code>unwrap</code>-funktio, jota kutsumme <code>Option&lt;T&gt;</code>-arvoilla tuottaaksemme arvon tai panikoidaksemme tällä määritelmällä:</p>
+<pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch20-advanced-features/no-listing-09-unwrap-definition/src/lib.rs:here}}</code></pre>
+<p>Tässä koodissa tapahtuu sama kuin Listauksen 20-27 <code>match</code>issa: Rust näkee, että <code>val</code>illa on tyyppi <code>T</code> ja <code>panic!</code>illa on tyyppi <code>!</code>, joten koko <code>match</code>-lausekkeen tulos on <code>T</code>. Tämä koodi toimii, koska <code>panic!</code> ei tuota arvoa; se lopettaa ohjelman. <code>None</code>-tapauksessa emme palauta arvoa <code>unwrap</code>ista, joten tämä koodi on kelvollinen.</p>
+<p>Yksi viimeinen lauseke, jolla on tyyppi <code>!</code>, on <code>loop</code>:</p>
+<pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch20-advanced-features/no-listing-10-loop-returns-never/src/main.rs:here}}</code></pre>
+<p>Tässä silmukka ei koskaan pääty, joten <code>!</code> on lausekkeen arvo. Tämä ei kuitenkaan pitäisi paikkaansa, jos sisällyttäisimme <code>break</code>in, koska silmukka päättyisi, kun se saavuttaisi <code>break</code>in.</p>
+<h3 id="dynaamisesti-kokoiset-tyypit-ja-sized-trait"><a class="header" href="#dynaamisesti-kokoiset-tyypit-ja-sized-trait">Dynaamisesti kokoiset tyypit ja <code>Sized</code>-trait</a></h3>
+<p>Rustin täytyy tietää tiettyjä yksityiskohtia tyypeistään, kuten kuinka paljon tilaa varata tietyn tyypin arvolle. Tämä jättää tyyppijärjestelmän yhden nurkan aluksi hieman hämmentäväksi: <em>dynaamisesti kokoisten tyyppien</em> käsite. Joskus <em>DST:iksi</em> tai <em>kokoon mitoittamattomiksi tyypeiksi</em> kutsuttujen tyyppien avulla voimme kirjoittaa koodia käyttäen arvoja, joiden koon tiedämme vasta ajonaikana.</p>
+<p>Syvennytään dynaamisesti kokoisen tyypin nimeltä <code>str</code> yksityiskohtiin, jota olemme käyttäneet koko kirjassa. Aivan oikein, ei <code>&amp;str</code>, vaan pelkkä <code>str</code> on DST. Emme voi tietää, kuinka pitkä merkkijono on, ennen ajonaikaa, mikä tarkoittaa, että emme voi luoda muuttujaa tyypille <code>str</code>, emmekä voi ottaa parametria tyypille <code>str</code>. Harkitse seuraavaa koodia, joka ei toimi:</p>
+<pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch20-advanced-features/no-listing-11-cant-create-str/src/main.rs:here}}</code></pre>
+<p>Rustin täytyy tietää, kuinka paljon muistia varata mille tahansa tietyn tyypin arvolle, ja kaikkien tietyn tyypin arvojen on käytettävä samaa määrää muistia. Jos Rust sallisi tämän koodin kirjoittamisen, nämä kaksi <code>str</code>-arvoa pitäisi viedä saman verran tilaa. Mutta niillä on eri pituudet: <code>s1</code> tarvitsee 12 tavua tallennustilaa ja <code>s2</code> tarvitsee 15. Siksi dynaamisesti kokoisen tyypin arvoa sisältävää muuttujaa ei voi luoda.</p>
+<p>Mitä teemme siis? Tässä tapauksessa tiedät jo vastauksen: teemme <code>s1</code>:n ja <code>s2</code>:n tyypeistä <code>&amp;str</code> eikä <code>str</code>. Muista <a href="ch04-03-slices.html#string-slices">”Merkkijonoviipaleet”</a><!-- ignore --> -osio Luvusta 4, jossa viipalerakenne tallentaa vain viipaleen aloitusposition ja pituuden. Vaikka <code>&amp;T</code> on yksittäinen arvo, joka tallentaa muistiosoitteen, jossa <code>T</code> sijaitsee, <code>&amp;str</code> on <em>kaksi</em> arvoa: <code>str</code>:n osoite ja sen pituus. Näin voimme tietää <code>&amp;str</code>-arvon koon käännösaikana: se on kaksi kertaa <code>usize</code>:n pituus. Eli tiedämme aina <code>&amp;str</code>:n koon riippumatta siitä, kuinka pitkä sen viittaama merkkijono on. Yleisesti ottaen näin dynaamisesti kokoisia tyyppejä käytetään Rustissa: niillä on ylimääräinen metatieto, joka tallentaa dynaamisen tiedon koon. Dynaamisesti kokoisten tyyppien kultainen sääntö on, että dynaamisesti kokoisten tyyppien arvot on aina sijoitettava jonkinlaisen osoittimen taakse.</p>
+<p>Voimme yhdistää <code>str</code>:n kaikenlaisiin osoittimiin: esimerkiksi <code>Box&lt;str&gt;</code> tai <code>Rc&lt;str&gt;</code>. Itse asiassa olet nähnyt tämän aiemmin, mutta eri dynaamisesti kokoisella tyypillä: traitit. Jokainen trait on dynaamisesti kokoinen tyyppi, johon voimme viitata traitin nimellä. <a href="ch18-02-trait-objects.html#using-trait-objects-that-allow-for-values-of-different-types">”Trait-objektien käyttö, jotka sallivat eri tyyppisten arvojen käytön”</a><!-- ignore
+--> -osiossa Luvussa 18 mainitsimme, että käyttääksemme traitteja trait-objekteina meidän on sijoitettava ne osoittimen taakse, kuten <code>&amp;dyn Trait</code> tai <code>Box&lt;dyn Trait&gt;</code> (<code>Rc&lt;dyn Trait&gt;</code> toimisi myös).</p>
+<p>DST:iden kanssa työskentelyyn Rust tarjoaa <code>Sized</code>-traitin määrittämään, tiedetäänkö tyypin koko käännösaikana. Tämä trait toteutetaan automaattisesti kaikelle, jonka koko tiedetään käännösaikana. Lisäksi Rust lisää implisiittisesti <code>Sized</code>-rajoituksen jokaiseen geneeriseen funktioon. Eli geneerinen funktiomäärittely, kuten tämä:</p>
+<pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch20-advanced-features/no-listing-12-generic-fn-definition/src/lib.rs}}</code></pre>
+<p>käsitellään itse asiassa ikään kuin olisimme kirjoittaneet tämän:</p>
+<pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch20-advanced-features/no-listing-13-generic-implicit-sized-bound/src/lib.rs}}</code></pre>
+<p>Oletusarvoisesti geneeriset funktiot toimivat vain tyypeillä, joiden koko tunnetaan käännösaikana. Voit kuitenkin käyttää seuraavaa erityissyntaksia tämän rajoituksen lieventämiseksi:</p>
+<pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch20-advanced-features/no-listing-14-generic-maybe-sized/src/lib.rs}}</code></pre>
+<p><code>?Sized</code>-traitrajoitus tarkoittaa ”<code>T</code> voi olla tai olla olematta <code>Sized</code>”, ja tämä merkintä ohittaa oletuksen, että geneeristen tyyppien on oltava tunnetun kokoisia käännösaikana. <code>?Trait</code>-syntaksi tällä merkityksellä on käytettävissä vain <code>Sized</code>-traitille, ei millekään muulle traitille.</p>
+<p>Huomaa myös, että vaihdoimme parametrin <code>t</code> tyypin <code>T</code>:stä <code>&amp;T</code>:hen. Koska tyyppi ei välttämättä ole <code>Sized</code>, meidän täytyy käyttää sitä jonkinlaisen osoittimen taakse. Tässä tapauksessa olemme valinneet viitteen.</p>
+<p>Seuraavaksi puhumme funktioista ja sulkeisista!</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="ch20-02-advanced-traits.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="ch20-04-advanced-functions-and-closures.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="ch20-02-advanced-traits.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="ch20-04-advanced-functions-and-closures.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="ferris.js"></script>
+
+
+    </div>
+    </body>
+</html>

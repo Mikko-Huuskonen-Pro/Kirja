@@ -1,0 +1,408 @@
+<!DOCTYPE HTML>
+<html lang="fi" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Turvaton Rust - Rust-ohjelmointikieli</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="ferris.css">
+        <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rust-ohjelmointikieli</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/rust-lang/book" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2 id="unsafe-rust"><a class="header" href="#unsafe-rust">Unsafe Rust</a></h2>
+<p>Kaikki koodi, josta olemme keskustelleet tähän asti, on saanut Rustin muistiturvallisuustakuut pakotettuna käännösaikana. Rustissa on kuitenkin toinen kieli sen sisällä, joka ei pakota näitä muistiturvallisuustakuuja: sitä kutsutaan <em>unsafe Rustiksi</em>, ja se toimii aivan kuten tavallinen Rust, mutta antaa meille ylimääräisiä supervoimia.</p>
+<p>Unsafe Rust on olemassa, koska luonteensa vuoksi staattinen analyysi on konservatiivista. Kun kääntäjä yrittää määrittää, pitääkö koodi takuut voimassa, on parempi hylätä joitakin kelvollisia ohjelmia kuin hyväksyä joitakin virheellisiä ohjelmia. Vaikka koodi <em>saattaisi</em> olla kunnossa, jos Rustin kääntäjällä ei ole tarpeeksi tietoa olla varma, se hylkää koodin. Näissä tapauksissa voit käyttää unsafe-koodia kertoaksesi kääntäjälle: ”Luota minuun, tiedän mitä teen.” Varo kuitenkin, että käytät unsafe Rustia omalla vastuullasi: jos käytät unsafe-koodia väärin, ongelmia voi syntyä muistiturvattomuuden vuoksi, kuten null-osoittimen dereferoinnista.</p>
+<p>Toinen syy siihen, miksi Rustilla on unsafe-vaihtoehto, on se, että taustalla oleva tietokonelaitteisto on luonnostaan unsafe. Jos Rust ei sallisi unsafe-operaatioita, et voisi tehdä tiettyjä tehtäviä. Rustin täytyy sallia matalan tason järjestelmäohjelmointi, kuten suora vuorovaikutus käyttöjärjestelmän kanssa tai jopa oman käyttöjärjestelmän kirjoittaminen. Matalan tason järjestelmäohjelmointi on yksi kielen tavoitteista. Tutkitaan, mitä voimme tehdä unsafe Rustilla ja miten se tehdään.</p>
+<h3 id="unsafe-supervoimat"><a class="header" href="#unsafe-supervoimat">Unsafe-supervoimat</a></h3>
+<p>Vaihtaaksesi unsafe Rustiin, käytä <code>unsafe</code>-avainsanaa ja aloita sitten uusi lohko, joka sisältää unsafe-koodin. Voit tehdä viisi toimintoa unsafe Rustissa, joita et voi tehdä safe Rustissa, ja joita kutsumme <em>unsafe-supervoimiksi</em>. Nämä supervoimat sisältävät mahdollisuuden:</p>
+<ul>
+<li>Dereferoida raakaviittaus</li>
+<li>Kutsua unsafe-funktiota tai -metodia</li>
+<li>Käyttää tai muokata muuttuvaa staattista muuttujaa</li>
+<li>Toteuttaa unsafe-traitin</li>
+<li>Käyttää <code>union</code>-rakenteen kenttiä</li>
+</ul>
+<p>On tärkeää ymmärtää, että <code>unsafe</code> ei sammuta lainantarkistinta tai poista käytöstä mitään muita Rustin turvatarkistuksia: jos käytät viittausta unsafe-koodissa, sitä tarkistetaan edelleen. <code>unsafe</code>-avainsana antaa sinulle pääsyn vain näihin viiteen ominaisuuteen, joita kääntäjä ei sitten tarkista muistiturvallisuuden osalta. Saat silti jonkin verran turvallisuutta unsafe-lohkon sisällä.</p>
+<p>Lisäksi <code>unsafe</code> ei tarkoita, että lohkon sisällä oleva koodi olisi välttämättä vaarallista tai että siinä olisi varmasti muistiturvallisuusongelmia: tarkoitus on, että ohjelmoijana varmistat, että <code>unsafe</code>-lohkon sisällä oleva koodi käyttää muistia kelvollisella tavalla.</p>
+<p>Ihmiset tekevät virheitä, ja virheitä tapahtuu, mutta vaatimalla näiden viiden unsafe-operaation olevan <code>unsafe</code>-annotoituissa lohkoissa tiedät, että kaikki muistiturvallisuuteen liittyvät virheet täytyy olla <code>unsafe</code>-lohkossa. Pidä <code>unsafe</code>-lohkot pieninä; olet kiitollinen myöhemmin, kun tutkit muistibugeja.</p>
+<p>Eristääksemme unsafe-koodin mahdollisimman paljon, on parasta sulkea unsafe-koodi turvallisen abstraktion sisään ja tarjota turvallinen API, josta puhumme myöhemmin luvussa tarkastellessamme unsafe-funktioita ja -metodeja. Osa standardikirjastosta on toteutettu turvallisina abstraktioina auditoidun unsafe-koodin päälle. Unsafe-koodin kääriminen turvalliseen abstraktioon estää <code>unsafe</code>:n käytön vuotamasta kaikkiin paikkoihin, joissa sinä tai käyttäjäsi saattaisitte haluta käyttää unsafe-koodilla toteutettua toiminnallisuutta, koska turvallisen abstraktion käyttö on turvallista.</p>
+<p>Katsotaan kukin viidestä unsafe-supervoimasta vuorollaan. Tarkastelemme myös joitakin abstraktioita, jotka tarjoavat turvallisen rajapinnan unsafe-koodille.</p>
+<h3 id="raakaviittauksen-dereferointi"><a class="header" href="#raakaviittauksen-dereferointi">Raakaviittauksen dereferointi</a></h3>
+<p>Luvussa 4 <a href="ch04-02-references-and-borrowing.html#dangling-references">”Roikkuvat viittaukset”</a><!-- ignore --> -osiossa mainitsimme, että kääntäjä varmistaa viittausten olevan aina kelvollisia. Unsafe Rustissa on kaksi uutta tyyppiä nimeltä <em>raakaviittaukset</em>, jotka ovat samankaltaisia kuin viittaukset. Kuten viittauksilla, raakaviittaukset voivat olla muuttumattomia tai muutettavia ja kirjoitetaan muodossa <code>*const T</code> ja <code>*mut T</code>. Asteriski ei ole dereferointioperaattori; se on osa tyypin nimeä. Raakaviittausten yhteydessä <em>muuttumaton</em> tarkoittaa, että osoitinta ei voi suoraan osoittaa dereferoinnin jälkeen.</p>
+<p>Toisin kuin viittaukset ja älykkäät osoittimet, raakaviittaukset:</p>
+<ul>
+<li>Voivat jättää huomiotta lainaussäännöt pitämällä sekä muuttumattomia että muutettavia osoittimia tai useita muutettavia osoittimia samaan paikkaan</li>
+<li>Eivät ole taattu osoittamaan kelvollista muistia</li>
+<li>Voivat olla null</li>
+<li>Eivät toteuta automaattista siivousta</li>
+</ul>
+<p>Luopumalla Rustin näiden takuujen pakottamisesta voit luopua taatusta turvallisuudesta vastineeksi paremmasta suorituskyvystä tai mahdollisuudesta käyttää toista kieltä tai laitteistoa, jossa Rustin takuut eivät päde.</p>
+<p>Listausta 20-1 näyttää, miten luodaan muuttumaton ja muutettava raakaviittaus.</p>
+<figure class="listing">
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-01/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 20-1: Raakaviittausten luominen raaka-laina-operaattoreilla</figcaption>
+</figure>
+<p>Huomaa, ettemme sisällytä <code>unsafe</code>-avainsanaa tähän koodiiin. Voimme luoda raakaviittauksia safe-koodissa; emme vain voi dereferoida raakaviittauksia <code>unsafe</code>-lohkon ulkopuolella, kuten näet hetken kuluttua.</p>
+<p>Olemme luoneet raakaviittauksia käyttämällä raaka-laina-operaattoreita: <code>&amp;raw const num</code> luo muuttumattoman raakaviittauksen <code>*const i32</code>, ja <code>&amp;raw mut num</code> luo muutettavan raakaviittauksen <code>*mut i32</code>. Koska loimme ne suoraan paikallisesta muuttujasta, tiedämme näiden tiettyjen raakaviittausten olevan kelvollisia, mutta emme voi olettaa samaa mistä tahansa raakaviittauksesta.</p>
+<p>Osoittaaksemme tämän luomme seuraavaksi raakaviittauksen, jonka kelvollisuudesta emme voi olla yhtä varmoja, käyttämällä <code>as</code>-operaattoria arvon muuntamiseen raakaviittausoperaattoreiden sijaan. Listausta 20-2 näyttää, miten luodaan raakaviittaus mielivaltaiseen muistipaikkaan. Mielivaltaisen muistin käyttö on määrittelemätöntä: siinä osoitteessa saattaa olla dataa tai ei, kääntäjä saattaa optimoida koodin niin, ettei muistia käytetä lainkaan, tai ohjelma saattaa kaatua segmentointivirheeseen. Yleensä ei ole hyvää syytä kirjoittaa tällaista koodia, varsinkaan kun voit käyttää raaka-laina-operaattoria sen sijaan, mutta se on mahdollista.</p>
+<figure class="listing">
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-02/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 20-2: Raakaviittauksen luominen mielivaltaiseen muistiosoitteeseen</figcaption>
+</figure>
+<p>Muista, että voimme luoda raakaviittauksia safe-koodissa, mutta emme voi <em>dereferoida</em> raakaviittauksia ja lukea osoitettua dataa. Listauksessa 20-3 käytämme dereferointioperaattoria <code>*</code> raakaviittauksella, mikä vaatii <code>unsafe</code>-lohkon.</p>
+<figure class="listing">
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-03/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 20-3: Raakaviittausten dereferointi <code>unsafe</code>-lohkossa</figcaption>
+</figure>
+<p>Osoittimen luominen ei tee haittaa; vasta kun yritämme käyttää arvoa, johon se osoittaa, saatamme joutua käsittelemään virheellistä arvoa.</p>
+<p>Huomaa myös, että listauksissa 20-1 ja 20-3 loimme <code>*const i32</code>- ja <code>*mut i32</code>-raakaviittaukset, jotka molemmat osoittivat samaan muistipaikkaan, jossa <code>num</code> on tallennettu. Jos sen sijaan yrittäisimme luoda muuttumattoman ja muutettavan viittauksen <code>num</code>:iin, koodi ei olisi kääntynyt, koska Rustin omistajuussäännöt eivät salli muutettavaa viittausta samaan aikaan kuin mitään muuttumattomia viittauksia. Raakaviittauksilla voimme luoda muutettavan ja muuttumattoman osoittimen samaan paikkaan ja muuttaa dataa muutettavan osoittimen kautta, mikä saattaa luoda datakilpailutilanteen. Ole varovainen!</p>
+<p>Kaikkien näiden vaarojen vuoksi, miksi käyttäisit koskaan raakaviittauksia? Yksi tärkeä käyttötapaus on C-koodin kanssa vuorovaikutus, kuten näet seuraavassa osiossa <a href="#calling-an-unsafe-function-or-method">”Unsafe-funktion tai -metodin kutsuminen.”</a><!-- ignore --> Toinen tapaus on turvallisten abstraktioiden rakentaminen, joita lainantarkistin ei ymmärrä. Esittelemme unsafe-funktiot ja katsomme sitten esimerkkiä turvallisesta abstraktiosta, joka käyttää unsafe-koodia.</p>
+<h3 id="unsafe-funktion-tai--metodin-kutsuminen"><a class="header" href="#unsafe-funktion-tai--metodin-kutsuminen">Unsafe-funktion tai -metodin kutsuminen</a></h3>
+<p>Toinen operaatiotyyppi, jonka voit suorittaa <code>unsafe</code>-lohkossa, on unsafe-funktioiden kutsuminen. Unsafe-funktiot ja -metodit näyttävät täsmälleen samalta kuin tavalliset funktiot ja metodit, mutta niillä on ylimääräinen <code>unsafe</code> ennen määrittelyn loppuosaa. Tässä yhteydessä <code>unsafe</code>-avainsana osoittaa, että funktiolla on vaatimuksia, jotka meidän täytyy täyttää kutsuessamme tätä funktiota, koska Rust ei voi taata täyttäneemme näitä vaatimuksia. Kutsumalla unsafe-funktiota <code>unsafe</code>-lohkossa sanomme, että olemme lukeneet tämän funktion dokumentaation ja otamme vastuun funktion sopimusten täyttämisestä.</p>
+<p>Tässä on unsafe-funktio nimeltä <code>dangerous</code>, joka ei tee mitään rungossaan:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch20-advanced-features/no-listing-01-unsafe-fn/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<p>Meidän täytyy kutsua <code>dangerous</code>-funktiota erillisessä <code>unsafe</code>-lohkossa. Jos yritämme kutsua <code>dangerous</code>-funktiota ilman <code>unsafe</code>-lohkoa, saamme virheen:</p>
+<pre><code class="language-console">{{#include ../listings/ch20-advanced-features/output-only-01-missing-unsafe/output.txt}}
+</code></pre>
+<p><code>unsafe</code>-lohkolla vakuutamme Rustille, että olemme lukeneet funktion dokumentaation, ymmärrämme miten sitä käytetään oikein ja olemme varmistaneet täyttävämme funktion sopimuksen.</p>
+<p>Suorittaaksesi unsafe-operaatioita unsafe-funktion rungossa, sinun täytyy silti käyttää <code>unsafe</code>-lohkoa aivan kuten tavallisen funktion sisällä, ja kääntäjä varoittaa, jos unohdat. Tämä auttaa pitämään <code>unsafe</code>-lohkot mahdollisimman pieninä, koska unsafe-operaatioita ei välttämättä tarvita koko funktion rungossa.</p>
+<h4 id="turvallisen-abstraktion-luominen-unsafe-koodin-päälle"><a class="header" href="#turvallisen-abstraktion-luominen-unsafe-koodin-päälle">Turvallisen abstraktion luominen unsafe-koodin päälle</a></h4>
+<p>Pelkästään se, että funktio sisältää unsafe-koodia, ei tarkoita, että meidän täytyisi merkitä koko funktio unsafeksi. Itse asiassa unsafe-koodin kääriminen turvalliseen funktioon on yleinen abstraktio. Esimerkkinä tutkitaan standardikirjaston <code>split_at_mut</code>-funktiota, joka vaatii unsafe-koodia. Tutkimme, miten voisimme toteuttaa sen. Tämä turvallinen metodi on määritelty muutettaville viipaleille: se ottaa yhden viipaleen ja jakaa sen kahteen jakamalla viipaleen argumenttina annetussa indeksissä. Listausta 20-4 näyttää, miten käyttää <code>split_at_mut</code>-funktiota.</p>
+<figure class="listing">
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-04/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 20-4: Turvallisen <code>split_at_mut</code>-funktion käyttö</figcaption>
+</figure>
+<p>Emme voi toteuttaa tätä funktiota käyttämällä vain safe Rustia. Yritys saattaisi näyttää listaukselta 20-5, joka ei käänny. Yksinkertaisuuden vuoksi toteutamme <code>split_at_mut</code>-funktion funktiona metodin sijaan ja vain <code>i32</code>-arvojen viipaleille geneerisen tyypin <code>T</code> sijaan.</p>
+<figure class="listing">
+<pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-05/src/main.rs:here}}</code></pre>
+<figcaption>Listing 20-5: Yritys toteuttaa <code>split_at_mut</code> käyttämällä vain safe Rustia</figcaption>
+</figure>
+<p>Tämä funktio saa ensin viipaleen kokonaispituuden. Sitten se varmistaa, että parametrina annettu indeksi on viipaleen sisällä tarkistamalla, onko se pienempi tai yhtä suuri kuin pituus. Väite tarkoittaa, että jos välitämme indeksin, joka on suurempi kuin pituus, jossa viipale jaetaan, funktio panikoi ennen kuin yrittää käyttää kyseistä indeksiä.</p>
+<p>Sitten palautamme kaksi muutettavaa viipaletta tuplessa: toinen alkuperäisen viipaleen alusta <code>mid</code>-indeksiin ja toinen <code>mid</code>:stä viipaleen loppuun.</p>
+<p>Kun yritämme kääntää listauksen 20-5 koodin, saamme virheen.</p>
+<pre><code class="language-console">{{#include ../listings/ch20-advanced-features/listing-20-05/output.txt}}
+</code></pre>
+<p>Rustin lainantarkistin ei ymmärrä, että lainaamme viipaleen eri osia; se tietää vain, että lainaamme samaa viipaletta kahdesti. Viipaleen eri osien lainaaminen on periaatteessa ok, koska kaksi viipaletta eivät ole päällekkäin, mutta Rust ei ole tarpeeksi älykäs tietääkseen tämän. Kun tiedämme koodin olevan kunnossa, mutta Rust ei tiedä, on aika turvautua unsafe-koodiin.</p>
+<p>Listausta 20-6 näyttää, miten käyttää <code>unsafe</code>-lohkoa, raakaviittausta ja joitakin unsafe-funktiokutsuja saadaksemme <code>split_at_mut</code>-toteutuksen toimimaan.</p>
+<figure class="listing">
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-06/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 20-6: Unsafe-koodin käyttö <code>split_at_mut</code>-funktion toteutuksessa</figcaption>
+</figure>
+<p>Muista <a href="ch04-03-slices.html#the-slice-type">”Viipaletyyppi”</a><!-- ignore --> -osio luvusta 4, että viipaleet ovat osoitin dataan ja viipaleen pituus. Käytämme <code>len</code>-metodia saadaksemme viipaleen pituuden ja <code>as_mut_ptr</code>-metodia päästäksemme viipaleen raakaviittaukseen. Tässä tapauksessa, koska meillä on muutettava viipale <code>i32</code>-arvoille, <code>as_mut_ptr</code> palauttaa raakaviittauksen tyypillä <code>*mut i32</code>, jonka olemme tallentaneet muuttujaan <code>ptr</code>.</p>
+<p>Pidämme väitteen, että <code>mid</code>-indeksi on viipaleen sisällä. Sitten pääsemme unsafe-koodiin: <code>slice::from_raw_parts_mut</code>-funktio ottaa raakaviittauksen ja pituuden, ja se luo viipaleen. Käytämme tätä funktiota luodaksemme viipaleen, joka alkaa <code>ptr</code>:stä ja on <code>mid</code> alkiota pitkä. Sitten kutsumme <code>add</code>-metodia <code>ptr</code>:llä argumenttina <code>mid</code> saadaksemme raakaviittauksen, joka alkaa <code>mid</code>:stä, ja luomme viipaleen käyttämällä tuota osoitinta ja jäljellä olevien alkioiden määrää <code>mid</code>:n jälkeen pituutena.</p>
+<p>Funktio <code>slice::from_raw_parts_mut</code> on unsafe, koska se ottaa raakaviittauksen ja täytyy luottaa tämän osoittimen olevan kelvollinen. <code>add</code>-metodi raakaviittauksilla on myös unsafe, koska sen täytyy luottaa, että siirtymän kohde on myös kelvollinen osoitin. Siksi meidän täytyi laittaa <code>unsafe</code>-lohko <code>slice::from_raw_parts_mut</code>- ja <code>add</code>-kutsujemme ympärille, jotta voimme kutsua niitä. Katsomalla koodia ja lisäämällä väitteen, että <code>mid</code>:n täytyy olla pienempi tai yhtä suuri kuin <code>len</code>, voimme todeta, että kaikki <code>unsafe</code>-lohkossa käytetyt raakaviittaukset ovat kelvollisia osoittimia dataan viipaleen sisällä. Tämä on hyväksyttävä ja asianmukainen <code>unsafe</code>:n käyttö.</p>
+<p>Huomaa, ettemme tarvitse merkitä tuloksena olevaa <code>split_at_mut</code>-funktiota <code>unsafe</code>:ksi, ja voimme kutsua tätä funktiota safe Rustista. Olemme luoneet turvallisen abstraktion unsafe-koodille toteutuksella, joka käyttää <code>unsafe</code>-koodia turvallisella tavalla, koska se luo vain kelvollisia osoittimia datasta, johon tämä funktio pääsee käsiksi.</p>
+<p>Sitä vastoin <code>slice::from_raw_parts_mut</code>-funktion käyttö listauksessa 20-7 kaatuisi todennäköisesti, kun viipaletta käytetään. Tämä koodi ottaa mielivaltaisen muistipaikan ja luo 10 000 alkion viipaleen.</p>
+<figure class="listing">
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-07/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 20-7: Viipaleen luominen mielivaltaisesta muistipaikasta</figcaption>
+</figure>
+<p>Emme omista dataa tässä mielivaltaisessa paikassa, eikä ole takuuta, että tämän koodin luoma viipale sisältää kelvollisia <code>i32</code>-arvoja. Yritys käyttää <code>values</code>-muuttujaa kelvollisena viipaleena johtaa määrittelemättömään käyttäytymiseen.</p>
+<h4 id="extern-funktioiden-käyttö-ulkoisen-koodin-kutsumiseen"><a class="header" href="#extern-funktioiden-käyttö-ulkoisen-koodin-kutsumiseen"><code>extern</code>-funktioiden käyttö ulkoisen koodin kutsumiseen</a></h4>
+<p>Joskus Rust-koodisi saattaa joutua vuorovaikutukseen toisella kielellä kirjoitetun koodin kanssa. Tätä varten Rustissa on <code>extern</code>-avainsana, joka helpottaa <em>ulkomaisen funktion rajapinnan (FFI)</em> luomista ja käyttöä. FFI on tapa, jolla ohjelmointikieli määrittelee funktiot ja mahdollistaa eri (ulkomaisen) ohjelmointikielen kutsuman näitä funktioita.</p>
+<p>Listausta 20-8 demonstroi integraation asettamista C-standardikirjaston <code>abs</code>-funktion kanssa. <code>extern</code>-lohkossa määritellyt funktiot ovat yleensä unsafe kutsua Rust-koodista, joten ne täytyy myös merkitä <code>unsafe</code>:ksi. Syy on, että muut kielet eivät pakota Rustin sääntöjä ja takuuja, eikä Rust voi tarkistaa niitä, joten vastuu turvallisuudesta on ohjelmoijalla.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-08/src/main.rs}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 20-8: Toisella kielellä määritellyn <code>extern</code>-funktion julistaminen ja kutsuminen</figcaption>
+</figure>
+<p><code>unsafe extern "C"</code> -lohkon sisällä listaamme toisen kielen ulkoisten funktioiden nimet ja allekirjoitukset, joita haluamme kutsua. <code>"C"</code>-osa määrittelee, mitä <em>sovellusbinaarirajapintaa (ABI)</em> ulkoinen funktio käyttää: ABI määrittelee, miten funktiota kutsutaan konekielitasolla. <code>"C"</code>-ABI on yleisin ja noudattaa C-ohjelmointikielen ABI:tä.</p>
+<p>Tällä tietyllä funktiolla ei ole muistiturvallisuusnäkökohtia. Itse asiassa tiedämme, että mikä tahansa <code>abs</code>-kutsu on aina turvallinen mille tahansa <code>i32</code>:lle, joten voimme käyttää <code>safe</code>-avainsanaa sanoaksemme, että tämä tietty funktio on turvallinen kutsua, vaikka se on <code>unsafe extern</code> -lohkossa. Kun teemme tuon muutoksen, sen kutsuminen ei enää vaadi <code>unsafe</code>-lohkoa, kuten listauksessa 20-9.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-09/src/main.rs}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 20-9: Funktion eksplisiittinen merkitseminen <code>safe</code>:ksi <code>unsafe extern</code> -lohkon sisällä ja sen turvallinen kutsuminen</figcaption>
+</figure>
+<p>Funktion merkitseminen <code>safe</code>:ksi ei itsessään tee siitä turvallista! Sen sijaan se on kuin lupaus, jonka annat Rustille, että se <em>on</em> turvallinen. Sinun vastuullasi on edelleen varmistaa, että lupaus pidetään!</p>
+<section class="note" aria-role="note">
+<h4 id="rust-funktioiden-kutsuminen-muista-kielistä"><a class="header" href="#rust-funktioiden-kutsuminen-muista-kielistä">Rust-funktioiden kutsuminen muista kielistä</a></h4>
+<p>Voimme myös käyttää <code>extern</code>-avainsanaa rajapinnan luomiseen, joka sallii muiden kielten kutsua Rust-funktioita. Sen sijaan, että loisimme koko <code>extern</code>-lohkon, lisäämme <code>extern</code>-avainsanan ja määrittelemme käytettävän ABI:n juuri ennen asiaankuuluvan funktion <code>fn</code>-avainsanaa. Meidän täytyy myös lisätä <code>#[unsafe(no_mangle)]</code>-annotaatio kertoaksemme Rustin kääntäjälle, ettei sen pidä muuttaa tämän funktion nimeä. <em>Nimen muuttaminen</em> tarkoittaa, että kääntäjä muuttaa antamamme funktion nimen eri nimeksi, joka sisältää enemmän tietoa käännösprosessin muille osille mutta on vähemmän ihmisen luettava. Jokainen ohjelmointikielen kääntäjä muuttaa nimiä hieman eri tavalla, joten jotta Rust-funktiota voidaan nimetä muista kielistä, meidän täytyy poistaa Rustin kääntäjän nimen muuttaminen käytöstä. Tämä on unsafe, koska nimiristiriitoja voi syntyä kirjastojen välillä ilman sisäänrakennettua nimen muuttamista, joten vastuullamme on varmistaa, että vientiin käyttämämme nimi on turvallinen viedä ilman nimen muuttamista.</p>
+<p>Seuraavassa esimerkissä teemme <code>call_from_c</code>-funktion käytettäväksi C-koodista sen jälkeen, kun se on käännetty jaetusta kirjastosta ja linkitetty C:stä:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[unsafe(no_mangle)]
+pub extern "C" fn call_from_c() {
+    println!("Just called a Rust function from C!");
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Tämä <code>extern</code>-käyttö ei vaadi <code>unsafe</code>:a.</p>
+</section>
+<h3 id="muuttuvan-staattisen-muuttujan-käyttö-tai-muokkaus"><a class="header" href="#muuttuvan-staattisen-muuttujan-käyttö-tai-muokkaus">Muuttuvan staattisen muuttujan käyttö tai muokkaus</a></h3>
+<p>Tässä kirjassa emme ole vielä puhuneet <em>globaaleista muuttujista</em>, joita Rust tukee mutta jotka voivat olla ongelmallisia Rustin omistajuussääntöjen kanssa. Jos kaksi säiettä käyttää samaa muuttuvaa globaalia muuttujaa, se voi aiheuttaa datakilpailutilanteen.</p>
+<p>Rustissa globaaleja muuttujia kutsutaan <em>staattisiksi muuttujiksi</em>. Listausta 20-10 näyttää esimerkin staattisen muuttujan julistamisesta ja käytöstä merkkijonon viipaleen arvona.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-10/src/main.rs}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 20-10: Muuttumattoman staattisen muuttujan määrittely ja käyttö</figcaption>
+</figure>
+<p>Staattiset muuttujat ovat samankaltaisia kuin vakiot, joita käsittelimme <a href="ch03-01-variables-and-mutability.html#constants">”Vakiot”</a><!-- ignore --> -osiossa luvussa 3. Staattisten muuttujien nimet ovat käytännön mukaan <code>SCREAMING_SNAKE_CASE</code>-muodossa. Staattiset muuttujat voivat tallentaa vain viittauksia <code>'static</code>-elinikäparametrilla, mikä tarkoittaa, että Rustin kääntäjä voi selvittää elinikäparametrin emmekä tarvitse annotoida sitä eksplisiittisesti. Muuttumattoman staattisen muuttujan käyttö on turvallista.</p>
+<p>Hienovarainen ero vakioiden ja muuttumattomien staattisten muuttujien välillä on, että staattisten muuttujien arvoilla on kiinteä osoite muistissa. Arvon käyttö käyttää aina samoja dataa. Vakioilla sen sijaan sallitaan datan kopiointi aina kun niitä käytetään. Toinen ero on, että staattiset muuttujat voivat olla muutettavia. Muuttuvan staattisen muuttujan käyttö ja muokkaus on <em>unsafe</em>. Listausta 20-11 näyttää, miten julistaa, käyttää ja muokata muuttuvaa staattista muuttujaa nimeltä <code>COUNTER</code>.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-11/src/main.rs}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 20-11: Muuttuvasta staattisesta muuttujasta lukeminen tai siihen kirjoittaminen on unsafe</figcaption>
+</figure>
+<p>Kuten tavallisten muuttujien kanssa, määrittelemme muutettavuuden <code>mut</code>-avainsanalla. Kaiken koodin, joka lukee tai kirjoittaa <code>COUNTER</code>-muuttujaan, täytyy olla <code>unsafe</code>-lohkossa. Listauksen 20-11 koodi kääntyy ja tulostaa <code>COUNTER: 3</code> kuten odotamme, koska se on yksisäikeinen. Useiden säikeiden käyttö <code>COUNTER</code>-muuttujaan johtaisi todennäköisesti datakilpailutilanteisiin, joten se on määrittelemätöntä käyttäytymistä. Siksi meidän täytyy merkitä koko funktio <code>unsafe</code>:ksi ja dokumentoida turvallisuusrajoitus, jotta kuka tahansa funktiota kutsuva tietää, mitä saa ja ei saa tehdä turvallisesti.</p>
+<p>Aina kun kirjoitamme unsafe-funktion, on idiomaattista kirjoittaa kommentti, joka alkaa <code>SAFETY</code>:llä ja selittää, mitä kutsupuolen täytyy tehdä kutsuakseen funktion turvallisesti. Vastaavasti aina kun suoritamme unsafe-operaation, on idiomaattista kirjoittaa kommentti, joka alkaa <code>SAFETY</code>:llä selittääksemme, miten turvallisuussäännöt täyttyvät.</p>
+<p>Lisäksi kääntäjä ei salli sinun luoda viittauksia muuttuvaan staattiseen muuttujaan. Voit käyttää sitä vain raakaviittauksen kautta, joka on luotu jollakin raaka-laina-operaattoreista. Tämä koskee myös tapauksia, joissa viittaus luodaan näkymättömästi, kuten kun sitä käytetään tämän koodilistan <code>println!</code>-kutsussa. Vaatimus, että viittauksia muuttuviin staattisiin muuttujiin voidaan luoda vain raakaviittausten kautta, auttaa tekemään niiden käytön turvallisuusvaatimuksista ilmeisempiä.</p>
+<p>Muuttuvan datan kanssa, joka on globaalisti käytettävissä, on vaikea varmistaa, ettei datakilpailutilanteita ole, minkä vuoksi Rust pitää muuttuvia staattisia muuttujia unsafeina. Mahdollisuuksien mukaan on parempi käyttää luvussa 16 käsiteltyjä rinnakkaisuustekniikoita ja säieturvallisia älykkäitä osoittimia, jotta kääntäjä tarkistaa eri säikeistä käytetyn datan turvallisuuden.</p>
+<h3 id="unsafe-traitin-toteuttaminen"><a class="header" href="#unsafe-traitin-toteuttaminen">Unsafe-traitin toteuttaminen</a></h3>
+<p>Voimme käyttää <code>unsafe</code>:a toteuttaaksemme unsafe-traitin. Trait on unsafe, kun vähintään yhdellä sen metodeista on jokin invariantti, jota kääntäjä ei voi varmistaa. Julistamme traitin <code>unsafe</code>:ksi lisäämällä <code>unsafe</code>-avainsanan ennen <code>trait</code>-avainsanaa ja merkitsemme traitin toteutuksen myös <code>unsafe</code>:ksi, kuten listauksessa 20-12.</p>
+<figure class="listing">
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-12/src/main.rs}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 20-12: Unsafe-traitin määrittely ja toteuttaminen</figcaption>
+</figure>
+<p>Käyttämällä <code>unsafe impl</code>:ia lupaamme, että pidämme yllä invariantteja, joita kääntäjä ei voi varmistaa.</p>
+<p>Esimerkkinä muista <code>Sync</code>- ja <code>Send</code>-merkki-traitit, joita käsittelimme <a href="ch16-04-extensible-concurrency-sync-and-send.html#extensible-concurrency-with-the-sync-and-send-traits">”Laajennettava rinnakkaisuus <code>Sync</code>- ja <code>Send</code>-traiteilla”</a><!-- ignore --> -osiossa luvussa 16: kääntäjä toteuttaa nämä traitit automaattisesti, jos tyypimme koostuvat kokonaan <code>Send</code>- ja <code>Sync</code>-tyypeistä. Jos toteutamme tyypin, joka sisältää tyypin, joka ei ole <code>Send</code> tai <code>Sync</code>, kuten raakaviittauksia, ja haluamme merkitä tyypin <code>Send</code>- tai <code>Sync</code>-tyypiksi, meidän täytyy käyttää <code>unsafe</code>:a. Rust ei voi varmistaa, että tyypimme täyttää takuut, joiden mukaan se voidaan turvallisesti lähettää säikeiden välillä tai käyttää useista säikeistä; siksi meidän täytyy tehdä nämä tarkistukset manuaalisesti ja ilmaista se <code>unsafe</code>:lla.</p>
+<h3 id="union-rakenteen-kenttien-käyttö"><a class="header" href="#union-rakenteen-kenttien-käyttö"><code>union</code>-rakenteen kenttien käyttö</a></h3>
+<p>Viimeinen toiminto, joka toimii vain <code>unsafe</code>:lla, on <code>union</code>-rakenteen kenttien käyttö. <code>union</code> on samankaltainen kuin <code>struct</code>, mutta vain yhtä julistettua kenttää käytetään tietyssä instanssissa kerrallaan. Unioneja käytetään pääasiassa rajapintaan C-koodin unionien kanssa. Union-kenttien käyttö on unsafe, koska Rust ei voi taata union-instanssissa tällä hetkellä tallennetun datan tyyppiä. Voit lukea lisää unioneista <a href="../reference/items/unions.html">Rust Reference</a> -dokumentaatiosta.</p>
+<h3 id="miri-unsafe-koodin-tarkistamiseen"><a class="header" href="#miri-unsafe-koodin-tarkistamiseen">Miri unsafe-koodin tarkistamiseen</a></h3>
+<p>Kun kirjoitat unsafe-koodia, saatat haluta tarkistaa, että kirjoittamasi on todella turvallista ja oikein. Yksi parhaista tavoista tehdä se on käyttää <a href="https://github.com/rust-lang/miri">Miriä</a>, virallista Rust-työkalua määrittelemättömän käyttäytymisen havaitsemiseen. Kun taas lainantarkistin on <em>staattinen</em> työkalu, joka toimii käännösaikana, Miri on <em>dynaaminen</em> työkalu, joka toimii ajonaikana. Se tarkistaa koodisi suorittamalla ohjelmasi tai sen testisarjan ja havaitsemalla, kun rikot sääntöjä, joita se ymmärtää Rustin toiminnasta.</p>
+<p>Mirin käyttö vaatii Rustin yökohtaisen (nightly) version (josta puhumme lisää <a href="appendix-07-nightly-rust.html">liitteessä G: Miten Rust tehdään ja ”Nightly Rust”</a>). Voit asentaa sekä Rustin yökohtaisen version että Miri-työkalun kirjoittamalla <code>rustup +nightly component add miri</code>. Tämä ei muuta Rust-versiota, jota projektisi käyttää; se vain lisää työkalun järjestelmääsi, jotta voit käyttää sitä halutessasi. Voit ajaa Mirin projektilla kirjoittamalla <code>cargo +nightly miri run</code> tai <code>cargo +nightly miri test</code>.</p>
+<p>Esimerkkinä siitä, kuinka hyödyllinen tämä voi olla, tarkastele mitä tapahtuu, kun ajamme sitä listauksen 20-11 koodilla:</p>
+<pre><code class="language-console">{{#include ../listings/ch20-advanced-features/listing-20-11/output.txt}}
+</code></pre>
+<p>Se huomaa hyödyllisesti ja oikein, että meillä on jaettuja viittauksia muutettavaan dataan, ja varoittaa siitä. Tässä tapauksessa se ei kerro, miten ongelma korjataan, mutta se tarkoittaa, että tiedämme mahdollisen ongelman olevan olemassa ja voimme miettiä, miten varmistaa turvallisuus. Muissa tapauksissa se voi kertoa, että jokin koodi on <em>varmasti</em> väärin, ja antaa suosituksia korjaukseen.</p>
+<p>Miri ei havaitse <em>kaikkea</em>, mitä saatat tehdä väärin kirjoittaessasi unsafe-koodia. Ensinnäkin, koska se on dynaaminen tarkistus, se havaitsee vain ongelmat koodissa, joka todella suoritetaan. Tämä tarkoittaa, että sinun täytyy käyttää sitä yhdessä hyvien testaustekniikoiden kanssa kasvattaaksesi luottamustasi kirjoittamaasi unsafe-koodiin. Toiseksi se ei kata kaikkia tapoja, joilla koodisi voi olla epäsoundi. Jos Miri <em>havaitsee</em> ongelman, tiedät että siellä on bugi, mutta pelkästään se, ettei Miri <em>havaitse</em> bugia, ei tarkoita ettei ongelmaa olisi. Miri voi kuitenkin havaita paljon. Kokeile ajaa sitä tämän luvun muilla unsafe-koodin esimerkeillä ja katso mitä se sanoo!</p>
+<h3 id="milloin-käyttää-unsafe-koodia"><a class="header" href="#milloin-käyttää-unsafe-koodia">Milloin käyttää unsafe-koodia</a></h3>
+<p>Yhden viidestä käsitellystä toiminnosta (supervoimasta) käyttäminen <code>unsafe</code>:lla ei ole väärin eikä edes paheksuttavaa. Mutta unsafe-koodin saaminen oikein on hankalampaa, koska kääntäjä ei voi auttaa ylläpitämään muistiturvallisuutta. Kun sinulla on syy käyttää unsafe-koodia, voit tehdä niin, ja eksplisiittinen <code>unsafe</code>-annotaatio helpottaa ongelmien lähteen jäljittämistä, kun niitä ilmenee. Aina kun kirjoitat unsafe-koodia, voit käyttää Miriä auttaaksesi olemaan varmempi siitä, että kirjoittamasi koodi noudattaa Rustin sääntöjä.</p>
+<p>Paljon syvempää tutkimusta siitä, miten työskennellä tehokkaasti unsafe Rustin kanssa, löydät Rustin virallisesta aiheoppaasta, <a href="https://doc.rust-lang.org/nomicon/">Rustonomiconista</a>.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="ch20-00-advanced-features.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="ch20-02-advanced-traits.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="ch20-00-advanced-features.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="ch20-02-advanced-traits.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="ferris.js"></script>
+
+
+    </div>
+    </body>
+</html>

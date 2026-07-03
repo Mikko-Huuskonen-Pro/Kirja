@@ -1,0 +1,267 @@
+<!DOCTYPE HTML>
+<html lang="fi" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Palautumattomat virheet panic!-komennolla - Rust-ohjelmointikieli</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="ferris.css">
+        <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rust-ohjelmointikieli</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/rust-lang/book" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2 id="palauttamattomat-virheet-panic-makrolla"><a class="header" href="#palauttamattomat-virheet-panic-makrolla">Palauttamattomat virheet <code>panic!</code>-makrolla</a></h2>
+<p>Joskus koodissa tapahtuu jotain, mille emme voi tehdä mitään. Näissä tapauksissa Rust tarjoaa <code>panic!</code>-makron. <code>panic!</code> voidaan laukaista kahdella tavalla: joko suorittamalla virheellinen toiminto (kuten yrittämällä käyttää taulukon rajojen ulkopuolista indeksiä) tai kutsumalla <code>panic!</code>-makroa suoraan.</p>
+<p>Molemmissa tapauksissa ohjelma <strong>pysäytetään</strong> ja tapahtuu paniikkitila (<em>panic state</em>). Oletusarvoisesti tämä tulostaa virheviestin, purkaa pinoon kertyneet kutsut (<em>stack unwinding</em>) ja lopettaa ohjelman. Ympäristömuuttujan avulla voidaan myös näyttää pinojäljitys (<em>backtrace</em>), mikä auttaa selvittämään, mistä virhe johtuu.</p>
+<section class="note" aria-role="note">
+<h3 id="pinon-purkaminen-unwinding-vs-ohjelman-välitön-keskeyttäminen-abort"><a class="header" href="#pinon-purkaminen-unwinding-vs-ohjelman-välitön-keskeyttäminen-abort">Pinon purkaminen (<code>unwinding</code>) vs. ohjelman välitön keskeyttäminen (<code>abort</code>)</a></h3>
+<p>Kun <code>panic!</code> tapahtuu, Rust suorittaa oletusarvoisesti <strong>pinon purkamisen</strong> (<em>unwinding</em>), eli käy funktiokutsut taaksepäin ja siivoaa resurssit. Tämä voi kuitenkin olla raskasta. Vaihtoehtoisesti voit määrittää ohjelman <strong>keskeyttämään suoraan</strong> (<em>abort</em>), jolloin Rust lopettaa ohjelman ilman siivousta.</p>
+<p>Keskeytystilan avulla ohjelman käyttämä muisti siivotaan käyttöjärjestelmän toimesta. Jos haluat tehdä binääritiedostosta mahdollisimman pienen, voit vaihtaa purkamisen keskeytykseen lisäämällä seuraavan asetuksen <em>Cargo.toml</em>-tiedostoon:</p>
+<pre><code class="language-toml">[profile.release]
+panic = 'abort'
+</code></pre>
+</section>
+<h3 id="panic-makron-kutsuminen"><a class="header" href="#panic-makron-kutsuminen"><code>panic!</code>-makron kutsuminen</a></h3>
+<p>Tarkastellaan yksinkertaista ohjelmaa, joka kutsuu <code>panic!</code>-makroa:</p>
+<pre><pre class="playground"><code class="language-rust should_panic panics edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch09-error-handling/no-listing-01-panic/src/main.rs}}
+<span class="boring">}</span></code></pre></pre>
+<p>Kun ohjelma ajetaan, tulos näyttää tältä:</p>
+<pre><code class="language-console">{{#include ../listings/ch09-error-handling/no-listing-01-panic/output.txt}}
+</code></pre>
+<p>Viimeiset kaksi riviä sisältävät <code>panic!</code>-viestin ja virheen sijainnin (<em>src/main.rs:2:5</em> tarkoittaa <em>src/main.rs</em>-tiedoston toista riviä, viidettä merkkiä).</p>
+<p>Jos <code>panic!</code> tapahtuu kirjastokoodissa, virheviesti voi näyttää tuntemattomalta. Voimme käyttää <strong>pinojäljitystä</strong> (<em>backtrace</em>) selvittääksemme, missä virhe tapahtui.</p>
+<h3 id="panic-ja-pinojäljitys"><a class="header" href="#panic-ja-pinojäljitys"><code>panic!</code> ja pinojäljitys</a></h3>
+<p>Katsotaan esimerkkiä, jossa ohjelma yrittää käyttää taulukon rajojen ulkopuolista indeksiä:</p>
+<pre><pre class="playground"><code class="language-rust should_panic panics edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch09-error-handling/listing-09-01/src/main.rs}}
+<span class="boring">}</span></code></pre></pre>
+<p>Tässä yritämme käyttää <strong>100. alkiota</strong>, mutta vektorissa on vain <strong>kolme</strong> alkiota. Tämä johtaa <code>panic!</code>-tilaan, koska Rust ei voi palauttaa kelvollista arvoa. Toisin kuin C-kielessä, jossa muistialueen ulkopuolinen luku voi aiheuttaa <strong>määrittelemätöntä käyttäytymistä</strong> (<em>undefined behavior</em>), Rust estää tällaiset tilanteet pysäyttämällä ohjelman.</p>
+<p>Jos ajamme ohjelman, virhe näyttää tältä:</p>
+<pre><code class="language-console">{{#include ../listings/ch09-error-handling/listing-09-01/output.txt}}
+</code></pre>
+<p>Virheilmoitus osoittaa virheellisen indeksin käytön ohjelman <em>main.rs</em>-tiedoston <strong>rivillä 4</strong>.</p>
+<p>Rust tarjoaa <strong>pinojäljityksen</strong>, jonka avulla voi nähdä, mitkä funktiot johtivat <code>panic!</code>-kutsuun. Voit ottaa sen käyttöön asettamalla ympäristömuuttujan <code>RUST_BACKTRACE=1</code>:</p>
+<pre><code class="language-console">$ RUST_BACKTRACE=1 cargo run
+</code></pre>
+<p>Tuloste näyttää jotain tämän kaltaista:</p>
+<pre><code class="language-console">stack backtrace:
+   0: rust_begin_unwind
+             at /rustc/.../library/std/src/panicking.rs:692:5
+   1: core::panicking::panic_fmt
+             at /rustc/.../library/core/src/panicking.rs:75:14
+   2: core::panicking::panic_bounds_check
+             at /rustc/.../library/core/src/panicking.rs:273:5
+   3: &lt;usize as core::slice::index::SliceIndex&lt;[T]&gt;&gt;::index
+             at /rustc/.../library/core/src/slice/index.rs:274:10
+   4: panic::main
+             at ./src/main.rs:4:6
+</code></pre>
+<p>Pinojäljityksessä tärkein rivi on <strong>src/main.rs:4:6</strong>, koska se osoittaa virheen sijainnin omassa koodissamme. Tämän tiedon avulla voimme korjata virheen estämällä taulukon rajojen ylityksen.</p>
+<p>Rust estää useita muistivirheitä, joita esiintyy muissa kielissä, kuten <strong>buffer overread</strong> -haavoittuvuuksia. Jos yritämme käyttää olematonta taulukon kohtaa, Rust <strong>pysäyttää ohjelman</strong>, jotta virhe ei aiheuttaisi tietoturvaongelmia.</p>
+<hr />
+<p>Seuraavaksi tarkastelemme, miten <strong>palautettavat virheet</strong> voidaan käsitellä käyttäen <code>Result&lt;T, E&gt;</code>-tyyppiä.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="ch09-00-error-handling.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="ch09-02-recoverable-errors-with-result.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="ch09-00-error-handling.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="ch09-02-recoverable-errors-with-result.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="ferris.js"></script>
+
+
+    </div>
+    </body>
+</html>

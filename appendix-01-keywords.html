@@ -1,0 +1,301 @@
+<!DOCTYPE HTML>
+<html lang="fi" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>A - Keywords - Rust-ohjelmointikieli</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="ferris.css">
+        <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rust-ohjelmointikieli</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/rust-lang/book" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2 id="liite-a-avainsanat"><a class="header" href="#liite-a-avainsanat">Liite A: Avainsanat</a></h2>
+<p>Seuraava luettelo sisältää avainsanoja, jotka ovat varattuina Rust-kielelle joko nykyiseen tai tulevaan käyttöön. Näitä ei voi käyttää tunnisteina (paitsi raakatunnisteina, kuten käsitellään kohdassa “<a href="#raw-identifiers">Raakatunnisteet</a><!-- ignore -->”).<br />
+Tunnisteet ovat nimiä, joita käytetään funktioissa, muuttujissa, parametreissa, rakenteiden kentissä, moduleissa, paketeissa, vakioissa, makroissa, staattisissa arvoissa, attribuuteissa, tyypeissä, rajapinnoissa (traits) tai elinaikojen hallinnassa.</p>
+<h3 id="käytössä-olevat-avainsanat"><a class="header" href="#käytössä-olevat-avainsanat">Käytössä olevat avainsanat</a></h3>
+<p>Seuraava on lista tällä hetkellä käytössä olevista avainsanoista ja niiden toiminnoista:</p>
+<ul>
+<li><code>as</code> - suorittaa primitiivisen tyypin muunnoksen, määrittää tietyn rajapinnan sisältävän kohteen tai uudelleennimeää kohteita <code>use</code>-lausunnoissa</li>
+<li><code>async</code> - palauttaa <code>Future</code>-olion estämättä nykyistä säiettä</li>
+<li><code>await</code> - keskeyttää suorituksen, kunnes <code>Future</code>-olion tulos on valmis</li>
+<li><code>break</code> - poistuu silmukasta välittömästi</li>
+<li><code>const</code> - määrittää vakioita tai vakio-osoittimia</li>
+<li><code>continue</code> - jatkaa seuraavaan silmukka-iteraatioon</li>
+<li><code>crate</code> - moduulipolussa viittaa paketin juureen</li>
+<li><code>dyn</code> - mahdollistaa dynaamisen viittaamisen rajapintaolioihin</li>
+<li><code>else</code> - varavaihtoehto <code>if</code>- ja <code>if let</code> -rakenteille</li>
+<li><code>enum</code> - määrittää luettelotyypin</li>
+<li><code>extern</code> - linkittää ulkoiseen funktioon tai muuttujaan</li>
+<li><code>false</code> - looginen epätosi-vakio</li>
+<li><code>fn</code> - määrittää funktion tai funktioviittauksen tyypin</li>
+<li><code>for</code> - käy läpi iteraattorista saatuja arvoja, toteuttaa rajapinnan tai määrittää korkeatasoisen eliniän</li>
+<li><code>if</code> - suorittaa ehdollisen haarautumisen</li>
+<li><code>impl</code> - toteuttaa sisäänrakennettua tai rajapinnan funktioita</li>
+<li><code>in</code> - osa <code>for</code>-silmukan syntaksia</li>
+<li><code>let</code> - sitoo muuttujan</li>
+<li><code>loop</code> - suorittaa silmukan loputtomasti</li>
+<li><code>match</code> - vertailee arvoa eri kaavoihin</li>
+<li><code>mod</code> - määrittää moduulin</li>
+<li><code>move</code> - siirtää sulkeuman muuttujat omistukseen</li>
+<li><code>mut</code> - määrittää muuttuvuuden viittauksissa, osoittimissa tai sidonnoissa</li>
+<li><code>pub</code> - määrittää näkyvyyden julkiseksi rakenteiden kentissä, <code>impl</code>-lohkoissa tai moduleissa</li>
+<li><code>ref</code> - sitoo muuttujan viittauksena</li>
+<li><code>return</code> - palauttaa funktion suorituksesta</li>
+<li><code>Self</code> - viittaa tämänhetkiseen tyyppiin, jota määritellään tai toteutetaan</li>
+<li><code>self</code> - viittaa metodin kohteeseen tai nykyiseen moduuliin</li>
+<li><code>static</code> - määrittää globaalin muuttujan tai arvon, joka säilyy ohjelman suoritusajan läpi</li>
+<li><code>struct</code> - määrittää rakenteen</li>
+<li><code>super</code> - viittaa nykyisen moduulin ylämoduuliin</li>
+<li><code>trait</code> - määrittää rajapinnan</li>
+<li><code>true</code> - looginen tosi-vakio</li>
+<li><code>type</code> - määrittää tyyppialiasin tai assosioidun tyypin</li>
+<li><code>union</code> - määrittää <a href="../reference/items/unions.html">unionin</a><!-- ignore -->; tämä on avainsana vain unionin yhteydessä</li>
+<li><code>unsafe</code> - merkitsee turvattoman koodin, funktion, rajapinnan tai toteutuksen</li>
+<li><code>use</code> - tuo symboleja näkyviin; tarkentaa kaappauksia geneerisille ja elinikärajoille</li>
+<li><code>where</code> - määrittää ehdot, jotka rajoittavat tyyppiä</li>
+<li><code>while</code> - suorittaa ehdollisen silmukan</li>
+</ul>
+<h3 id="tulevaisuuden-varatut-avainsanat"><a class="header" href="#tulevaisuuden-varatut-avainsanat">Tulevaisuuden varatut avainsanat</a></h3>
+<p>Seuraavat avainsanat eivät vielä ole käytössä, mutta ne on varattu Rustin mahdolliseen tulevaan käyttöön:</p>
+<ul>
+<li><code>abstract</code></li>
+<li><code>become</code></li>
+<li><code>box</code></li>
+<li><code>do</code></li>
+<li><code>final</code></li>
+<li><code>gen</code></li>
+<li><code>macro</code></li>
+<li><code>override</code></li>
+<li><code>priv</code></li>
+<li><code>try</code></li>
+<li><code>typeof</code></li>
+<li><code>unsized</code></li>
+<li><code>virtual</code></li>
+<li><code>yield</code></li>
+</ul>
+<h3 id="raakatunnisteet"><a class="header" href="#raakatunnisteet">Raakatunnisteet</a></h3>
+<p><strong>Raakatunnisteet</strong> ovat syntaksi, jonka avulla voit käyttää avainsanoja tunnisteina siellä, missä niitä normaalisti ei sallittaisi. Raakatunniste muodostetaan lisäämällä avainsanan eteen <code>r#</code>-etuliite.</p>
+<p>Esimerkiksi <code>match</code> on avainsana. Jos yrität kääntää seuraavan funktion, joka käyttää <code>match</code>-sanaa funktion nimenä:</p>
+<pre><code class="language-rust ignore does_not_compile">fn match(needle: &amp;str, haystack: &amp;str) -&gt; bool {
+    haystack.contains(needle)
+}</code></pre>
+<p>Saat seuraavan virheilmoituksen:</p>
+<pre><code class="language-text">error: expected identifier, found keyword `match`
+ --&gt; src/main.rs:4:4
+  |
+4 | fn match(needle: &amp;str, haystack: &amp;str) -&gt; bool {
+  |    ^^^^^ expected identifier, found keyword
+</code></pre>
+<p>Virhe kertoo, että et voi käyttää <code>match</code>-sanaa funktion nimenä. Tämän voi kuitenkin kiertää käyttämällä raakatunnisteita:</p>
+<pre><pre class="playground"><code class="language-rust edition2024">fn r#match(needle: &amp;str, haystack: &amp;str) -&gt; bool {
+    haystack.contains(needle)
+}
+
+fn main() {
+    assert!(r#match("foo", "foobar"));
+}</code></pre></pre>
+<p>Tämä koodi kääntyy ilman virheitä. Huomaa <code>r#</code>-etuliite sekä funktion määrittelyssä että sen kutsussa <code>main</code>-funktiossa.</p>
+<p>Raakatunnisteet mahdollistavat minkä tahansa sanan käytön tunnisteena, vaikka sana olisi muuten varattu avainsanaksi. Tämä antaa ohjelmoijalle enemmän vapautta valita muuttujien ja funktioiden nimet sekä helpottaa integraatiota muiden ohjelmointikielten kanssa, joissa nämä sanat eivät ole avainsanoja. Lisäksi raakatunnisteet mahdollistavat erilaisten Rust-versioiden yhteensopivuuden. Esimerkiksi <code>try</code> ei ollut avainsana Rust 2015 -versiossa, mutta siitä tuli sellainen Rust 2018, 2021 ja 2024 -versioissa. Jos riippuvuus käyttää vanhempaa Rust-versiota, saatat joutua käyttämään raakatunnistetta (<code>r#try</code>) kutsuessasi sen funktioita. Katso lisää tietoa Rustin eri versioista kohdasta <a href="appendix-05-editions.html">Liite E</a><!-- ignore -->.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="appendix-00.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="appendix-02-operators.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="appendix-00.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="appendix-02-operators.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="ferris.js"></script>
+
+
+    </div>
+    </body>
+</html>

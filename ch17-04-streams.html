@@ -1,0 +1,439 @@
+<!DOCTYPE HTML>
+<html lang="fi" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Streams: Futures peräkkäin - Rust-ohjelmointikieli</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="ferris.css">
+        <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rust-ohjelmointikieli</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/rust-lang/book" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2 id="streamit-futuurit-peräkkäin"><a class="header" href="#streamit-futuurit-peräkkäin">Streamit: futuurit peräkkäin</a></h2>
+<!-- Old headings. Do not remove or links may break. -->
+<p><a id="streams"></a></p>
+<p>Tähän mennessä tässä luvussa olemme pitäytyneet pääosin yksittäisissä futuureissa. Yksi suuri poikkeus oli käyttämämme asynkroninen kanava. Muistatko, kuinka käytimme asynkronisen kanavamme vastaanotinta aikaisemmin tässä luvussa <a href="ch17-02-concurrency-with-async.html#message-passing">”Viestinvälitys”</a><!-- ignore --> -osiossa. Asynkroninen <code>recv</code>-metodi tuottaa ajan mittaan sarjan kohteita. Tämä on esimerkki paljon yleisemmästä mallista, jota kutsutaan <em>streamiksi</em>.</p>
+<p>Näimme kohteiden sarjan jo luvussa 13, kun tarkastelimme <code>Iterator</code>-traitia <a href="ch13-02-iterators.html#the-iterator-trait-and-the-next-method">Iterator-traitissa ja <code>next</code>-metodissa</a><!-- ignore
+--> -osiossa, mutta iteraattoreiden ja asynkronisen kanavan vastaanottimen välillä on kaksi eroa. Ensimmäinen ero on aika: iteraattorit ovat synkronisia, kun taas kanavan vastaanotin on asynkroninen. Toinen ero on API. Kun työskentelemme suoraan <code>Iterator</code>-tyypin kanssa, kutsumme sen synkronista <code>next</code>-metodia. Erityisesti <code>trpl::Receiver</code>-streamin kanssa kutsuimme sen sijaan asynkronista <code>recv</code>-metodia. Muuten nämä API:t tuntuvat hyvin samankaltaisilta, eikä tämä samankaltaisuus ole sattumaa. Stream on kuin iteraation asynkroninen muoto. Vaikka <code>trpl::Receiver</code> odottaa nimenomaan viestien vastaanottamista, yleiskäyttöinen stream-API on paljon laajempi: se tarjoaa seuraavan kohteen samalla tavalla kuin <code>Iterator</code>, mutta asynkronisesti.</p>
+<p>Iteraattoreiden ja streamien samankaltaisuus Rustissa tarkoittaa, että voimme itse asiassa luoda streamin mistä tahansa iteraattorista. Kuten iteraattorin kanssa, voimme työskennellä streamin kanssa kutsumalla sen <code>next</code>-metodia ja odottamalla sitten tulosta, kuten listauksessa 17-30.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch17-async-await/listing-17-30/src/main.rs:stream}}</code></pre>
+<figcaption>Listing 17-30: Streamin luominen iteraattorista ja sen arvojen tulostaminen</figcaption>
+</figure>
+<p>Aloitamme numerotaulukosta, jonka muunnamme iteraattoriksi ja jolle kutsumme <code>map</code>-metodia kaikkien arvojen kaksinkertaistamiseksi. Sitten muunnamme iteraattorin streamiksi <code>trpl::stream_from_iter</code>-funktiolla. Seuraavaksi käymme läpi streamin kohteita niiden saapuessa <code>while let</code> -silmukassa.</p>
+<p>Valitettavasti kun yritämme ajaa koodin, se ei käänny, vaan raportoi, ettei <code>next</code>-metodia ole saatavilla:</p>
+<!-- manual-regeneration
+cd listings/ch17-async-await/listing-17-30
+cargo build
+copy only the error output
+-->
+<pre><code class="language-console">error[E0599]: no method named `next` found for struct `Iter` in the current scope
+  --&gt; src/main.rs:10:40
+   |
+10 |         while let Some(value) = stream.next().await {
+   |                                        ^^^^
+   |
+   = note: the full type name has been written to '/Users/chris/dev/rust-lang/book/main/listings/ch17-async-await/listing-17-30/target/debug/deps/async_await-575db3dd3197d257.long-type-14490787947592691573.txt'
+   = note: consider using `--verbose` to print the full type name to the console
+   = help: items from traits can only be used if the trait is in scope
+help: the following traits which provide `next` are implemented but not in scope; perhaps you want to import one of them
+   |
+1  + use crate::trpl::StreamExt;
+   |
+1  + use futures_util::stream::stream::StreamExt;
+   |
+1  + use std::iter::Iterator;
+   |
+1  + use std::str::pattern::Searcher;
+   |
+help: there is a method `try_next` with a similar name
+   |
+10 |         while let Some(value) = stream.try_next().await {
+   |                                        ~~~~~~~~
+</code></pre>
+<p>Kuten tämä tuloste selittää, kääntäjävirheen syy on se, että tarvitsemme oikean traitin näkyvyysalueelle voidaksemme käyttää <code>next</code>-metodia. Tähänastisen keskustelumme perusteella saatat kohtuullisesti odottaa, että kyseinen trait olisi <code>Stream</code>, mutta se on itse asiassa <code>StreamExt</code>. Lyhenne sanasta <em>extension</em>, <code>Ext</code> on yleinen malli Rust-yhteisössä yhden traitin laajentamiseen toisella.</p>
+<p>Käsittelemme <code>Stream</code>- ja <code>StreamExt</code>-traitteja hieman tarkemmin luvun lopussa, mutta toistaiseksi sinun tarvitsee tietää vain, että <code>Stream</code>-trait määrittelee matalan tason rajapinnan, joka yhdistää käytännössä <code>Iterator</code>- ja <code>Future</code>-traitit. <code>StreamExt</code> tarjoaa korkeamman tason API-joukon <code>Stream</code>-traitin päälle, mukaan lukien <code>next</code>-metodin sekä muita apumetodeja, jotka ovat samankaltaisia kuin <code>Iterator</code>-traitin tarjoamat. <code>Stream</code> ja <code>StreamExt</code> eivät ole vielä osa Rustin standardikirjastoa, mutta useimmat ekosysteemin kirjastot käyttävät samaa määritelmää.</p>
+<p>Korjaus kääntäjävirheeseen on lisätä <code>use</code>-lause <code>trpl::StreamExt</code>-traitille, kuten listauksessa 17-31.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch17-async-await/listing-17-31/src/main.rs:all}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 17-31: Iteraattorin käyttäminen onnistuneesti streamin pohjana</figcaption>
+</figure>
+<p>Kun kaikki nämä osat on koottu yhteen, koodi toimii haluamallamme tavalla! Lisäksi nyt kun <code>StreamExt</code> on näkyvyysalueella, voimme käyttää kaikkia sen apumetodeja aivan kuten iteraattoreiden kanssa. Esimerkiksi listauksessa 17-32 käytämme <code>filter</code>-metodia suodattaaksemme pois kaiken paitsi kolmen ja viiden monikerrat.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch17-async-await/listing-17-32/src/main.rs:all}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 17-32: Streamin suodattaminen <code>StreamExt::filter</code>-metodilla</figcaption>
+</figure>
+<p>Tämä ei tietenkään ole kovin mielenkiintoista, koska voisimme tehdä saman tavallisilla iteraattoreilla ilman mitään asynkronisuutta. Katsotaan, mitä voimme tehdä, mikä <em>on</em> streamien ainutlaatuista.</p>
+<h3 id="streamien-yhdistäminen"><a class="header" href="#streamien-yhdistäminen">Streamien yhdistäminen</a></h3>
+<p>Monet käsitteet voidaan luonnollisesti esittää streameina: jonoon tulevat kohteet, tiedostojärjestelmästä inkrementaalisesti haetut datapalat, kun koko aineisto on liian suuri tietokoneen muistiin, tai ajan mittaan saapuva verkkodata. Koska streamit ovat futuureja, voimme käyttää niitä minkä tahansa muun futuurin kanssa ja yhdistellä niitä mielenkiintoisilla tavoilla. Voimme esimerkiksi kerätä tapahtumia erissä välttääksemme liian monta verkkokutsua, asettaa aikakatkaisuja pitkään kestäville operaatiosarjoille tai rajoittaa käyttöliittymän tapahtumia välttääksemme turhaa työtä.</p>
+<p>Aloitetaan rakentamalla pieni viestistream, joka toimii sijaisena WebSocketista tai muusta reaaliaikaisesta viestintäprotokollasta saatavalle datavirralle, kuten listauksessa 17-33 näytetään.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch17-async-await/listing-17-33/src/main.rs:all}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 17-33: <code>rx</code>-vastaanottimen käyttäminen <code>ReceiverStream</code>-tyyppinä</figcaption>
+</figure>
+<p>Ensin luomme funktion nimeltä <code>get_messages</code>, joka palauttaa <code>impl Stream&lt;Item = String&gt;</code>. Toteutuksessaan se luo asynkronisen kanavan, käy läpi englannin aakkosten ensimmäiset 10 kirjainta ja lähettää ne kanavan yli.</p>
+<p>Käytämme myös uutta tyyppiä: <code>ReceiverStream</code>, joka muuntaa <code>trpl::channel</code>-kanavan <code>rx</code>-vastaanottimen <code>Stream</code>-tyypiksi, jolla on <code>next</code>-metodi. Takaisin <code>main</code>-funktiossa käytämme <code>while let</code> -silmukkaa tulostaaksemme kaikki streamin viestit.</p>
+<p>Kun ajamme tämän koodin, saamme juuri odottamamme tulokset:</p>
+<!-- Not extracting output because changes to this output aren't significant;
+the changes are likely to be due to the threads running differently rather than
+changes in the compiler -->
+<pre><code class="language-text">Message: 'a'
+Message: 'b'
+Message: 'c'
+Message: 'd'
+Message: 'e'
+Message: 'f'
+Message: 'g'
+Message: 'h'
+Message: 'i'
+Message: 'j'
+</code></pre>
+<p>Voisimme tehdä tämän tavallisella <code>Receiver</code>-API:lla tai jopa tavallisella <code>Iterator</code>-API:lla, joten lisätään ominaisuus, joka vaatii streameja: aikakatkaisu, joka koskee jokaista streamin kohdetta, ja viive lähettämiimme kohteisiin, kuten listauksessa 17-34.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch17-async-await/listing-17-34/src/main.rs:timeout}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 17-34: <code>StreamExt::timeout</code>-metodin käyttö streamin kohteille asetettuna aikarajana</figcaption>
+</figure>
+<p>Aloitamme lisäämällä aikakatkaisun streamille <code>timeout</code>-metodilla, joka tulee <code>StreamExt</code>-traitista. Sitten päivitämme <code>while let</code> -silmukan rungon, koska stream palauttaa nyt <code>Result</code>-tyypin. <code>Ok</code>-variantti tarkoittaa, että viesti saapui ajoissa; <code>Err</code>-variantti tarkoittaa, että aikakatkaisu ehti kulua umpeen ennen kuin viesti saapui. Teemme <code>match</code>-lausekkeen tuloksen perusteella ja joko tulostamme viestin onnistuneen vastaanoton jälkeen tai tulostamme ilmoituksen aikakatkaisusta. Lopuksi huomaa, että kiinnitämme viestit sen jälkeen, kun olemme asettaneet niille aikakatkaisun, koska aikakatkaisuapuri tuottaa streamin, joka täytyy kiinnittää pollattavaksi.</p>
+<p>Koska viestien välillä ei kuitenkaan ole viiveitä, tämä aikakatkaisu ei muuta ohjelman käyttäytymistä. Lisätään lähettämiimme viesteihin vaihteleva viive, kuten listauksessa 17-35.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch17-async-await/listing-17-35/src/main.rs:messages}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 17-35: Viestien lähettäminen <code>tx</code>-kanavan kautta asynkronisella viiveellä tekemättä <code>get_messages</code>-funktiosta asynkronista funktiota</figcaption>
+</figure>
+<p><code>get_messages</code>-funktiossa käytämme <code>enumerate</code>-iteraattorimetodia <code>messages</code>-taulukon kanssa, jotta saamme jokaisen lähettämämme kohteen indeksin itse kohteen ohella. Sitten asetamme parillisen indeksin kohteille 100 millisekunnin viiveen ja parittoman indeksin kohteille 300 millisekunnin viiveen simuloidaksemme erilaisia viiveitä, joita saattaisimme nähdä todellisessa viestivirrassa. Koska aikakatkaisumme on 200 millisekuntia, tämän pitäisi vaikuttaa puoleen viesteistä.</p>
+<p>Jotta voimme nukkua viestien välillä <code>get_messages</code>-funktiossa estämättä suoritusta, meidän täytyy käyttää asynkronisuutta. Emme kuitenkaan voi tehdä <code>get_messages</code>-funktiosta itseään asynkronista funktiota, koska silloin palauttaisimme <code>Future&lt;Output = Stream&lt;Item = String&gt;&gt;</code> eikä <code>Stream&lt;Item = String&gt;&gt;</code>. Kutsujan täytyisi odottaa <code>get_messages</code>-funktiota itseään päästäkseen streamiin käsiksi. Muista kuitenkin: kaikki tietyssä futuurissa tapahtuu lineaarisesti; rinnakkaisuus tapahtuu futuurien <em>välillä</em>. <code>get_messages</code>-funktion odottaminen vaatisi sen lähettämään kaikki viestit, mukaan lukien univiiveen jokaisen viestin välillä, ennen kuin vastaanottimestream palautetaan. Tämän seurauksena aikakatkaisu olisi hyödytön. Streamissä itsessään ei olisi viiveitä; ne kaikki tapahtuisivat ennen kuin stream olisi edes saatavilla.</p>
+<p>Sen sijaan jätämme <code>get_messages</code>-funktion tavalliseksi funktioksi, joka palauttaa streamin, ja luomme tehtävän käsittelemään asynkroniset <code>sleep</code>-kutsut.</p>
+<blockquote>
+<p>Huom: <code>spawn_task</code>-kutsu toimii tällä tavalla, koska olemme jo asettaneet ajoaikamme; jos emme olisi, se aiheuttaisi paniikin. Muut toteutukset tekevät erilaisia kompromisseja: ne saattavat luoda uuden ajoaikamallin ja välttää paniikin, mutta joutua hieman ylimääräiseen yleiskustannukseen, tai ne eivät ehkä tarjoa erillistä tapaa luoda tehtäviä ilman viittausta ajoaikaan. Varmista, että tiedät, minkä kompromissin ajoaikasi on valinnut, ja kirjoita koodisi sen mukaisesti!</p>
+</blockquote>
+<p>Nyt koodimme tuottaa paljon mielenkiintoisemman tuloksen. Joka toisen viestiparin välissä näkyy <code>Problem: Elapsed(())</code> -virhe.</p>
+<!-- Not extracting output because changes to this output aren't significant;
+the changes are likely to be due to the threads running differently rather than
+changes in the compiler -->
+<pre><code class="language-text">Message: 'a'
+Problem: Elapsed(())
+Message: 'b'
+Message: 'c'
+Problem: Elapsed(())
+Message: 'd'
+Message: 'e'
+Problem: Elapsed(())
+Message: 'f'
+Message: 'g'
+Problem: Elapsed(())
+Message: 'h'
+Message: 'i'
+Problem: Elapsed(())
+Message: 'j'
+</code></pre>
+<p>Aikakatkaisu ei estä viestejä saapumasta lopulta. Saamme silti kaikki alkuperäiset viestit, koska kanavamme on <em>rajoittamaton</em>: se voi pitää sisällään niin monta viestiä kuin muistiin mahtuu. Jos viesti ei saavu ennen aikakatkaisua, streamin käsittelijämme huomioi sen, mutta kun se pollaa streamia uudelleen, viesti on ehkä nyt saapunut.</p>
+<p>Voit saada erilaista käyttäytymistä tarvittaessa käyttämällä muita kanavatyyppejä tai yleisemmin muita streamityyppejä. Katsotaan yhtä niistä käytännössä yhdistämällä aikavälistream tämän viestistreamin kanssa.</p>
+<h3 id="streamien-sulauttaminen"><a class="header" href="#streamien-sulauttaminen">Streamien sulauttaminen</a></h3>
+<p>Ensin luodaan toinen stream, joka tuottaa kohteen joka millisekunti, jos annamme sen ajaa suoraan. Yksinkertaisuuden vuoksi voimme käyttää <code>sleep</code>-funktiota viestin lähettämiseen viiveellä ja yhdistää sen samaan lähestymistapaan, jota käytimme <code>get_messages</code>-funktiossa streamin luomiseksi kanavasta. Ero on, että tällä kertaa lähetämme takaisin kuluneiden aikavälien määrän, joten palautustyyppi on <code>impl Stream&lt;Item = u32&gt;</code>, ja voimme kutsua funktiota <code>get_intervals</code> (katso listausta 17-36).</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch17-async-await/listing-17-36/src/main.rs:intervals}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 17-36: Streamin luominen laskurilla, joka lähetetään kerran millisekunnissa</figcaption>
+</figure>
+<p>Aloitamme määrittelemällä <code>count</code>-muuttujan tehtävässä. (Voimme määritellä sen tehtävän ulkopuolellakin, mutta on selkeämpää rajoittaa minkä tahansa muuttujan näkyvyysalue.) Sitten luomme äärettömän silmukan. Jokaisella silmukan kierroksella nukumme asynkronisesti yhden millisekunnin, kasvatamme laskuria ja lähetämme sen kanavan yli. Koska tämä kaikki on kääritty <code>spawn_task</code>-funktion luomaan tehtävään, kaikki tämä — mukaan lukien ääretön silmukka — siivotaan ajoaikamallin mukana.</p>
+<p>Tällainen ääretön silmukka, joka päättyy vain kun koko ajoaikamalli puretaan, on melko yleinen asynkronisessa Rustissa: monien ohjelmien täytyy jatkua loputtomasti. Asynkronisuudella tämä ei estä mitään muuta, kunhan jokaisella silmukan kierroksella on vähintään yksi odotuspiste.</p>
+<p>Nyt takaisin <code>main</code>-funktion asynkronisessa lohkossa voimme yrittää yhdistää <code>messages</code>- ja <code>intervals</code>-streamit, kuten listauksessa 17-37.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch17-async-await/listing-17-37/src/main.rs:main}}</code></pre>
+<figcaption>Listing 17-37: Yritys yhdistää <code>messages</code>- ja <code>intervals</code>-streamit</figcaption>
+</figure>
+<p>Aloitamme kutsumalla <code>get_intervals</code>-funktiota. Sitten yhdistämme <code>messages</code>- ja <code>intervals</code>-streamit <code>merge</code>-metodilla, joka yhdistää useita streameja yhdeksi streamiksi, joka tuottaa kohteita mistä tahansa lähdestreamistä heti kun ne ovat saatavilla, asettamatta mitään erityistä järjestystä. Lopuksi käymme läpi tuon yhdistetyn streamin <code>messages</code>-streamin sijaan.</p>
+<p>Tässä vaiheessa kumpikaan <code>messages</code> eikä <code>intervals</code> tarvitse olla kiinnitetty tai muuttuva, koska molemmat yhdistetään yhdeksi <code>merged</code>-streamiksi. Tämä <code>merge</code>-kutsu ei kuitenkaan käänny! (Eikä <code>next</code>-kutsu <code>while let</code> -silmukassa, mutta palaamme siihen.) Syy on se, että kahdella streamilla on eri tyypit. <code>messages</code>-streamin tyyppi on <code>Timeout&lt;impl Stream&lt;Item = String&gt;&gt;</code>, missä <code>Timeout</code> on tyyppi, joka toteuttaa <code>Stream</code>-traitin <code>timeout</code>-kutsulle. <code>intervals</code>-streamin tyyppi on <code>impl Stream&lt;Item = u32&gt;</code>. Näiden kahden streamin yhdistämiseksi meidän täytyy muuntaa toinen vastaamaan toista. Muokkaamme <code>intervals</code>-streamia, koska <code>messages</code> on jo haluamassamme perusmuodossa ja sen täytyy käsitellä aikakatkaisuvirheitä (katso listausta 17-38).</p>
+<!-- We cannot directly test this one, because it never stops. -->
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch17-async-await/listing-17-38/src/main.rs:main}}</code></pre>
+<figcaption>Listing 17-38: <code>intervals</code>-streamin tyypin yhteensovittaminen <code>messages</code>-streamin tyypin kanssa</figcaption>
+</figure>
+<p>Ensin voimme käyttää <code>map</code>-apumetodia muuntaaksemme <code>intervals</code>-streamin merkkijonoksi. Toiseksi meidän täytyy vastata <code>messages</code>-streamin <code>Timeout</code>-tyyppiä. Koska emme kuitenkaan <em>halua</em> aikakatkaisua <code>intervals</code>-streamille, voimme luoda aikakatkaisun, joka on pidempi kuin muut käyttämämme kestot. Tässä luomme 10 sekunnin aikakatkaisun <code>Duration::from_secs(10)</code>-funktiolla. Lopuksi meidän täytyy tehdä <code>stream</code>-muuttujasta muuttuva, jotta <code>while let</code> -silmukan <code>next</code>-kutsut voivat iteroida streamin läpi, ja kiinnittää se, jotta se on turvallista. Se vie meidät <em>melkein</em> sinne, minne meidän täytyy päästä. Kaikki tyypit tarkistuvat. Jos ajat tämän, on kuitenkin kaksi ongelmaa. Ensinnäkin se ei koskaan pysähdy! Sinun täytyy pysäyttää se näppäinyhdistelmällä <span class="keystroke">ctrl-c</span>. Toiseksi englannin aakkosten viestit hautautuvat kaikkien aikaväilaskuriviestien joukkoon:</p>
+<!-- Not extracting output because changes to this output aren't significant;
+the changes are likely to be due to the tasks running differently rather than
+changes in the compiler -->
+<pre><code class="language-text">--snip--
+Interval: 38
+Interval: 39
+Interval: 40
+Message: 'a'
+Interval: 41
+Interval: 42
+Interval: 43
+--snip--
+</code></pre>
+<p>Listausta 17-39 näyttää yhden tavan ratkaista nämä kaksi viimeistä ongelmaa.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch17-async-await/listing-17-39/src/main.rs:throttle}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 17-39: <code>throttle</code>- ja <code>take</code>-metodien käyttö yhdistettyjen streamien hallintaan</figcaption>
+</figure>
+<p>Ensin käytämme <code>throttle</code>-metodia <code>intervals</code>-streamissä, jotta se ei ylikuormita <code>messages</code>-streamia. <em>Rajoittaminen</em> (<em>throttling</em>) on tapa rajoittaa funktion kutsumistiheyttä — tai tässä tapauksessa sitä, kuinka usein streamia pollataan. Kerran 100 millisekunnissa pitäisi riittää, koska se on suunnilleen se tahti, jolla viestimme saapuvat.</p>
+<p>Rajoittaaksemme streamista hyväksymiemme kohteiden määrää, käytämme <code>take</code>-metodia <code>merged</code>-streamissä, koska haluamme rajoittaa lopullista tulosta, emme vain yhtä streamia tai toista.</p>
+<p>Nyt kun ajamme ohjelman, se pysähtyy 20 kohteen haun jälkeen streamista, eikä aikavälit ylikuormita viestejä. Emme myöskään saa <code>Interval: 100</code> tai <code>Interval: 200</code> ja niin edelleen, vaan saamme <code>Interval: 1</code>, <code>Interval: 2</code> ja niin edelleen — vaikka meillä on lähdestream, joka <em>voi</em> tuottaa tapahtuman joka millisekunti. Syy on se, että <code>throttle</code>-kutsu tuottaa uuden streamin, joka käärii alkuperäisen streamin niin, että alkuperäistä streamia pollataan vain rajoitusnopeudella, ei sen omalla ”alkuperäisellä” nopeudella. Meillä ei ole joukkoa käsittelemättömiä aikaväliviestejä, joita valitsisimme sivuuttaa. Sen sijaan emme koskaan tuota näitä aikaväliviestejä ensinkään! Tämä on Rustin futuurien luontainen ”laiskuus” taas käytössä, antaen meille mahdollisuuden valita suorituskykyominaisuutemme.</p>
+<!-- Not extracting output because changes to this output aren't significant;
+the changes are likely to be due to the threads running differently rather than
+changes in the compiler -->
+<pre><code class="language-text">Interval: 1
+Message: 'a'
+Interval: 2
+Interval: 3
+Problem: Elapsed(())
+Interval: 4
+Message: 'b'
+Interval: 5
+Message: 'c'
+Interval: 6
+Interval: 7
+Problem: Elapsed(())
+Interval: 8
+Message: 'd'
+Interval: 9
+Message: 'e'
+Interval: 10
+Interval: 11
+Problem: Elapsed(())
+Interval: 12
+</code></pre>
+<p>Meidän täytyy vielä käsitellä yksi asia: virheet! Molemmissa näistä kanavapohjaisista streameista <code>send</code>-kutsut voivat epäonnistua, kun kanavan toinen puoli sulkeutuu — ja se riippuu vain siitä, miten ajoaikamalli suorittaa streamin muodostavat futuurit. Tähän asti olemme sivuuttaneet tämän mahdollisuuden kutsumalla <code>unwrap</code>, mutta hyvin käyttäytyvässä sovelluksessa meidän pitäisi käsitellä virhe eksplisiittisesti, vähintään lopettamalla silmukka, jotta emme yritä lähettää enempää viestejä. Listausta 17-40 näyttää yksinkertaisen virhestrategian: tulosta ongelma ja <code>break</code> silmukoista.</p>
+<figure class="listing">
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch17-async-await/listing-17-40/src/main.rs:errors}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 17-40: Virheiden käsittely ja silmukoiden sammuttaminen</figcaption>
+</figure>
+<p>Kuten tavallisesti, oikea tapa käsitellä viestin lähetysvirhe vaihtelee; varmista vain, että sinulla on strategia.</p>
+<p>Nyt kun olemme nähneet paljon asynkronisuutta käytännössä, otetaan askel taaksepäin ja syvennytään muutamaan yksityiskohtaan siitä, miten <code>Future</code>, <code>Stream</code> ja muut keskeiset traitit, joita Rust käyttää asynkronisuuden toteuttamiseen, toimivat.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="ch17-03-more-futures.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="ch17-05-traits-for-async.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="ch17-03-more-futures.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="ch17-05-traits-for-async.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="ferris.js"></script>
+
+
+    </div>
+    </body>
+</html>

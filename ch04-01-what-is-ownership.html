@@ -1,0 +1,569 @@
+<!DOCTYPE HTML>
+<html lang="fi" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Mikä on omistajuus? - Rust-ohjelmointikieli</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="ferris.css">
+        <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rust-ohjelmointikieli</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/rust-lang/book" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2 id="mikä-on-omistajuus"><a class="header" href="#mikä-on-omistajuus">Mikä on omistajuus?</a></h2>
+<p><em>Omistajuus</em> on joukko sääntöjä, jotka määräävät, miten Rust-ohjelma hallitsee muistia.
+Kaikki ohjelmat joutuvat hallitsemaan muistinkäyttöään suorituksen aikana.
+Joissakin kielissä on roskienkerääjä, joka säännöllisesti vapauttaa käyttämättömän muistin ohjelman suorittaessa;
+toisissa kielissä ohjelmoijan on itse varattava ja vapautettava muisti manuaalisesti.
+Rust käyttää kolmatta lähestymistapaa: muisti hallitaan omistajuusjärjestelmällä, jonka sääntöjä kääntäjä tarkistaa.
+Jos sääntöjä rikotaan, ohjelma ei käänny.
+Omistajuuden ominaisuudet eivät hidasta ohjelman suorittamista.</p>
+<p>Koska omistajuus on monille ohjelmoijille uusi käsite, sen omaksuminen vie aikaa.
+Hyvä uutinen on, että mitä enemmän harjoittelet Rustia ja sen omistajuussääntöjä,
+sitä helpommaksi turvallisen ja tehokkaan koodin kirjoittaminen tulee.
+Jatka harjoittelua!</p>
+<p>Kun ymmärrät omistajuuden, sinulla on vahva pohja Rustin ainutlaatuisten ominaisuuksien ymmärtämiselle.
+Tässä luvussa opit omistajuudesta käyttämällä esimerkkejä hyvin yleisestä tietorakenteesta:
+merkkijonoista.</p>
+<section class="note" aria-role="note">
+<h3 id="pino-ja-keko"><a class="header" href="#pino-ja-keko">Pino ja keko</a></h3>
+<p>Monissa ohjelmointikielissä ei tarvitse ajatella pinon ja keon käyttöä kovin usein.
+Järjestelmäohjelmointikielessä kuten Rustissa sen sijaan sillä, onko arvo pinossa vai keossa,
+on vaikutusta kielen käyttäytymiseen ja siihen, miksi tiettyjä päätöksiä täytyy tehdä.
+Omistajuuden osia kuvataan myöhemmin tässä luvussa pinon ja keon suhteessa,
+joten tässä on lyhyt selitys valmistautumiseksi.</p>
+<p>Sekä pino että keko ovat osia muistista, joita koodisi voi käyttää suorituksen aikana,
+mutta ne on rakennettu eri tavoin. Pino tallentaa arvot siinä järjestyksessä, jossa ne saapuvat,
+ja poistaa arvot päinvastaisessa järjestyksessä. Tätä kutsutaan <em>viimeisenä sisään, ensimmäisenä ulos</em> -periaatteeksi.
+Ajattele lautasten pinoa: kun lisäät lautasia, laitat ne pinon päälle, ja kun tarvitset lautasen,
+otat yhden pinon päältä. Lautasten lisääminen tai poistaminen pinon keskeltä tai pohjalta ei toimisi yhtä hyvin!
+Tietojen lisäämistä kutsutaan <em>työntämiseksi pinolle</em>, ja tietojen poistamista <em>poistamiseksi pinolta</em>.
+Kaikilla pinolla säilytetyillä tiedoilla täytyy olla tunnettu, kiinteä koko.
+Tiedot, joiden koko ei ole tiedossa käännösaikana tai joiden koko voi muuttua, täytyy sen sijaan tallentaa kekoon.</p>
+<p>Keko on vähemmän jäsennelty: kun laitat tietoa kekoon, pyydät tietyn määrän tilaa.
+Muistin allokoija etsii keosta riittävän tyhjän kohdan, merkitsee sen käytössä olevaksi
+ja palauttaa <em>osoittimen</em>, joka on kyseisen sijainnin osoite. Tätä prosessia kutsutaan
+<em>allokoinniksi keossa</em>, ja sitä lyhennetään joskus pelkäksi <em>allokoinniksi</em>
+(arvojen työntäminen pinolle ei katsota allokoinniksi).
+Koska osoitin kekoon on tunnetun, kiinteän kokoinen, voit tallentaa osoittimen pinolle,
+mutta kun tarvitset varsinaiset tiedot, sinun täytyy seurata osoitinta.
+Ajattele ravintolaa: kun saavut, kerrot ryhmäsi koon, ja isäntä etsii tyhjän pöydän,
+johon kaikki mahtuvat, ja ohjaa teidät sinne. Jos joku ryhmästäsi saapuu myöhässä,
+hän voi kysyä, mihin olette istuneet, löytääkseen teidät.</p>
+<p>Pinolle työntäminen on nopeampaa kuin allokointi keossa, koska allokoijan ei tarvitse
+etsiä paikkaa uusille tiedoille; paikka on aina pinon huipulla.
+Verrattuna siihen allokointi keossa vaatii enemmän työtä, koska allokoijan täytyy ensin
+löytää riittävän suuri tila tiedoille ja sitten tehdä kirjanpitoa seuraavaa allokointia varten.</p>
+<p>Kekoon tallennettujen tietojen käyttö on hitaampaa kuin pinolla olevien tietojen käyttö,
+koska sinun täytyy seurata osoitinta päästäksesi perille. Nykyaikaiset prosessorit ovat nopeampia,
+jos ne eivät hyppivät muistissa niin paljon. Jatkamalla vertauskuvaa: ajattele tarjoilijaa,
+joka ottaa tilauksia useilta pöydiltä. Tehokkainta on ottaa kaikki tilaukset yhdeltä pöydältä
+ennen siirtymistä seuraavaan. Tilauksen ottaminen pöydältä A, sitten pöydältä B, sitten taas A:sta
+ja taas B:stä olisi paljon hitaampi prosessi. Samoin prosessori tekee työnsä paremmin,
+jos se käsittelee tietoja, jotka ovat lähellä toisiaan (kuten pinolla) eivätkä kauempana (kuten keossa voi olla).</p>
+<p>Kun koodisi kutsuu funktiota, funktiolle välitetyt arvot (mukaan lukien mahdollisesti osoittimet
+keon tietoihin) ja funktion paikalliset muuttujat työnnetään pinolle.
+Kun funktio päättyy, nämä arvot poistetaan pinolta.</p>
+<p>Seuranta siitä, mitkä koodin osat käyttävät mitäkin keon tietoja, keon päällekkäisten tietojen
+määrän minimointi ja käyttämättömien keon tietojen siivoaminen, jotta tila ei lopu,
+ovat kaikki ongelmia, joita omistajuus ratkaisee. Kun ymmärrät omistajuuden, sinun ei tarvitse
+ajatella pinon ja keon käyttöä kovin usein, mutta tieto siitä, että omistajuuden pääasiallinen
+tarkoitus on hallita keon tietoja, auttaa ymmärtämään, miksi se toimii niin kuin se toimii.</p>
+</section>
+<h3 id="omistajuussäännöt"><a class="header" href="#omistajuussäännöt">Omistajuussäännöt</a></h3>
+<p>Ensinnäkin tarkastellaan omistajuuden sääntöjä. Muista nämä säännöt, kun käsittelemme niitä havainnollistavia esimerkkejä:</p>
+<ul>
+<li>Jokaisella arvolla Rustissa on <em>omistaja</em>.</li>
+<li>Vain yksi omistaja voi olla kerrallaan.</li>
+<li>Kun omistaja poistuu näkyvyysalueelta, arvo poistetaan.</li>
+</ul>
+<h3 id="muuttujan-näkyvyysalue"><a class="header" href="#muuttujan-näkyvyysalue">Muuttujan näkyvyysalue</a></h3>
+<p>Nyt kun olemme käyneet läpi Rustin perussyntaksia, emme sisällytä kaikkiin esimerkkeihin <code>fn main() {</code> -koodia,
+joten jos seuraat mukana, varmista, että sijoitat seuraavat esimerkit <code>main</code>-funktion sisään manuaalisesti.
+Näin esimerkkimme ovat hieman tiiviimpiä, jotta voimme keskittyä varsinaisiin yksityiskohtiin
+eikä pohjakoodiin.</p>
+<p>Ensimmäisenä omistajuusesimerkkinä tarkastelemme joidenkin muuttujien <em>näkyvyysaluetta</em>.
+Näkyvyysalue on ohjelman osa, jossa kohde on voimassa. Tarkastele seuraavaa muuttujaa:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let s = "hello";
+<span class="boring">}</span></code></pre></pre>
+<p>Muuttuja <code>s</code> viittaa merkkijonoliteraaliin, jossa merkkijonon arvo on kovakoodattu ohjelman tekstiin.
+Muuttuja on voimassa siitä hetkestä, jolloin se on määritelty, nykyisen <em>näkyvyysalueen</em> loppuun asti.
+Listaus 4-1 näyttää ohjelman, jossa kommenteissa on merkitty, missä muuttuja <code>s</code> olisi voimassa.</p>
+<figure class="listing">
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch04-understanding-ownership/listing-04-01/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 4-1: Muuttuja ja näkyvyysalue, jolla se on voimassa</figcaption>
+</figure>
+<p>Toisin sanoen tässä on kaksi tärkeää ajankohtaa:</p>
+<ul>
+<li>Kun <code>s</code> <em>tulee</em> näkyvyysalueelle, se on voimassa.</li>
+<li>Se pysyy voimassa, kunnes se <em>poistuu</em> näkyvyysalueelta.</li>
+</ul>
+<p>Tässä vaiheessa näkyvyysalueen ja muuttujien voimassaolon välinen suhde on samanlainen kuin muissa ohjelmointikielissä.
+Rakennamme tämän ymmärryksen päälle esittelemällä <code>String</code>-tyypin.</p>
+<h3 id="string-tyyppi"><a class="header" href="#string-tyyppi"><code>String</code>-tyyppi</a></h3>
+<p>Omistajuussääntöjen havainnollistamiseksi tarvitsemme monimutkaisemman tietotyypin kuin ne,
+jotka käsittelimme Luvun 3 <a href="ch03-02-data-types.html#data-types">”Tietotyypit”</a><!-- ignore --> -osiossa.
+Aiemmin käsitellyt tyypit ovat tunnetun kokoisia, ne voidaan tallentaa pinolle ja poistaa pinolta,
+kun niiden näkyvyysalue päättyy, ja ne voidaan nopeasti ja helposti kopioida uudeksi, riippumattomaksi
+instanssiksi, jos koodin toinen osa tarvitsee saman arvon eri näkyvyysalueella.
+Haluamme kuitenkin tarkastella kekoon tallennettuja tietoja ja tutkia, miten Rust tietää,
+milloin siivota nämä tiedot, ja <code>String</code>-tyyppi on erinomainen esimerkki.</p>
+<p>Keskitymme <code>String</code>-tyypin osiin, jotka liittyvät omistajuuteen. Nämä näkökohdat pätevät myös
+muihin monimutkaisiin tietotyyppeihin, olivatpa ne standardikirjaston tarjoamia tai itse luomiasi.
+Käsittelemme <code>String</code>-tyyppiä tarkemmin <a href="ch08-02-strings.html">Luvussa 8</a><!-- ignore -->.</p>
+<p>Olemme jo nähneet merkkijonoliteraaleja, joissa merkkijonoarvo on kovakoodattu ohjelmaamme.
+Merkkijonoliteraalit ovat käteviä, mutta ne eivät sovi kaikkiin tilanteisiin, joissa haluamme käyttää tekstiä.
+Yksi syy on, että ne ovat muuttumattomia. Toinen on, että kaikkia merkkijonoarvoja ei voida tietää,
+kun kirjoitamme koodiamme: esimerkiksi jos haluamme ottaa käyttäjän syötteen ja tallentaa sen?
+Näihin tilanteisiin Rustissa on toinen merkkijonotyyppi, <code>String</code>. Tämä tyyppi hallitsee kekoon allokoituja tietoja
+ja voi siksi tallentaa tekstimäärän, joka ei ole tiedossa käännösaikana. Voit luoda <code>String</code>-tyypin
+merkkijonoliteraalista <code>from</code>-funktiolla näin:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let s = String::from("hello");
+<span class="boring">}</span></code></pre></pre>
+<p>Kaksoispiste <code>::</code> -operaattori antaa meidän nimetä tämän tietyn <code>from</code>-funktion <code>String</code>-tyypin alle
+sen sijaan, että käyttäisimme jotain nimeä kuten <code>string_from</code>. Käsittelemme tätä syntaksia tarkemmin
+Luvun 5 <a href="ch05-03-method-syntax.html#method-syntax">”Metodisyntaksi”</a><!-- ignore --> -osiossa ja kun puhumme nimiavaruuksista moduuleilla
+Luvun 7 <a href="ch07-03-paths-for-referring-to-an-item-in-the-module-tree.html">”Polut viittaamiseen moduulipuun kohteeseen”</a><!-- ignore --> -osiossa.</p>
+<p>Tämänkaltainen merkkijono <em>voidaan</em> muuttaa:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch04-understanding-ownership/no-listing-01-can-mutate-string/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<p>Eli mikä ero täällä on? Miksi <code>String</code> voidaan muuttaa mutta literaaleja ei?
+Ero on siinä, miten nämä kaksi tyyppiä käsittelevät muistia.</p>
+<h3 id="muisti-ja-allokointi"><a class="header" href="#muisti-ja-allokointi">Muisti ja allokointi</a></h3>
+<p>Merkkijonoliteraalin tapauksessa tiedämme sisällön käännösaikana, joten teksti kovakoodataan suoraan
+lopulliseen suoritettavaan tiedostoon. Siksi merkkijonoliteraalit ovat nopeita ja tehokkaita.
+Nämä ominaisuudet johtuvat kuitenkin merkkijonoliteraalin muuttumattomuudesta.
+Valitettavasti emme voi laittaa muistipätkää binääritiedostoon jokaiselle tekstiosalle,
+jonka koko ei ole tiedossa käännösaikana ja jonka koko voi muuttua ohjelman suorituksen aikana.</p>
+<p><code>String</code>-tyypin tapauksessa muuttuvan, kasvavan tekstin tukemiseksi meidän täytyy allokoida kekoon
+tietty määrä muistia, joka ei ole tiedossa käännösaikana, sisällön säilyttämiseksi. Tämä tarkoittaa:</p>
+<ul>
+<li>Muisti täytyy pyytää muistin allokoijalta suorituksen aikana.</li>
+<li>Tarvitsemme tavan palauttaa tämä muisti allokoijalle, kun olemme valmiita <code>String</code>-tyypin kanssa.</li>
+</ul>
+<p>Ensimmäisen osan teemme itse: kun kutsumme <code>String::from</code>, sen toteutus pyytää tarvitsemansa muistin.
+Tämä on melkein yleispätevää kaikissa ohjelmointikielissä.</p>
+<p>Toinen osa on kuitenkin erilainen. Kielissä, joissa on <em>roskienkerääjä (GC)</em>,
+GC seuraa ja siivoaa muistin, jota ei enää käytetä, emmekä meidän tarvitse ajatella sitä.
+Useimmissa kielissä ilman GC:tä vastuullamme on tunnistaa, milloin muistia ei enää käytetä,
+ja kutsua koodia vapauttamaan se eksplisiittisesti, aivan kuten teimme pyytäessämme sitä.
+Tämän tekeminen oikein on historiallisesti ollut vaikea ohjelmointiongelma.
+Jos unohdamme, tuhlaamme muistia. Jos teemme sen liian aikaisin, meillä on virheellinen muuttuja.
+Jos teemme sen kahdesti, sekin on bugi. Meidän täytyy yhdistää täsmälleen yksi <code>allocate</code> täsmälleen yhteen <code>free</code>-kutsuun.</p>
+<p>Rust valitsee eri polun: muisti palautetaan automaattisesti, kun muuttujan, joka omistaa sen, näkyvyysalue päättyy.
+Tässä on versio näkyvyysalueesimerkistämme Listauksesta 4-1 käyttäen <code>String</code>-tyyppiä merkkijonoliteraalin sijaan:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch04-understanding-ownership/no-listing-02-string-scope/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<p>On luonnollinen kohta, jossa voimme palauttaa <code>String</code>-tyypin tarvitseman muistin allokoijalle:
+kun <code>s</code> poistuu näkyvyysalueelta. Kun muuttuja poistuu näkyvyysalueelta, Rust kutsuu erityistä funktiota puolestamme.
+Tätä funktiota kutsutaan <a href="../std/ops/trait.Drop.html#tymethod.drop"><code>drop</code></a><!-- ignore --> -funktioksi, ja siihen <code>String</code>-tyypin tekijä voi sijoittaa
+koodin muistin palauttamiseksi. Rust kutsuu <code>drop</code>-funktiota automaattisesti sulkevassa aaltosulussa.</p>
+<blockquote>
+<p>Huom: C++:ssa tätä resurssien vapauttamisen mallia kohteen elinkaaren lopussa kutsutaan joskus
+<em>Resource Acquisition Is Initialization (RAII)</em> -malliksi. Rustin <code>drop</code>-funktio on tuttu sinulle,
+jos olet käyttänyt RAII-malleja.</p>
+</blockquote>
+<p>Tällä mallilla on syvällinen vaikutus siihen, miten Rust-koodia kirjoitetaan.
+Se saattaa vaikuttaa yksinkertaiselta nyt, mutta koodin käyttäytyminen voi olla odottamatonta
+monimutkaisemmissa tilanteissa, kun haluamme useiden muuttujien käyttävän kekoon allokoimiamme tietoja.
+Tutkitaan joitakin näistä tilanteista nyt.</p>
+<!-- Old heading. Do not remove or links may break. -->
+<p><a id="ways-variables-and-data-interact-move"></a></p>
+<h4 id="muuttujien-ja-tietojen-vuorovaikutus-siirron-move-kautta"><a class="header" href="#muuttujien-ja-tietojen-vuorovaikutus-siirron-move-kautta">Muuttujien ja tietojen vuorovaikutus siirron (move) kautta</a></h4>
+<p>Useat muuttujat voivat vuorovaikuttaa samojen tietojen kanssa eri tavoin Rustissa.
+Tarkastellaan esimerkkiä kokonaisluvulla Listauksessa 4-2.</p>
+<figure class="listing">
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch04-understanding-ownership/listing-04-02/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 4-2: Kokonaisluvun arvon <code>x</code> sitominen muuttujaan <code>y</code></figcaption>
+</figure>
+<p>Voimme todennäköisesti arvata, mitä tämä tekee: ”sido arvo <code>5</code> muuttujaan <code>x</code>; tee sitten kopio arvosta <code>x</code>:ssä ja sido se muuttujaan <code>y</code>.”
+Meillä on nyt kaksi muuttujaa, <code>x</code> ja <code>y</code>, ja molemmat ovat <code>5</code>. Näin todellakin tapahtuu, koska kokonaisluvut
+ovat yksinkertaisia arvoja tunnetulla, kiinteällä koolla, ja nämä kaksi <code>5</code>-arvoa työnnetään pinolle.</p>
+<p>Tarkastellaan nyt <code>String</code>-versiota:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch04-understanding-ownership/no-listing-03-string-move/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<p>Tämä näyttää hyvin samankaltaiselta, joten voisimme olettaa, että se toimisi samalla tavalla:
+toinen rivi tekisi kopion arvosta <code>s1</code>:ssä ja sitoisi sen <code>s2</code>:een. Mutta näin ei aivan tapahdu.</p>
+<p>Katso Kuvaa 4-1 nähdäksesi, mitä <code>String</code>-tyypille tapahtuu konepellin alla. <code>String</code> koostuu kolmesta osasta,
+jotka näkyvät vasemmalla: osoitin muistiin, joka sisältää merkkijonon sisällön, pituus ja kapasiteetti.
+Tämä tietoryhmä tallennetaan pinolle. Oikealla on keon muisti, joka sisältää sisällön.</p>
+<p><img alt="Two tables: the first table contains the representation of s1 on the
+stack, consisting of its length (5), capacity (5), and a pointer to the first
+value in the second table. The second table contains the representation of the
+string data on the heap, byte by byte." src="img/trpl04-01.svg" class="center"
+style="width: 50%;" /></p>
+<p><span class="caption">Kuva 4-1: <code>String</code>-tyypin esitys muistissa, kun se sisältää arvon <code>"hello"</code> ja on sidottu <code>s1</code>:een</span></p>
+<p>Pituus on se, kuinka paljon muistia tavussa <code>String</code>-tyypin sisältö tällä hetkellä käyttää.
+Kapasiteetti on kokonaismäärä muistia tavuina, jonka <code>String</code> on saanut allokoijalta.
+Ero pituuden ja kapasiteetin välillä on merkityksellinen, mutta ei tässä kontekstissa,
+joten toistaiseksi kapasiteetin voi jättää huomiotta.</p>
+<p>Kun sidomme <code>s1</code>:n <code>s2</code>:een, <code>String</code>-tyypin tiedot kopioidaan, eli kopioimme pinolla olevan osoittimen,
+pituuden ja kapasiteetin. Emme kopioi keon tietoja, joihin osoitin viittaa. Toisin sanoen
+tietojen esitys muistissa näyttää Kuvalta 4-2.</p>
+<p><img alt="Three tables: tables s1 and s2 representing those strings on the
+stack, respectively, and both pointing to the same string data on the heap."
+src="img/trpl04-02.svg" class="center" style="width: 50%;" /></p>
+<p><span class="caption">Kuva 4-2: Muuttujan <code>s2</code> esitys muistissa, jolla on kopio <code>s1</code>:n osoittimesta, pituudesta ja kapasiteetista</span></p>
+<p>Esitys <em>ei</em> näytä Kuvalta 4-3, miltä muisti näyttäisi, jos Rust kopioisi myös keon tiedot.
+Jos Rust tekisi näin, operaatio <code>s2 = s1</code> voisi olla erittäin kallis suorituskyvyn kannalta,
+jos keon tiedot olisivat suuria.</p>
+<p><img alt="Four tables: two tables representing the stack data for s1 and s2,
+and each points to its own copy of string data on the heap."
+src="img/trpl04-03.svg" class="center" style="width: 50%;" /></p>
+<p><span class="caption">Kuva 4-3: Toinen mahdollisuus sille, mitä <code>s2 = s1</code> voisi tehdä, jos Rust kopioisi myös keon tiedot</span></p>
+<p>Aiemmin sanoin, että kun muuttuja poistuu näkyvyysalueelta, Rust kutsuu automaattisesti <code>drop</code>-funktion
+ja siivoaa kyseisen muuttujan keon muistin. Kuva 4-2 kuitenkin näyttää molempien tietojen osoittimien
+osoittavan samaan sijaintiin. Tämä on ongelma: kun <code>s2</code> ja <code>s1</code> poistuvat näkyvyysalueelta,
+ne yrittävät molemmat vapauttaa saman muistin. Tätä kutsutaan <em>kaksoisvapautus</em>-virheeksi,
+ja se on yksi aiemmin mainituista muistiturvallisuusbugeista. Muistin vapauttaminen kahdesti
+voi johtaa muistin korruptoitumiseen, mikä voi puolestaan johtaa tietoturva-aukkoja.</p>
+<p>Muistiturvallisuuden varmistamiseksi rivin <code>let s2 = s1;</code> jälkeen Rust pitää <code>s1</code>:tä
+enää voimassa olemattomana. Siksi Rustin ei tarvitse vapauttaa mitään, kun <code>s1</code> poistuu näkyvyysalueelta.
+Katso, mitä tapahtuu, kun yrität käyttää <code>s1</code>:tä <code>s2</code>:n luomisen jälkeen; se ei toimi:</p>
+<pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch04-understanding-ownership/no-listing-04-cant-use-after-move/src/main.rs:here}}</code></pre>
+<p>Saat virheen, joka on tämänkaltainen, koska Rust estää sinua käyttämästä mitätöityä viitettä:</p>
+<pre><code class="language-console">{{#include ../listings/ch04-understanding-ownership/no-listing-04-cant-use-after-move/output.txt}}
+</code></pre>
+<p>Jos olet kuullut termit <em>pinnallinen kopiointi</em> ja <em>syvä kopiointi</em> työskennellessäsi muiden kielten kanssa,
+käsite osoittimen, pituuden ja kapasiteetin kopioimisesta kopioimatta tietoja kuulostaa todennäköisesti
+pinnalliselta kopioinnilta. Koska Rust myös mitätöi ensimmäisen muuttujan, sitä ei kutsuta pinnalliseksi
+kopioinniksi vaan <em>siirroksi</em> (move). Tässä esimerkissä sanoisimme, että <code>s1</code> <em>siirrettiin</em> <code>s2</code>:een.
+Eli mitä todella tapahtuu, näkyy Kuvassa 4-4.</p>
+<p><img alt="Three tables: tables s1 and s2 representing those strings on the
+stack, respectively, and both pointing to the same string data on the heap.
+Table s1 is grayed out be-cause s1 is no longer valid; only s2 can be used to
+access the heap data." src="img/trpl04-04.svg" class="center" style="width:
+50%;" /></p>
+<p><span class="caption">Kuva 4-4: Esitys muistissa sen jälkeen, kun <code>s1</code> on mitätöity</span></p>
+<p>Tämä ratkaisee ongelmamme! Kun vain <code>s2</code> on voimassa, se yksin vapauttaa muistin poistuessaan näkyvyysalueelta, ja olemme valmiita.</p>
+<p>Lisäksi tässä on implisiittinen suunnittelupäätös: Rust ei koskaan luo automaattisesti tietojesi ”syviä” kopioita.
+Siksi voidaan olettaa, että mikä tahansa <em>automaattinen</em> kopiointi on suorituskyvyn kannalta edullista.</p>
+<h4 id="näkyvyysalue-ja-sijoitus"><a class="header" href="#näkyvyysalue-ja-sijoitus">Näkyvyysalue ja sijoitus</a></h4>
+<p>Tämän käänteinen on totta myös näkyvyysalueen, omistajuuden ja <code>drop</code>-funktion kautta vapautetun muistin suhteen.
+Kun sijoitat täysin uuden arvon olemassa olevaan muuttujaan, Rust kutsuu <code>drop</code>-funktion ja vapauttaa alkuperäisen arvon muistin välittömästi.
+Tarkastele esimerkiksi tätä koodia:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch04-understanding-ownership/no-listing-04b-replacement-drop/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<p>Määrittelemme aluksi muuttujan <code>s</code> ja sidomme sen <code>String</code>-tyyppiin arvolla <code>"hello"</code>.
+Sitten luomme heti uuden <code>String</code>-tyypin arvolla <code>"ahoy"</code> ja sijoitamme sen <code>s</code>:ään.
+Tässä vaiheessa mikään ei enää viittaa alkuperäiseen keon arvoon.</p>
+<p><img alt="One table s representing the string value on the stack, pointing to
+the second piece of string data (ahoy) on the heap, with the original string
+data (hello) grayed out because it cannot be accessed anymore."
+src="img/trpl04-05.svg"
+class="center"
+style="width: 50%;"
+/></p>
+<p><span class="caption">Kuva 4-5: Esitys muistissa sen jälkeen, kun alkuperäinen arvo on korvattu kokonaan.</span></p>
+<p>Alkuperäinen merkkijono poistuu siis välittömästi näkyvyysalueelta. Rust suorittaa <code>drop</code>-funktion sille,
+ja sen muisti vapautetaan heti. Kun tulostamme arvon lopussa, se on <code>"ahoy, world!"</code>.</p>
+<!-- Old heading. Do not remove or links may break. -->
+<p><a id="ways-variables-and-data-interact-clone"></a></p>
+<h4 id="muuttujien-ja-tietojen-vuorovaikutus-kloonauksen-clone-kautta"><a class="header" href="#muuttujien-ja-tietojen-vuorovaikutus-kloonauksen-clone-kautta">Muuttujien ja tietojen vuorovaikutus kloonauksen (clone) kautta</a></h4>
+<p>Jos <em>haluamme</em> kopioida <code>String</code>-tyypin keon tiedot syvästi, eikä vain pinon tietoja,
+voimme käyttää yleistä <code>clone</code>-metodia. Käsittelemme metodisyntaksia Luvussa 5,
+mutta koska metodit ovat yleisiä monissa ohjelmointikielissä, olet todennäköisesti nähnyt ne aiemmin.</p>
+<p>Tässä on esimerkki <code>clone</code>-metodista käytössä:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch04-understanding-ownership/no-listing-05-clone/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<p>Tämä toimii hyvin ja tuottaa eksplisiittisesti Kuvassa 4-3 näytetyn käyttäytymisen, jossa keon tiedot <em>todella</em> kopioidaan.</p>
+<p>Kun näet <code>clone</code>-kutsun, tiedät, että jotain mielivaltaista koodia suoritetaan ja se koodi voi olla kallista.
+Se on visuaalinen merkki siitä, että jotain erilaista on meneillään.</p>
+<h4 id="vain-pinolla-olevat-tiedot-copy"><a class="header" href="#vain-pinolla-olevat-tiedot-copy">Vain pinolla olevat tiedot: Copy</a></h4>
+<p>Meillä on vielä yksi mutka, josta emme ole puhuneet. Tämä koodi kokonaisluvuilla — osa näytettiin Listauksessa 4-2 — toimii ja on kelvollinen:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch04-understanding-ownership/no-listing-06-copy/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<p>Mutta tämä koodi näyttää ristiriitaiselta sen suhteen, mitä juuri opimme: meillä ei ole <code>clone</code>-kutsua,
+mutta <code>x</code> on silti voimassa eikä sitä siirretty <code>y</code>:hyn.</p>
+<p>Syy on, että tyypit kuten kokonaisluvut, joiden koko on tiedossa käännösaikana, tallennetaan kokonaan pinolle,
+joten varsinaisten arvojen kopiot ovat nopeita tehdä. Tämä tarkoittaa, ettei ole syytä estää <code>x</code>:ää
+olemassa muuttujan <code>y</code> luomisen jälkeen. Toisin sanoen syvän ja pinnallisen kopioinnin välillä ei ole eroa tässä,
+joten <code>clone</code>-kutsu ei tekisi mitään erilaista tavalliseen pinnalliseen kopiointiin verrattuna, ja voimme jättää sen pois.</p>
+<p>Rustissa on erityinen annotaatio nimeltä <code>Copy</code>-trait, jonka voimme sijoittaa pinolla tallennettuihin tyyppeihin,
+kuten kokonaisluvut (puhumme traiteista tarkemmin <a href="ch10-02-traits.html">Luvussa 10</a><!-- ignore -->).
+Jos tyyppi toteuttaa <code>Copy</code>-traitin, sitä käyttävät muuttujat eivät siirry vaan kopioidaan triviaalisti,
+joten ne ovat edelleen voimassa toiseen muuttujaan sijoittamisen jälkeen.</p>
+<p>Rust ei anna meidän annotoida tyyppiä <code>Copy</code>:lla, jos tyyppi tai jokin sen osista on toteuttanut <code>Drop</code>-traitin.
+Jos tyypille täytyy tapahtua jotain erityistä, kun arvo poistuu näkyvyysalueelta, ja lisäämme <code>Copy</code>-annotaation kyseiseen tyyppiin,
+saamme käännösaikaisen virheen. Opit lisäämään <code>Copy</code>-annotaation omaan tyyppiisi traitin toteuttamiseksi
+liitteessä C kohdassa <a href="appendix-03-derivable-traits.html">”Johdettavat traitit”</a><!-- ignore -->.</p>
+<p>Mitä tyypit toteuttavat <code>Copy</code>-traitin? Voit tarkistaa tietyn tyypin dokumentaatiosta varmuuden vuoksi,
+mutta yleissääntönä mikä tahansa yksinkertaisten skalaariarvojen ryhmä voi toteuttaa <code>Copy</code>:n,
+eikä mikään, mikä vaatii allokointia tai on jonkinlainen resurssi, voi toteuttaa <code>Copy</code>:tä.
+Tässä on joitakin <code>Copy</code>:n toteuttavia tyyppejä:</p>
+<ul>
+<li>Kaikki kokonaislukutyypit, kuten <code>u32</code>.</li>
+<li>Totuusarvotyyppi <code>bool</code> arvoilla <code>true</code> ja <code>false</code>.</li>
+<li>Kaikki liukulukutyypit, kuten <code>f64</code>.</li>
+<li>Merkkityyppi <code>char</code>.</li>
+<li>Tuplet, jos ne sisältävät vain tyyppejä, jotka myös toteuttavat <code>Copy</code>:n. Esimerkiksi
+<code>(i32, i32)</code> toteuttaa <code>Copy</code>:n, mutta <code>(i32, String)</code> ei.</li>
+</ul>
+<h3 id="omistajuus-ja-funktiot"><a class="header" href="#omistajuus-ja-funktiot">Omistajuus ja funktiot</a></h3>
+<p>Arvon välittämisen mekaniikka funktiolle on samanlainen kuin arvon sijoittaminen muuttujaan.
+Muuttujan välittäminen funktiolle siirtää tai kopioi sen, aivan kuten sijoitus. Listaus 4-3 sisältää esimerkin,
+jossa on annotaatioita siitä, missä muuttujat tulevat näkyvyysalueelle ja poistuvat sieltä.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch04-understanding-ownership/listing-04-03/src/main.rs}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 4-3: Funktiot omistajuus- ja näkyvyysaluekommentein</figcaption>
+</figure>
+<p>Jos yrittäisimme käyttää <code>s</code>:tä <code>takes_ownership</code>-kutsun jälkeen, Rust antaisi käännösaikaisen virheen.
+Nämä staattiset tarkistukset suojaavat meitä virheiltä. Kokeile lisätä <code>main</code>-funktioon koodia, joka käyttää <code>s</code>:tä ja <code>x</code>:ää,
+nähdäksesi missä voit käyttää niitä ja missä omistajuussäännöt estävät sen.</p>
+<h3 id="paluuarvot-ja-näkyvyysalue"><a class="header" href="#paluuarvot-ja-näkyvyysalue">Paluuarvot ja näkyvyysalue</a></h3>
+<p>Paluuarvot voivat myös siirtää omistajuutta. Listaus 4-4 näyttää esimerkin funktiosta, joka palauttaa arvon,
+samankaltaisilla annotaatioilla kuin Listauksessa 4-3.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch04-understanding-ownership/listing-04-04/src/main.rs}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 4-4: Paluuarvojen omistajuuden siirtäminen</figcaption>
+</figure>
+<p>Muuttujan omistajuus noudattaa samaa kaavaa joka kerta: arvon sijoittaminen toiseen muuttujaan siirtää sen.
+Kun muuttuja, joka sisältää keon tietoja, poistuu näkyvyysalueelta, <code>drop</code> siivoaa arvon,
+ellei tietojen omistajuutta ole siirretty toiseen muuttujaan.</p>
+<p>Vaikka tämä toimii, omistajuuden ottaminen ja palauttaminen jokaisella funktiolla on hieman työlästä.
+Entä jos haluamme antaa funktion käyttää arvoa ottamatta omistajuutta? On ärsyttävää, että kaiken mitä välitämme sisään
+täytyy myös välittää takaisin, jos haluamme käyttää sitä uudelleen, lisäksi mihin tahansa funktion rungosta tulevaan dataan,
+jonka haluamme ehkä palauttaa.</p>
+<p>Rust antaa meidän palauttaa useita arvoja tuplen avulla, kuten Listauksessa 4-5 näytetään.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch04-understanding-ownership/listing-04-05/src/main.rs}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 4-5: Parametrien omistajuuden palauttaminen</figcaption>
+</figure>
+<p>Mutta tämä on liikaa seremoniaa ja työtä käsitteelle, jonka pitäisi olla yleinen.
+Onneksi Rustissa on ominaisuus arvon käyttämiseen siirtämättä omistajuutta, nimeltä <em>viitteet</em>.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="ch04-00-understanding-ownership.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="ch04-02-references-and-borrowing.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="ch04-00-understanding-ownership.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="ch04-02-references-and-borrowing.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="ferris.js"></script>
+
+
+    </div>
+    </body>
+</html>

@@ -1,0 +1,293 @@
+<!DOCTYPE HTML>
+<html lang="fi" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Testien organisointi - Rust-ohjelmointikieli</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="ferris.css">
+        <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rust-ohjelmointikieli</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/rust-lang/book" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2 id="testien-organisointi"><a class="header" href="#testien-organisointi">Testien organisointi</a></h2>
+<p>Kuten luvun alussa mainittiin, testaus on monimutkainen ala, ja eri ihmiset käyttävät eri terminologiaa ja organisointia. Rust-yhteisö ajattelee testejä kahden pääkategorian kautta: yksikkötestit ja integraatiotestit. <em>Yksikkötestit</em> ovat pieniä ja keskittyneempiä, testaavat yhden moduulin erillään kerrallaan ja voivat testata yksityisiä rajapintoja. <em>Integraatiotestit</em> ovat täysin kirjastosi ulkopuolella ja käyttävät koodiasi samalla tavalla kuin mikä tahansa muu ulkoinen koodi, käyttäen vain julkista rajapintaa ja mahdollisesti testaten useita moduuleja per testi.</p>
+<p>Molempien testityyppien kirjoittaminen on tärkeää varmistaaksesi, että kirjastosi osat toimivat odottamallasi tavalla erikseen ja yhdessä.</p>
+<h3 id="yksikkötestit"><a class="header" href="#yksikkötestit">Yksikkötestit</a></h3>
+<p>Yksikkötestien tarkoitus on testata jokainen koodin yksikkö erillään muusta koodista, jotta voit nopeasti paikantaa, missä koodi toimii ja missä ei odotetulla tavalla. Sijoitat yksikkötestit <em>src</em>-hakemistoon kuhunkin tiedostoon, jossa on testattava koodi. Käytäntö on luoda jokaiseen tiedostoon <code>tests</code>-niminen moduuli testifunktioita varten ja merkitä moduuli <code>cfg(test)</code>:llä.</p>
+<h4 id="testimoduuli-ja-cfgtest"><a class="header" href="#testimoduuli-ja-cfgtest">Testimoduuli ja <code>#[cfg(test)]</code></a></h4>
+<p><code>#[cfg(test)]</code>-annotaatio <code>tests</code>-moduulissa kertoo Rustille kääntämään ja ajamaan testikoodin vain, kun ajat <code>cargo test</code>:in, ei kun ajat <code>cargo build</code>:in. Tämä säästää käännösaikaa, kun haluat vain rakentaa kirjaston, ja säästää tilaa lopullisessa käännettyssä artefaktissa, koska testit eivät sisälly siihen. Näet, että koska integraatiotestit sijoitetaan eri hakemistoon, ne eivät tarvitse <code>#[cfg(test)]</code>-annotaatiota. Koska yksikkötestit ovat samoissa tiedostoissa kuin koodi, käytät <code>#[cfg(test)]</code>:ää määrittämään, ettei niitä sisällytetä käännettyyn tulokseen.</p>
+<p>Muista, että kun loimme uuden <code>adder</code>-projektin tämän luvun ensimmäisessä osiossa, Cargo generoi tämän koodin puolestamme:</p>
+<p><span class="filename">Filename: src/lib.rs</span></p>
+<pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch11-writing-automated-tests/listing-11-01/src/lib.rs}}</code></pre>
+<p>Automaattisesti generoidussa <code>tests</code>-moduulissa attribuutti <code>cfg</code> tarkoittaa <em>konfiguraatiota</em> ja kertoo Rustille, että seuraava kohde pitäisi sisällyttää vain tietyn konfiguraatioasetuksen perusteella. Tässä tapauksessa konfiguraatioasetus on <code>test</code>, jonka Rust tarjoaa testien kääntämiseen ja ajamiseen. <code>cfg</code>-attribuutin avulla Cargo kääntää testikoodimme vain, jos aktiivisesti ajamme testit <code>cargo test</code>:llä. Tämä sisältää kaikki apufunktiot, jotka saattavat olla tämän moduulin sisällä, <code>#[test]</code>:lla merkittyjen funktioiden lisäksi.</p>
+<h4 id="yksityisten-funktioiden-testaaminen"><a class="header" href="#yksityisten-funktioiden-testaaminen">Yksityisten funktioiden testaaminen</a></h4>
+<p>Testausyhteisössä on keskustelua siitä, pitäisikö yksityisiä funktioita testata suoraan, ja muut kielet tekevät yksityisten funktioiden testaamisesta vaikeaa tai mahdotonta. Riippumatta siitä, mihin testausideologiaan sitoudut, Rustin yksityisyyssäännöt sallivat yksityisten funktioiden testaamisen. Harkitse Listauksen 11-12 koodia, jossa on yksityinen funktio <code>internal_adder</code>.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
+<pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch11-writing-automated-tests/listing-11-12/src/lib.rs}}</code></pre>
+<figcaption>Listing 11-12: Yksityisen funktion testaaminen</figcaption>
+</figure>
+<p>Huomaa, että <code>internal_adder</code>-funktiota ei ole merkitty <code>pub</code>:iksi. Testit ovat vain Rust-koodia, ja <code>tests</code>-moduuli on vain toinen moduuli. Kuten käsittelimme <a href="ch07-03-paths-for-referring-to-an-item-in-the-module-tree.html">”Polut kohteen viittaamiseen moduulipuussa”</a><!-- ignore --> -osiossa, lapsimoduulien kohteet voivat käyttää esi-isämoduuliensa kohteita. Tässä testissä tuomme kaikki <code>tests</code>-moduulin emon kohteet laajuuteen <code>use super::*</code>:lla, ja sitten testi voi kutsua <code>internal_adder</code>:ia. Jos et mielestäsi yksityisiä funktioita pitäisi testata, Rustissa ei ole mitään, mikä pakottaisi sinua tekemään niin.</p>
+<h3 id="integraatiotestit"><a class="header" href="#integraatiotestit">Integraatiotestit</a></h3>
+<p>Rustissa integraatiotestit ovat täysin kirjastosi ulkopuolella. Ne käyttävät kirjastoasi samalla tavalla kuin mikä tahansa muu koodi, mikä tarkoittaa, että ne voivat kutsua vain kirjastosi julkisen API:n osia olevia funktioita. Niiden tarkoitus on testata, toimiiko kirjastosi monet osat yhdessä oikein. Koodin yksiköt, jotka toimivat oikein erikseen, voivat aiheuttaa ongelmia integroituna, joten integroidun koodin testikattavuus on myös tärkeää. Integraatiotestien luomiseksi tarvitset ensin <em>tests</em>-hakemiston.</p>
+<h4 id="tests-hakemisto"><a class="header" href="#tests-hakemisto"><em>tests</em>-hakemisto</a></h4>
+<p>Luomme <em>tests</em>-hakemiston projektihakemiston ylätasolle, <em>src</em>:n viereen. Cargo tietää etsiä integraatiotestitiedostoja tästä hakemistosta. Voimme sitten tehdä niin monta testitiedostoa kuin haluamme, ja Cargo kääntää jokaisen tiedoston erillisenä cratenä.</p>
+<p>Luodaan integraatiotesti. Kun Listauksen 11-12 koodi on edelleen tiedostossa <em>src/lib.rs</em>, tee <em>tests</em>-hakemisto ja luo uusi tiedosto nimeltä <em>tests/integration_test.rs</em>. Hakemistorakenteesi pitäisi näyttää tältä:</p>
+<pre><code class="language-text">adder
+├── Cargo.lock
+├── Cargo.toml
+├── src
+│   └── lib.rs
+└── tests
+    └── integration_test.rs
+</code></pre>
+<p>Kirjoita Listauksen 11-13 koodi tiedostoon <em>tests/integration_test.rs</em>.</p>
+<figure class="listing">
+<span class="file-name">Filename: tests/integration_test.rs</span>
+<pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch11-writing-automated-tests/listing-11-13/tests/integration_test.rs}}</code></pre>
+<figcaption>Listing 11-13: Integraatiotesti <code>adder</code>-craten funktiolle</figcaption>
+</figure>
+<p>Jokainen tiedosto <em>tests</em>-hakemistossa on erillinen crate, joten meidän täytyy tuoda kirjastomme kunkin testicraten laajuuteen. Tätä varten lisäämme koodin alkuun <code>use adder::add_two;</code>, jota emme tarvinne yksikkötesteissä.</p>
+<p>Meidän ei tarvitse merkitä mitään koodia tiedostossa <em>tests/integration_test.rs</em> annotaatiolla <code>#[cfg(test)]</code>. Cargo käsittelee <em>tests</em>-hakemiston erityisesti ja kääntää tämän hakemiston tiedostot vain, kun ajamme <code>cargo test</code>:in. Aja <code>cargo test</code> nyt:</p>
+<pre><code class="language-console">{{#include ../listings/ch11-writing-automated-tests/listing-11-13/output.txt}}
+</code></pre>
+<p>Tulosteen kolme osiota sisältävät yksikkötestit, integraatiotestin ja dokumentaatiotestit. Huomaa, että jos mikä tahansa testi osiossa epäonnistuu, seuraavia osioita ei ajeta. Esimerkiksi jos yksikkötesti epäonnistuu, integraatio- ja dokumentaatiotesteistä ei tule tulostetta, koska ne ajetaan vain, jos kaikki yksikkötestit läpäisevät.</p>
+<p>Yksikkötestien ensimmäinen osio on sama kuin olemme nähneet: yksi rivi kutakin yksikkötestiä kohti (yksi nimeltä <code>internal</code>, jonka lisäsimme Listauksessa 11-12) ja sitten yhteenvetorivi yksikkötesteille.</p>
+<p>Integraatiotestien osio alkaa rivillä <code>Running tests/integration_test.rs</code>. Seuraavaksi on rivi kutakin kyseisen integraatiotestin testifunktiota kohti ja yhteenvetorivi integraatiotestin tuloksille juuri ennen kuin <code>Doc-tests adder</code> -osio alkaa.</p>
+<p>Jokaisella integraatiotestitiedostolla on oma osionsa, joten jos lisäämme lisää tiedostoja <em>tests</em>-hakemistoon, tulee lisää integraatiotestien osioita.</p>
+<p>Voimme silti ajaa tietyn integraatiotestifunktion määrittämällä testifunktion nimen argumentiksi <code>cargo test</code>:lle. Ajaaaksemme kaikki testit tietyssä integraatiotestitiedostossa, käytä <code>cargo test</code>:n <code>--test</code>-argumenttia, jota seuraa tiedoston nimi:</p>
+<pre><code class="language-console">{{#include ../listings/ch11-writing-automated-tests/output-only-05-single-integration/output.txt}}
+</code></pre>
+<p>Tämä komento ajaa vain testit tiedostossa <em>tests/integration_test.rs</em>.</p>
+<h4 id="alimodulit-integraatiotesteissä"><a class="header" href="#alimodulit-integraatiotesteissä">Alimodulit integraatiotesteissä</a></h4>
+<p>Kun lisäät integraatiotestejä, saatat haluta tehdä lisää tiedostoja <em>tests</em>-hakemistoon niiden organisoimiseksi; voit esimerkiksi ryhmitellä testifunktiot sen toiminnallisuuden mukaan, jota ne testaavat. Kuten aiemmin mainittiin, jokainen tiedosto <em>tests</em>-hakemistossa käännetään omana erillisenä cratenään, mikä on hyödyllistä erillisten laajuuksien luomiseen, jotta käyttäytyminen muistuttaa läheisemmin sitä, miten loppukäyttäjät käyttävät crateasi. Tämä tarkoittaa kuitenkin, että <em>tests</em>-hakemiston tiedostot eivät jaa samaa käyttäytymistä kuin <em>src</em>:n tiedostot, kuten opit Luvussa 7 koodin jakamisesta moduuleihin ja tiedostoihin.</p>
+<p><em>tests</em>-hakemiston tiedostojen erilainen käyttäytyminen näkyy selvimmin, kun sinulla on joukko apufunktioita käytettäväksi useissa integraatiotestitiedostoissa ja yrität seurata Luvun 7 <a href="ch07-05-separating-modules-into-different-files.html">”Moduulien erottaminen eri tiedostoihin”</a><!-- ignore --> -osion ohjeita erottamaan ne yhteiseen moduuliin. Esimerkiksi, jos luomme tiedoston <em>tests/common.rs</em> ja sijoitamme siihen funktion nimeltä <code>setup</code>, voimme lisätä <code>setup</code>-funktioon koodia, jota haluamme kutsua useista testifunktioista useissa testitiedostoissa:</p>
+<p><span class="filename">Filename: tests/common.rs</span></p>
+<pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch11-writing-automated-tests/no-listing-12-shared-test-code-problem/tests/common.rs}}</code></pre>
+<p>Kun ajamme testit uudelleen, näemme testitulosteessa uuden osion <em>common.rs</em>-tiedostolle, vaikka tämä tiedosto ei sisällä testifunktioita eikä me kutsuneet <code>setup</code>-funktiota mistään:</p>
+<pre><code class="language-console">{{#include ../listings/ch11-writing-automated-tests/no-listing-12-shared-test-code-problem/output.txt}}
+</code></pre>
+<p>Se, että <code>common</code> näkyy testituloksissa ja sille näytetään <code>running 0 tests</code>, ei ole sitä, mitä halusimme. Halusimme vain jakaa koodia muiden integraatiotestitiedostojen kanssa. Välttääksemme <code>common</code>:in näkymisen testitulosteessa, sen sijaan että loisimme <em>tests/common.rs</em>:n, luomme <em>tests/common/mod.rs</em>:n. Projektihakemisto näyttää nyt tältä:</p>
+<pre><code class="language-text">├── Cargo.lock
+├── Cargo.toml
+├── src
+│   └── lib.rs
+└── tests
+    ├── common
+    │   └── mod.rs
+    └── integration_test.rs
+</code></pre>
+<p>Tämä on vanhempi nimeämiskäytäntö, jonka Rust myös ymmärtää ja josta mainitsimme <a href="ch07-05-separating-modules-into-different-files.html#alternate-file-paths">”Vaihtoehtoiset tiedostopolut”</a><!-- ignore --> -osiossa Luvussa 7. Tämä tiedoston nimeäminen kertoo Rustille, ettei <code>common</code>-moduulia käsitellä integraatiotestitiedostona. Kun siirrämme <code>setup</code>-funktion koodin tiedostoon <em>tests/common/mod.rs</em> ja poistamme tiedoston <em>tests/common.rs</em>, osio testitulosteessa ei enää näy. <em>tests</em>-hakemiston alihakemistojen tiedostoja ei käännetä erillisinä crateina eikä niille tule osioita testitulosteessa.</p>
+<p>Kun olemme luoneet <em>tests/common/mod.rs</em>:n, voimme käyttää sitä mistä tahansa integraatiotestitiedostosta moduulina. Tässä on esimerkki <code>setup</code>-funktion kutsumisesta <code>it_adds_two</code>-testistä tiedostossa <em>tests/integration_test.rs</em>:</p>
+<p><span class="filename">Filename: tests/integration_test.rs</span></p>
+<pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch11-writing-automated-tests/no-listing-13-fix-shared-test-code-problem/tests/integration_test.rs}}</code></pre>
+<p>Huomaa, että <code>mod common;</code>-määrittely on sama kuin moduulimäärittely, jonka demonstroimme Listauksessa 7-21. Sitten testifunktiossa voimme kutsua funktiota <code>common::setup()</code>.</p>
+<h4 id="integraatiotestit-binääricrateille"><a class="header" href="#integraatiotestit-binääricrateille">Integraatiotestit binääricrateille</a></h4>
+<p>Jos projektimme on binääricrate, joka sisältää vain tiedoston <em>src/main.rs</em> eikä tiedostoa <em>src/lib.rs</em>, emme voi luoda integraatiotestejä <em>tests</em>-hakemistoon ja tuoda <em>src/main.rs</em>:ssä määriteltyjä funktioita laajuuteen <code>use</code>-lausekkeella. Vain kirjastocratet paljastavat funktioita, joita muut cratet voivat käyttää; binääricratet on tarkoitettu ajettaviksi itsenäisesti.</p>
+<p>Tämä on yksi syy siihen, miksi Rust-projektit, jotka tarjoavat binäärin, käyttävät yksinkertaista <em>src/main.rs</em>-tiedostoa, joka kutsuu logiikkaa, joka asuu <em>src/lib.rs</em>-tiedostossa. Tällä rakenteella integraatiotestit <em>voivat</em> testata kirjastocratea <code>use</code>:lla tuoden tärkeän toiminnallisuuden saataville. Jos tärkeä toiminnallisuus toimii, pieni määrä koodia tiedostossa <em>src/main.rs</em> toimii myös, eikä sitä pientä koodimäärää tarvitse testata.</p>
+<h2 id="yhteenveto"><a class="header" href="#yhteenveto">Yhteenveto</a></h2>
+<p>Rustin testausominaisuudet tarjoavat tavan määrittää, miten koodin pitäisi toimia varmistaaksesi, että se jatkaa toimimista odottamallasi tavalla, vaikka teet muutoksia. Yksikkötestit harjoittavat kirjaston eri osia erikseen ja voivat testata yksityisiä toteutustietoja. Integraatiotestit tarkistavat, että kirjaston monet osat toimivat yhdessä oikein, ja ne käyttävät kirjaston julkista API:a testatakseen koodin samalla tavalla kuin ulkoinen koodi käyttää sitä. Vaikka Rustin tyyppijärjestelmä ja omistussäännöt auttavat estämään joitakin virhetyyppejä, testit ovat silti tärkeitä vähentämään logiikkavirheitä, jotka liittyvät siihen, miten koodisi odotetaan käyttäytyvän.</p>
+<p>Yhdistetään tässä luvussa ja aiemmissa luvuissa oppimasi tieto ja työskennellään projektin parissa!</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="ch11-02-running-tests.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="ch12-00-an-io-project.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="ch11-02-running-tests.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="ch12-00-an-io-project.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="ferris.js"></script>
+
+
+    </div>
+    </body>
+</html>

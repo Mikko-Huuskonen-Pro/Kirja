@@ -1,0 +1,270 @@
+<!DOCTYPE HTML>
+<html lang="fi" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>match-ohjausrakenteen konstruktio - Rust-ohjelmointikieli</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="ferris.css">
+        <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rust-ohjelmointikieli</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/rust-lang/book" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2 id="match-ohjausrakenne"><a class="header" href="#match-ohjausrakenne"><code>match</code>-ohjausrakenne</a></h2>
+<p>Rust tarjoaa erittäin tehokkaan ohjausrakenteen nimeltä <code>match</code>, jonka avulla voit verrata arvoa useisiin kuvioihin ja suorittaa niihin liittyvää koodia. Kuvioissa voi olla kirjaimellisia arvoja, muuttujien nimiä, jokerimerkkejä ja monia muita elementtejä. Luvussa 19 käsittelemme kaikki mahdolliset kuviotyypit tarkemmin.</p>
+<p>Voit ajatella <code>match</code>-rakennetta kolikoiden lajittelukoneena: kolikot liukuvat radalla, jossa on erikokoisia aukkoja, ja jokainen kolikko putoaa ensimmäiseen sopivaan aukkoon. Samalla tavalla <code>match</code> käy läpi vaihtoehtoja ja suorittaa ensimmäisen sopivan lohkon.</p>
+<h3 id="match-ilmaus-käytännössä"><a class="header" href="#match-ilmaus-käytännössä"><code>match</code>-ilmaus käytännössä</a></h3>
+<p>Seuraava ohjelma tunnistaa Yhdysvaltain kolikon ja palauttaa sen arvon senteissä:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch06-enums-and-pattern-matching/listing-06-03/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<p>Tässä <code>match</code>-rakenne vertailee <code>coin</code>-arvoa eri <code>Coin</code>-enumin varianteihin ja palauttaa kolikon arvon.</p>
+<p>Voimme myös suorittaa lisätoimintoja yksittäisissä haaroissa:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch06-enums-and-pattern-matching/no-listing-08-match-arm-multiple-lines/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<p>Tässä <code>Coin::Penny</code>-variantti tulostaa “Lucky penny!” ennen arvon palauttamista.</p>
+<h3 id="kuvioiden-sidonta-arvoihin"><a class="header" href="#kuvioiden-sidonta-arvoihin">Kuvioiden sidonta arvoihin</a></h3>
+<p>Voimme käyttää <code>match</code>-rakenteessa myös muuttujien sitomista varianttien sisäisiin arvoihin. Esimerkiksi vuosina 1999–2008 Yhdysvaltain 25 sentin kolikoihin painettiin osavaltiokohtaisia kuvioita. Voimme mallintaa tämän lisäämällä <code>UsState</code>-tyypin <code>Quarter</code>-varianttiin:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch06-enums-and-pattern-matching/listing-06-04/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<p>Sitten voimme sitoa <code>state</code>-muuttujan kolikon variantin osavaltiotietoon:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch06-enums-and-pattern-matching/no-listing-09-variable-in-pattern/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="optiont-käsittely-match-ilmaisulla"><a class="header" href="#optiont-käsittely-match-ilmaisulla"><code>Option&lt;T&gt;</code>-käsittely <code>match</code>-ilmaisulla</a></h3>
+<p><code>Option&lt;T&gt;</code>-enumia voidaan käsitellä samalla tavalla kuin muita enum-tyyppejä. Esimerkiksi seuraava funktio lisää yhden <code>Some(i32)</code>-arvoon, mutta palauttaa <code>None</code>, jos arvo puuttuu:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch06-enums-and-pattern-matching/listing-06-05/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<p>Rust pakottaa käsittelemään kaikki mahdolliset tapaukset, mikä estää unohtamasta <code>None</code>-varianttia ja auttaa välttämään virheitä.</p>
+<h3 id="match-lauseiden-täydellisyysvaatimus"><a class="header" href="#match-lauseiden-täydellisyysvaatimus"><code>match</code>-lauseiden täydellisyysvaatimus</a></h3>
+<p>Rust vaatii, että <code>match</code> kattaa kaikki mahdolliset vaihtoehdot:</p>
+<pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch06-enums-and-pattern-matching/no-listing-10-non-exhaustive-match/src/main.rs:here}}</code></pre>
+<p>Tämä ohjelma ei käänny, koska <code>None</code>-tapaukselle ei ole käsittelyä.</p>
+<h3 id="yleisvastineet-ja-_-paikkamerkki"><a class="header" href="#yleisvastineet-ja-_-paikkamerkki">Yleisvastineet ja <code>_</code>-paikkamerkki</a></h3>
+<p>Jos haluamme käsitellä tiettyjä arvoja erityisesti, mutta kaikki muut yleisesti, voimme käyttää <code>_</code>-paikkamerkkiä:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch06-enums-and-pattern-matching/no-listing-15-binding-catchall/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<p>Tässä <code>other</code>-muuttuja tallentaa kaikki muut arvot, joita ei ole erikseen käsitelty.</p>
+<p>Jos emme tarvitse arvoa, voimme käyttää <code>_</code>-merkkiä, joka ei sido mitään muuttujaa:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch06-enums-and-pattern-matching/no-listing-16-underscore-catchall/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<p>Lopuksi voimme käyttää <code>()</code>-yksikköarvoa merkkinä siitä, ettei tarvitse suorittaa mitään koodia:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch06-enums-and-pattern-matching/no-listing-17-underscore-unit/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<p>Seuraavaksi tutustumme <code>if let</code>-rakenteeseen, joka tarjoaa yksinkertaisemman vaihtoehdon <code>match</code>-ilmaisun käyttöön tietyissä tilanteissa.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="ch06-01-defining-an-enum.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="ch06-03-if-let.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="ch06-01-defining-an-enum.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="ch06-03-if-let.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="ferris.js"></script>
+
+
+    </div>
+    </body>
+</html>

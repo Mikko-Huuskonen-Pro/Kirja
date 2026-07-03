@@ -1,0 +1,472 @@
+<!DOCTYPE HTML>
+<html lang="fi" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Traitit: jaetun käyttäytymisen määrittäminen - Rust-ohjelmointikieli</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="ferris.css">
+        <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rust-ohjelmointikieli</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/rust-lang/book" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2 id="traitit-yhteisen-käyttäytymisen-määrittely"><a class="header" href="#traitit-yhteisen-käyttäytymisen-määrittely">Traitit: yhteisen käyttäytymisen määrittely</a></h2>
+<p><em>Trait</em> määrittää toiminnallisuuden, joka tietyllä tyypillä on ja jonka se voi
+jakaa muiden tyyppien kanssa. Voimme käyttää traitteja määritelläksemme jaettua
+käyttäytymistä abstraktilla tavalla. Voimme käyttää <em>trait-rajoja</em> määrittääksemme,
+että geneerinen tyyppi voi olla mikä tahansa tyyppi, jolla on tietty käyttäytyminen.</p>
+<blockquote>
+<p>Huom: Traitit ovat samanlaisia kuin ominaisuus, jota usein kutsutaan
+<em>rajapinnoiksi</em> (<em>interfaces</em>) muissa kielissä, vaikka niissä on eroja.</p>
+</blockquote>
+<h3 id="traitin-määrittely"><a class="header" href="#traitin-määrittely">Traitin määrittely</a></h3>
+<p>Tyyppin käyttäytyminen koostuu metodeista, joita sille voidaan kutsua. Eri tyypit
+jakavat saman käyttäytymisen, jos samoja metodeja voidaan kutsua kaikille
+näille tyypeille. Trait-määritykset ovat tapa ryhmitellä metodien allekirjoituksia
+yhteen määrittelemään joukko käyttäytymisiä, joita tarvitaan jonkin tarkoituksen
+saavuttamiseksi.</p>
+<p>Esimerkiksi sanotaan, että meillä on useita rakenteita, jotka pitävät erilaisia
+tekstilajeja ja -määriä: <code>NewsArticle</code>-rakenne, joka pitää tiettyyn paikkaan
+jätetyn uutisjutun, ja <code>SocialPost</code>, jossa voi olla enintään 280 merkkiä sekä
+metatietoa, joka kertoo, oliko kyseessä uusi julkaisu, uudelleenjulkaisu vai
+vastaus toiseen julkaisuun.</p>
+<p>Haluamme tehdä media-aggregaattorikirjaston <code>aggregator</code>, joka voi näyttää
+yhteenvetoja datasta, joka saattaa olla tallennettuna <code>NewsArticle</code>- tai
+<code>SocialPost</code>-instanssiin. Tätä varten tarvitsemme yhteenvedon jokaiselta tyypiltä,
+ja pyydämme sitä kutsumalla <code>summarize</code>-metodia instanssilla. Listaus 10-12
+näyttää julkisen <code>Summary</code>-traitin määrityksen, joka ilmaisee tämän käyttäytymisen.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
+<pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch10-generic-types-traits-and-lifetimes/listing-10-12/src/lib.rs}}</code></pre>
+<figcaption>Listing 10-12: <code>Summary</code>-trait, joka koostuu <code>summarize</code>-metodin tarjoamasta käyttäytymisestä</figcaption>
+</figure>
+<p>Tässä ilmoitamme traitin <code>trait</code>-avainsanalla ja sitten traitin nimen, joka
+tässä tapauksessa on <code>Summary</code>. Ilmoitamme traitin myös <code>pub</code>-avainsanalla, jotta
+tästä ohjelmakokonaisuudesta riippuvat ohjelmakokonaisuudet voivat käyttää tätä
+traitia myös, kuten näemme muutamassa esimerkissä. Aaltosulkeiden sisällä
+ilmoitamme metodien allekirjoitukset, jotka kuvaavat tämän traitin toteuttavien
+tyyppien käyttäytymistä, joka tässä tapauksessa on <code>fn summarize(&amp;self) -&gt; String</code>.</p>
+<p>Metodin allekirjoituksen jälkeen sen sijaan, että tarjoaisimme toteutuksen
+aaltosulkeissa, käytämme puolipistettä. Jokaisen tämän traitin toteuttavan tyypin
+täytyy tarjota oma mukautettu käyttäytymisensä metodin rungolle. Kääntäjä
+varmistaa, että jokaisella tyypillä, jolla on <code>Summary</code>-trait, on metodi
+<code>summarize</code> määritelty täsmälleen tällä allekirjoituksella.</p>
+<p>Traitilla voi olla useita metodeja rungossaan: metodien allekirjoitukset on
+listattu yksi per rivi, ja jokainen rivi päättyy puolipisteeseen.</p>
+<h3 id="traitin-toteuttaminen-tyypille"><a class="header" href="#traitin-toteuttaminen-tyypille">Traitin toteuttaminen tyypille</a></h3>
+<p>Nyt kun olemme määritelleet <code>Summary</code>-traitin metodien halutut allekirjoitukset,
+voimme toteuttaa sen media-aggregaattorimme tyypeille. Listaus 10-13 näyttää
+<code>Summary</code>-traitin toteutuksen <code>NewsArticle</code>-rakenteelle, joka käyttää otsikkoa,
+kirjoittajaa ja sijaintia luodakseen <code>summarize</code>-metodin paluuarvon. <code>SocialPost</code>-rakenteelle
+määrittelemme <code>summarize</code>:n käyttäjänimen ja koko julkaisun tekstin perässä,
+oleteten että julkaisun sisältö on jo rajoitettu 280 merkkiin.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
+<pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch10-generic-types-traits-and-lifetimes/listing-10-13/src/lib.rs:here}}</code></pre>
+<figcaption>Listing 10-13: <code>Summary</code>-traitin toteuttaminen <code>NewsArticle</code>- ja <code>SocialPost</code>-tyypeille</figcaption>
+</figure>
+<p>Traitin toteuttaminen tyypille on samanlaista kuin tavallisten metodien toteuttaminen.
+Ero on siinä, että <code>impl</code>:n jälkeen laitamme toteutettavan traitin nimen, sitten
+käytämme <code>for</code>-avainsanaa ja määrittelemme tyypin, jolle haluamme toteuttaa traitin.
+<code>impl</code>-lohkon sisällä laitamme metodien allekirjoitukset, jotka trait-määritys on
+määritellyt. Sen sijaan, että lisäisimme puolipisteen jokaisen allekirjoituksen
+jälkeen, käytämme aaltosulkeita ja täytämme metodin rungon tietyllä käyttäytymisellä,
+jonka haluamme traitin metodeilla olevan kyseiselle tyypille.</p>
+<p>Nyt kun kirjasto on toteuttanut <code>Summary</code>-traitin <code>NewsArticle</code>- ja <code>SocialPost</code>-tyypeille,
+ohjelmakokonaisuuden käyttäjät voivat kutsua trait-metodeja <code>NewsArticle</code>- ja
+<code>SocialPost</code>-instansseilla samalla tavalla kuin kutsumme tavallisia metodeja.
+Ainoa ero on, että käyttäjän täytyy tuoda trait laajuuteen sekä tyypit. Tässä on
+esimerkki siitä, miten binääriohjelmakokonaisuus voisi käyttää <code>aggregator</code>-kirjastoamme:</p>
+<pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch10-generic-types-traits-and-lifetimes/no-listing-01-calling-trait-method/src/main.rs}}</code></pre>
+<p>Tämä koodi tulostaa <code>1 new post: horse_ebooks: of course, as you probably already know, people</code>.</p>
+<p>Muut <code>aggregator</code>-ohjelmakokonaisuudesta riippuvat ohjelmakokonaisuudet voivat
+myös tuoda <code>Summary</code>-traitin laajuuteen toteuttaakseen <code>Summary</code>:n omille
+tyypeilleen. Yksi huomioitava rajoitus on, että voimme toteuttaa traitin tyypille
+vain jos joko trait tai tyyppi, tai molemmat, ovat paikallisia ohjelmakokonaisuudellemme.
+Esimerkiksi voimme toteuttaa standardikirjaston traitteja kuten <code>Display</code> mukautetulle
+tyypille kuten <code>SocialPost</code> osana <code>aggregator</code>-ohjelmakokonaisuutemme toiminnallisuutta,
+koska tyyppi <code>SocialPost</code> on paikallinen <code>aggregator</code>-ohjelmakokonaisuudellemme.
+Voimme myös toteuttaa <code>Summary</code>:n tyypille <code>Vec&lt;T&gt;</code> <code>aggregator</code>-ohjelmakokonaisuudessamme,
+koska trait <code>Summary</code> on paikallinen <code>aggregator</code>-ohjelmakokonaisuudellemme.</p>
+<p>Emme kuitenkaan voi toteuttaa ulkoisia traitteja ulkoisille tyypeille. Esimerkiksi
+emme voi toteuttaa <code>Display</code>-traitia tyypille <code>Vec&lt;T&gt;</code> <code>aggregator</code>-ohjelmakokonaisuudessamme,
+koska <code>Display</code> ja <code>Vec&lt;T&gt;</code> on molemmat määritelty standardikirjastossa eivätkä
+ole paikallisia <code>aggregator</code>-ohjelmakokonaisuudellemme. Tämä rajoitus on osa
+ominaisuutta nimeltä <em>yhtenäisyys</em> (<em>coherence</em>), ja tarkemmin <em>orpopelisääntöä</em>
+(<em>orphan rule</em>), joka on nimetty niin, koska vanhempityyppi ei ole läsnä. Tämä
+sääntö varmistaa, etteivät muiden ihmisten koodit voi rikkoa sinun koodiasi ja
+päinvastoin. Ilman sääntöä kaksi ohjelmakokonaisuutta voisi toteuttaa saman traitin
+samalle tyypille, eikä Rust tietäisi, mitä toteutusta käyttää.</p>
+<h3 id="oletustoteutukset"><a class="header" href="#oletustoteutukset">Oletustoteutukset</a></h3>
+<p>Joskus on hyödyllistä, että traitilla on oletuskäyttäytymistä joillekin tai
+kaikille metodeille sen sijaan, että vaadittaisiin toteutuksia kaikille metodeille
+jokaisella tyypillä. Sitten kun toteutamme traitin tietylle tyypille, voimme
+säilyttää tai ylikirjoittaa kunkin metodin oletuskäyttäytymisen.</p>
+<p>Listauksessa 10-14 määrittelemme oletusmerkkijonon <code>Summary</code>-traitin <code>summarize</code>-metodille
+sen sijaan, että määrittelisimme vain metodin allekirjoituksen, kuten teimme
+listauksessa 10-12.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
+<pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch10-generic-types-traits-and-lifetimes/listing-10-14/src/lib.rs:here}}</code></pre>
+<figcaption>Listing 10-14: <code>Summary</code>-traitin määrittely <code>summarize</code>-metodin oletustoteutuksella</figcaption>
+</figure>
+<p>Käyttääksemme oletustoteutusta <code>NewsArticle</code>-instanssien yhteenvedon tekemiseen,
+määrittelemme tyhjän <code>impl</code>-lohkon <code>impl Summary for NewsArticle {}</code>:lla.</p>
+<p>Vaikka emme enää määrittele <code>summarize</code>-metodia suoraan <code>NewsArticle</code>-tyypille,
+olemme tarjonneet oletustoteutuksen ja määritelleet, että <code>NewsArticle</code> toteuttaa
+<code>Summary</code>-traitin. Tämän seurauksena voimme silti kutsua <code>summarize</code>-metodia
+<code>NewsArticle</code>-instanssilla, näin:</p>
+<pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch10-generic-types-traits-and-lifetimes/no-listing-02-calling-default-impl/src/main.rs:here}}</code></pre>
+<p>Tämä koodi tulostaa <code>New article available! (Read more...)</code>.</p>
+<p>Oletustoteutuksen luominen ei vaadi meitä muuttamaan mitään <code>Summary</code>-traitin
+toteutuksesta <code>SocialPost</code>-tyypille listauksessa 10-13. Syy on se, että oletustoteutuksen
+ylikirjoittamisen syntaksi on sama kuin trait-metodin toteuttamisen syntaksi,
+jolla ei ole oletustoteutusta.</p>
+<p>Oletustoteutukset voivat kutsua muita metodeja samassa traitissa, vaikka näillä
+muilla metodeilla ei olisikaan oletustoteutusta. Näin trait voi tarjota paljon
+hyödyllistä toiminnallisuutta ja vaatia toteuttajilta vain pienen osan. Esimerkiksi
+voisimme määritellä <code>Summary</code>-traitin niin, että sillä on <code>summarize_author</code>-metodi,
+jonka toteutus on pakollinen, ja sitten määritellä <code>summarize</code>-metodin, jolla on
+oletustoteutus, joka kutsuu <code>summarize_author</code>-metodia:</p>
+<pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch10-generic-types-traits-and-lifetimes/no-listing-03-default-impl-calls-other-methods/src/lib.rs:here}}</code></pre>
+<p>Käyttääksemme tätä <code>Summary</code>-versiota, meidän täytyy määritellä vain
+<code>summarize_author</code>, kun toteutamme traitin tyypille:</p>
+<pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch10-generic-types-traits-and-lifetimes/no-listing-03-default-impl-calls-other-methods/src/lib.rs:impl}}</code></pre>
+<p>Kun olemme määritelleet <code>summarize_author</code>:in, voimme kutsua <code>summarize</code>:a
+<code>SocialPost</code>-rakenteen instansseilla, ja <code>summarize</code>:n oletustoteutus kutsuu
+tarjoamaamme <code>summarize_author</code>:n määritystä. Koska olemme toteuttaneet
+<code>summarize_author</code>:in, <code>Summary</code>-trait on antanut meille <code>summarize</code>-metodin
+käyttäytymisen vaatimatta meitä kirjoittamaan enempää koodia. Se näyttää tältä:</p>
+<pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch10-generic-types-traits-and-lifetimes/no-listing-03-default-impl-calls-other-methods/src/main.rs:here}}</code></pre>
+<p>Tämä koodi tulostaa <code>1 new post: (Read more from @horse_ebooks...)</code>.</p>
+<p>Huomaa, että oletustoteutusta ei voi kutsua saman metodin ylikirjoittavasta
+toteutuksesta.</p>
+<h3 id="traitit-parametreina"><a class="header" href="#traitit-parametreina">Traitit parametreina</a></h3>
+<p>Nyt kun tiedät, miten traitteja määritellään ja toteutetaan, voimme tutkia, miten
+traitteja käytetään määrittelemään funktioita, jotka hyväksyvät monia eri tyyppejä.
+Käytämme listauksessa 10-13 <code>NewsArticle</code>- ja <code>SocialPost</code>-tyypeille toteuttamaamme
+<code>Summary</code>-traitia määritelläksemme <code>notify</code>-funktion, joka kutsuu <code>summarize</code>-metodia
+<code>item</code>-parametrillaan, joka on jokin tyyppi, joka toteuttaa <code>Summary</code>-traitin.
+Teemme tämän käyttämällä <code>impl Trait</code> -syntaksia, näin:</p>
+<pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch10-generic-types-traits-and-lifetimes/no-listing-04-traits-as-parameters/src/lib.rs:here}}</code></pre>
+<p>Sen sijaan, että <code>item</code>-parametrilla olisi konkreettinen tyyppi, määrittelemme
+<code>impl</code>-avainsanan ja traitin nimen. Tämä parametri hyväksyy minkä tahansa tyypin,
+joka toteuttaa määritellyn traitin. <code>notify</code>-funktion rungossa voimme kutsua
+<code>item</code>:iin liittyviä metodeja, jotka tulevat <code>Summary</code>-traitista, kuten
+<code>summarize</code>. Voimme kutsua <code>notify</code>:a ja välittää sille minkä tahansa <code>NewsArticle</code>- tai
+<code>SocialPost</code>-instanssin. Koodi, joka kutsuu funktiota millä tahansa muulla tyypillä,
+kuten <code>String</code> tai <code>i32</code>, ei käänny, koska nämä tyypit eivät toteuta <code>Summary</code>:a.</p>
+<!-- Old headings. Do not remove or links may break. -->
+<p><a id="fixing-the-largest-function-with-trait-bounds"></a></p>
+<h4 id="trait-rajojen-syntaksi"><a class="header" href="#trait-rajojen-syntaksi">Trait-rajojen syntaksi</a></h4>
+<p><code>impl Trait</code> -syntaksi toimii suoraviivaisissa tapauksissa, mutta se on itse asiassa
+syntaktista sokeria pidemmälle muodolle, joka tunnetaan nimellä <em>trait-raja</em>; se
+näyttää tältä:</p>
+<pre><code class="language-rust ignore">pub fn notify&lt;T: Summary&gt;(item: &amp;T) {
+    println!("Breaking news! {}", item.summarize());
+}</code></pre>
+<p>Tämä pidempi muoto on vastaava kuin edellisen osion esimerkki, mutta on
+sanarikkaampi. Sijoitamme trait-rajat geneerisen tyyppiparametrin ilmoitukseen
+kaksoispisteen jälkeen kulmasulkeiden sisään.</p>
+<p><code>impl Trait</code> -syntaksi on kätevä ja tekee koodista tiiviimpää yksinkertaisissa
+tapauksissa, kun taas täydellisempi trait-rajojen syntaksi voi ilmaista enemmän
+monimutkaisuutta muissa tapauksissa. Esimerkiksi voimme olla kaksi parametria,
+jotka toteuttavat <code>Summary</code>:n. Tämän tekeminen <code>impl Trait</code> -syntaksilla näyttää
+tältä:</p>
+<pre><code class="language-rust ignore">pub fn notify(item1: &amp;impl Summary, item2: &amp;impl Summary) {</code></pre>
+<p><code>impl Trait</code> on sopiva, jos haluamme tämän funktion sallivan <code>item1</code>:n ja <code>item2</code>:n
+olla eri tyyppejä (kunhan molemmat tyypit toteuttavat <code>Summary</code>:n). Jos kuitenkin
+haluamme pakottaa molemmat parametrit olemaan samaa tyyppiä, meidän täytyy käyttää
+trait-rajaa, näin:</p>
+<pre><code class="language-rust ignore">pub fn notify&lt;T: Summary&gt;(item1: &amp;T, item2: &amp;T) {</code></pre>
+<p>Geneerinen tyyppi <code>T</code>, joka on määritelty <code>item1</code>- ja <code>item2</code>-parametrien tyypiksi,
+rajoittaa funktiota niin, että <code>item1</code>:lle ja <code>item2</code>:lle argumenttina välitetyn
+arvon konkreettisen tyypin täytyy olla sama.</p>
+<h4 id="useiden-trait-rajojen-määrittely--syntaksilla"><a class="header" href="#useiden-trait-rajojen-määrittely--syntaksilla">Useiden trait-rajojen määrittely <code>+</code>-syntaksilla</a></h4>
+<p>Voimme myös määrittää useamman kuin yhden trait-rajan. Sanotaan, että haluamme
+<code>notify</code>:n käyttävän näyttömuotoilua sekä <code>summarize</code>:a <code>item</code>:issä: määrittelemme
+<code>notify</code>-määrityksessä, että <code>item</code>:in täytyy toteuttaa sekä <code>Display</code> että
+<code>Summary</code>. Voimme tehdä sen käyttämällä <code>+</code>-syntaksia:</p>
+<pre><code class="language-rust ignore">pub fn notify(item: &amp;(impl Summary + Display)) {</code></pre>
+<p><code>+</code>-syntaksi on kelvollinen myös geneeristen tyyppien trait-rajoissa:</p>
+<pre><code class="language-rust ignore">pub fn notify&lt;T: Summary + Display&gt;(item: &amp;T) {</code></pre>
+<p>Kun kaksi trait-rajaa on määritelty, <code>notify</code>-funktion runko voi kutsua
+<code>summarize</code>:a ja käyttää <code>{}</code>:a muotoillakseen <code>item</code>:in.</p>
+<h4 id="selkeämmät-trait-rajat-where-lausekkeilla"><a class="header" href="#selkeämmät-trait-rajat-where-lausekkeilla">Selkeämmät trait-rajat <code>where</code>-lausekkeilla</a></h4>
+<p>Liian monien trait-rajojen käytöllä on haittapuolensa. Jokaisella geneerisellä
+tyypillä on omat trait-rajansa, joten funktioilla, joilla on useita geneerisiä
+tyyppiparametreja, voi olla paljon trait-rajoihin liittyvää tietoa funktion nimen
+ja parametrilistan välissä, mikä tekee funktion allekirjoituksesta vaikeasti
+luettavan. Tästä syystä Rustissa on vaihtoehtoinen syntaksi trait-rajojen
+määrittelyyn <code>where</code>-lausekkeessa funktion allekirjoituksen jälkeen. Sen sijaan,
+että kirjoittaisimme tämän:</p>
+<pre><code class="language-rust ignore">fn some_function&lt;T: Display + Clone, U: Clone + Debug&gt;(t: &amp;T, u: &amp;U) -&gt; i32 {</code></pre>
+<p>voimme käyttää <code>where</code>-lauseketta, näin:</p>
+<pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch10-generic-types-traits-and-lifetimes/no-listing-07-where-clause/src/lib.rs:here}}</code></pre>
+<p>Tämän funktion allekirjoitus on vähemmän sekava: funktion nimi, parametrilista
+ja paluutyyppi ovat lähellä toisiaan, samoin kuin funktiossa, jossa ei ole paljon
+trait-rajoja.</p>
+<h3 id="traitin-toteuttavan-tyypin-palauttaminen"><a class="header" href="#traitin-toteuttavan-tyypin-palauttaminen">Traitin toteuttavan tyypin palauttaminen</a></h3>
+<p>Voimme käyttää <code>impl Trait</code> -syntaksia myös palautuspaikassa palauttaaksemme
+jonkin traitin toteuttavan tyypin arvon, kuten tässä:</p>
+<pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch10-generic-types-traits-and-lifetimes/no-listing-05-returning-impl-trait/src/lib.rs:here}}</code></pre>
+<p>Käyttämällä <code>impl Summary</code> paluutyypiksi määrittelemme, että <code>returns_summarizable</code>-funktio
+palauttaa jonkin <code>Summary</code>-traitin toteuttavan tyypin nimeämättä konkreettista
+tyyppiä. Tässä tapauksessa <code>returns_summarizable</code> palauttaa <code>SocialPost</code>:in, mutta
+tätä funktiota kutsuvan koodin ei tarvitse tietää sitä.</p>
+<p>Mahdollisuus määrittää paluutyyppi vain sen toteuttaman traitin perusteella on
+erityisen hyödyllinen sulkeumien ja iteraattorien yhteydessä, joita käsittelemme
+luvussa 13. Sulkeumat ja iteraattorit luovat tyyppejä, jotka vain kääntäjä tietää,
+tai tyyppejä, joiden määrittely on hyvin pitkä. <code>impl Trait</code> -syntaksi antaa
+sinun määrittää tiiviisti, että funktio palauttaa jonkin <code>Iterator</code>-traitin
+toteuttavan tyypin kirjoittamatta hyvin pitkää tyyppiä.</p>
+<p>Voit kuitenkin käyttää <code>impl Trait</code> -syntaksia vain, jos palautat yhden tyypin.
+Esimerkiksi tämä koodi, joka palauttaa joko <code>NewsArticle</code>:n tai <code>SocialPost</code>:in
+paluutyypin ollessa <code>impl Summary</code>, ei toimisi:</p>
+<pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch10-generic-types-traits-and-lifetimes/no-listing-06-impl-trait-returns-one-type/src/lib.rs:here}}</code></pre>
+<p>Joko <code>NewsArticle</code>:n tai <code>SocialPost</code>:in palauttaminen ei ole sallittua <code>impl Trait</code>
+-syntaksin toteutuksen rajoitusten vuoksi kääntäjässä. Käsittelemme, miten
+kirjoitetaan funktio tällä käyttäytymisellä, <a href="ch18-02-trait-objects.html#using-trait-objects-that-allow-for-values-of-different-types">”Trait-objektien käyttö eri tyyppisten
+arvojen sallimiseksi”</a><!-- ignore
+-->-osiossa luvussa 18.</p>
+<h3 id="trait-rajojen-käyttö-metodien-ehdolliseen-toteuttamiseen"><a class="header" href="#trait-rajojen-käyttö-metodien-ehdolliseen-toteuttamiseen">Trait-rajojen käyttö metodien ehdolliseen toteuttamiseen</a></h3>
+<p>Käyttämällä trait-rajaa <code>impl</code>-lohkossa, joka käyttää geneerisiä tyyppiparametreja,
+voimme toteuttaa metodeja ehdollisesti tyypeille, jotka toteuttavat määritellyt
+traitit. Esimerkiksi tyyppi <code>Pair&lt;T&gt;</code> listauksessa 10-15 toteuttaa aina <code>new</code>-funktion
+palauttaakseen uuden <code>Pair&lt;T&gt;</code>-instanssin (muista luvun 5 <a href="ch05-03-method-syntax.html#defining-methods">”Metodien määrittely”</a><!-- ignore --> -osiosta, että <code>Self</code> on tyyppialias <code>impl</code>-lohkon tyypille, joka tässä tapauksessa on <code>Pair&lt;T&gt;</code>). Mutta seuraavassa <code>impl</code>-lohkossa <code>Pair&lt;T&gt;</code> toteuttaa <code>cmp_display</code>-metodin vain, jos sen sisäinen tyyppi <code>T</code> toteuttaa <code>PartialOrd</code>-traitin, joka mahdollistaa vertailun, <em>ja</em> <code>Display</code>-traitin, joka mahdollistaa tulostamisen.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
+<pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch10-generic-types-traits-and-lifetimes/listing-10-15/src/lib.rs}}</code></pre>
+<figcaption>Listing 10-15: Metodien ehdollinen toteuttaminen geneeriselle tyypille trait-rajojen mukaan</figcaption>
+</figure>
+<p>Voimme myös toteuttaa traitin ehdollisesti mille tahansa tyypille, joka toteuttaa
+toisen traitin. Traitin toteutukset mille tahansa tyypille, joka täyttää
+trait-rajat, kutsutaan <em>yleistoteutuksiksi</em> (<em>blanket implementations</em>), ja niitä
+käytetään laajasti Rustin standardikirjastossa. Esimerkiksi standardikirjasto
+toteuttaa <code>ToString</code>-traitin mille tahansa tyypille, joka toteuttaa <code>Display</code>-traitin.
+Standardikirjaston <code>impl</code>-lohko näyttää suunnilleen tältä:</p>
+<pre><code class="language-rust ignore">impl&lt;T: Display&gt; ToString for T {
+    // --snip--
+}</code></pre>
+<p>Koska standardikirjastossa on tämä yleistoteutus, voimme kutsua <code>ToString</code>-traitin
+määrittelemää <code>to_string</code>-metodia millä tahansa tyypillä, joka toteuttaa
+<code>Display</code>-traitin. Esimerkiksi voimme muuntaa kokonaisluvut vastaaviksi
+<code>String</code>-arvoikseen näin, koska kokonaisluvut toteuttavat <code>Display</code>:n:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let s = 3.to_string();
+<span class="boring">}</span></code></pre></pre>
+<p>Yleistoteutukset näkyvät traitin dokumentaatiossa ”Implementors”-osiossa.</p>
+<p>Traitit ja trait-rajat antavat meille mahdollisuuden kirjoittaa koodia, joka
+käyttää geneerisiä tyyppiparametreja toiston vähentämiseksi, mutta myös kertoa
+kääntäjälle, että haluamme geneerisen tyypin omaavan tiettyä käyttäytymistä.
+Kääntäjä voi sitten käyttää trait-rajoihin liittyvää tietoa tarkistaakseen,
+että kaikki koodissamme käytetyt konkreettiset tyypit tarjoavat oikean
+käyttäytymisen. Dynaamisesti tyypitetyissä kielissä saisimme virheen ajonaikana,
+jos kutsuisimme metodia tyypille, joka ei määrittele metodia. Rust siirtää nämä
+virheet käännösaikaan, joten meidän täytyy korjata ongelmat ennen kuin koodimme
+pystyy edes suorittumaan. Lisäksi emme joudu kirjoittamaan koodia, joka tarkistaa
+käyttäytymistä ajonaikana, koska olemme jo tarkistaneet käännösaikana. Näin
+parannamme suorituskykyä luopumatta geneeristen tyyppien joustavuudesta.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="ch10-01-syntax.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="ch10-03-lifetime-syntax.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="ch10-01-syntax.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="ch10-03-lifetime-syntax.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="ferris.js"></script>
+
+
+    </div>
+    </body>
+</html>

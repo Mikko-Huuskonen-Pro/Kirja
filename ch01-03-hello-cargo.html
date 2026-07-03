@@ -1,0 +1,404 @@
+<!DOCTYPE HTML>
+<html lang="fi" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Hei, Cargo! - Rust-ohjelmointikieli</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="ferris.css">
+        <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rust-ohjelmointikieli</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/rust-lang/book" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2 id="hello-cargo"><a class="header" href="#hello-cargo">Hello, Cargo!</a></h2>
+<p>Cargo on Rustin rakennusjärjestelmä ja pakettienhallintaohjelma. Suurin osa Rust-kehittäjistä käyttää tätä työkalua
+Rust-projektiensa hallintaan, koska Cargo hoitaa monia tehtäviä puolestasi,
+kuten koodisi kääntämisen, koodisi tarvitsemien kirjastojen lataamisen ja
+näiden kirjastojen kääntämisen. (Kirjastoja, joita koodisi tarvitsee, kutsutaan
+<em>riippuvuuksiksi</em>.)</p>
+<p>Yksinkertaisimmat Rust-ohjelmat, kuten tähän mennessä kirjoittamamme, eivät sisällä
+mitään riippuvuuksia. Jos olisimme rakentaneet ”Hello, world!” -projektin Cargolla, se
+käyttäisi vain Cargon osaa, joka hoitaa koodisi kääntämisen. Kun kirjoitat
+monimutkaisempia Rust-ohjelmia, lisäät riippuvuuksia, ja jos aloitat projektin
+Cargoa käyttäen, riippuvuuksien lisääminen on paljon helpompaa.</p>
+<p>Koska valtaosa Rust-projekteista käyttää Cargoa, tämän kirjan loppuosa
+olettaa, että käytät Cargoa myös. Cargo asennetaan Rustin mukana, jos
+käytit virallisia asennusohjelmia, joita käsiteltiin
+<a href="ch01-01-installation.html#installation">”Asennus”</a><!-- ignore --> -osiossa. Jos asensit Rustin
+jollain muulla tavalla, tarkista, onko Cargo asennettu, kirjoittamalla
+seuraava terminaaliin:</p>
+<pre><code class="language-console">$ cargo --version
+</code></pre>
+<p>Jos näet versionumeron, se on asennettu! Jos näet virheen, kuten <code>command not found</code>, katso asennusmenetelmäsi dokumentaatiosta,
+miten Cargo asennetaan erikseen.</p>
+<h3 id="projektin-luominen-cargolla"><a class="header" href="#projektin-luominen-cargolla">Projektin luominen Cargolla</a></h3>
+<p>Luodaan uusi projekti Cargoa käyttäen ja katsotaan, miten se eroaa
+alkuperäisestä ”Hello, world!” -projektistamme. Siirry takaisin <em>projects</em>-
+hakemistoosi (tai minne tahansa päätit tallentaa koodisi). Suorita sitten
+mikä tahansa käyttöjärjestelmä huomioon ottaen seuraava:</p>
+<pre><code class="language-console">$ cargo new hello_cargo
+$ cd hello_cargo
+</code></pre>
+<p>Ensimmäinen komento luo uuden hakemiston ja projektin nimeltä <em>hello_cargo</em>.
+Olemme nimenneet projektimme <em>hello_cargo</em>, ja Cargo luo sen tiedostot
+saman nimiseen hakemistoon.</p>
+<p>Siirry <em>hello_cargo</em>-hakemistoon ja listaa tiedostot. Näet, että Cargo
+on luonut meille kaksi tiedostoa ja yhden hakemiston: <em>Cargo.toml</em>-tiedoston ja
+<em>src</em>-hakemiston, jonka sisällä on <em>main.rs</em>-tiedosto.</p>
+<p>Se on myös alustanut uuden Git-repositorion sekä <em>.gitignore</em>-tiedoston.
+Git-tiedostoja ei luoda, jos suoritat <code>cargo new</code> -komennon olemassa olevassa Git-
+repositoriossa; voit ohittaa tämän käyttämällä <code>cargo new --vcs=git</code>.</p>
+<blockquote>
+<p>Huom: Git on yleinen versionhallintajärjestelmä. Voit muuttaa <code>cargo new</code> -komennon
+käyttämään eri versionhallintajärjestelmää tai ei lainkaan versionhallintaa
+<code>--vcs</code>-lipulla. Suorita <code>cargo new --help</code> nähdäksesi käytettävissä olevat vaihtoehdot.</p>
+</blockquote>
+<p>Avaa <em>Cargo.toml</em> haluamassasi tekstieditorissa. Sen pitäisi näyttää samankaltaiselta
+kuin Listauksen 1-2 koodi.</p>
+<figure class="listing">
+<span class="file-name">Filename: Cargo.toml</span>
+<pre><code class="language-toml">[package]
+name = "hello_cargo"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+</code></pre>
+<figcaption>Listing 1-2: Komennolla <code>cargo new</code> luodun <em>Cargo.toml</em>-tiedoston sisältö</figcaption>
+</figure>
+<p>Tämä tiedosto on <a href="https://toml.io"><em>TOML</em></a><!-- ignore -->-muodossa (<em>Tom’s Obvious, Minimal
+Language</em>), joka on Cargon asetustiedostomuoto.</p>
+<p>Ensimmäinen rivi, <code>[package]</code>, on osio-otsikko, joka osoittaa, että
+seuraavat lauseet määrittävät paketin. Kun lisäämme tähän tiedostoon lisää tietoa,
+lisäämme muita osioita.</p>
+<p>Seuraavat kolme riviä asettavat konfiguraatiotiedot, joita Cargo tarvitsee
+ohjelmasi kääntämiseen: nimen, version ja käytettävän Rust-version. Käsittelemme
+<code>edition</code>-avainta <a href="appendix-05-editions.html">liitteessä E</a><!-- ignore -->.</p>
+<p>Viimeinen rivi, <code>[dependencies]</code>, on osion alku, johon voit listata
+projektisi riippuvuudet. Rustissa koodipaketteja kutsutaan
+<em>crateiksi</em>. Emme tarvitse muita crateja tässä projektissa, mutta tarvitsemme
+luvun 2 ensimmäisessä projektissa, joten käytämme tätä riippuvuuksien osiota silloin.</p>
+<p>Avaa nyt <em>src/main.rs</em> ja katso sitä:</p>
+<p><span class="filename">Tiedostonimi: src/main.rs</span></p>
+<pre><pre class="playground"><code class="language-rust edition2024">fn main() {
+    println!("Hello, world!");
+}</code></pre></pre>
+<p>Cargo on luonut sinulle ”Hello, world!” -ohjelman, aivan kuten
+Listauksessa 1-1 kirjoittamamme! Tähän mennessä projektimme ja Cargon luoman
+projektin erot ovat, että Cargo sijoitti koodin <em>src</em>-hakemistoon
+ja meillä on <em>Cargo.toml</em>-asetustiedosto ylätason hakemistossa.</p>
+<p>Cargo odottaa, että lähdekooditiedostosi sijaitsevat <em>src</em>-hakemistossa.
+Ylätason projektihakemisto on vain README-tiedostoille, lisenssitiedoille,
+asetustiedostoille ja kaikelle muulle, mikä ei liity koodiisi. Cargon käyttö
+auttaa järjestämään projektisi. Kaikella on paikkansa, ja
+kaikki on omalla paikallaan.</p>
+<p>Jos aloitit projektin, joka ei käytä Cargoa, kuten teimme ”Hello,
+world!” -projektissa, voit muuntaa sen Cargoa käyttäväksi projektiksi. Siirrä
+projektikoodi <em>src</em>-hakemistoon ja luo sopiva <em>Cargo.toml</em>-
+tiedosto. Yksi helppo tapa saada <em>Cargo.toml</em>-tiedosto on suorittaa <code>cargo init</code>, joka
+luo sen automaattisesti.</p>
+<h3 id="cargo-projektin-rakentaminen-ja-suorittaminen"><a class="header" href="#cargo-projektin-rakentaminen-ja-suorittaminen">Cargo-projektin rakentaminen ja suorittaminen</a></h3>
+<p>Katsotaan nyt, mikä on erilaista, kun rakennamme ja suoritamme ”Hello, world!” -
+ohjelman Cargolla! <em>hello_cargo</em>-hakemistostasi rakenna projektisi
+kirjoittamalla seuraava komento:</p>
+<pre><code class="language-console">$ cargo build
+   Compiling hello_cargo v0.1.0 (file:///projects/hello_cargo)
+    Finished dev [unoptimized + debuginfo] target(s) in 2.85 secs
+</code></pre>
+<p>Tämä komento luo suoritettavan tiedoston hakemistoon <em>target/debug/hello_cargo</em> (tai
+<em>target\debug\hello_cargo.exe</em> Windowsissa) nykyisen hakemiston sijaan.
+Koska oletusrakenne on debug-rakenne, Cargo sijoittaa binäärin
+<em>debug</em>-nimiseen hakemistoon. Voit suorittaa suoritettavan tällä komennolla:</p>
+<pre><code class="language-console">$ ./target/debug/hello_cargo # tai .\target\debug\hello_cargo.exe Windowsissa
+Hello, world!
+</code></pre>
+<p>Jos kaikki menee hyvin, <code>Hello, world!</code> pitäisi tulostua terminaaliin. <code>cargo build</code> -komennon ensimmäinen suoritus saa myös Cargon luomaan uuden tiedoston ylätasolle:
+<em>Cargo.lock</em>. Tämä tiedosto pitää kirjaa projektisi riippuvuuksien tarkoista versioista. Tässä projektissa ei ole riippuvuuksia, joten
+tiedosto on hieman niukka. Sinun ei koskaan tarvitse muuttaa tätä tiedostoa käsin; Cargo
+hallitsee sen sisältöä puolestasi.</p>
+<p>Rakensimme juuri projektin komennolla <code>cargo build</code> ja suoritimme sen komennolla
+<code>./target/debug/hello_cargo</code>, mutta voimme myös käyttää <code>cargo run</code> -komentoa kääntääksemme
+koodin ja suorittaaksemme syntyneen suoritettavan yhdellä komennolla:</p>
+<pre><code class="language-console">$ cargo run
+    Finished dev [unoptimized + debuginfo] target(s) in 0.0 secs
+     Running `target/debug/hello_cargo`
+Hello, world!
+</code></pre>
+<p><code>cargo run</code> -komennon käyttö on kätevämpää kuin muistaa suorittaa <code>cargo build</code> ja käyttää sitten koko polkua binääriin, joten useimmat kehittäjät käyttävät <code>cargo run</code> -komentoa.</p>
+<p>Huomaa, että tällä kertaa emme nähneet tulostetta, joka osoittaisi Cargon kääntävän
+<code>hello_cargo</code>-projektia. Cargo päätteli, että tiedostoja ei ollut muutettu, joten se ei
+kääntänyt uudelleen vaan suoritti vain binäärin. Jos olisit muokannut lähdekoodiasi, Cargo
+olisi kääntänyt projektin uudelleen ennen suorittamista, ja olisit nähnyt tämän
+tulosteen:</p>
+<pre><code class="language-console">$ cargo run
+   Compiling hello_cargo v0.1.0 (file:///projects/hello_cargo)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.33 secs
+     Running `target/debug/hello_cargo`
+Hello, world!
+</code></pre>
+<p>Cargo tarjoaa myös komennon nimeltä <code>cargo check</code>. Tämä komento tarkistaa nopeasti
+koodisi varmistaakseen, että se kääntyy, mutta ei tuota suoritettavaa:</p>
+<pre><code class="language-console">$ cargo check
+   Checking hello_cargo v0.1.0 (file:///projects/hello_cargo)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.32 secs
+</code></pre>
+<p>Miksi et haluaisi suoritettavaa? Usein <code>cargo check</code> on paljon nopeampi kuin
+<code>cargo build</code>, koska se ohittaa suoritettavan tuottamisen. Jos tarkistat
+jatkuvasti työtäsi koodia kirjoittaessasi, <code>cargo check</code> -komennon käyttö
+nopeuttaa prosessia, jolla saat tietää, kääntyykö projektisi vielä! Siksi
+monet Rust-kehittäjät suorittavat <code>cargo check</code> -komennon säännöllisesti kirjoittaessaan
+ohjelmaansa varmistaakseen, että se kääntyy. Sitten he suorittavat <code>cargo build</code> -komennon, kun ovat
+valmiita käyttämään suoritettavaa.</p>
+<p>Kerrataan, mitä olemme tähän mennessä oppineet Cargosta:</p>
+<ul>
+<li>Voimme luoda projektin komennolla <code>cargo new</code>.</li>
+<li>Voimme rakentaa projektin komennolla <code>cargo build</code>.</li>
+<li>Voimme rakentaa ja suorittaa projektin yhdellä askeleella komennolla <code>cargo run</code>.</li>
+<li>Voimme rakentaa projektin tuottamatta binääriä virheiden tarkistamiseksi komennolla
+<code>cargo check</code>.</li>
+<li>Sen sijaan, että tallentaisimme rakennuksen tuloksen samaan hakemistoon kuin koodimme,
+Cargo tallentaa sen <em>target/debug</em>-hakemistoon.</li>
+</ul>
+<p>Cargon käytön lisäetu on, että komennot ovat samat riippumatta
+siitä, millä käyttöjärjestelmällä työskentelet. Tästä eteenpäin emme enää
+anna erillisiä ohjeita Linuxille ja macOS:lle verrattuna Windowsiin.</p>
+<h3 id="julkaisuversion-rakentaminen"><a class="header" href="#julkaisuversion-rakentaminen">Julkaisuversion rakentaminen</a></h3>
+<p>Kun projektisi on vihdoin valmis julkaistavaksi, voit käyttää <code>cargo build --release</code> -komentoa kääntääksesi sen optimoinneilla. Tämä komento luo
+suoritettavan tiedoston hakemistoon <em>target/release</em> hakemiston <em>target/debug</em> sijaan. Optimoinnit
+saavat Rust-koodisi toimimaan nopeammin, mutta niiden käyttöönotto pidentää aikaa, jonka
+ohjelmasi kääntäminen kestää. Siksi on kaksi eri profiilia: yksi
+kehitystä varten, kun haluat kääntää nopeasti ja usein, ja toinen
+lopullisen ohjelman rakentamiseen, jonka annat käyttäjälle ja jota ei rakenneta
+uudelleen toistuvasti ja joka toimii mahdollisimman nopeasti. Jos vertailet
+koodisi suoritusaikaa, muista suorittaa <code>cargo build --release</code> ja vertailla
+suoritettavaa hakemistossa <em>target/release</em>.</p>
+<h3 id="cargo-käytäntönä"><a class="header" href="#cargo-käytäntönä">Cargo käytäntönä</a></h3>
+<p>Yksinkertaisissa projekteissa Cargo ei tarjoa paljon lisäarvoa pelkän
+<code>rustc</code>-komennon käyttöön verrattuna, mutta se osoittaa arvonsa, kun ohjelmasi monimutkaistuvat.
+Kun ohjelmat kasvavat useisiin tiedostoihin tai tarvitsevat riippuvuuden, on paljon helpompaa
+antaa Cargon koordinoida rakennusta.</p>
+<p>Vaikka <code>hello_cargo</code>-projekti on yksinkertainen, se käyttää nyt suurta osaa oikeista
+työkaluista, joita käytät loppu Rust-urasi ajan. Itse asiassa työskennelläksesi minkä tahansa
+olemassa olevan projektin parissa voit käyttää seuraavia komentoja tarkistaaksesi koodin
+Gitillä, siirtyäksesi kyseisen projektin hakemistoon ja rakentaaksesi:</p>
+<pre><code class="language-console">$ git clone example.org/someproject
+$ cd someproject
+$ cargo build
+</code></pre>
+<p>Lisätietoja Cargosta löydät <a href="https://doc.rust-lang.org/cargo/">sen dokumentaatiosta</a>.</p>
+<h2 id="yhteenveto"><a class="header" href="#yhteenveto">Yhteenveto</a></h2>
+<p>Olet jo päässyt hyvään alkuun Rust-matkallasi! Tässä luvussa
+olet oppinut:</p>
+<ul>
+<li>Asentamaan uusimman vakaan Rust-version komennolla <code>rustup</code></li>
+<li>Päivittämään uudempaan Rust-versioon</li>
+<li>Avaamaan paikallisesti asennetun dokumentaation</li>
+<li>Kirjoittamaan ja suorittamaan ”Hello, world!” -ohjelman suoraan komennolla <code>rustc</code></li>
+<li>Luomaan ja suorittamaan uuden projektin Cargon käytäntöjen mukaisesti</li>
+</ul>
+<p>Nyt on hyvä hetki rakentaa laajempi ohjelma totuttuaksesi Rust-koodin lukemiseen
+ja kirjoittamiseen. Luvussa 2 rakennamme arvauspeli-ohjelman.
+Jos haluat mieluummin aloittaa oppimalla, miten yleiset ohjelmointikäsitteet toimivat
+Rustissa, katso luku 3 ja palaa sitten lukuun 2.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="ch01-02-hello-world.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="ch02-00-guessing-game-tutorial.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="ch01-02-hello-world.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="ch02-00-guessing-game-tutorial.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="ferris.js"></script>
+
+
+    </div>
+    </body>
+</html>

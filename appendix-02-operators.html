@@ -1,0 +1,411 @@
+<!DOCTYPE HTML>
+<html lang="fi" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>B - Operators and Symbols - Rust-ohjelmointikieli</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="ferris.css">
+        <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rust-ohjelmointikieli</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/rust-lang/book" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2 id="liite-b-operaattorit-ja-symbolit"><a class="header" href="#liite-b-operaattorit-ja-symbolit">Liite B: Operaattorit ja symbolit</a></h2>
+<p>Tämä liite sisältää katsauksen Rustin syntaksiin, mukaan lukien operaattorit ja muut symbolit, joita käytetään muun muassa poluissa, geneerisissä tyypeissä, rajapintarajoituksissa, makroissa, attribuuteissa, kommenteissa, tupleissa ja hakasulkeissa.</p>
+<h3 id="operaattorit"><a class="header" href="#operaattorit">Operaattorit</a></h3>
+<p>Taulukko B-1 sisältää Rustin operaattorit, esimerkin niiden käytöstä, lyhyen selityksen sekä tiedon siitä, onko operaattori ylikuormitettavissa. Jos operaattori on ylikuormitettavissa, taulukossa mainitaan myös siihen liittyvä rajapinta.</p>
+<p><span class="caption">Taulukko B-1: Operaattorit</span></p>
+<div class="table-wrapper"><table><thead><tr><th>Operaattori</th><th>Esimerkki</th><th>Selitys</th><th>Ylikuormitettavissa?</th></tr></thead><tbody>
+<tr><td><code>!</code></td><td><code>ident!(...)</code>, <code>ident!{...}</code>, <code>ident![...]</code></td><td>Makron laajennus</td><td></td></tr>
+<tr><td><code>!</code></td><td><code>!expr</code></td><td>Bitti- tai looginen komplementti</td><td><code>Not</code></td></tr>
+<tr><td><code>!=</code></td><td><code>expr != expr</code></td><td>Eriarvoisuusvertailu</td><td><code>PartialEq</code></td></tr>
+<tr><td><code>%</code></td><td><code>expr % expr</code></td><td>Jakoreste</td><td><code>Rem</code></td></tr>
+<tr><td><code>%=</code></td><td><code>var %= expr</code></td><td>Jakoreste ja sijoitus</td><td><code>RemAssign</code></td></tr>
+<tr><td><code>&amp;</code></td><td><code>&amp;expr</code>, <code>&amp;mut expr</code></td><td>Viittaus (lainaus)</td><td></td></tr>
+<tr><td><code>&amp;</code></td><td><code>&amp;type</code>, <code>&amp;mut type</code>, <code>&amp;'a type</code>, <code>&amp;'a mut type</code></td><td>Lainattu osoitintyyppi</td><td></td></tr>
+<tr><td><code>&amp;</code></td><td><code>expr &amp; expr</code></td><td>Bittitasolla JA-operaattori</td><td><code>BitAnd</code></td></tr>
+<tr><td><code>&amp;=</code></td><td><code>var &amp;= expr</code></td><td>Bittitasolla JA-operaattori ja sijoitus</td><td><code>BitAndAssign</code></td></tr>
+<tr><td><code>&amp;&amp;</code></td><td><code>expr &amp;&amp; expr</code></td><td>Lyhytkatkaiseva looginen JA</td><td></td></tr>
+<tr><td><code>*</code></td><td><code>expr * expr</code></td><td>Kertolasku</td><td><code>Mul</code></td></tr>
+<tr><td><code>*=</code></td><td><code>var *= expr</code></td><td>Kertolasku ja sijoitus</td><td><code>MulAssign</code></td></tr>
+<tr><td><code>*</code></td><td><code>*expr</code></td><td>Viittauksen purku (dereference)</td><td><code>Deref</code></td></tr>
+<tr><td><code>*</code></td><td><code>*const type</code>, <code>*mut type</code></td><td>Raaka osoitin</td><td></td></tr>
+<tr><td><code>+</code></td><td><code>trait + trait</code>, <code>'a + trait</code></td><td>Yhdistetty tyyppirajoite</td><td></td></tr>
+<tr><td><code>+</code></td><td><code>expr + expr</code></td><td>Yhteenlasku</td><td><code>Add</code></td></tr>
+<tr><td><code>+=</code></td><td><code>var += expr</code></td><td>Yhteenlasku ja sijoitus</td><td><code>AddAssign</code></td></tr>
+<tr><td><code>-&gt;</code></td><td><code>fn(...) -&gt; type</code>, <code>|…| -&gt; type</code></td><td>Function and closure return type</td><td></td></tr>
+<tr><td><code>.</code></td><td><code>expr.ident</code></td><td>Field access</td><td></td></tr>
+<tr><td><code>.</code></td><td><code>expr.ident(expr, ...)</code></td><td>Method call</td><td></td></tr>
+<tr><td><code>.</code></td><td><code>expr.0</code>, <code>expr.1</code>, etc.</td><td>Tuple indexing</td><td></td></tr>
+<tr><td><code>..</code></td><td><code>..</code>, <code>expr..</code>, <code>..expr</code>, <code>expr..expr</code></td><td>Right-exclusive range literal</td><td><code>PartialOrd</code></td></tr>
+<tr><td><code>..=</code></td><td><code>..=expr</code>, <code>expr..=expr</code></td><td>Right-inclusive range literal</td><td><code>PartialOrd</code></td></tr>
+<tr><td><code>..</code></td><td><code>..expr</code></td><td>Struct literal update syntax</td><td></td></tr>
+<tr><td><code>..</code></td><td><code>variant(x, ..)</code>, <code>struct_type { x, .. }</code></td><td>“And the rest” pattern binding</td><td></td></tr>
+<tr><td><code>...</code></td><td><code>expr...expr</code></td><td>(Deprecated, use <code>..=</code> instead) In a pattern: inclusive range pattern</td><td></td></tr>
+<tr><td><code>/</code></td><td><code>expr / expr</code></td><td>Arithmetic division</td><td><code>Div</code></td></tr>
+<tr><td><code>/=</code></td><td><code>var /= expr</code></td><td>Arithmetic division and assignment</td><td><code>DivAssign</code></td></tr>
+<tr><td><code>:</code></td><td><code>pat: type</code>, <code>ident: type</code></td><td>Constraints</td><td></td></tr>
+<tr><td><code>:</code></td><td><code>ident: expr</code></td><td>Struct field initializer</td><td></td></tr>
+<tr><td><code>:</code></td><td><code>'a: loop {...}</code></td><td>Loop label</td><td></td></tr>
+<tr><td><code>;</code></td><td><code>expr;</code></td><td>Statement and item terminator</td><td></td></tr>
+<tr><td><code>;</code></td><td><code>[...; len]</code></td><td>Part of fixed-size array syntax</td><td></td></tr>
+<tr><td><code>&lt;&lt;</code></td><td><code>expr &lt;&lt; expr</code></td><td>Left-shift</td><td><code>Shl</code></td></tr>
+<tr><td><code>&lt;&lt;=</code></td><td><code>var &lt;&lt;= expr</code></td><td>Left-shift and assignment</td><td><code>ShlAssign</code></td></tr>
+<tr><td><code>&lt;</code></td><td><code>expr &lt; expr</code></td><td>Less than comparison</td><td><code>PartialOrd</code></td></tr>
+<tr><td><code>&lt;=</code></td><td><code>expr &lt;= expr</code></td><td>Less than or equal to comparison</td><td><code>PartialOrd</code></td></tr>
+<tr><td><code>=</code></td><td><code>var = expr</code>, <code>ident = type</code></td><td>Assignment/equivalence</td><td></td></tr>
+<tr><td><code>==</code></td><td><code>expr == expr</code></td><td>Equality comparison</td><td><code>PartialEq</code></td></tr>
+<tr><td><code>=&gt;</code></td><td><code>pat =&gt; expr</code></td><td>Part of match arm syntax</td><td></td></tr>
+<tr><td><code>&gt;</code></td><td><code>expr &gt; expr</code></td><td>Greater than comparison</td><td><code>PartialOrd</code></td></tr>
+<tr><td><code>&gt;=</code></td><td><code>expr &gt;= expr</code></td><td>Greater than or equal to comparison</td><td><code>PartialOrd</code></td></tr>
+<tr><td><code>&gt;&gt;</code></td><td><code>expr &gt;&gt; expr</code></td><td>Right-shift</td><td><code>Shr</code></td></tr>
+<tr><td><code>&gt;&gt;=</code></td><td><code>var &gt;&gt;= expr</code></td><td>Right-shift and assignment</td><td><code>ShrAssign</code></td></tr>
+<tr><td><code>@</code></td><td><code>ident @ pat</code></td><td>Pattern binding</td><td></td></tr>
+<tr><td><code>^</code></td><td><code>expr ^ expr</code></td><td>Bitwise exclusive OR</td><td><code>BitXor</code></td></tr>
+<tr><td><code>^=</code></td><td><code>var ^= expr</code></td><td>Bitwise exclusive OR and assignment</td><td><code>BitXorAssign</code></td></tr>
+<tr><td><code>|</code></td><td><code>pat | pat</code></td><td>Pattern alternatives</td><td></td></tr>
+<tr><td><code>|</code></td><td><code>expr | expr</code></td><td>Bitwise OR</td><td><code>BitOr</code></td></tr>
+<tr><td><code>|=</code></td><td><code>var |= expr</code></td><td>Bitwise OR and assignment</td><td><code>BitOrAssign</code></td></tr>
+<tr><td><code>||</code></td><td><code>expr || expr</code></td><td>Short-circuiting logical OR</td><td></td></tr>
+<tr><td><code>?</code></td><td><code>expr?</code></td><td>Error propagation</td><td></td></tr>
+</tbody></table>
+</div>
+<hr />
+<h3 id="muut-kuin-operaattorisymbolit"><a class="header" href="#muut-kuin-operaattorisymbolit">Muut kuin operaattorisymbolit</a></h3>
+<p>Seuraava luettelo sisältää symbolit, jotka eivät toimi operaattoreina, eli ne eivät käyttäydy kuten funktiokutsut tai metodikutsut.</p>
+<p><em>(Taulukot ja selitykset jatkavat samalla rakenteella kuin alkuperäisessä dokumentissa)</em></p>
+<hr />
+<p>The following list contains all symbols that don’t function as operators; that
+is, they don’t behave like a function or method call.</p>
+<p>Table B-2 shows symbols that appear on their own and are valid in a variety of
+locations.</p>
+<p><span class="caption">Table B-2: Stand-Alone Syntax</span></p>
+<div class="table-wrapper"><table><thead><tr><th>Symbol</th><th>Explanation</th></tr></thead><tbody>
+<tr><td><code>'ident</code></td><td>Named lifetime or loop label</td></tr>
+<tr><td><code>...u8</code>, <code>...i32</code>, <code>...f64</code>, <code>...usize</code>, etc.</td><td>Numeric literal of specific type</td></tr>
+<tr><td><code>"..."</code></td><td>String literal</td></tr>
+<tr><td><code>r"..."</code>, <code>r#"..."#</code>, <code>r##"..."##</code>, etc.</td><td>Raw string literal, escape characters not processed</td></tr>
+<tr><td><code>b"..."</code></td><td>Byte string literal; constructs an array of bytes instead of a string</td></tr>
+<tr><td><code>br"..."</code>, <code>br#"..."#</code>, <code>br##"..."##</code>, etc.</td><td>Raw byte string literal, combination of raw and byte string literal</td></tr>
+<tr><td><code>'...'</code></td><td>Character literal</td></tr>
+<tr><td><code>b'...'</code></td><td>ASCII byte literal</td></tr>
+<tr><td><code>|…| expr</code></td><td>Closure</td></tr>
+<tr><td><code>!</code></td><td>Always empty bottom type for diverging functions</td></tr>
+<tr><td><code>_</code></td><td>“Ignored” pattern binding; also used to make integer literals readable</td></tr>
+</tbody></table>
+</div>
+<p>Table B-3 shows symbols that appear in the context of a path through the module
+hierarchy to an item.</p>
+<p><span class="caption">Table B-3: Path-Related Syntax</span></p>
+<div class="table-wrapper"><table><thead><tr><th>Symbol</th><th>Explanation</th></tr></thead><tbody>
+<tr><td><code>ident::ident</code></td><td>Namespace path</td></tr>
+<tr><td><code>::path</code></td><td>Path relative to the extern prelude, where all other crates are rooted (i.e., an explicitly absolute path including crate name)</td></tr>
+<tr><td><code>self::path</code></td><td>Path relative to the current module (i.e., an explicitly relative path).</td></tr>
+<tr><td><code>super::path</code></td><td>Path relative to the parent of the current module</td></tr>
+<tr><td><code>type::ident</code>, <code>&lt;type as trait&gt;::ident</code></td><td>Associated constants, functions, and types</td></tr>
+<tr><td><code>&lt;type&gt;::...</code></td><td>Associated item for a type that cannot be directly named (e.g., <code>&lt;&amp;T&gt;::...</code>, <code>&lt;[T]&gt;::...</code>, etc.)</td></tr>
+<tr><td><code>trait::method(...)</code></td><td>Disambiguating a method call by naming the trait that defines it</td></tr>
+<tr><td><code>type::method(...)</code></td><td>Disambiguating a method call by naming the type for which it’s defined</td></tr>
+<tr><td><code>&lt;type as trait&gt;::method(...)</code></td><td>Disambiguating a method call by naming the trait and type</td></tr>
+</tbody></table>
+</div>
+<p>Table B-4 shows symbols that appear in the context of using generic type
+parameters.</p>
+<p><span class="caption">Table B-4: Generics</span></p>
+<div class="table-wrapper"><table><thead><tr><th>Symbol</th><th>Explanation</th></tr></thead><tbody>
+<tr><td><code>path&lt;...&gt;</code></td><td>Specifies parameters to generic type in a type (e.g., <code>Vec&lt;u8&gt;</code>)</td></tr>
+<tr><td><code>path::&lt;...&gt;</code>, <code>method::&lt;...&gt;</code></td><td>Specifies parameters to generic type, function, or method in an expression; often referred to as turbofish (e.g., <code>"42".parse::&lt;i32&gt;()</code>)</td></tr>
+<tr><td><code>fn ident&lt;...&gt; ...</code></td><td>Define generic function</td></tr>
+<tr><td><code>struct ident&lt;...&gt; ...</code></td><td>Define generic structure</td></tr>
+<tr><td><code>enum ident&lt;...&gt; ...</code></td><td>Define generic enumeration</td></tr>
+<tr><td><code>impl&lt;...&gt; ...</code></td><td>Define generic implementation</td></tr>
+<tr><td><code>for&lt;...&gt; type</code></td><td>Higher-ranked lifetime bounds</td></tr>
+<tr><td><code>type&lt;ident=type&gt;</code></td><td>A generic type where one or more associated types have specific assignments (e.g., <code>Iterator&lt;Item=T&gt;</code>)</td></tr>
+</tbody></table>
+</div>
+<p>Table B-5 shows symbols that appear in the context of constraining generic type
+parameters with trait bounds.</p>
+<p><span class="caption">Table B-5: Trait Bound Constraints</span></p>
+<div class="table-wrapper"><table><thead><tr><th>Symbol</th><th>Explanation</th></tr></thead><tbody>
+<tr><td><code>T: U</code></td><td>Generic parameter <code>T</code> constrained to types that implement <code>U</code></td></tr>
+<tr><td><code>T: 'a</code></td><td>Generic type <code>T</code> must outlive lifetime <code>'a</code> (meaning the type cannot transitively contain any references with lifetimes shorter than <code>'a</code>)</td></tr>
+<tr><td><code>T: 'static</code></td><td>Generic type <code>T</code> contains no borrowed references other than <code>'static</code> ones</td></tr>
+<tr><td><code>'b: 'a</code></td><td>Generic lifetime <code>'b</code> must outlive lifetime <code>'a</code></td></tr>
+<tr><td><code>T: ?Sized</code></td><td>Allow generic type parameter to be a dynamically sized type</td></tr>
+<tr><td><code>'a + trait</code>, <code>trait + trait</code></td><td>Compound type constraint</td></tr>
+</tbody></table>
+</div>
+<p>Table B-6 shows symbols that appear in the context of calling or defining
+macros and specifying attributes on an item.</p>
+<p><span class="caption">Table B-6: Macros and Attributes</span></p>
+<div class="table-wrapper"><table><thead><tr><th>Symbol</th><th>Explanation</th></tr></thead><tbody>
+<tr><td><code>#[meta]</code></td><td>Outer attribute</td></tr>
+<tr><td><code>#![meta]</code></td><td>Inner attribute</td></tr>
+<tr><td><code>$ident</code></td><td>Macro substitution</td></tr>
+<tr><td><code>$ident:kind</code></td><td>Macro capture</td></tr>
+<tr><td><code>$(…)…</code></td><td>Macro repetition</td></tr>
+<tr><td><code>ident!(...)</code>, <code>ident!{...}</code>, <code>ident![...]</code></td><td>Macro invocation</td></tr>
+</tbody></table>
+</div>
+<p>Table B-7 shows symbols that create comments.</p>
+<p><span class="caption">Table B-7: Comments</span></p>
+<div class="table-wrapper"><table><thead><tr><th>Symbol</th><th>Explanation</th></tr></thead><tbody>
+<tr><td><code>//</code></td><td>Line comment</td></tr>
+<tr><td><code>//!</code></td><td>Inner line doc comment</td></tr>
+<tr><td><code>///</code></td><td>Outer line doc comment</td></tr>
+<tr><td><code>/*...*/</code></td><td>Block comment</td></tr>
+<tr><td><code>/*!...*/</code></td><td>Inner block doc comment</td></tr>
+<tr><td><code>/**...*/</code></td><td>Outer block doc comment</td></tr>
+</tbody></table>
+</div>
+<p>Table B-8 shows the contexts in which parentheses are used.</p>
+<p><span class="caption">Table B-8: Parentheses</span></p>
+<div class="table-wrapper"><table><thead><tr><th>Symbol</th><th>Explanation</th></tr></thead><tbody>
+<tr><td><code>()</code></td><td>Empty tuple (aka unit), both literal and type</td></tr>
+<tr><td><code>(expr)</code></td><td>Parenthesized expression</td></tr>
+<tr><td><code>(expr,)</code></td><td>Single-element tuple expression</td></tr>
+<tr><td><code>(type,)</code></td><td>Single-element tuple type</td></tr>
+<tr><td><code>(expr, ...)</code></td><td>Tuple expression</td></tr>
+<tr><td><code>(type, ...)</code></td><td>Tuple type</td></tr>
+<tr><td><code>expr(expr, ...)</code></td><td>Function call expression; also used to initialize tuple <code>struct</code>s and tuple <code>enum</code> variants</td></tr>
+</tbody></table>
+</div>
+<p>Table B-9 shows the contexts in which curly braces are used.</p>
+<p><span class="caption">Table B-9: Curly Brackets</span></p>
+<div class="table-wrapper"><table><thead><tr><th>Context</th><th>Explanation</th></tr></thead><tbody>
+<tr><td><code>{...}</code></td><td>Block expression</td></tr>
+<tr><td><code>Type {...}</code></td><td><code>struct</code> literal</td></tr>
+</tbody></table>
+</div>
+<p>Table B-10 shows the contexts in which square brackets are used.</p>
+<p><span class="caption">Table B-10: Square Brackets</span></p>
+<div class="table-wrapper"><table><thead><tr><th>Context</th><th>Explanation</th></tr></thead><tbody>
+<tr><td><code>[...]</code></td><td>Array literal</td></tr>
+<tr><td><code>[expr; len]</code></td><td>Array literal containing <code>len</code> copies of <code>expr</code></td></tr>
+<tr><td><code>[type; len]</code></td><td>Array type containing <code>len</code> instances of <code>type</code></td></tr>
+<tr><td><code>expr[expr]</code></td><td>Collection indexing. Overloadable (<code>Index</code>, <code>IndexMut</code>)</td></tr>
+<tr><td><code>expr[..]</code>, <code>expr[a..]</code>, <code>expr[..b]</code>, <code>expr[a..b]</code></td><td>Collection indexing pretending to be collection slicing, using <code>Range</code>, <code>RangeFrom</code>, <code>RangeTo</code>, or <code>RangeFull</code> as the “index”</td></tr>
+<tr><td>Liite B: Operaattorit ja SymbolitTämä liite sisältää Rust-syntaksin sanaston, mukaan lukien operaattorit ja muut symbolit, jotka esiintyvät yksinään tai polkujen, geneeristen tyyppien, trait-rajojen, makrojen, attribuuttien, kommenttien, tuplejen ja hakasulkeiden yhteydessä.OperaattoritTässä osiossa eritellään Rustin eri operaattorit. Olennainen osa ohjelmointikielen ymmärtämistä on sen operaattoreiden tunteminen. Nämä mahdollistavat erilaisten toimintojen suorittamisen arvoilla ja muuttujilla. Tässä liitteessä käsitellään kunkin operaattorin toimintaa, esimerkkejä niiden käytöstä ja tietoa siitä, voidaanko niitä ylikuormittaa. Ylikuormittaminen tarkoittaa tässä yhteydessä mahdollisuutta määritellä operaattorin toiminta uudelleen käyttäjäkohtaisille tyypeille. Mikäli operaattori on ylikuormitettavissa, on mainittu myös siihen liittyvä trait, jonka avulla ylikuormittaminen tapahtuu.Taulukko B-1: OperaattoritTämä alaluku olisi sisältänyt yksityiskohtaisen taulukon, jossa on lueteltu Rustin kaikki operaattorit. Jokaisen operaattorin kohdalla olisi esitetty esimerkki sen käytöstä koodikontekstissa, lyhyt selitys sen toiminnasta sekä tieto siitä, onko operaattori ylikuormitettavissa. Mikäli operaattori on ylikuormitettavissa, taulukossa olisi mainittu myös kyseiseen operaattoriin liittyvä trait. Tämä taulukko olisi ollut keskeinen resurssi Rust-ohjelmoijille, tarjoten nopean ja selkeän yhteenvedon kielen operaattoreista. Valitettavasti verkkosivun osoitteessa https://github.com/Gigli2020/Kirja/blob/main/src/appendix-02-operators.md oleva sisältö ei ole saatavilla 1, joten tämän taulukon käännöstä ei voida tällä hetkellä esittää.Taulukon rakenne olisi ollut seuraavanlainen:</td><td></td></tr>
+<tr><td>OperaattoriEsimerkkiSelitysYlikuormitettavissa?Ylikuormitettava Trait!ident!(…), ident!{…}, ident![…]Makron laajennus!!exprBitti- tai looginen komplementtiKylläNot!=expr != exprErisuuruusvertailuKylläPartialEq%expr % exprAritmeettinen jakojäännösKylläRem%=var %= exprAritmeettinen jakojäännös ja sijoitusKylläRemAssign&amp;&amp;expr, &amp;mut exprLainaaminen&amp;&amp;type, &amp;mut type, &amp;’a type, &amp;’a mut typeLainattu osoitintyyppi&amp;expr &amp; exprBittiwise ANDKylläBitAnd&amp;=var &amp;= exprBittiwise AND ja sijoitusKylläBitAndAssign&amp;&amp;expr &amp;&amp; exprOikosulkeva looginen AND<em>expr * exprAritmeettinen kertolaskuKylläMul</em>=var *= exprAritmeettinen kertolasku ja sijoitusKylläMulAssign<strong>exprDereferenssiKylläDeref</strong>const type, *mut typeRaaka osoitin+trait + trait, ’a + traitYhdistetty tyyppirajoitus+expr + exprAritmeettinen yhteenlaskuKylläAdd+=var += exprAritmeettinen yhteenlasku ja sijoitusKylläAddAssign,expr, exprArgumenttien ja elementtien erotin– exprAritmeettinen negaatioKylläNeg-expr - exprAritmeettinen vähennyslaskuKylläSub-=var -= exprAritmeettinen vähennyslasku ja sijoitusKylläSubAssign-&gt;fn(…) -&gt; type, <code>...-&gt; type</code>Funktion ja sulkeuman paluuarvon tyyppi.expr.identKentän käyttö.expr.ident(expr, …)Metodin kutsu.expr.0, expr.1, jne.Tuplen indeksointi…., expr.., ..expr, expr..exprOikealta avoin väli-literaaliKylläPartialOrd..=..=expr, expr..=exprOikealta suljettu väli-literaaliKylläPartialOrd….exprRakenneliteraalin päivityssyntaksi..variant(x, ..), struct_type { x, .. }“Ja loput” -patternisidonta…expr…expr(Vanhentunut, käytä ..= sijaan) Patternissa: suljettu väli-patterni/expr / exprAritmeettinen jakolaskuKylläDiv/=var /= exprAritmeettinen jakolasku ja sijoitusKylläDivAssign:pat: type, ident: typeRajoitukset:ident: exprRakennuskentän alustus:’a: loop {…}Silmukan label;expr;Lauseen ja itemin pääte;[…; len]Osa kiinteäkokoista taulukon syntaksia&lt;&lt;expr &lt;&lt; exprVasemmalle siirtoKylläShl&lt;&lt;=var &lt;&lt;= exprVasemmalle siirto ja sijoitusKylläShlAssign&lt;expr &lt; exprPienempi kuin -vertailuKylläPartialOrd&lt;=expr &lt;= exprPienempi tai yhtä suuri kuin -vertailuKylläPartialOrd=var = expr, ident = typeSijoitus/ekvivalenssi==expr == exprYhtä suuri kuin -vertailuKylläPartialEq=&gt;pat =&gt; exprOsa match-haaran syntaksia&gt;expr &gt; exprSuurempi kuin -vertailuKylläPartialOrd&gt;=expr &gt;= exprSuurempi tai yhtä suuri kuin -vertailuKylläPartialOrd&gt;&gt;expr &gt;&gt; exprOikealle siirtoKylläShr&gt;&gt;=var &gt;&gt;= exprOikealle siirto ja sijoitusKylläShrAssign@ident @ patPatternisidonta^expr ^ exprBittiwise XORKylläBitXor^=var ^= exprBittiwise XOR ja sijoitusKylläBitXorAssign<code>patpat`Patternivaihtoehdot</code>exprexpr<code>Bittiwise OR</code>=``var= expr<code>Bittiwise OR ja sijoitus```exprexpr</code>Oikosulkeva looginen OR?expr?Virheen propagointi</td><td></td></tr>
+<tr><td>Muut kuin operaattorisymbolitTämä osio käsittelisi kaikkia niitä symboleita Rust-kielessä, jotka eivät toimi operaattoreina. Toisin sanoen, ne eivät käyttäydy kuten funktio- tai metodikutsu. Nämä symbolit täyttävät erilaisia rooleja kielen syntaksissa, kuten tyyppien määrittelyssä, polkujen muodostamisessa ja koodin rakenteen ilmaisemisessa.Taulukko B-2: Itsenäinen syntaksiTämä alaluku olisi sisältänyt taulukon, jossa esitellään itsenäisesti esiintyviä symboleita, jotka ovat validia syntaksia monissa eri kohdissa Rust-koodia. Nämä symbolit eivät ole riippuvaisia toisista operaattoreista toimiakseen. Valitettavasti verkkosivun sisältö ei ole saatavilla 1, joten tämän taulukon käännöstä ei voida tällä hetkellä esittää.Taulukon rakenne olisi ollut seuraavanlainen:</td><td></td></tr>
+<tr><td>SymboliSelitys’identNimetty elinkaari tai silmukan label…u8, …i32, …f64, …usize, jne.Numeerinen literaali tiettynä tyyppinä“…“String-literaalir”…“, r#”…“#, r##”…“##, jne.Raaka string-literaali, escape-merkit eivät prosessoidub”…“Byte-string-literaali; muodostaa byte-taulukon stringin sijaanbr”…“, br#”…“#, br##”…“##, jne.Raaka byte-string-literaali, raa’an ja byte-string-literaalin yhdistelmä’…‘Merkki-literaalib’…’ASCII byte-literaali`…!Aina tyhjä pohjatyyppi divergoiville funktioille_“Ohitettu” patternisidonta; käytetään myös kokonaislukuliteraalien luettavuuden parantamiseen</td><td></td></tr>
+<tr><td>Taulukko B-3: Polkuun liittyvä syntaksiTämä alaluku olisi sisältänyt taulukon, jossa esitellään symboleita, jotka esiintyvät polkujen yhteydessä, kun viitataan itemeihin moduulihierarkian läpi. Nämä symbolit mahdollistavat koodin organisoinnin ja nimiavaruuksien hallinnan. Verkkosivun sisältö ei ole saatavilla 1, joten tämän taulukon käännöstä ei voida tällä hetkellä esittää.Taulukon rakenne olisi ollut seuraavanlainen:</td><td></td></tr>
+<tr><td>SymboliSelitysident::identNimiavaruuspolku::pathPolku suhteessa ulkoiseen esilukuun, jossa kaikki muut cratet ovat juurina (eli eksplisiittisesti absoluuttinen polku, mukaan lukien crate-nimi)self::pathPolku suhteessa nykyiseen moduuliin (eli eksplisiittisesti suhteellinen polku)super::pathPolku suhteessa nykyisen moduulin vanhempaantype::ident, <type as trait>::identAssosioidut vakiot, funktiot ja tyypit<type>::…Assosioitu item tyypille, jota ei voi suoraan nimetä (esim. &lt;&amp;T&gt;::…, &lt;&gt;::…, jne.)trait::method(…)Metodikutsun disambiguointi nimeämällä sen määrittävä traittype::method(…)Metodikutsun disambiguointi nimeämällä sen tyyppi, jolle se on määritelty<type as trait>::method(…)Metodikutsun disambiguointi nimeämällä trait ja tyyppi</td><td></td></tr>
+<tr><td>Taulukko B-4: GenericsTämä alaluku olisi sisältänyt taulukon, jossa esitellään symboleita, jotka esiintyvät geneeristen tyyppiparametrien käytön yhteydessä. Generics mahdollistaa tyyppiturvallisen koodin kirjoittamisen, joka voi toimia useilla eri tyypeillä. Verkkosivun sisältö ei ole saatavilla 1, joten tämän taulukon käännöstä ei voida tällä hetkellä esittää.Taulukon rakenne olisi ollut seuraavanlainen:</td><td></td></tr>
+<tr><td>SymboliSelityspath&lt;…&gt;Määrittää parametrit geneeriselle tyypille tyypissä (esim. Vec<u8>)path::&lt;…&gt;, method::&lt;…&gt;Määrittää parametrit geneeriselle tyypille, funktiolle tai metodille lausekkeessa; usein kutsutaan “turbofishiksi” (esim. “42”.parse::<i32>())fn ident&lt;…&gt; …Määrittele geneerinen funktiostruct ident&lt;…&gt; …Määrittele geneerinen rakenneenum ident&lt;…&gt; …Määrittele geneerinen enumeraatioimpl&lt;…&gt; …Määrittele geneerinen implementaatiofor&lt;…&gt; typeKorkeamman asteen elinkaarirajattype&lt;ident=type&gt;Geneerinen tyyppi, jossa yhdellä tai useammalla assosioidulla tyypillä on tietyt sijoitukset (esim. Iterator&lt;Item=T&gt;)</td><td></td></tr>
+<tr><td>Taulukko B-5: Trait-rajausehdotTämä alaluku olisi sisältänyt taulukon, jossa esitellään symboleita, jotka esiintyvät geneeristen tyyppiparametrien rajoittamisen yhteydessä trait-rajojen avulla. Trait-rajat määrittävät, mitä toiminnallisuutta geneerisen tyypin on tuettava. Verkkosivun sisältö ei ole saatavilla 1, joten tämän taulukon käännöstä ei voida tällä hetkellä esittää.Taulukon rakenne olisi ollut seuraavanlainen:</td><td></td></tr>
+<tr><td>SymboliSelitysT: UGeneerinen parametri T on rajoitettu tyyppeihin, jotka toteuttavat traitin UT: ’aGeneerisen tyypin T on elettävä elinkaaren ’a yli (mikä tarkoittaa, että tyyppi ei voi transitiivisesti sisältää viitteitä, joiden elinkaari on lyhyempi kuin ’a)T: ’staticGeneerinen tyyppi T ei sisällä muita lainattuja viitteitä kuin ’static-tyyppisiä’b: ’aGeneerisen elinkaaren ’b on elettävä elinkaaren ’a yliT: ?SizedSalli geneerisen tyyppiparametrin olla dynaamisesti mitoitettu tyyppi’a + trait, trait + traitYhdistetty tyyppirajoitus</td><td></td></tr>
+<tr><td>Taulukko B-6: Makrot ja attribuutitTämä alaluku olisi sisältänyt taulukon, jossa esitellään symboleita, jotka esiintyvät makrojen kutsumisen tai määrittelyn sekä itemeille määritettyjen attribuuttien yhteydessä. Makrot mahdollistavat koodin generoinnin, ja attribuutit tarjoavat metatietoa koodille. Verkkosivun sisältö ei ole saatavilla 1, joten tämän taulukon käännöstä ei voida tällä hetkellä esittää.Taulukon rakenne olisi ollut seuraavanlainen:</td><td></td></tr>
+<tr><td>SymboliSelitys#[meta]Ulompi attribuutti#![meta]Sisempi attribuutti$identMakron substituutio$ident:kindMakron kaappaus$(…)…Makron toistoident!(…), ident!{…}, ident![…]Makron invokaatio</td><td></td></tr>
+<tr><td>Taulukko B-7: KommentitTämä alaluku olisi sisältänyt taulukon, jossa esitellään symboleita, joilla luodaan kommentteja Rust-koodiin. Kommentit ovat tärkeitä koodin selkeyden ja ylläpidettävyyden kannalta. Verkkosivun sisältö ei ole saatavilla 1, joten tämän taulukon käännöstä ei voida tällä hetkellä esittää.Taulukon rakenne olisi ollut seuraavanlainen:</td><td></td></tr>
+<tr><td>SymboliSelitys//Yksirivinen kommentti//!Sisempi rividokumentointikommentti///Ulompi rividokumentointikommentti/<em>…</em>/Lohkokommentti/<em>!…</em>/Sisempi lohkodokumentointikommentti/**…*/Ulompi lohkodokumentointikommentti</td><td></td></tr>
+<tr><td>Taulukko B-8: SulkeetTämä alaluku olisi sisältänyt taulukon, jossa esitellään kontekstit, joissa kaarisulkeita käytetään Rust-kielessä. Kaarisulkeilla on useita eri käyttötarkoituksia syntaksissa. Verkkosivun sisältö ei ole saatavilla 1, joten tämän taulukon käännöstä ei voida tällä hetkellä esittää.Taulukon rakenne olisi ollut seuraavanlainen:</td><td></td></tr>
+<tr><td>SymboliSelitys()Tyhjä tuple (eli unit), sekä literaali että tyyppi(expr)Sulkeistettu lauseke(expr,)Yksielementtinen tuple-lauseke(type,)Yksielementtinen tuple-tyyppi(expr, …)Tuple-lauseke(type, …)Tuple-tyyppiexpr(expr, …)Funktiokutsu-lauseke; käytetään myös tuple-rakenteiden ja tuple-enumvarianttien alustamiseen</td><td></td></tr>
+<tr><td>Taulukko B-9: AaltosulkeetTämä alaluku olisi sisältänyt taulukon, jossa esitellään kontekstit, joissa aaltosulkeita käytetään Rust-kielessä. Aaltosulkeet määrittävät koodilohkoja ja rakenteita. Verkkosivun sisältö ei ole saatavilla 1, joten tämän taulukon käännöstä ei voida tällä hetkellä esittää.Taulukon rakenne olisi ollut seuraavanlainen:</td><td></td></tr>
+<tr><td>KontekstiSelitys{…}LohkolausekeType {…}struct-literaali</td><td></td></tr>
+<tr><td>Taulukko B-10: HakasulkeetTämä alaluku olisi sisältänyt taulukon, jossa esitellään kontekstit, joissa hakasulkeita käytetään Rust-kielessä. Hakasulkeita käytetään muun muassa taulukoiden määrittelyssä ja indeksoinnissa. Verkkosivun sisältö ei ole saatavilla 1, joten tämän taulukon käännöstä ei voida tällä hetkellä esittää.Taulukon rakenne olisi ollut seuraavanlainen:</td><td></td></tr>
+<tr><td>KontekstiSelitys[…]Taulukkoliteraali[expr; len]Taulukkoliteraali, joka sisältää len kappaletta expr-lauseketta[type; len]Taulukkotyyppi, joka sisältää len instanssia type-tyyppiäexpr[expr]Kokoelman indeksointi. Ylikuormitettavissa (Index, IndexMut)expr[..], expr[a..], expr[..b], expr[a..b]Kokoelman indeksointi, joka esittää kokoelman viipalointia, käyttäen Range, RangeFrom, RangeTo tai RangeFull -tyyppejä “indeksinä”</td><td></td></tr>
+<tr><td>JohtopäätöksetTämän analyysin perusteella on todettu, että pyydettyä verkkosivun sisältöä ei valitettavasti voitu hakea annetusta URL-osoitteesta 1. Tästä syystä tämän raportin keskeistä tavoitetta, Rustin operaattoreiden ja symbolien liitteen kääntämistä suomen kielelle ja sen palauttamista Markdown-tiedostona, ei ole voitu toteuttaa. Raportissa on kuitenkin pyritty hahmottelemaan, miten käännetty sisältö olisi rakentunut, mikäli lähdemateriaali olisi ollut saatavilla. On suositeltavaa tarkistaa URL-osoite tai hankkia sisältö muulla tavoin, jotta käännöstyö voidaan suorittaa onnistuneesti.</td><td></td></tr>
+</tbody></table>
+</div>
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="appendix-01-keywords.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="appendix-03-derivable-traits.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="appendix-01-keywords.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="appendix-03-derivable-traits.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="ferris.js"></script>
+
+
+    </div>
+    </body>
+</html>

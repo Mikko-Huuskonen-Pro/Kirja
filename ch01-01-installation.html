@@ -1,0 +1,271 @@
+<!DOCTYPE HTML>
+<html lang="fi" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Asennus - Rust-ohjelmointikieli</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="ferris.css">
+        <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rust-ohjelmointikieli</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/rust-lang/book" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2 id="asennus"><a class="header" href="#asennus">Asennus</a></h2>
+<p>Ensimmäinen askel on Rustin asentaminen. Lataamme Rustin käyttämällä <code>rustup</code>-työkalua, joka on komentorivityökalu Rust-versioiden ja niihin liittyvien työkalujen hallintaan. Tarvitset internet-yhteyden asennusta varten.</p>
+<blockquote>
+<p>Huom: Jos et halua käyttää <code>rustup</code>-työkalua, voit katsoa muita vaihtoehtoja <a href="https://forge.rust-lang.org/infra/other-installation-methods.html">muut asennustavat</a> -sivulta.</p>
+</blockquote>
+<p>Näiden ohjeiden mukaisesti asennat uusimman vakaan version Rust-kääntäjästä. Rustin vakaus takaa, että kaikki tämän kirjan esimerkit toimivat myös tulevissa Rust-versioissa. Tuloste voi hieman muuttua eri versioiden välillä, koska Rust parantaa virheilmoituksia ja varoituksia säännöllisesti. Lyhyesti sanottuna, mikä tahansa näiden ohjeiden mukaisesti asennettu Rust-versio toimii odotetusti tämän kirjan sisällön kanssa.</p>
+<section class="note" aria-role="note">
+<h3 id="komentorivimerkinnät"><a class="header" href="#komentorivimerkinnät">Komentorivimerkinnät</a></h3>
+<p>Tässä luvussa ja koko kirjassa esitämme komentoja, joita käytetään terminaalissa. Komennot, jotka sinun pitäisi kirjoittaa terminaaliin, alkavat merkillä <code>$</code>. Sinun ei tarvitse kirjoittaa <code>$</code>-merkkiä; se on vain komentorivin kehotteena. Rivien, jotka eivät ala <code>$</code>-merkillä, tulisi esittää aiemman komennon tulosteita. Lisäksi PowerShell-esimerkeissä käytetään <code>&gt;</code>-merkkiä <code>$</code>-merkin sijasta.</p>
+</section>
+<h3 id="rustup-asennus-linuxilla-tai-macosllä"><a class="header" href="#rustup-asennus-linuxilla-tai-macosllä"><code>rustup</code>-asennus Linuxilla tai macOS:llä</a></h3>
+<p>Jos käytät Linuxia tai macOS:ää, avaa terminaali ja suorita seuraava komento:</p>
+<pre><code class="language-console">$ curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh
+</code></pre>
+<p>Tämä komento lataa skriptin ja käynnistää <code>rustup</code>-työkalun asennuksen, joka asentaa uusimman vakaan Rust-version. Saatat joutua syöttämään salasanasi. Jos asennus onnistuu, näet seuraavan viestin:</p>
+<pre><code class="language-text">Rust is installed now. Great!
+</code></pre>
+<p>Tarvitset myös <em>linkkerin</em>, joka yhdistää Rustin kääntämät tiedostot yhdeksi ohjelmaksi. Sinulla saattaa jo olla sellainen. Jos saat linkkerivirheitä, sinun kannattaa asentaa C-kääntäjä, joka yleensä sisältää linkkerin. C-kääntäjä on hyödyllinen myös siksi, että monet Rust-kirjastot riippuvat C-koodista ja tarvitsevat kääntäjän.</p>
+<p>macOS:llä voit asentaa C-kääntäjän komennolla:</p>
+<pre><code class="language-console">$ xcode-select --install
+</code></pre>
+<p>Linux-käyttäjien tulisi asentaa GCC tai Clang jakelunsa ohjeiden mukaisesti. Esimerkiksi Ubuntussa voit asentaa <code>build-essential</code>-paketin.</p>
+<h3 id="rustup-asennus-windowsilla"><a class="header" href="#rustup-asennus-windowsilla"><code>rustup</code>-asennus Windowsilla</a></h3>
+<p>Windowsissa siirry osoitteeseen <a href="https://www.rust-lang.org/tools/install">https://www.rust-lang.org/tools/install</a> ja seuraa Rustin asennusohjeita. Asennuksen aikana sinua pyydetään asentamaan Visual Studio, joka tarjoaa linkkerin ja tarvittavat kirjastot ohjelmien kääntämiseen. Jos tarvitset lisäapua, katso <a href="https://rust-lang.github.io/rustup/installation/windows-msvc.html">Windows MSVC -asennusohjeet</a>.</p>
+<p>Tämän kirjan jatko-osissa käytetään komentoja, jotka toimivat sekä <strong>cmd.exe</strong>- että <strong>PowerShell</strong>-ympäristöissä. Jos on eroja niiden välillä, mainitsemme, kumpaa käyttää.</p>
+<h3 id="vianmääritys"><a class="header" href="#vianmääritys">Vianmääritys</a></h3>
+<p>Voit tarkistaa, onko Rust asennettu oikein, avaamalla komentorivin ja kirjoittamalla:</p>
+<pre><code class="language-console">$ rustc --version
+</code></pre>
+<p>Näet versionumeron, commit-hashin ja commit-päivämäärän seuraavassa muodossa:</p>
+<pre><code class="language-text">rustc x.y.z (abcabcabc yyyy-mm-dd)
+</code></pre>
+<p>Jos näet tämän tiedon, Rust on asennettu onnistuneesti! Jos et näe tätä, tarkista, onko Rust polussasi (<code>%PATH%</code>-järjestelmämuuttuja).</p>
+<p>Windows CMD:ssä:</p>
+<pre><code class="language-console">&gt; echo %PATH%
+</code></pre>
+<p>PowerShellissä:</p>
+<pre><code class="language-powershell">&gt; echo $env:Path
+</code></pre>
+<p>Linuxissa ja macOS:ssä:</p>
+<pre><code class="language-console">$ echo $PATH
+</code></pre>
+<p>Jos kaikki näyttää oikealta, mutta Rust ei silti toimi, voit saada apua Rustin <a href="https://www.rust-lang.org/community">yhteisösivulta</a>.</p>
+<h3 id="päivittäminen-ja-poistaminen"><a class="header" href="#päivittäminen-ja-poistaminen">Päivittäminen ja poistaminen</a></h3>
+<p>Kun Rust on asennettu <code>rustup</code>-työkalun kautta, uusimman version päivittäminen on helppoa. Suorita komentorivillä:</p>
+<pre><code class="language-console">$ rustup update
+</code></pre>
+<p>Jos haluat poistaa Rustin ja <code>rustup</code>-työkalun, suorita seuraava komento:</p>
+<pre><code class="language-console">$ rustup self uninstall
+</code></pre>
+<h3 id="paikallinen-dokumentaatio"><a class="header" href="#paikallinen-dokumentaatio">Paikallinen dokumentaatio</a></h3>
+<p>Rustin asennuksen mukana tulee paikallinen kopio dokumentaatiosta, joten voit lukea sitä myös offline-tilassa. Avaa dokumentaatio selaimessa komennolla:</p>
+<pre><code class="language-console">$ rustup doc
+</code></pre>
+<p>Jos olet epävarma jostakin Rustin tyyppistä tai funktiosta, voit etsiä vastauksen ohjelmointirajapinnan (API) dokumentaatiosta!</p>
+<h3 id="tekstieditorit-ja-kehitysympäristöt"><a class="header" href="#tekstieditorit-ja-kehitysympäristöt">Tekstieditorit ja kehitysympäristöt</a></h3>
+<p>Tämä kirja ei edellytä tietyn työkalun käyttöä Rust-koodin kirjoittamiseen. Melkein mikä tahansa tekstieditori riittää! Kuitenkin monet editorit ja integraatioympäristöt (IDEt) tarjoavat Rust-tukea. Löydät ajantasaisen listan tuetuista editoreista ja IDE-ympäristöistä <a href="https://www.rust-lang.org/tools">Rustin työkalusivulta</a>.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="ch01-00-getting-started.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="ch01-02-hello-world.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="ch01-00-getting-started.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="ch01-02-hello-world.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="ferris.js"></script>
+
+
+    </div>
+    </body>
+</html>

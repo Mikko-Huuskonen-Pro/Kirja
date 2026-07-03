@@ -1,0 +1,342 @@
+<!DOCTYPE HTML>
+<html lang="fi" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Enumin määrittäminen - Rust-ohjelmointikieli</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="ferris.css">
+        <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rust-ohjelmointikieli</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/rust-lang/book" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2 id="enumin-määrittely"><a class="header" href="#enumin-määrittely">Enumin määrittely</a></h2>
+<p>Siinä missä rakenteet antavat tavan ryhmitellä toisiinsa liittyviä kenttiä ja dataa, kuten <code>Rectangle</code>-rakenteen <code>width</code>- ja <code>height</code>-kentät, enumit antavat tavan sanoa, että arvo on yksi mahdollisista arvoista. Esimerkiksi saatamme haluta sanoa, että <code>Rectangle</code> on yksi mahdollisista muodoista, joihin kuuluvat myös <code>Circle</code> ja <code>Triangle</code>. Tätä varten Rust antaa meidän koodata nämä mahdollisuudet enumina.</p>
+<p>Katsotaan tilannetta, jonka haluamme ilmaista koodissa, ja nähdään, miksi enumit ovat hyödyllisiä ja sopivampia kuin rakenteet tässä tapauksessa. Oletetaan, että meidän täytyy työskennellä IP-osoitteiden kanssa. Tällä hetkellä IP-osoitteille käytetään kahta pääasiallista standardia: versio neljä ja versio kuusi. Koska nämä ovat ainoat mahdolliset IP-osoitteet, joita ohjelmamme kohtaa, voimme <em>luetella</em> kaikki mahdolliset variantit, mistä sana enumeration eli luettelotyyppi saa nimensä.</p>
+<p>Mikä tahansa IP-osoite voi olla joko version neljä tai version kuusi osoite, mutta ei molempia samaan aikaan. Tämä IP-osoitteiden ominaisuus tekee enum-tietorakenteesta sopivan, koska enum-arvo voi olla vain yksi sen varianteista. Sekä version neljä että version kuusi osoitteet ovat silti pohjimmiltaan IP-osoitteita, joten niitä pitäisi käsitellä samana tyypinä, kun koodi käsittelee tilanteita, jotka koskevat mitä tahansa IP-osoitetyyppiä.</p>
+<p>Voimme ilmaista tämän käsitteen koodissa määrittelemällä <code>IpAddrKind</code>-luettelon ja listaamalla mahdolliset IP-osoitteen tyypit, <code>V4</code> ja <code>V6</code>. Nämä ovat enumin variantit:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch06-enums-and-pattern-matching/no-listing-01-defining-enums/src/main.rs:def}}
+<span class="boring">}</span></code></pre></pre>
+<p><code>IpAddrKind</code> on nyt mukautettu tietotyyppi, jota voimme käyttää muualla koodissamme.</p>
+<h3 id="enum-arvot"><a class="header" href="#enum-arvot">Enum-arvot</a></h3>
+<p>Voimme luoda kummankin <code>IpAddrKind</code>-variantin instanssit näin:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch06-enums-and-pattern-matching/no-listing-01-defining-enums/src/main.rs:instance}}
+<span class="boring">}</span></code></pre></pre>
+<p>Huomaa, että enumin variantit ovat nimetty tunnisteen sisällä, ja käytämme kaksoispistettä erottamaan ne toisistaan. Tämä on hyödyllistä, koska nyt molemmat arvot <code>IpAddrKind::V4</code> ja <code>IpAddrKind::V6</code> ovat samaa tyyppiä: <code>IpAddrKind</code>. Voimme sitten esimerkiksi määritellä funktion, joka ottaa minkä tahansa <code>IpAddrKind</code>-arvon:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch06-enums-and-pattern-matching/no-listing-01-defining-enums/src/main.rs:fn}}
+<span class="boring">}</span></code></pre></pre>
+<p>Ja voimme kutsua tätä funktiota kummallakin variantilla:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch06-enums-and-pattern-matching/no-listing-01-defining-enums/src/main.rs:fn_call}}
+<span class="boring">}</span></code></pre></pre>
+<p>Enumien käytössä on vielä enemmän etuja. Kun ajattelemme IP-osoitetyyppiämme tarkemmin, tällä hetkellä meillä ei ole tapaa tallentaa varsinaista IP-osoitteen <em>dataa</em>; tiedämme vain sen <em>tyypin</em>. Koska opit juuri rakenteista Luvussa 5, saatat olla taipuvainen ratkaisemaan tämän ongelman rakenteilla, kuten Listauksessa 6-1 on esitetty.</p>
+<figure class="listing">
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch06-enums-and-pattern-matching/listing-06-01/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 6-1: IP-osoitteen datan ja <code>IpAddrKind</code>-variantin tallentaminen <code>struct</code>-rakenteella</figcaption>
+</figure>
+<p>Tässä olemme määritelleet <code>IpAddr</code>-rakenteen, jolla on kaksi kenttää: <code>kind</code>-kenttä, jonka tyyppi on <code>IpAddrKind</code> (aiemmin määrittelemämme enum), ja <code>address</code>-kenttä, jonka tyyppi on <code>String</code>. Meillä on kaksi tämän rakenteen instanssia. Ensimmäinen on <code>home</code>, ja sen <code>kind</code>-kentän arvo on <code>IpAddrKind::V4</code> ja siihen liittyvä osoitedata on <code>127.0.0.1</code>. Toinen instanssi on <code>loopback</code>. Sen <code>kind</code>-kentän arvo on <code>IpAddrKind</code>-enumin toinen variantti, <code>V6</code>, ja siihen liittyvä osoite on <code>::1</code>. Olemme käyttäneet rakennetta niputtaaksemme <code>kind</code>- ja <code>address</code>-arvot yhteen, joten nyt variantti on yhdistetty arvoon.</p>
+<p>Sama käsite voidaan kuitenkin ilmaista tiiviimmin pelkällä enumilla: sen sijaan, että enum olisi rakenteen sisällä, voimme laittaa datan suoraan kuhunkin enum-varianttiin. Tämä uusi <code>IpAddr</code>-enumin määrittely sanoo, että sekä <code>V4</code>- että <code>V6</code>-variantit sisältävät liittyvät <code>String</code>-arvot:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch06-enums-and-pattern-matching/no-listing-02-enum-with-data/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<p>Liitämme datan suoraan kuhunkin enum-varianttiin, joten erillistä rakennetta ei tarvita. Tässä on myös helpompi nähdä toinen yksityiskohta siitä, miten enumit toimivat: jokaisen määrittelemämme enum-variantin nimi muuttuu myös funktioksi, joka rakentaa enum-instanssin. Toisin sanoen <code>IpAddr::V4()</code> on funktiokutsu, joka ottaa <code>String</code>-argumentin ja palauttaa <code>IpAddr</code>-tyypin instanssin. Saamme tämän konstruktorifunktion automaattisesti enumin määrittelyn seurauksena.</p>
+<p>Enumin käytössä on toinenkin etu rakenteeseen verrattuna: jokaisella variantilla voi olla eri tyyppejä ja eri määrä liittyvää dataa. Version neljä IP-osoitteissa on aina neljä numeerista komponenttia, joiden arvot ovat välillä 0–255. Jos haluaisimme tallentaa <code>V4</code>-osoitteet neljänä <code>u8</code>-arvona mutta ilmaista <code>V6</code>-osoitteet yhtenä <code>String</code>-arvona, emme voisi tehdä sitä rakenteella. Enumit käsittelevät tämän tapauksen vaivatta:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch06-enums-and-pattern-matching/no-listing-03-variants-with-different-data/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<p>Olemme näyttäneet useita eri tapoja määritellä tietorakenteita version neljä ja version kuusi IP-osoitteiden tallentamiseen. Kuitenkin, kuten käy ilmi, IP-osoitteiden tallentaminen ja sen koodaaminen, minkä tyyppisiä ne ovat, on niin yleistä, että <a href="../std/net/enum.IpAddr.html">standardikirjastossa on määrittely, jota voimme käyttää!</a><!-- ignore --> Katsotaan, miten standardikirjasto määrittelee <code>IpAddr</code>:n: siinä on täsmälleen sama enum ja variantit, jotka olemme määritelleet ja käyttäneet, mutta se upottaa osoitedatan varianttien sisään kahden eri rakenteen muodossa, jotka on määritelty eri tavoin kullekin variantille:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>struct Ipv4Addr {
+    // --snip--
+}
+
+struct Ipv6Addr {
+    // --snip--
+}
+
+enum IpAddr {
+    V4(Ipv4Addr),
+    V6(Ipv6Addr),
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Tämä koodi havainnollistaa, että enum-variantin sisään voi laittaa minkä tahansa tyyppistä dataa: merkkijonoja, numeerisia tyyppejä tai rakenteita, esimerkiksi. Voit jopa sisällyttää toisen enumin! Lisäksi standardikirjaston tyypit eivät usein ole paljon monimutkaisempia kuin mitä itse keksisit.</p>
+<p>Huomaa, että vaikka standardikirjasto sisältää <code>IpAddr</code>-määrittelyn, voimme silti luoda ja käyttää omaa määrittelyämme ilman ristiriitaa, koska emme ole tuoneet standardikirjaston määrittelyä laajuuteemme. Puhumme tyyppejen tuomisesta laajuuteen enemmän Luvussa 7.</p>
+<p>Katsotaan toista enum-esimerkkiä Listauksessa 6-2: tässä on laaja kirjo eri tyyppejä upotettuna varianteihin.</p>
+<figure class="listing">
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch06-enums-and-pattern-matching/listing-06-02/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 6-2: <code>Message</code>-enum, jonka variantit tallentavat eri määriä ja tyyppejä arvoja</figcaption>
+</figure>
+<p>Tässä enumissa on neljä varianttia eri tyypeillä:</p>
+<ul>
+<li><code>Quit</code> ei sisällä lainkaan dataa.</li>
+<li><code>Move</code> sisältää nimettyjä kenttiä, kuten rakenne.</li>
+<li><code>Write</code> sisältää yhden <code>String</code>-arvon.</li>
+<li><code>ChangeColor</code> sisältää kolme <code>i32</code>-arvoa.</li>
+</ul>
+<p>Enumin määrittely varianteilla, kuten Listauksessa 6-2, on samankaltaista kuin erilaisten rakennemäärittelyjen määrittely, paitsi että enum ei käytä <code>struct</code>-avainsanaa ja kaikki variantit on ryhmitelty yhteen <code>Message</code>-tyypin alle. Seuraavat rakenteet voisivat tallentaa saman datan, jonka edellä olevat enum-variantit tallentavat:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch06-enums-and-pattern-matching/no-listing-04-structs-similar-to-message-enum/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<p>Mutta jos käyttäisimme eri rakenteita, joilla kullakin on oma tyypinsä, emme voisi yhtä helposti määritellä funktiota, joka ottaa minkä tahansa näistä viestityypeistä, kuin voisimme Listauksessa 6-2 määritellyllä <code>Message</code>-enumilla, joka on yksi tyyppi.</p>
+<p>Enumeilla ja rakenteilla on vielä yksi yhteinen piirre: aivan kuten voimme määritellä metodeja rakenteille <code>impl</code>:llä, voimme määritellä metodeja myös enumeille. Tässä on <code>call</code>-niminen metodi, jonka voisimme määritellä <code>Message</code>-enumillemme:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch06-enums-and-pattern-matching/no-listing-05-methods-on-enums/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<p>Metodin runko käyttäisi <code>self</code>:ää saadakseen arvon, jolle metodia kutsuttiin. Tässä esimerkissä olemme luoneet muuttujan <code>m</code>, jonka arvo on <code>Message::Write(String::from("hello"))</code>, ja se on se, mikä <code>self</code> on <code>call</code>-metodin rungossa, kun <code>m.call()</code> suoritetaan.</p>
+<p>Katsotaan vielä toista standardikirjaston enumia, joka on hyvin yleinen ja hyödyllinen: <code>Option</code>.</p>
+<h3 id="option-enum-ja-sen-edut-verrattuna-null-arvoihin"><a class="header" href="#option-enum-ja-sen-edut-verrattuna-null-arvoihin"><code>Option</code>-enum ja sen edut verrattuna null-arvoihin</a></h3>
+<p>Tämä osio tutkii <code>Option</code>-tapauskatsausta, joka on toinen standardikirjaston määrittelemä enum. <code>Option</code>-tyyppi koodaa hyvin yleisen tilanteen, jossa arvo voi olla jotain tai ei mitään.</p>
+<p>Esimerkiksi, jos pyydät ensimmäistä alkiota ei-tyhjästä listasta, saat arvon. Jos pyydät ensimmäistä alkiota tyhjästä listasta, et saa mitään. Tämän käsitteen ilmaiseminen tyyppijärjestelmän kautta tarkoittaa, että kääntäjä voi tarkistaa, oletko käsitellyt kaikki tapaukset, jotka sinun pitäisi käsitellä; tämä ominaisuus voi estää virheitä, jotka ovat erittäin yleisiä muissa ohjelmointikielissä.</p>
+<p>Ohjelmointikielen suunnittelua ajatellaan usein sen pohjalta, mitä ominaisuuksia sisällytetään, mutta pois jätetyt ominaisuudet ovat myös tärkeitä. Rustissa ei ole null-ominaisuutta, joka on monissa muissa kielissä. <em>Null</em> on arvo, joka tarkoittaa, ettei siinä ole arvoa. Kielissä, joissa on null, muuttujat voivat aina olla jommassakummassa tilassa: null tai ei-null.</p>
+<p>Vuoden 2009 esityksessään ”Null References: The Billion Dollar Mistake” Tony Hoare, nullin keksijä, sanoo seuraavaa:</p>
+<blockquote>
+<p>Kutsun sitä miljardidollarin virheekseni. Silloin suunnittelin ensimmäistä kattavaa tyyppijärjestelmää viittauksille olio-ohjelmointikielessä. Tavoitteenani oli varmistaa, että kaikki viittausten käyttö olisi täysin turvallista ja kääntäjä tarkistaisi sen automaattisesti. Mutta en voinut vastustaa kiusausta laittaa mukaan null-viittaus, yksinkertaisesti koska se oli niin helppo toteuttaa. Tämä on johtanut lukemattomiin virheisiin, haavoittuvuuksiin ja järjestelmän kaatumisiin, jotka ovat todennäköisesti aiheuttaneet miljardin dollarin edestä kipua ja vahinkoa viimeisten neljänkymmenen vuoden aikana.</p>
+</blockquote>
+<p>Ongelma null-arvojen kanssa on, että jos yrität käyttää null-arvoa ei-null-arvona, saat jonkinlaisen virheen. Koska tämä null- tai ei-null-ominaisuus on kaikkialla, on erittäin helppo tehdä tämänkaltaisia virheitä.</p>
+<p>Kuitenkin käsite, jota null yrittää ilmaista, on silti hyödyllinen: null on arvo, joka on tällä hetkellä virheellinen tai poissa jostain syystä.</p>
+<p>Ongelma ei ole oikeastaan käsitteessä vaan tietyssä toteutuksessa. Siksi Rustissa ei ole null-arvoja, mutta siinä on enum, joka voi koodata käsitteen, että arvo on läsnä tai poissa. Tämä enum on <code>Option&lt;T&gt;</code>, ja se on <a href="../std/option/enum.Option.html">standardikirjaston määrittelemä</a><!-- ignore --> seuraavasti:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>enum Option&lt;T&gt; {
+    None,
+    Some(T),
+}
+<span class="boring">}</span></code></pre></pre>
+<p><code>Option&lt;T&gt;</code>-enum on niin hyödyllinen, että se on jopa mukana preludessa; sinun ei tarvitse tuoda sitä laajuuteen erikseen. Sen variantit ovat myös mukana preludessa: voit käyttää <code>Some</code>- ja <code>None</code>-variantteja suoraan ilman <code>Option::</code>-etuliitettä. <code>Option&lt;T&gt;</code>-enum on silti tavallinen enum, ja <code>Some(T)</code> ja <code>None</code> ovat edelleen tyyppiä <code>Option&lt;T&gt;</code>.</p>
+<p><code>&lt;T&gt;</code>-syntaksi on Rust-ominaisuus, josta emme ole vielä puhuneet. Se on geneerinen tyyppiparametri, ja käsittelemme geneerisiä tyyppejä tarkemmin Luvussa 10. Toistaiseksi sinun tarvitsee tietää vain, että <code>&lt;T&gt;</code> tarkoittaa, että <code>Option</code>-enumin <code>Some</code>-variantti voi sisältää yhden kappaleen dataa mistä tahansa tyypistä, ja jokainen konkreettinen tyyppi, jota käytetään <code>T</code>:n paikalla, tekee koko <code>Option&lt;T&gt;</code>-tyypistä eri tyypin. Tässä on esimerkkejä <code>Option</code>-arvojen käytöstä numerotyyppejä ja merkkityyppejä tallentaen:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch06-enums-and-pattern-matching/no-listing-06-option-examples/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<p>Muuttujan <code>some_number</code> tyyppi on <code>Option&lt;i32&gt;</code>. Muuttujan <code>some_char</code> tyyppi on <code>Option&lt;char&gt;</code>, joka on eri tyyppi. Rust voi päätellä nämä tyypit, koska olemme määrittäneet arvon <code>Some</code>-variantin sisällä. Muuttujan <code>absent_number</code> kohdalla Rust vaatii meitä merkitsemään koko <code>Option</code>-tyypin: kääntäjä ei voi päätellä tyyppiä, jota vastaava <code>Some</code>-variantti sisältäisi, katsomalla pelkkää <code>None</code>-arvoa. Tässä kerromme Rustille, että tarkoitamme <code>absent_number</code>:n olevan tyyppiä <code>Option&lt;i32&gt;</code>.</p>
+<p>Kun meillä on <code>Some</code>-arvo, tiedämme, että arvo on läsnä ja se on <code>Some</code>-variantin sisällä. Kun meillä on <code>None</code>-arvo, se tarkoittaa eräässä mielessä samaa kuin null: meillä ei ole kelvollista arvoa. Miksi <code>Option&lt;T&gt;</code> on siis parempi kuin null?</p>
+<p>Lyhyesti sanottuna, koska <code>Option&lt;T&gt;</code> ja <code>T</code> (missä <code>T</code> voi olla mikä tahansa tyyppi) ovat eri tyyppejä, kääntäjä ei anna meidän käyttää <code>Option&lt;T&gt;</code>-arvoa ikään kuin se olisi varmasti kelvollinen arvo. Esimerkiksi tämä koodi ei käänny, koska se yrittää lisätä <code>i8</code>:n <code>Option&lt;i8&gt;</code>:aan:</p>
+<pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch06-enums-and-pattern-matching/no-listing-07-cant-use-option-directly/src/main.rs:here}}</code></pre>
+<p>Jos ajamme tämän koodin, saamme virheilmoituksen, joka näyttää tältä:</p>
+<pre><code class="language-console">{{#include ../listings/ch06-enums-and-pattern-matching/no-listing-07-cant-use-option-directly/output.txt}}
+</code></pre>
+<p>Voimakasta! Käytännössä tämä virheilmoitus tarkoittaa, että Rust ei ymmärrä, miten <code>i8</code> ja <code>Option&lt;i8&gt;</code> lisätään yhteen, koska ne ovat eri tyyppejä. Kun meillä on arvo tyypiltään kuten <code>i8</code> Rustissa, kääntäjä varmistaa, että meillä on aina kelvollinen arvo. Voimme edetä luottavaisin mielin ilman, että meidän täytyy tarkistaa null ennen arvon käyttöä. Vasta kun meillä on <code>Option&lt;i8&gt;</code> (tai mikä tahansa tyyppi, jonka kanssa työskentelemme), meidän täytyy huolehtia siitä, että arvo saattaa puuttua, ja kääntäjä varmistaa, että käsittelemme tämän tapauksen ennen arvon käyttöä.</p>
+<p>Toisin sanoen sinun täytyy muuntaa <code>Option&lt;T&gt;</code> arvoksi <code>T</code>, ennen kuin voit suorittaa <code>T</code>:n operaatioita sillä. Yleisesti tämä auttaa havaitsemaan yhden yleisimmistä null-ongelmista: oletus, että jokin ei ole null, vaikka se itse asiassa on.</p>
+<p>Virheellisen oletuksen riskin poistaminen auttaa sinua luottamaan koodiisi enemmän. Jotta voisit olla arvo, joka saattaa olla null, sinun täytyy erikseen valita se tekemällä arvon tyypiksi <code>Option&lt;T&gt;</code>. Sitten kun käytät sitä arvoa, sinun täytyy erikseen käsitellä tapaus, jossa arvo on null. Kaikkialla, missä arvolla on tyyppi, joka ei ole <code>Option&lt;T&gt;</code>, voit <em>turvallisesti</em> olettaa, ettei arvo ole null. Tämä oli tarkoituksellinen suunnittelupäätös Rustissa rajoittaakseen nullin yleisyyttä ja lisätäkseen Rust-koodin turvallisuutta.</p>
+<p>Miten siis saat <code>T</code>-arvon <code>Some</code>-variantista, kun sinulla on <code>Option&lt;T&gt;</code>-tyyppinen arvo, jotta voit käyttää sitä arvoa? <code>Option&lt;T&gt;</code>-enumilla on suuri määrä metodeja, jotka ovat hyödyllisiä eri tilanteissa; voit tutustua niihin <a href="../std/option/enum.Option.html">sen dokumentaatiossa</a><!-- ignore -->. <code>Option&lt;T&gt;</code>-metodien tunteminen on erittäin hyödyllistä Rust-matkallasi.</p>
+<p>Yleisesti ottaen, jotta voit käyttää <code>Option&lt;T&gt;</code>-arvoa, haluat koodia, joka käsittelee kunkin variantin. Haluat koodia, joka suoritetaan vain, kun sinulla on <code>Some(T)</code>-arvo, ja tämä koodi saa käyttää sisäistä <code>T</code>:tä. Haluat toisenlaista koodia, joka suoritetaan vain, jos sinulla on <code>None</code>-arvo, eikä tässä koodissa ole <code>T</code>-arvoa käytettävissä. <code>match</code>-lauseke on ohjausrakenne, joka tekee juuri tämän enumien kanssa käytettynä: se suorittaa eri koodia riippuen siitä, mikä enumin variantti sillä on, ja tämä koodi voi käyttää vastaavan arvon sisällä olevaa dataa.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="ch06-00-enums.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="ch06-02-match.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="ch06-00-enums.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="ch06-02-match.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="ferris.js"></script>
+
+
+    </div>
+    </body>
+</html>

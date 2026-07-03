@@ -1,0 +1,906 @@
+<!DOCTYPE HTML>
+<html lang="fi" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Arvauspelin ohjelmointi - Rust-ohjelmointikieli</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="ferris.css">
+        <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rust-ohjelmointikieli</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/rust-lang/book" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="arvauspelin-ohjelmointi"><a class="header" href="#arvauspelin-ohjelmointi">Arvauspelin ohjelmointi</a></h1>
+<p>Hypätään suoraan Rustin pariin työstämällä yhdessä käytännön projekti! Tämä
+luku esittelee sinulle muutamia yleisiä Rust-käsitteitä näyttämällä, miten
+voit käyttää niitä oikeassa ohjelmassa. Opit <code>let</code>-määrittelyistä, <code>match</code>-lausekkeista, metodeista, assosioiduista
+funktioista, ulkoisista crateista ja paljon muusta! Seuraavissa luvuissa perehdymme
+näihin ideoihin tarkemmin. Tässä luvussa harjoittelet vain
+perusasioita.</p>
+<p>Toteutamme klassisen aloittelijatason ohjelmointitehtävän: arvauspelin. Näin
+se toimii: ohjelma generoi satunnaisen kokonaisluvun väliltä 1–100. Se
+pyytää sitten pelaajaa syöttämään arvauksen. Kun arvaus on annettu,
+ohjelma kertoo, onko arvaus liian pieni vai liian suuri. Jos arvaus on
+oikein, peli tulostaa onnitteluviestin ja sulkeutuu.</p>
+<h2 id="uuden-projektin-luominen"><a class="header" href="#uuden-projektin-luominen">Uuden projektin luominen</a></h2>
+<p>Luo uusi projekti siirtymällä <em>projects</em>-hakemistoon, jonka loit
+luvussa 1, ja luo uusi projekti käyttäen Cargoa näin:</p>
+<pre><code class="language-console">$ cargo new guessing_game
+$ cd guessing_game
+</code></pre>
+<p>Ensimmäinen komento <code>cargo new</code> ottaa projektin nimen (<code>guessing_game</code>)
+ensimmäisenä argumenttina. Toinen komento siirtyy uuden projektin
+hakemistoon.</p>
+<p>Tarkastele luotua <em>Cargo.toml</em>-tiedostoa:</p>
+<!-- manual-regeneration
+cd listings/ch02-guessing-game-tutorial
+rm -rf no-listing-01-cargo-new
+cargo new no-listing-01-cargo-new --name guessing_game
+cd no-listing-01-cargo-new
+cargo run > output.txt 2>&1
+cd ../../..
+-->
+<p><span class="filename">Filename: Cargo.toml</span></p>
+<pre><code class="language-toml">{{#include ../listings/ch02-guessing-game-tutorial/no-listing-01-cargo-new/Cargo.toml}}
+</code></pre>
+<p>Kuten näit luvussa 1, <code>cargo new</code> generoi sinulle ”Hello, world!” -ohjelman.
+Tarkista <em>src/main.rs</em>-tiedosto:</p>
+<p><span class="filename">Filename: src/main.rs</span></p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch02-guessing-game-tutorial/no-listing-01-cargo-new/src/main.rs}}
+<span class="boring">}</span></code></pre></pre>
+<p>Käännetään ja ajetaan nyt tämä ”Hello, world!” -ohjelma samassa vaiheessa
+käyttämällä <code>cargo run</code> -komentoa:</p>
+<pre><code class="language-console">{{#include ../listings/ch02-guessing-game-tutorial/no-listing-01-cargo-new/output.txt}}
+</code></pre>
+<p><code>run</code>-komento on kätevä, kun täytyy nopeasti iteroida projektia,
+kuten teemme tässä pelissä, testaten nopeasti jokaisen version ennen siirtymistä
+seuraavaan.</p>
+<p>Avaa <em>src/main.rs</em>-tiedosto uudelleen. Kirjoitat kaiken koodin tähän tiedostoon.</p>
+<h2 id="arvauksen-käsittely"><a class="header" href="#arvauksen-käsittely">Arvauksen käsittely</a></h2>
+<p>Arvauspeli-ohjelman ensimmäinen osa pyytää käyttäjän syötettä, käsittelee
+sen ja tarkistaa, että syöte on odotetussa muodossa. Aloitamme
+sallimalla pelaajan syöttää arvauksen. Syötä listauksen 2-1 koodi
+tiedostoon <em>src/main.rs</em>.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch02-guessing-game-tutorial/listing-02-01/src/main.rs:all}}</code></pre>
+<figcaption>Listing 2-1: Koodi, joka hakee arvauksen käyttäjältä ja tulostaa sen</figcaption>
+</figure>
+<p>Tämä koodi sisältää paljon tietoa, joten käydään se läpi rivi riviltä. Saadaksemme
+käyttäjän syötteen ja tulostaaksemme tuloksen, meidän täytyy tuoda
+<code>io</code>-kirjasto näkyviin. <code>io</code>-kirjasto tulee standardikirjastosta,
+joka tunnetaan nimellä <code>std</code>:</p>
+<pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch02-guessing-game-tutorial/listing-02-01/src/main.rs:io}}</code></pre>
+<p>Oletuksena Rustilla on joukko kohteita, jotka on määritelty standardikirjastossa ja jotka se
+tuo näkyviin jokaisessa ohjelmassa. Tätä joukkoa kutsutaan <em>preludiksi</em>, ja
+voit nähdä kaiken siinä <a href="../std/prelude/index.html">standardikirjaston dokumentaatiossa</a>.</p>
+<p>Jos haluamasi tyyppi ei ole preludissa, sinun täytyy tuoda kyseinen tyyppi
+näkyviin eksplisiittisesti <code>use</code>-lauseella. <code>std::io</code>-kirjaston käyttö
+tarjoaa useita hyödyllisiä ominaisuuksia, mukaan lukien mahdollisuuden hyväksyä
+käyttäjän syöte.</p>
+<p>Kuten näit luvussa 1, <code>main</code>-funktio on ohjelman sisääntulopiste:</p>
+<pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch02-guessing-game-tutorial/listing-02-01/src/main.rs:main}}</code></pre>
+<p><code>fn</code>-syntaksi julistaa uuden funktion; sulkeet <code>()</code> osoittavat, ettei
+ole parametreja; ja aaltosulje <code>{</code> aloittaa funktion rungon.</p>
+<p>Kuten opit myös luvussa 1, <code>println!</code> on makro, joka tulostaa merkkijonon
+näytölle:</p>
+<pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch02-guessing-game-tutorial/listing-02-01/src/main.rs:print}}</code></pre>
+<p>Tämä koodi tulostaa kehotteen, joka kertoo mistä pelissä on kyse, ja pyytää syötettä
+käyttäjältä.</p>
+<h3 id="arvojen-tallentaminen-muuttujilla"><a class="header" href="#arvojen-tallentaminen-muuttujilla">Arvojen tallentaminen muuttujilla</a></h3>
+<p>Seuraavaksi luomme <em>muuttujan</em> tallentaaksemme käyttäjän syötteen, näin:</p>
+<pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch02-guessing-game-tutorial/listing-02-01/src/main.rs:string}}</code></pre>
+<p>Nyt ohjelma alkaa olla mielenkiintoinen! Tässä lyhyessä
+rivissä tapahtuu paljon. Käytämme <code>let</code>-lauseketta luodaksemme muuttujan. Tässä toinen esimerkki:</p>
+<pre><code class="language-rust ignore">let apples = 5;</code></pre>
+<p>Tämä rivi luo uuden muuttujan nimeltä <code>apples</code> ja sitoo sen arvoon 5. Rustissa
+muuttujat ovat oletuksena muuttumattomia, eli kun annamme muuttujalle
+arvon, arvo ei muutu. Käsittelemme tätä käsitettä tarkemmin
+<a href="ch03-01-variables-and-mutability.html#variables-and-mutability">”Muuttujat ja muutettavuus”</a><!-- ignore -->
+-osiossa luvussa 3. Tehdäksemme muuttujan muutettavaksi lisäämme <code>mut</code>-avainsanan ennen
+muuttujan nimeä:</p>
+<pre><code class="language-rust ignore">let apples = 5; // immutable
+let mut bananas = 5; // mutable</code></pre>
+<blockquote>
+<p>Huom: <code>//</code>-syntaksi aloittaa kommentin, joka jatkuu rivin
+loppuun. Rust jättää huomiotta kaiken kommenteissa. Käsittelemme kommentteja tarkemmin
+<a href="ch03-04-comments.html">luvussa 3</a><!-- ignore -->.</p>
+</blockquote>
+<p>Palatessa arvauspeli-ohjelmaan, tiedät nyt että <code>let mut guess</code>
+esittelee muutettavan muuttujan nimeltä <code>guess</code>. Yhtäsuuruusmerkki (<code>=</code>) kertoo Rustille, että
+haluamme sitoa jotain muuttujaan nyt. Yhtäsuuruusmerkin oikealla puolella on
+arvo, johon <code>guess</code> sidotaan, eli <code>String::new</code>-funktion kutsumisen tulos,
+funktio joka palauttaa uuden <code>String</code>-instanssin.
+<a href="../std/string/struct.String.html"><code>String</code></a><!-- ignore --> on standardikirjaston tarjoama merkkijonotyyppi,
+joka on kasvava, UTF-8 -koodattu tekstinpätkä.</p>
+<p><code>::</code>-syntaksi <code>::new</code>-rivillä osoittaa, että <code>new</code> on assosioitu
+funktio <code>String</code>-tyypille. <em>Assosioitu funktio</em> on funktio, joka on
+toteutettu tyypille, tässä tapauksessa <code>String</code>:lle. Tämä <code>new</code>-funktio luo
+uuden, tyhjän merkkijonon. Löydät <code>new</code>-funktion monilta tyypeiltä, koska se on
+yleinen nimi funktiolle, joka luo jonkinlaisen uuden arvon.</p>
+<p>Kokonaisuudessaan <code>let mut guess = String::new();</code> -rivi on luonut muutettavan
+muuttujan, joka on tällä hetkellä sidottu uuteen, tyhjään <code>String</code>-instanssiin. Huh!</p>
+<h3 id="käyttäjän-syötteen-vastaanottaminen"><a class="header" href="#käyttäjän-syötteen-vastaanottaminen">Käyttäjän syötteen vastaanottaminen</a></h3>
+<p>Muista, että sisällytimme syöte-/tulostustoiminnallisuuden standardikirjastosta
+<code>use std::io;</code> -lauseella ohjelman ensimmäisellä rivillä. Kutsumme nyt
+<code>stdin</code>-funktiota <code>io</code>-moduulista, mikä antaa meidän käsitellä käyttäjän
+syötettä:</p>
+<pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch02-guessing-game-tutorial/listing-02-01/src/main.rs:read}}</code></pre>
+<p>Jos emme olisi tuoneet <code>io</code>-kirjastoa näkyviin <code>use std::io;</code> -lauseella ohjelman
+alussa, voisimme silti käyttää funktiota kirjoittamalla funktiokutsun muodossa
+<code>std::io::stdin</code>. <code>stdin</code>-funktio palauttaa instanssin
+<a href="../std/io/struct.Stdin.html"><code>std::io::Stdin</code></a><!-- ignore --> -tyypistä, joka edustaa
+käsittelijää päätteen standardisyötteelle.</p>
+<p>Seuraavaksi rivi <code>.read_line(&amp;mut guess)</code> kutsuu <a href="../std/io/struct.Stdin.html#method.read_line"><code>read_line</code></a><!--
+ignore --> -metodia standardisyötteen käsittelijällä saadakseen syötteen käyttäjältä.
+Välitämme myös <code>&amp;mut guess</code> argumenttina <code>read_line</code>-metodille kertoaksemme sille, mihin
+merkkijonoon tallentaa käyttäjän syötteen. <code>read_line</code>-metodin tehtävä on ottaa
+mitä tahansa käyttäjä kirjoittaa standardisyötteeseen ja liittää se merkkijonoon
+(ylikirjoittamatta sen sisältöä), joten välitämme tuon merkkijonon
+argumenttina. Merkkijonoargumentin täytyy olla muutettava, jotta metodi voi muuttaa
+merkkijonon sisältöä.</p>
+<p><code>&amp;</code> osoittaa, että tämä argumentti on <em>viittaus</em>, joka antaa tavan
+antaa useiden koodin osien käyttää samaa dataa ilman, että dataa täytyy
+kopioida muistiin useita kertoja. Viittaukset ovat monimutkainen ominaisuus,
+ja yksi Rustin suurista eduista on, kuinka turvallista ja helppoa viittausten
+käyttö on. Et tarvitse tietää paljoa näistä yksityiskohdista tämän
+ohjelman viimeistelyyn. Toistaiseksi sinun tarvitsee tietää vain, että kuten muuttujat, viittaukset ovat
+oletuksena muuttumattomia. Siksi sinun täytyy kirjoittaa <code>&amp;mut guess</code> eikä
+<code>&amp;guess</code> tehdäksesi sen muutettavaksi. (Luku 4 selittää viittaukset tarkemmin.)</p>
+<!-- Old heading. Do not remove or links may break. -->
+<p><a id="handling-potential-failure-with-the-result-type"></a></p>
+<h3 id="mahdollisen-epäonnistumisen-käsittely-result-tyypillä"><a class="header" href="#mahdollisen-epäonnistumisen-käsittely-result-tyypillä">Mahdollisen epäonnistumisen käsittely <code>Result</code>-tyypillä</a></h3>
+<p>Työstämme vielä tätä koodiriviä. Käsittelemme nyt kolmatta
+tekstiriviä, mutta huomaa, että se on edelleen osa yhtä loogista koodiriviä. Seuraava
+osa on tämä metodi:</p>
+<pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch02-guessing-game-tutorial/listing-02-01/src/main.rs:expect}}</code></pre>
+<p>Olisimme voineet kirjoittaa tämän koodin näin:</p>
+<pre><code class="language-rust ignore">io::stdin().read_line(&amp;mut guess).expect("Failed to read line");</code></pre>
+<p>Yksi pitkä rivi on kuitenkin vaikea lukea, joten on parasta jakaa se. On
+usein viisasta lisätä rivinvaihto ja muuta välilyöntiä auttamaan jakamaan pitkiä
+rivejä, kun kutsut metodia <code>.method_name()</code> -syntaksilla. Käsitellään nyt,
+mitä tämä rivi tekee.</p>
+<p>Kuten aiemmin mainittiin, <code>read_line</code> laittaa mitä tahansa käyttäjä syöttää merkkijonoon,
+jonka välitämme sille, mutta se palauttaa myös <code>Result</code>-arvon. <a href="../std/result/enum.Result.html"><code>Result</code></a><!--
+ignore --> on <a href="ch06-00-enums.html"><em>enum</em></a><!-- ignore -->, usein kutsuttu <em>enumiksi</em>,
+joka on tyyppi, joka voi olla yhdessä useista mahdollisista tiloista. Kutakin
+mahdollista tilaa kutsutaan <em>variantiksi</em>.</p>
+<p><a href="ch06-00-enums.html">Luku 6</a><!-- ignore --> käsittelee enumeja tarkemmin. Näiden
+<code>Result</code>-tyyppien tarkoitus on koodata virheenkäsittelytietoa.</p>
+<p><code>Result</code>-tyypin variantit ovat <code>Ok</code> ja <code>Err</code>. <code>Ok</code>-variantti osoittaa, että
+operaatio onnistui, ja se sisältää onnistuneesti generoidun arvon.
+<code>Err</code>-variantti tarkoittaa, että operaatio epäonnistui, ja se sisältää tietoa
+siitä, miten tai miksi operaatio epäonnistui.</p>
+<p><code>Result</code>-tyypin arvoilla, kuten minkä tahansa tyypin arvoilla, on niille määriteltyjä metodeja.
+<code>Result</code>-instanssilla on <a href="../std/result/enum.Result.html#method.expect"><code>expect</code>-metodi</a><!-- ignore -->,
+jota voit kutsua. Jos tämä <code>Result</code>-instanssi on <code>Err</code>-arvo, <code>expect</code>
+saa ohjelman kaatumaan ja näyttämään viestin, jonka välitit
+argumenttina <code>expect</code>-metodille. Jos <code>read_line</code>-metodi palauttaa <code>Err</code>-arvon, se olisi
+todennäköisesti käyttöjärjestelmän virheen seurausta.
+Jos tämä <code>Result</code>-instanssi on <code>Ok</code>-arvo, <code>expect</code> ottaa palautusarvon,
+jonka <code>Ok</code> pitää sisällään, ja palauttaa sen sinulle, jotta voit käyttää sitä.
+Tässä tapauksessa tuo arvo on käyttäjän syötteen tavumäärä.</p>
+<p>Jos et kutsu <code>expect</code>-metodia, ohjelma kääntyy, mutta saat varoituksen:</p>
+<pre><code class="language-console">{{#include ../listings/ch02-guessing-game-tutorial/no-listing-02-without-expect/output.txt}}
+</code></pre>
+<p>Rust varoittaa, ettet ole käyttänyt <code>read_line</code>-metodin palauttamaa <code>Result</code>-arvoa,
+osoittaen, ettei ohjelma ole käsitellyt mahdollista virhettä.</p>
+<p>Oikea tapa hiljentää varoitus on todella kirjoittaa virheenkäsittelykoodi,
+mutta tapauksessamme haluamme vain kaataa ohjelman, kun ongelma ilmenee, joten voimme
+käyttää <code>expect</code>-metodia. Opit virheistä toipumisesta <a href="ch09-02-recoverable-errors-with-result.html">luvussa
+9</a><!-- ignore -->.</p>
+<h3 id="arvojen-tulostaminen-println-paikkamerkeillä"><a class="header" href="#arvojen-tulostaminen-println-paikkamerkeillä">Arvojen tulostaminen <code>println!</code>-paikkamerkeillä</a></h3>
+<p>Sulkevan aaltosulkeen lisäksi on vielä yksi rivi käsiteltävänä tähänastisessa
+koodissa:</p>
+<pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch02-guessing-game-tutorial/listing-02-01/src/main.rs:print_guess}}</code></pre>
+<p>Tämä rivi tulostaa merkkijonon, joka sisältää nyt käyttäjän syötteen. <code>{}</code>-merkkien
+joukko on paikkamerkki: ajattele <code>{}</code>:tä pieninä rapupihdeinä, jotka pitävät
+arvon paikallaan. Kun tulostat muuttujan arvon, muuttujan nimi voi
+mennä aaltosulkeiden sisään. Kun tulostat lausekkeen evaluoinnin tuloksen, laita tyhjät aaltosulkeet
+muotoilumerkkijonoon ja lisää sen jälkeen pilkulla erotettu lista lausekkeista,
+jotka tulostetaan kuhunkin tyhjään
+aaltosuljepaikkamerkkiin samassa järjestyksessä. Muuttujan ja lausekkeen tulostaminen
+yhdessä <code>println!</code>-kutsussa näyttäisi tältä:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let x = 5;
+let y = 10;
+
+println!("x = {x} and y + 2 = {}", y + 2);
+<span class="boring">}</span></code></pre></pre>
+<p>Tämä koodi tulostaisi <code>x = 5 and y + 2 = 12</code>.</p>
+<h3 id="ensimmäisen-osan-testaaminen"><a class="header" href="#ensimmäisen-osan-testaaminen">Ensimmäisen osan testaaminen</a></h3>
+<p>Testataan arvauspelin ensimmäistä osaa. Aja se käyttämällä <code>cargo run</code>-komentoa:</p>
+<!-- manual-regeneration
+cd listings/ch02-guessing-game-tutorial/listing-02-01/
+cargo clean
+cargo run
+input 6 -->
+<pre><code class="language-console">$ cargo run
+   Compiling guessing_game v0.1.0 (file:///projects/guessing_game)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 6.44s
+     Running `target/debug/guessing_game`
+Guess the number!
+Please input your guess.
+6
+You guessed: 6
+</code></pre>
+<p>Tässä vaiheessa pelin ensimmäinen osa on valmis: saamme syötteen
+näppäimistöltä ja tulostamme sen.</p>
+<h2 id="salaisen-luvun-generointi"><a class="header" href="#salaisen-luvun-generointi">Salaisen luvun generointi</a></h2>
+<p>Seuraavaksi meidän täytyy generoida salainen luku, jota käyttäjä yrittää arvata. Salaisen
+luvun pitäisi olla eri joka kerta, jotta peli on hauska pelata useammin
+kuin kerran. Käytämme satunnaista lukua väliltä 1–100, jotta peli ei ole liian
+vaikea. Rust ei vielä sisällytä satunnaislukutoiminnallisuutta standardikirjastoonsa.
+Rust-tiimi tarjoaa kuitenkin <a href="https://crates.io/crates/rand"><code>rand</code>-craten</a>, jossa
+kyseinen toiminnallisuus on.</p>
+<h3 id="craten-käyttö-lisätoiminnallisuuden-saamiseksi"><a class="header" href="#craten-käyttö-lisätoiminnallisuuden-saamiseksi">Craten käyttö lisätoiminnallisuuden saamiseksi</a></h3>
+<p>Muista, että crate on kokoelma Rust-lähdekooditiedostoja. Projekti,
+jota olemme rakentaneet, on <em>binaaricrate</em>, joka on suoritettava ohjelma. <code>rand</code>-
+crate on <em>kirjastocrate</em>, joka sisältää koodia, joka on tarkoitettu käytettäväksi
+muissa ohjelmissa eikä sitä voi suorittaa itsenäisesti.</p>
+<p>Cargon koordinointi ulkoisista crateista on se, missä Cargo todella loistaa. Ennen kuin
+voimme kirjoittaa koodia, joka käyttää <code>rand</code>-cratea, meidän täytyy muokata <em>Cargo.toml</em>-tiedostoa
+sisällyttääksemme <code>rand</code>-craten riippuvuudeksi. Avaa tiedosto nyt ja lisää
+seuraava rivi pohjaan, <code>[dependencies]</code>-osion otsikon alle, jonka
+Cargo loi sinulle. Varmista, että määrittelet <code>rand</code>:in täsmälleen kuten tässä,
+tällä versionumerolla, tai tämän opetusohjelman koodiesimerkit eivät välttämättä toimi:</p>
+<!-- When updating the version of `rand` used, also update the version of
+`rand` used in these files so they all match:
+* ch07-04-bringing-paths-into-scope-with-the-use-keyword.md
+* ch14-03-cargo-workspaces.md
+-->
+<p><span class="filename">Filename: Cargo.toml</span></p>
+<pre><code class="language-toml">{{#include ../listings/ch02-guessing-game-tutorial/listing-02-02/Cargo.toml:8:}}
+</code></pre>
+<p><em>Cargo.toml</em>-tiedostossa kaikki otsikon jälkeen tuleva kuuluu siihen
+osioon, joka jatkuu, kunnes toinen osio alkaa. <code>[dependencies]</code>-osiossa
+kerrot Cargolle, mistä ulkoisista crateista projektisi riippuu ja mitä versioita
+näistä crateista tarvitset. Tässä tapauksessa määrittelemme <code>rand</code>-craten
+semanttisella versionumerolla <code>0.8.5</code>. Cargo ymmärtää <a href="http://semver.org">semanttisen
+versionhallinnan</a><!-- ignore --> (joskus kutsutaan <em>SemVeriksi</em>), joka on
+standardi versionumeroiden kirjoittamiseen. Määrite <code>0.8.5</code> on itse asiassa
+lyhennys muodolle <code>^0.8.5</code>, mikä tarkoittaa mitä tahansa versiota, joka on vähintään 0.8.5 mutta
+alle 0.8.9.0.</p>
+<p>Cargo pitää näitä versioita julkisesti yhteensopivina version
+0.8.5 API:n kanssa, ja tämä määrite varmistaa, että saat uusimman korjausjulkaisun, joka
+vielä kääntyy tämän luvun koodin kanssa. Mikään versio 0.9.0 tai suurempi
+ei ole taattu sisältävän samaa API:a kuin seuraavat esimerkit käyttävät.</p>
+<p>Nyt, muuttamatta mitään koodia, käännetään projekti, kuten listauksessa 2-2.</p>
+<!-- manual-regeneration
+cd listings/ch02-guessing-game-tutorial/listing-02-02/
+rm Cargo.lock
+cargo clean
+cargo build -->
+<figure class="listing">
+<pre><code class="language-console">$ cargo build
+  Updating crates.io index
+   Locking 15 packages to latest Rust 1.85.0 compatible versions
+    Adding rand v0.8.5 (available: v0.9.0)
+ Compiling proc-macro2 v1.0.93
+ Compiling unicode-ident v1.0.17
+ Compiling libc v0.2.170
+ Compiling cfg-if v1.0.0
+ Compiling byteorder v1.5.0
+ Compiling getrandom v0.2.15
+ Compiling rand_core v0.6.4
+ Compiling quote v1.0.38
+ Compiling syn v2.0.98
+ Compiling zerocopy-derive v0.7.35
+ Compiling zerocopy v0.7.35
+ Compiling ppv-lite86 v0.2.20
+ Compiling rand_chacha v0.3.1
+ Compiling rand v0.8.5
+ Compiling guessing_game v0.1.0 (file:///projects/guessing_game)
+  Finished `dev` profile [unoptimized + debuginfo] target(s) in 2.48s
+</code></pre>
+<figcaption>Listing 2-2: Tuloste <code>cargo build</code> -komennon ajosta <code>rand</code>-craten lisäämisen jälkeen riippuvuudeksi</figcaption>
+</figure>
+<p>Saatat nähdä eri versionumerot (mutta ne ovat kaikki yhteensopivia koodin
+kanssa SemVerin ansiosta!) ja eri rivejä (käyttöjärjestelmästä riippuen),
+ja rivit voivat olla eri järjestyksessä.</p>
+<p>Kun sisällytämme ulkoisen riippuvuuden, Cargo hakee uusimmat versiot
+kaikesta, mitä kyseinen riippuvuus tarvitsee, <em>rekisteristä</em>, joka on kopio dataa
+<a href="https://crates.io/">Crates.io</a>-sivustolta. Crates.io on paikka, jossa Rust-ekosysteemin ihmiset
+julkaisevat avoimen lähdekoodin Rust-projektejaan muiden käytettäväksi.</p>
+<p>Rekisterin päivityksen jälkeen Cargo tarkistaa <code>[dependencies]</code>-osion ja
+lataa kaikki listatut cratet, joita ei ole vielä ladattu. Tässä tapauksessa,
+vaikka listasimme vain <code>rand</code>:in riippuvuudeksi, Cargo haki myös muita crateja,
+joista <code>rand</code> riippuu toimiakseen. Cratet ladattuaan Rust kääntää
+ne ja kääntää sitten projektin riippuvuuksien ollessa käytettävissä.</p>
+<p>Jos ajat heti <code>cargo build</code>-komennon uudelleen tekemättä muutoksia, et
+saa mitään tulostetta <code>Finished</code>-rivin lisäksi. Cargo tietää, että se on jo
+lataanut ja kääntänyt riippuvuudet, etkä ole muuttanut mitään
+niistä <em>Cargo.toml</em>-tiedostossasi. Cargo tietää myös, ettet ole muuttanut
+mitään koodissasi, joten se ei käännä sitäkään uudelleen. Kun ei ole mitään
+tehtävää, se yksinkertaisesti lopettaa.</p>
+<p>Jos avaat <em>src/main.rs</em>-tiedoston, teet pienen muutoksen, tallennat sen ja
+käännät uudelleen, näet vain kaksi riviä tulostetta:</p>
+<!-- manual-regeneration
+cd listings/ch02-guessing-game-tutorial/listing-02-02/
+touch src/main.rs
+cargo build -->
+<pre><code class="language-console">$ cargo build
+   Compiling guessing_game v0.1.0 (file:///projects/guessing_game)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.13s
+</code></pre>
+<p>Nämä rivit osoittavat, että Cargo päivittää käännöksen vain pienellä muutoksellasi
+<em>src/main.rs</em>-tiedostoon. Riippuvuutesi eivät ole muuttuneet, joten Cargo tietää voivansa
+käyttää uudelleen jo ladattua ja kääntämäänsä.</p>
+<h4 id="toistettavien-käännösten-varmistaminen-cargolock-tiedostolla"><a class="header" href="#toistettavien-käännösten-varmistaminen-cargolock-tiedostolla">Toistettavien käännösten varmistaminen <em>Cargo.lock</em>-tiedostolla</a></h4>
+<p>Cargolla on mekanismi, joka varmistaa, että voit kääntää saman artefaktin joka kerta,
+kun sinä tai kuka tahansa kääntää koodisi: Cargo käyttää vain niitä riippuvuuksien versioita,
+joita määritit, kunnes ilmoitat toisin. Sanotaan esimerkiksi, että
+ensi viikolla <code>rand</code>-craten versio 0.8.6 julkaistaan, ja tuo versio
+sisältää tärkeän bugikorjauksen, mutta myös regressiota, joka
+rikkoo koodisi. Tätä varten Rust luo <em>Cargo.lock</em>-tiedoston ensimmäisellä
+<code>cargo build</code> -ajolla, joten meillä on nyt tämä <em>guessing_game</em>-
+hakemistossa.</p>
+<p>Kun käännät projektin ensimmäistä kertaa, Cargo selvittää kaikki riippuvuuksien versiot,
+jotka sopivat kriteereihin, ja kirjoittaa ne sitten
+<em>Cargo.lock</em>-tiedostoon. Kun käännät projektisi tulevaisuudessa, Cargo näkee
+<em>Cargo.lock</em>-tiedoston olevan olemassa ja käyttää siellä määriteltyjä versioita
+sen sijaan, että tekisi kaiken työn versioiden selvittämiseksi uudelleen. Tämä antaa sinulle
+toistettavan käännöksen automaattisesti. Toisin sanoen projektisi pysyy
+versiossa 0.8.5, kunnes päivität eksplisiittisesti, <em>Cargo.lock</em>-tiedoston ansiosta.
+Koska <em>Cargo.lock</em>-tiedosto on tärkeä toistettaville käännöksille, se tarkistetaan usein
+versionhallintaan muun projektikoodin kanssa.</p>
+<h4 id="craten-päivittäminen-uuden-version-saamiseksi"><a class="header" href="#craten-päivittäminen-uuden-version-saamiseksi">Craten päivittäminen uuden version saamiseksi</a></h4>
+<p>Kun <em>haluat</em> päivittää craten, Cargo tarjoaa <code>update</code>-komennon,
+joka ohittaa <em>Cargo.lock</em>-tiedoston ja selvittää kaikki uusimmat versiot,
+jotka sopivat määrittelyihisi <em>Cargo.toml</em>-tiedostossa. Cargo kirjoittaa sitten nämä
+versiot <em>Cargo.lock</em>-tiedostoon. Tässä tapauksessa Cargo etsii vain
+versioita, jotka ovat suurempia kuin 0.8.5 ja pienempiä kuin 0.9.0. Jos <code>rand</code>-cratella on
+julkaistu kaksi uutta versiota 0.8.6 ja 0.9.0, näkisit seuraavan, jos
+ajaisit <code>cargo update</code>-komennon:</p>
+<!-- manual-regeneration
+cd listings/ch02-guessing-game-tutorial/listing-02-02/
+cargo update
+assuming there is a new 0.8.x version of rand; otherwise use another update
+as a guide to creating the hypothetical output shown here -->
+<pre><code class="language-console">$ cargo update
+    Updating crates.io index
+     Locking 1 package to latest Rust 1.85.0 compatible version
+    Updating rand v0.8.5 -&gt; v0.8.6 (available: v0.9.0)
+</code></pre>
+<p>Cargo jättää huomiotta version 0.9.0 julkaisun. Tässä vaiheessa huomaisit myös muutoksen
+<em>Cargo.lock</em>-tiedostossasi, joka osoittaa, että käyttämäsi <code>rand</code>-craten versio on nyt 0.8.6. Käyttääksesi <code>rand</code>-version 0.9.0 tai mitä tahansa versiota 0.9.<em>x</em>-
+sarjassa, sinun täytyisi päivittää <em>Cargo.toml</em>-tiedosto näyttämään tältä:</p>
+<pre><code class="language-toml">[dependencies]
+rand = "0.9.0"
+</code></pre>
+<p>Seuraavalla <code>cargo build</code> -ajolla Cargo päivittää saatavilla olevien cratejen rekisterin
+ja arvioi <code>rand</code>-vaatimuksesi uudelleen määrittämäsi uuden version
+mukaan.</p>
+<p><a href="https://doc.rust-lang.org/cargo/">Cargosta</a><!-- ignore --> ja <a href="https://doc.rust-lang.org/cargo/reference/publishing.html">sen
+ekosysteemistä</a><!-- ignore --> on paljon enemmän sanottavaa, joita käsittelemme luvussa 14, mutta
+toistaiseksi se on kaikki mitä sinun täytyy tietää. Cargo tekee kirjastojen uudelleenkäytöstä hyvin helppoa,
+joten rustilaiset voivat kirjoittaa pienempiä projekteja, jotka koostuvat
+useista paketeista.</p>
+<h3 id="satunnaisluvun-generointi"><a class="header" href="#satunnaisluvun-generointi">Satunnaisluvun generointi</a></h3>
+<p>Aloitetaan <code>rand</code>-craten käyttö luvun generoimiseksi arvattavaksi. Seuraava vaihe on
+päivittää <em>src/main.rs</em>, kuten listauksessa 2-3.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch02-guessing-game-tutorial/listing-02-03/src/main.rs:all}}</code></pre>
+<figcaption>Listing 2-3: Koodin lisääminen satunnaisluvun generoimiseksi</figcaption>
+</figure>
+<p>Ensin lisäämme rivin <code>use rand::Rng;</code>. <code>Rng</code>-trait määrittelee metodit, jotka
+satunnaislukugeneraattorit toteuttavat, ja tämän traitin täytyy olla näkyvissä, jotta voimme
+käyttää näitä metodeja. Luku 10 käsittelee traitit tarkemmin.</p>
+<p>Seuraavaksi lisäämme kaksi riviä keskelle. Ensimmäisellä rivillä kutsumme
+<code>rand::thread_rng</code>-funktiota, joka antaa meille tietyn satunnaislukugeneraattorin,
+jota käytämme: sellaisen, joka on paikallinen nykyiselle suoritussäikeelle
+ja jonka käyttöjärjestelmä siemenöi. Sitten kutsumme <code>gen_range</code>-
+metodia satunnaislukugeneraattorilla. Tämän metodin määrittelee <code>Rng</code>-
+trait, jonka toimme näkyviin <code>use rand::Rng;</code> -lauseella. <code>gen_range</code>-metodi ottaa
+alueen lausekkeena argumenttina ja generoi satunnaisluvun alueella. Käyttämämme
+alueen lauseke on muodossa <code>start..=end</code> ja on sisältävä molemmissa rajoissa, joten meidän
+täytyy määritellä <code>1..=100</code> pyytääksemme lukua väliltä 1–100.</p>
+<blockquote>
+<p>Huom: Et vain tiedä, mitä traitteja käyttää ja mitä metodeja ja funktioita
+kutsua cratesta, joten jokaisella cratella on dokumentaatio ohjeineen
+käyttöön. Cargon toinen hieno ominaisuus on, että <code>cargo doc --open</code> -komennon ajaminen kääntää kaikkien riippuvuuksiesi tarjoaman dokumentaation
+paikallisesti ja avaa sen selaimessasi. Jos olet kiinnostunut muusta
+toiminnallisuudesta <code>rand</code>-cratessa, aja esimerkiksi <code>cargo doc --open</code> ja
+napsauta <code>rand</code> vasemman sivupalkin kohdasta.</p>
+</blockquote>
+<p>Toinen uusi rivi tulostaa salaisen luvun. Tämä on hyödyllistä ohjelmaa
+kehittäessä testataksemme sitä, mutta poistamme sen
+lopullisesta versiosta. Se ei ole kovin hauska peli, jos ohjelma tulostaa vastauksen heti
+käynnistyessään!</p>
+<p>Kokeile ajaa ohjelma muutaman kerran:</p>
+<!-- manual-regeneration
+cd listings/ch02-guessing-game-tutorial/listing-02-03/
+cargo run
+4
+cargo run
+5
+-->
+<pre><code class="language-console">$ cargo run
+   Compiling guessing_game v0.1.0 (file:///projects/guessing_game)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.02s
+     Running `target/debug/guessing_game`
+Guess the number!
+The secret number is: 7
+Please input your guess.
+4
+You guessed: 4
+
+$ cargo run
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.02s
+     Running `target/debug/guessing_game`
+Guess the number!
+The secret number is: 83
+Please input your guess.
+5
+You guessed: 5
+</code></pre>
+<p>Sinun pitäisi saada eri satunnaislukuja, ja niiden kaikkien pitäisi olla lukuja väliltä
+1–100. Hienoa työtä!</p>
+<h2 id="arvauksen-vertaaminen-salaiseen-lukuun"><a class="header" href="#arvauksen-vertaaminen-salaiseen-lukuun">Arvauksen vertaaminen salaiseen lukuun</a></h2>
+<p>Nyt kun meillä on käyttäjän syöte ja satunnainen luku, voimme vertailla niitä. Tämä vaihe
+näytetään listauksessa 2-4. Huomaa, että tämä koodi ei vielä käänny, kuten
+selitämme.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch02-guessing-game-tutorial/listing-02-04/src/main.rs:here}}</code></pre>
+<figcaption>Listing 2-4: Kahden luvun vertailun mahdollisten palautusarvojen käsittely</figcaption>
+</figure>
+<p>Ensin lisäämme toisen <code>use</code>-lauseen tuoden tyypin nimeltä
+<code>std::cmp::Ordering</code> näkyviin standardikirjastosta. <code>Ordering</code>-tyyppi
+on toinen enum ja sillä on variantit <code>Less</code>, <code>Greater</code> ja <code>Equal</code>. Nämä ovat
+kolme mahdollista tulosta, kun vertaat kahta arvoa.</p>
+<p>Sitten lisäämme viisi uutta riviä pohjaan, jotka käyttävät <code>Ordering</code>-tyyppiä. <code>cmp</code>-metodi vertaa kahta arvoa ja sitä voi
+kutsua millä tahansa, jota voi verrata. Se ottaa viittauksen siihen, mihin haluat verrata: tässä se
+vertaa <code>guess</code>:ia <code>secret_number</code>:iin. Sitten se palauttaa <code>Ordering</code>-enumin variantin, jonka toimme näkyviin <code>use</code>-lauseella. Käytämme
+<a href="ch06-02-match.html"><code>match</code></a><!-- ignore --> -lauseketta päättääksemme, mitä tehdä seuraavaksi sen perusteella,
+mikä <code>Ordering</code>-variantti palautettiin <code>cmp</code>-kutsusta arvoilla
+<code>guess</code> ja <code>secret_number</code>.</p>
+<p><code>match</code>-lauseke koostuu <em>haaroista</em>. Haara koostuu <em>kuviosta</em>,
+jota vasten matchataan, ja koodista, joka pitäisi suorittaa, jos <code>match</code>-lausekkeelle annettu arvo
+sopii haaran kuvioon. Rust ottaa <code>match</code>-lausekkeelle annetun arvon ja katsoo
+jokaisen haaran kuviota vuorollaan. Kuviot ja <code>match</code>-rakenne ovat
+voimakkaita Rust-ominaisuuksia: ne antavat sinun ilmaista monenlaisia tilanteita, joita koodisi
+saattaa kohdata, ja varmistavat, että käsittelet ne kaikki. Nämä ominaisuudet käsitellään
+tarkemmin luvuissa 6 ja 19.</p>
+<p>Käydään läpi esimerkki käyttämällä tässä käyttämäämme <code>match</code>-lauseketta. Sanotaan, että
+käyttäjä on arvannut 50 ja tällä kertaa generoitu salainen luku on
+38.</p>
+<p>Kun koodi vertaa 50:tä 38:een, <code>cmp</code>-metodi palauttaa
+<code>Ordering::Greater</code>, koska 50 on suurempi kuin 38. <code>match</code>-lauseke saa
+<code>Ordering::Greater</code>-arvon ja alkaa tarkistaa kunkin haaran kuviota. Se katsoo
+ensimmäisen haaran kuviota <code>Ordering::Less</code> ja näkee, ettei arvo
+<code>Ordering::Greater</code> matchaa <code>Ordering::Less</code>:ia, joten se jättää huomiotta koodin
+kyseisessä haarassa ja siirtyy seuraavaan haaraan. Seuraavan haaran kuvio on
+<code>Ordering::Greater</code>, joka <em>matchaa</em> <code>Ordering::Greater</code>:in! Kyseiseen haaraan
+liittyvä koodi suoritetaan ja tulostaa <code>Too big!</code> näytölle. <code>match</code>-
+lauseke päättyy ensimmäisen onnistuneen matchin jälkeen, joten se ei katso viimeistä
+haaraa tässä skenaariossa.</p>
+<p>Listauksen 2-4 koodi ei kuitenkaan vielä käänny. Kokeillaan sitä:</p>
+<!--
+The error numbers in this output should be that of the code **WITHOUT** the
+anchor or snip comments
+-->
+<pre><code class="language-console">{{#include ../listings/ch02-guessing-game-tutorial/listing-02-04/output.txt}}
+</code></pre>
+<p>Virheen ydin sanoo, että tyypit <em>eivät täsmää</em>. Rustilla on
+vahva, staattinen tyyppijärjestelmä. Sillä on kuitenkin myös tyyppipäättely. Kun kirjoitimme
+<code>let mut guess = String::new()</code>, Rust pystyi päättelemään, että <code>guess</code>:n pitäisi olla
+<code>String</code> eikä pakottanut meitä kirjoittamaan tyyppiä. <code>secret_number</code> sen sijaan
+on lukutyyppi. Muutama Rustin lukutyyppi voi olla arvolla välillä 1
+ja 100: <code>i32</code>, 32-bittinen luku; <code>u32</code>, etumerkittömä 32-bittinen luku; <code>i64</code>, 64-
+bittinen luku; ja muita. Ellei toisin määritellä, Rust oletuksena käyttää
+<code>i32</code>:ta, joka on <code>secret_number</code>:n tyyppi, ellei lisää tyyppitietoa muualla,
+mikä saisi Rustin päättelemään eri numeerisen tyypin. Virheen syy
+on, että Rust ei voi verrata merkkijonoa ja lukutyyppiä.</p>
+<p>Lopulta haluamme muuntaa <code>String</code>-merkkijonon, jonka ohjelma lukee syötteenä, lukutyyppiin,
+jotta voimme verrata sitä numeerisesti salaiseen lukuun. Teemme sen
+lisäämällä tämän rivin <code>main</code>-funktion runkoon:</p>
+<p><span class="filename">Filename: src/main.rs</span></p>
+<pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch02-guessing-game-tutorial/no-listing-03-convert-string-to-number/src/main.rs:here}}</code></pre>
+<p>Rivi on:</p>
+<pre><code class="language-rust ignore">let guess: u32 = guess.trim().parse().expect("Please type a number!");</code></pre>
+<p>Luomme muuttujan nimeltä <code>guess</code>. Mutta odota, eikö ohjelmalla jo ole
+muuttujaa nimeltä <code>guess</code>? On, mutta Rust sallii meille hyödyllisesti varjostaa
+<code>guess</code>:n aiemman arvon uudella. <em>Varjostus</em> antaa meidän käyttää uudelleen <code>guess</code>-
+muuttujan nimeä sen sijaan, että pakottaisimme meidät luomaan kaksi erillistä muuttujaa, kuten
+<code>guess_str</code> ja <code>guess</code>. Käsittelemme tätä tarkemmin
+<a href="ch03-01-variables-and-mutability.html#shadowing">luvussa 3</a><!-- ignore -->, mutta toistaiseksi tiedä, että tätä ominaisuutta
+käytetään usein, kun haluat muuntaa arvon tyypistä toiseen.</p>
+<p>Sidoimme tämän uuden muuttujan lausekkeeseen <code>guess.trim().parse()</code>. <code>guess</code>
+lausekkeessa viittaa alkuperäiseen <code>guess</code>-muuttujaan, joka sisälsi
+syötteen merkkijonona. <code>trim</code>-metodi <code>String</code>-instanssilla poistaa kaiken
+väliylityksen alusta ja lopusta, mikä meidän täytyy tehdä ennen kuin voimme muuntaa
+merkkijonon <code>u32</code>:ksi, joka voi sisältää vain numeerista dataa. Käyttäjän täytyy painaa
+<kbd>enter</kbd> tyydyttääkseen <code>read_line</code>-metodin ja syöttääkseen arvauksensa, mikä lisää
+rivinvaihtomerkin merkkijonoon. Jos käyttäjä kirjoittaa <kbd>5</kbd> ja
+painaa <kbd>enter</kbd>, <code>guess</code> näyttää tältä: <code>5\n</code>. <code>\n</code> edustaa
+”rivinvaihtoa.” (Windowsissa <kbd>enter</kbd>-näppäimen painaminen tuottaa rivinvaihdon
+ja rivinvaihdon, <code>\r\n</code>.) <code>trim</code>-metodi poistaa <code>\n</code>:n tai <code>\r\n</code>:n, jolloin
+jäljelle jää vain <code>5</code>.</p>
+<p>Merkkijonojen <a href="../std/primitive.str.html#method.parse"><code>parse</code>-metodi</a><!-- ignore --> muuntaa merkkijonon
+toiseen tyyppiin. Tässä käytämme sitä muuntamaan merkkijonosta luvuksi. Meidän täytyy
+kertoa Rustille tarkka lukutyyppi, jota haluamme käyttämällä <code>let guess: u32</code>. Kaksoispiste
+(<code>:</code>) <code>guess</code>:n jälkeen kertoo Rustille, että annotoimme muuttujan tyypin. Rustilla on
+muutama sisäänrakennettu lukutyyppi; tässä nähty <code>u32</code> on etumerkittömä 32-bittinen kokonaisluku.
+Se on hyvä oletusvalinta pienelle positiiviselle luvulle. Opit muista
+lukutyypeistä <a href="ch03-02-data-types.html#integer-types">luvussa 3</a><!-- ignore -->.</p>
+<p>Lisäksi tämän esimerkkiohjelman <code>u32</code>-annotaatio ja vertailu
+<code>secret_number</code>:iin tarkoittavat, että Rust päättelee <code>secret_number</code>:n olevan myös
+<code>u32</code>. Joten nyt vertailu on kahden saman
+tyypin arvon välillä!</p>
+<p><code>parse</code>-metodi toimii vain merkeillä, jotka voidaan loogisesti muuntaa
+luvuiksi, ja voi siksi helposti aiheuttaa virheitä. Jos esimerkiksi merkkijono
+sisältäisi <code>A👍%</code>, sitä ei voisi muuntaa luvuksi. Koska se
+saattaa epäonnistua, <code>parse</code>-metodi palauttaa <code>Result</code>-tyypin, aivan kuten <code>read_line</code>-
+metodi (käsiteltiin aiemmin <a href="#handling-potential-failure-with-result">”Mahdollisen epäonnistumisen käsittely
+<code>Result</code>-tyypillä”</a><!-- ignore--> -osiossa). Käsittelemme
+tämän <code>Result</code>-arvon samalla tavalla käyttämällä jälleen <code>expect</code>-metodia. Jos <code>parse</code>
+palauttaa <code>Err</code>-<code>Result</code>-variantin, koska se ei voinut luoda lukua
+merkkijonosta, <code>expect</code>-kutsu kaataa pelin ja tulostaa antamamme viestin.
+Jos <code>parse</code> voi onnistuneesti muuntaa merkkijonon luvuksi, se palauttaa
+<code>Ok</code>-variantin <code>Result</code>-tyypistä, ja <code>expect</code> palauttaa haluamamme luvun
+<code>Ok</code>-arvosta.</p>
+<p>Ajetaan ohjelma nyt:</p>
+<!-- manual-regeneration
+cd listings/ch02-guessing-game-tutorial/no-listing-03-convert-string-to-number/
+touch src/main.rs
+cargo run
+  76
+-->
+<pre><code class="language-console">$ cargo run
+   Compiling guessing_game v0.1.0 (file:///projects/guessing_game)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.26s
+     Running `target/debug/guessing_game`
+Guess the number!
+The secret number is: 58
+Please input your guess.
+  76
+You guessed: 76
+Too big!
+</code></pre>
+<p>Hienoa! Vaikka arvauksen eteen lisättiin välilyöntejä, ohjelma silti selvitti,
+että käyttäjä arvasi 76. Aja ohjelma muutaman kerran varmistaaksesi
+erilaisen käyttäytymisen eri syötteillä: arvaa luku oikein,
+arvaa liian suuri luku ja arvaa liian pieni luku.</p>
+<p>Meillä on nyt suurin osa pelistä toiminnassa, mutta käyttäjä voi tehdä vain yhden arvauksen.
+Muutetaan sitä lisäämällä silmukka!</p>
+<h2 id="useiden-arvausten-salliminen-silmukalla"><a class="header" href="#useiden-arvausten-salliminen-silmukalla">Useiden arvausten salliminen silmukalla</a></h2>
+<p><code>loop</code>-avainsana luo äärettömän silmukan. Lisäämme silmukan antaaksemme käyttäjille
+enemmän mahdollisuuksia arvata luku:</p>
+<p><span class="filename">Filename: src/main.rs</span></p>
+<pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch02-guessing-game-tutorial/no-listing-04-looping/src/main.rs:here}}</code></pre>
+<p>Kuten näet, olemme siirtäneet kaiken arvauskehotteesta eteenpäin
+silmukkaan. Muista sisentää silmukan sisällä olevat rivit neljä välilyöntiä lisää
+ja aja ohjelma uudelleen. Ohjelma pyytää nyt uutta arvausta ikuisesti,
+mikä itse asiassa tuo uuden ongelman. Käyttäjä ei näytä pystyvän lopettamaan!</p>
+<p>Käyttäjä voisi aina keskeyttää ohjelman näppäinyhdistelmällä
+<kbd>ctrl</kbd>-<kbd>c</kbd>. Mutta on toinen tapa paeta tämä tyydyttämätön
+hirviö, kuten mainittiin <code>parse</code>-keskustelussa <a href="#comparing-the-guess-to-the-secret-number">”Arvauksen vertaaminen salaiseen lukuun”</a><!-- ignore --> -osiossa: jos
+käyttäjä syöttää ei-numeerisen vastauksen, ohjelma kaatuu. Voimme hyödyntää
+sitä salliaksemme käyttäjän lopettaa, kuten tässä:</p>
+<!-- manual-regeneration
+cd listings/ch02-guessing-game-tutorial/no-listing-04-looping/
+touch src/main.rs
+cargo run
+(too small guess)
+(too big guess)
+(correct guess)
+quit
+-->
+<pre><code class="language-console">$ cargo run
+   Compiling guessing_game v0.1.0 (file:///projects/guessing_game)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.23s
+     Running `target/debug/guessing_game`
+Guess the number!
+The secret number is: 59
+Please input your guess.
+45
+You guessed: 45
+Too small!
+Please input your guess.
+60
+You guessed: 60
+Too big!
+Please input your guess.
+59
+You guessed: 59
+You win!
+Please input your guess.
+quit
+
+thread 'main' panicked at src/main.rs:28:47:
+Please type a number!: ParseIntError { kind: InvalidDigit }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+</code></pre>
+<p><code>quit</code>-kirjoittaminen lopettaa pelin, mutta kuten huomaat, myös mikä tahansa
+muu ei-numeerinen syöte lopettaa sen. Tämä on lievästi sanottuna epäoptimaalista; haluamme pelin
+pysähtyvän myös, kun oikea luku arvataan.</p>
+<h3 id="lopettaminen-oikean-arvauksen-jälkeen"><a class="header" href="#lopettaminen-oikean-arvauksen-jälkeen">Lopettaminen oikean arvauksen jälkeen</a></h3>
+<p>Ohjelmoidaan peli lopettamaan, kun käyttäjä voittaa, lisäämällä <code>break</code>-lause:</p>
+<p><span class="filename">Filename: src/main.rs</span></p>
+<pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch02-guessing-game-tutorial/no-listing-05-quitting/src/main.rs:here}}</code></pre>
+<p><code>break</code>-rivin lisääminen <code>You win!</code>-tekstin jälkeen saa ohjelman poistumaan silmukasta, kun
+käyttäjä arvaa salaisen luvun oikein. Silmukasta poistuminen tarkoittaa myös
+ohjelman päättymistä, koska silmukka on <code>main</code>-funktion viimeinen osa.</p>
+<h3 id="virheellisen-syötteen-käsittely"><a class="header" href="#virheellisen-syötteen-käsittely">Virheellisen syötteen käsittely</a></h3>
+<p>Hienosäätääksemme pelin käyttäytymistä sen sijaan, että kaataisimme ohjelman, kun
+käyttäjä syöttää ei-numeerisen arvon, tehdään pelistä sellainen, että se jättää huomiotta ei-numeerisen syötteen, jotta
+käyttäjä voi jatkaa arvaamista. Voimme tehdä sen muuttamalla riviä, jossa <code>guess</code>
+muunnetaan <code>String</code>:stä <code>u32</code>:ksi, kuten listauksessa 2-5.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch02-guessing-game-tutorial/listing-02-05/src/main.rs:here}}</code></pre>
+<figcaption>Listing 2-5: Ei-numeerisen arvauksen huomiotta jättäminen ja uuden arvauksen pyytäminen ohjelman kaatamisen sijaan</figcaption>
+</figure>
+<p>Vaihdamme <code>expect</code>-kutsusta <code>match</code>-lausekkeeseen siirtyäksemme kaatumisesta
+virheenkäsittelyyn. Muista, että <code>parse</code> palauttaa <code>Result</code>-tyypin
+ja <code>Result</code> on enum, jolla on variantit <code>Ok</code> ja <code>Err</code>. Käytämme
+tässä <code>match</code>-lauseketta, kuten teimme <code>cmp</code>-metodin <code>Ordering</code>-tuloksen kanssa.</p>
+<p>Jos <code>parse</code> pystyy onnistuneesti muuttamaan merkkijonon luvuksi, se
+palauttaa <code>Ok</code>-arvon, joka sisältää tuloksena olevan luvun. Tuo <code>Ok</code>-arvo
+matchaa ensimmäisen haaran kuvion, ja <code>match</code>-lauseke palauttaa vain
+<code>num</code>-arvon, jonka <code>parse</code> tuotti ja laittoi <code>Ok</code>-arvon sisään. Tuo luku
+päätyy juuri sinne, minne haluamme uudessa <code>guess</code>-muuttujassa, jonka luomme.</p>
+<p>Jos <code>parse</code> <em>ei</em> pysty muuttamaan merkkijonoa luvuksi, se palauttaa
+<code>Err</code>-arvon, joka sisältää lisätietoa virheestä. <code>Err</code>-arvo
+ei matchaa ensimmäisen <code>match</code>-haaran kuviota <code>Ok(num)</code>, mutta se
+matchaa toisen haaran kuvion <code>Err(_)</code>. Alaviiva <code>_</code> on
+catch-all-arvo; tässä esimerkissä sanomme haluavamme matchata kaikki <code>Err</code>-
+arvot riippumatta siitä, mitä tietoa niissä on. Joten ohjelma
+suorittaa toisen haaran koodin <code>continue</code>, joka kertoo ohjelman siirtyä
+seuraavaan silmukan iteratioon ja pyytää uutta arvausta. Eli käytännössä
+ohjelma jättää huomiotta kaikki virheet, joita <code>parse</code> saattaa kohdata!</p>
+<p>Nyt kaiken pitäisi toimia odotetusti. Kokeillaan:</p>
+<!-- manual-regeneration
+cd listings/ch02-guessing-game-tutorial/listing-02-05/
+cargo run
+(too small guess)
+(too big guess)
+foo
+(correct guess)
+-->
+<pre><code class="language-console">$ cargo run
+   Compiling guessing_game v0.1.0 (file:///projects/guessing_game)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.13s
+     Running `target/debug/guessing_game`
+Guess the number!
+The secret number is: 61
+Please input your guess.
+10
+You guessed: 10
+Too small!
+Please input your guess.
+99
+You guessed: 99
+Too big!
+Please input your guess.
+foo
+Please input your guess.
+61
+You guessed: 61
+You win!
+</code></pre>
+<p>Mahtavaa! Pienellä viimeisellä hienosäädöllä viimeistelemme arvauspelin. Muista,
+että ohjelma tulostaa edelleen salaisen luvun. Se toimi hyvin
+testauksessa, mutta se pilaa pelin. Poistetaan <code>println!</code>, joka tulostaa
+salainen luvun. Listausta 2-6 näyttää lopullisen koodin.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch02-guessing-game-tutorial/listing-02-06/src/main.rs}}</code></pre>
+<figcaption>Listing 2-6: Valmis arvauspeli-koodi</figcaption>
+</figure>
+<p>Tässä vaiheessa olet onnistuneesti rakentanut arvauspelin. Onnittelut!</p>
+<h2 id="yhteenveto"><a class="header" href="#yhteenveto">Yhteenveto</a></h2>
+<p>Tämä projekti oli käytännönläheinen tapa esitellä sinulle monia uusia Rust-käsitteitä:
+<code>let</code>, <code>match</code>, funktiot, ulkoisten cratejen käyttö ja paljon muuta. Seuraavissa
+luvuissa opit näistä käsitteistä tarkemmin. Luku 3
+käsittelee käsitteitä, joita useimmissa ohjelmointikielissä on, kuten muuttujat, data-
+tyypit ja funktiot, ja näyttää, miten niitä käytetään Rustissa. Luku 4 tutkii
+omistajuutta, ominaisuutta, joka tekee Rustista erilaisen kuin muut kielet. Luku 5
+käsittelee rakenteita ja metodisyntaksia, ja luku 6 selittää, miten enumit toimivat.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="ch01-03-hello-cargo.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="ch03-00-common-programming-concepts.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="ch01-03-hello-cargo.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="ch03-00-common-programming-concepts.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="ferris.js"></script>
+
+
+    </div>
+    </body>
+</html>

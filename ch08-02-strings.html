@@ -1,0 +1,543 @@
+<!DOCTYPE HTML>
+<html lang="fi" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>UTF-8-koodattujen tekstien tallentaminen merkkijonoilla - Rust-ohjelmointikieli</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="ferris.css">
+        <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rust-ohjelmointikieli</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/rust-lang/book" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2 id="utf-8-koodatun-tekstin-tallentaminen-merkkijonoihin"><a class="header" href="#utf-8-koodatun-tekstin-tallentaminen-merkkijonoihin">UTF-8-koodatun tekstin tallentaminen merkkijonoihin</a></h2>
+<p>Käsittelimme merkkijonoja luvussa 4, mutta tarkastelemme niitä nyt syvällisemmin.
+Rustia opettelevat kehittäjät jäävät usein jumiin merkkijonojen kanssa kolmen
+syyn yhdistelmän vuoksi: Rustin taipumus paljastaa mahdollisia virheitä, se että
+merkkijonot ovat monimutkaisempia tietorakenteita kuin monet ohjelmoijat antavat
+niille kunniaa, ja UTF-8. Nämä tekijät yhdistyvät tavalla, joka voi tuntua
+vaikealta, kun tulet muista ohjelmointikielistä.</p>
+<p>Käsittelemme merkkijonoja kokoelmien yhteydessä, koska merkkijonot on
+toteutettu tavujen kokoelmana sekä joitakin metodeja, jotka tarjoavat hyödyllistä
+toiminnallisuutta, kun nuo tavut tulkitaan tekstinä. Tässä osiossa käymme läpi
+<code>String</code>-tyypin operaatiot, joita jokaisella kokoelmatyypillä on, kuten
+luominen, päivittäminen ja lukeminen. Käsittelemme myös tavat, joilla <code>String</code>
+eroaa muista kokoelmista, eli sitä, miten <code>String</code>-datan indeksointi on
+monimutkaista sen vuoksi, miten ihmiset ja tietokoneet tulkitsevat
+<code>String</code>-dataa.</p>
+<h3 id="mikä-on-merkkijono"><a class="header" href="#mikä-on-merkkijono">Mikä on merkkijono?</a></h3>
+<p>Määrittelemme ensin, mitä tarkoitamme termillä <em>merkkijono</em>. Rustissa on vain
+yksi merkkijonotyyppi kieliytimessä, ja se on merkkijonoviipale <code>str</code>, jota
+nähdään yleensä lainattuna muotona <code>&amp;str</code>. Luvussa 4 käsittelimme
+<em>merkkijonoviipaleita</em>, jotka ovat viittauksia jossain muualla tallennettuun
+UTF-8-koodattuun merkkijonodataan. Merkkijonoliteraalit, esimerkiksi, on
+tallennettu ohjelman binaariin ja ovat siksi merkkijonoviipaleita.</p>
+<p><code>String</code>-tyyppi, jonka Rustin standardikirjasto tarjoaa eikä kieliydin koodaa
+sisään, on kasvava, muuttuva, omistettu, UTF-8-koodattu merkkijonotyyppi. Kun
+Rust-kehittäjät viittaavat Rustin “merkkijonoihin”, he saattavat tarkoittaa
+joko <code>String</code>- tai merkkijonoviipaletyyppiä <code>&amp;str</code>, ei vain yhtä näistä
+tyypeistä. Vaikka tämä osio käsittelee pääosin <code>String</code>-tyyppiä, molempia
+tyyppejä käytetään runsaasti Rustin standardikirjastossa, ja sekä <code>String</code> että
+merkkijonoviipaleet ovat UTF-8-koodattuja.</p>
+<h3 id="uuden-merkkijonon-luominen"><a class="header" href="#uuden-merkkijonon-luominen">Uuden merkkijonon luominen</a></h3>
+<p>Monet samat operaatiot, jotka ovat käytettävissä <code>Vec&lt;T&gt;</code>-tyypillä, ovat
+käytettävissä myös <code>String</code>-tyypillä, koska <code>String</code> on itse asiassa toteutettu
+kääreenä tavuvektorin ympärillä joillakin ylimääräisillä takeilla, rajoituksilla
+ja ominaisuuksilla. Esimerkki funktiosta, joka toimii samalla tavalla
+<code>Vec&lt;T&gt;</code>- ja <code>String</code>-tyypeillä, on <code>new</code>-funktio instanssin luomiseen, kuten
+listauksessa 8-11.</p>
+<figure class="listing">
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch08-common-collections/listing-08-11/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 8-11: Uuden, tyhjän <code>String</code>-olion luominen</figcaption>
+</figure>
+<p>Tämä rivi luo uuden, tyhjän merkkijonon nimeltä <code>s</code>, johon voimme sitten ladata
+dataa. Usein meillä on joitakin alkudataa, joilla haluamme aloittaa
+merkkijonon. Siihen käytämme <code>to_string</code>-metodia, joka on käytettävissä
+millä tahansa tyypillä, joka toteuttaa <code>Display</code>-traitin, kuten
+merkkijonoliteraalit tekevät. Listaus 8-12 näyttää kaksi esimerkkiä.</p>
+<figure class="listing">
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch08-common-collections/listing-08-12/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 8-12: <code>to_string</code>-metodin käyttö <code>String</code>-olion luomiseen merkkijonoliteraalista</figcaption>
+</figure>
+<p>Tämä koodi luo merkkijonon, joka sisältää <code>initial contents</code>.</p>
+<p>Voimme myös käyttää funktiota <code>String::from</code> luodaksemme <code>String</code>-olion
+merkkijonoliteraalista. Listauksen 8-13 koodi on vastaava kuin listauksen 8-12
+koodi, joka käyttää <code>to_string</code>-metodia.</p>
+<figure class="listing">
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch08-common-collections/listing-08-13/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 8-13: <code>String::from</code>-funktion käyttö <code>String</code>-olion luomiseen merkkijonoliteraalista</figcaption>
+</figure>
+<p>Koska merkkijonoja käytetään niin moniin asioihin, voimme käyttää monia erilaisia
+geneerisiä rajapintoja merkkijonoille, mikä tarjoaa meille paljon vaihtoehtoja.
+Joistakin ne saattavat tuntua päällekkäisiltä, mutta jokaisella on paikkansa!
+Tässä tapauksessa <code>String::from</code> ja <code>to_string</code> tekevät saman asian, joten
+kumpaa valitsetkin, on tyyli- ja luettavuuskysymys.</p>
+<p>Muista, että merkkijonot ovat UTF-8-koodattuja, joten voimme sisällyttää niihin
+mitä tahansa oikein koodattua dataa, kuten listauksessa 8-14.</p>
+<figure class="listing">
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch08-common-collections/listing-08-14/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 8-14: Tervehdyksien tallentaminen eri kielillä merkkijonoihin</figcaption>
+</figure>
+<p>Kaikki nämä ovat kelvollisia <code>String</code>-arvoja.</p>
+<h3 id="merkkijonon-päivittäminen"><a class="header" href="#merkkijonon-päivittäminen">Merkkijonon päivittäminen</a></h3>
+<p><code>String</code> voi kasvaa koossa ja sen sisältö voi muuttua, aivan kuten <code>Vec&lt;T&gt;</code>-tyypin
+sisältö, jos työnnät siihen lisää dataa. Lisäksi voit kätevästi käyttää
+<code>+</code>-operaattoria tai <code>format!</code>-makroa yhdistääksesi <code>String</code>-arvoja.</p>
+<h4 id="merkkijonon-jatkaminen-push_str--ja-push-metodeilla"><a class="header" href="#merkkijonon-jatkaminen-push_str--ja-push-metodeilla">Merkkijonon jatkaminen <code>push_str</code>- ja <code>push</code>-metodeilla</a></h4>
+<p>Voimme kasvattaa <code>String</code>-oliota käyttämällä <code>push_str</code>-metodia liittääksemme
+merkkijonoviipaleen, kuten listauksessa 8-15.</p>
+<figure class="listing">
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch08-common-collections/listing-08-15/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 8-15: Merkkijonoviipaleen liittäminen <code>String</code>-olioon <code>push_str</code>-metodilla</figcaption>
+</figure>
+<p>Näiden kahden rivin jälkeen <code>s</code> sisältää <code>foobar</code>. <code>push_str</code>-metodi ottaa
+merkkijonoviipaleen, koska emme välttämättä halua ottaa parametrin omistusta.
+Esimerkiksi listauksen 8-16 koodissa haluamme pystyä käyttämään <code>s2</code>:ta sen
+sisällön liittämisen jälkeen <code>s1</code>:een.</p>
+<figure class="listing">
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch08-common-collections/listing-08-16/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 8-16: Merkkijonoviipaleen käyttö sen sisällön liittämisen jälkeen <code>String</code>-olioon</figcaption>
+</figure>
+<p>Jos <code>push_str</code>-metodi ottaisi <code>s2</code>:n omistuksen, emme voisi tulostaa sen arvoa
+viimeisellä rivillä. Tämä koodi kuitenkin toimii odotetulla tavalla!</p>
+<p><code>push</code>-metodi ottaa yhden merkin parametrina ja lisää sen <code>String</code>-olioon.
+Listaus 8-17 lisää kirjaimen <em>l</em> <code>String</code>-olioon <code>push</code>-metodilla.</p>
+<figure class="listing">
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch08-common-collections/listing-08-17/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 8-17: Yhden merkin lisääminen <code>String</code>-arvoon <code>push</code>-metodilla</figcaption>
+</figure>
+<p>Tuloksena <code>s</code> sisältää <code>lol</code>.</p>
+<h4 id="yhdistäminen--operaattorilla-tai-format-makrolla"><a class="header" href="#yhdistäminen--operaattorilla-tai-format-makrolla">Yhdistäminen <code>+</code>-operaattorilla tai <code>format!</code>-makrolla</a></h4>
+<p>Usein haluat yhdistää kaksi olemassa olevaa merkkijonoa. Yksi tapa tehdä se on
+käyttää <code>+</code>-operaattoria, kuten listauksessa 8-18.</p>
+<figure class="listing">
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch08-common-collections/listing-08-18/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 8-18: <code>+</code>-operaattorin käyttö kahden <code>String</code>-arvon yhdistämiseen uudeksi <code>String</code>-arvoksi</figcaption>
+</figure>
+<p>Merkkijono <code>s3</code> sisältää <code>Hello, world!</code>. Syy siihen, miksi <code>s1</code> ei ole enää
+kelvollinen yhteenlaskun jälkeen, ja syy siihen, miksi käytimme viitettä
+<code>s2</code>:een, liittyy metodin allekirjoitukseen, jota kutsutaan kun käytämme
+<code>+</code>-operaattoria. <code>+</code>-operaattori käyttää <code>add</code>-metodia, jonka allekirjoitus
+näyttää suunnilleen tältä:</p>
+<pre><code class="language-rust ignore">fn add(self, s: &amp;str) -&gt; String {</code></pre>
+<p>Standardikirjastossa näet <code>add</code>-metodin määriteltynä geneerisillä tyypeillä ja
+assosioiduilla tyypeillä. Tässä olemme korvanneet konkreettisilla tyypeillä,
+mitä tapahtuu kun kutsumme tätä metodia <code>String</code>-arvoilla. Käsittelemme
+geneerisiä tyyppejä luvussa 10. Tämä allekirjoitus antaa meille vihjeet, joita
+tarvitsemme ymmärtääksemme <code>+</code>-operaattorin hankalat kohdat.</p>
+<p>Ensinnäkin <code>s2</code>:lla on <code>&amp;</code>, mikä tarkoittaa, että lisäämme <em>viittauksen</em>
+toisesta merkkijonosta ensimmäiseen merkkijonoon. Tämä johtuu <code>add</code>-funktion
+<code>s</code>-parametrista: voimme lisätä vain <code>&amp;str</code>-tyypin <code>String</code>-olioon; emme voi
+lisätä kahta <code>String</code>-arvoa yhteen. Mutta odota—tyyppi <code>&amp;s2</code> on <code>&amp;String</code>, ei
+<code>&amp;str</code>, kuten <code>add</code>-metodin toinen parametri määrittää. Miksi listaus 8-18
+sitten kääntyy?</p>
+<p>Syy siihen, miksi voimme käyttää <code>&amp;s2</code>:ta <code>add</code>-kutsussa, on se, että kääntäjä
+voi <em>pakottaa</em> <code>&amp;String</code>-argumentin muotoon <code>&amp;str</code>. Kun kutsumme <code>add</code>-metodia,
+Rust käyttää <em>deref-pakotusta</em> (<em>deref coercion</em>), joka tässä muuttaa <code>&amp;s2</code>:n
+muotoon <code>&amp;s2[..]</code>. Käsittelemme deref-pakotusta syvällisemmin luvussa 15. Koska
+<code>add</code> ei ota <code>s</code>-parametrin omistusta, <code>s2</code> on edelleen kelvollinen <code>String</code>
+tämän operaation jälkeen.</p>
+<p>Toiseksi näemme allekirjoituksesta, että <code>add</code> ottaa <code>self</code>:n omistuksen, koska
+<code>self</code>:llä <em>ei</em> ole <code>&amp;</code>-merkintää. Tämä tarkoittaa, että listauksen 8-18 <code>s1</code>
+siirtyy <code>add</code>-kutsuun eikä ole enää kelvollinen sen jälkeen. Vaikka
+<code>let s3 = s1 + &amp;s2;</code> näyttää siltä, että se kopioisi molemmat merkkijonot ja
+loisi uuden, tämä lause itse asiassa ottaa <code>s1</code>:n omistuksen, liittää kopion
+<code>s2</code>:n sisällöstä ja palauttaa tuloksen omistuksen. Toisin sanoen se näyttää
+tekevän paljon kopioita, mutta ei tee; toteutus on tehokkaampi kuin kopiointi.</p>
+<p>Jos meidän täytyy yhdistää useita merkkijonoja, <code>+</code>-operaattorin käyttäytyminen
+käy hankalaksi:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch08-common-collections/no-listing-01-concat-multiple-strings/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<p>Tässä vaiheessa <code>s</code> on <code>tic-tac-toe</code>. Kaikkien <code>+</code>- ja <code>"</code>-merkkien kanssa on
+vaikea nähdä, mitä tapahtuu. Monimutkaisempien yhdistämistapojen kohdalla
+voimme sen sijaan käyttää <code>format!</code>-makroa:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch08-common-collections/no-listing-02-format/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<p>Tämä koodi asettaa myös <code>s</code>:n arvoksi <code>tic-tac-toe</code>. <code>format!</code>-makro toimii
+kuten <code>println!</code>, mutta tulostaa tulosteen ruudulle sen sijaan, että se palauttaa
+<code>String</code>-olion sisällöllä. <code>format!</code>-makroa käyttävä koodiversio on paljon
+helpompi lukea, ja <code>format!</code>-makron generoima koodi käyttää viittauksia, joten
+tämä kutsu ei ota minkään parametreistaan omistusta.</p>
+<h3 id="merkkijonojen-indeksointi"><a class="header" href="#merkkijonojen-indeksointi">Merkkijonojen indeksointi</a></h3>
+<p>Monissa muissa ohjelmointikielissä yksittäisiin merkkeihin merkkijonossa
+viittaaminen indeksillä on kelvollinen ja yleinen operaatio. Jos kuitenkin
+yrität käyttää indeksointisyntaksia <code>String</code>-olion osiin Rustissa, saat
+virheen. Harkitse kelvotonta koodia listauksessa 8-19.</p>
+<figure class="listing">
+<pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch08-common-collections/listing-08-19/src/main.rs:here}}</code></pre>
+<figcaption>Listing 8-19: Indeksointisyntaksin yrittäminen <code>String</code>-olion kanssa</figcaption>
+</figure>
+<p>Tämä koodi johtaa seuraavaan virheeseen:</p>
+<pre><code class="language-console">{{#include ../listings/ch08-common-collections/listing-08-19/output.txt}}
+</code></pre>
+<p>Virhe ja huomautus kertovat tarinan: Rustin merkkijonot eivät tue indeksointia.
+Mutta miksi ei? Vastataksemme siihen kysymykseen meidän täytyy käsitellä, miten
+Rust tallentaa merkkijonot muistiin.</p>
+<h4 id="sisäinen-esitys"><a class="header" href="#sisäinen-esitys">Sisäinen esitys</a></h4>
+<p><code>String</code> on kääre <code>Vec&lt;u8&gt;</code>-tyypin ympärillä. Katsotaan joitakin oikein
+koodattuja UTF-8-esimerkkimerkkijonojamme listauksesta 8-14. Ensin tämä:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch08-common-collections/listing-08-14/src/main.rs:spanish}}
+<span class="boring">}</span></code></pre></pre>
+<p>Tässä tapauksessa <code>len</code> on <code>4</code>, mikä tarkoittaa, että merkkijonoa <code>"Hola"</code>
+tallentava vektori on 4 tavua pitkä. Jokainen näistä kirjaimista vie yhden tavun
+UTF-8-koodauksessa. Seuraava rivi saattaa kuitenkin yllättää (huomaa, että tämä
+merkkijono alkaa kyrillisen isolla kirjaimella <em>Ze</em>, ei numerolla 3):</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch08-common-collections/listing-08-14/src/main.rs:russian}}
+<span class="boring">}</span></code></pre></pre>
+<p>Jos sinulta kysyttäisiin, kuinka pitkä merkkijono on, saatat sanoa 12. Itse
+asiassa Rustin vastaus on 24: se on tavujen määrä, joita tarvitaan
+“Здравствуйте”-merkkijonon koodaamiseen UTF-8:ssa, koska jokainen Unicode-skaalaarvo
+tässä merkkijonossa vie 2 tavua tallennustilaa. Siksi indeksi merkkijonon
+tavuihin ei aina vastaa kelvollista Unicode-skaalaarvoa. Havainnollistukseksi
+harkitse tätä kelvotonta Rust-koodia:</p>
+<pre><code class="language-rust ignore does_not_compile">let hello = "Здравствуйте";
+let answer = &amp;hello[0];</code></pre>
+<p>Tiedät jo, että <code>answer</code> ei ole <code>З</code>, ensimmäinen kirjain. UTF-8-koodauksessa
+<code>З</code>:n ensimmäinen tavu on <code>208</code> ja toinen on <code>151</code>, joten näyttäisi siltä, että
+<code>answer</code>:n pitäisi olla <code>208</code>, mutta <code>208</code> ei ole kelvollinen merkki yksinään.
+<code>208</code>:n palauttaminen ei todennäköisesti ole sitä, mitä käyttäjä haluaisi, jos
+hän pyytäisi tämän merkkijonon ensimmäistä kirjainta; kuitenkin se on ainoa
+data, joka Rustilla on tavuindeksissä 0. Käyttäjät eivät yleensä halua tavuarvoa
+palautettavaksi, vaikka merkkijono sisältäisi vain latinalaisia kirjaimia: jos
+<code>&amp;"hi"[0]</code> olisi kelvollista koodia, joka palauttaisi tavuarvon, se palauttaisi
+<code>104</code>:n, ei <code>h</code>:ta.</p>
+<p>Vastaus on siis, että odottamattoman arvon palauttamisen ja virheiden
+välttämiseksi, joita ei ehkä huomata heti, Rust ei käännä tätä koodia lainkaan
+ja estää väärinkäsitykset varhaisessa kehitysvaiheessa.</p>
+<h4 id="tavut-skaalaarvot-ja-grafeemiklusterit-voi-ei"><a class="header" href="#tavut-skaalaarvot-ja-grafeemiklusterit-voi-ei">Tavut, skaalaarvot ja grafeemiklusterit! Voi ei!</a></h4>
+<p>Toinen huomio UTF-8:sta on, että merkkijonoihin on itse asiassa kolme
+olennaista tapaa katsoa Rustin näkökulmasta: tavuina, skaalaarvoina ja
+grafeemiklustereina (lähin vastine sille, mitä kutsumme <em>kirjaimiksi</em>).</p>
+<p>Jos katsomme hindinkielistä sanaa “नमस्ते” devanagari-kirjoituksella, se
+tallennetaan <code>u8</code>-arvojen vektorina, joka näyttää tältä:</p>
+<pre><code class="language-text">[224, 164, 168, 224, 164, 174, 224, 164, 184, 224, 165, 141, 224, 164, 164,
+224, 165, 135]
+</code></pre>
+<p>Se on 18 tavua ja näin tietokoneet lopulta tallentavat tämän datan. Jos
+katsomme niitä Unicode-skaalaarvoina, joita Rustin <code>char</code>-tyyppi edustaa, nuo
+tavut näyttävät tältä:</p>
+<pre><code class="language-text">['न', 'म', 'स', '्', 'त', 'े']
+</code></pre>
+<p>Tässä on kuusi <code>char</code>-arvoa, mutta neljäs ja kuudes eivät ole kirjaimia: ne
+ovat diakriittisiä merkkejä, joilla ei ole järkeä yksinään. Lopuksi, jos
+katsomme niitä grafeemiklustereina, saamme sen, mitä ihminen kutsuisi
+hindinkielisen sanan neljäksi kirjaimiksi:</p>
+<pre><code class="language-text">["न", "म", "स्", "ते"]
+</code></pre>
+<p>Rust tarjoaa erilaisia tapoja tulkita raakaa merkkijonodataa, jota tietokoneet
+tallentavat, jotta jokainen ohjelma voi valita tarvitsemansa tulkinnan
+riippumatta siitä, millä ihmiskielellä data on.</p>
+<p>Viimeinen syy siihen, miksi Rust ei salli indeksointia <code>String</code>-olioon merkin
+saamiseksi, on se, että indeksointioperointien odotetaan aina vievän vakioajan
+(O(1)). Mutta tällaista suorituskykyä ei voi taata <code>String</code>-tyypillä, koska
+Rustin täytyisi käydä sisältö läpi alusta indeksiin määrittääkseen, kuinka monta
+kelvollista merkkiä siinä on.</p>
+<h3 id="merkkijonojen-viipaleet"><a class="header" href="#merkkijonojen-viipaleet">Merkkijonojen viipaleet</a></h3>
+<p>Indeksointi merkkijonoon on usein huono idea, koska ei ole selvää, mikä
+merkkijonon indeksointioperoinnin paluutyyppi pitäisi olla: tavu, merkki,
+grafeemiklusteri vai merkkijonoviipale. Jos todella tarvitset käyttää indeksejä
+merkkijonoviipaleiden luomiseen, Rust pyytää sinua olemaan tarkempi.</p>
+<p>Sen sijaan, että indeksoisit <code>[]</code>-syntaksilla yhdellä numerolla, voit käyttää
+<code>[]</code>-syntaksia väliarvolla luodaksesi merkkijonoviipaleen, joka sisältää
+tietyt tavut:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let hello = "Здравствуйте";
+
+let s = &amp;hello[0..4];
+<span class="boring">}</span></code></pre></pre>
+<p>Tässä <code>s</code> on <code>&amp;str</code>, joka sisältää merkkijonon ensimmäiset neljä tavua.
+Aiemmin mainitsimme, että jokainen näistä merkeistä oli kaksi tavua, mikä
+tarkoittaa, että <code>s</code> on <code>Зд</code>.</p>
+<p>Jos yrittäisimme viipaloida vain osan merkin tavuista esimerkiksi
+<code>&amp;hello[0..1]</code>:llä, Rust panikoi ajonaikana samalla tavalla kuin jos
+vektorissa käytettäisiin kelvotonta indeksiä:</p>
+<pre><code class="language-console">{{#include ../listings/ch08-common-collections/output-only-01-not-char-boundary/output.txt}}
+</code></pre>
+<p>Sinun pitäisi olla varovainen luodessasi merkkijonoviipaleita väliarvoilla,
+koska se voi kaataa ohjelmasi.</p>
+<h3 id="merkkijonojen-läpikäyntimetodit"><a class="header" href="#merkkijonojen-läpikäyntimetodit">Merkkijonojen läpikäyntimetodit</a></h3>
+<p>Paras tapa käsitellä merkkijonon osia on olla eksplisiittinen siitä, haluatko
+merkkejä vai tavuja. Yksittäisiä Unicode-skaalaarvoja varten käytä <code>chars</code>-metodia.
+<code>chars</code>-metodin kutsuminen merkkijonolla “Зд” erottelee ja palauttaa kaksi
+<code>char</code>-tyyppistä arvoa, ja voit iteroida tuloksen läpi päästäksesi käsiksi
+jokaiseen alkioon:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>for c in "Зд".chars() {
+    println!("{c}");
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Tämä koodi tulostaa seuraavan:</p>
+<pre><code class="language-text">З
+д
+</code></pre>
+<p>Vaihtoehtoisesti <code>bytes</code>-metodi palauttaa jokaisen raakatavu, mikä saattaa olla
+sopivaa sinun käyttöalueellesi:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>for b in "Зд".bytes() {
+    println!("{b}");
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Tämä koodi tulostaa neljä tavua, joista tämä merkkijono koostuu:</p>
+<pre><code class="language-text">208
+151
+208
+180
+</code></pre>
+<p>Muista kuitenkin, että kelvolliset Unicode-skaalaarvot voivat koostua useammasta
+kuin yhdestä tavusta.</p>
+<p>Grafeemiklusterien saaminen merkkijonoista, kuten devanagari-kirjoituksessa, on
+monimutkaista, joten standardikirjasto ei tarjoa tätä toiminnallisuutta.
+Crates.io-sivustolta löytyy <a href="https://crates.io/">crates.io</a><!-- ignore --> -paketteja,
+jos tarvitset tätä toiminnallisuutta.</p>
+<h3 id="merkkijonot-eivät-ole-niin-yksinkertaisia"><a class="header" href="#merkkijonot-eivät-ole-niin-yksinkertaisia">Merkkijonot eivät ole niin yksinkertaisia</a></h3>
+<p>Yhteenvetona merkkijonot ovat monimutkaisia. Eri ohjelmointikielet tekevät
+erilaisia valintoja siitä, miten tämä monimutkaisuus esitetään ohjelmoijalle.
+Rust on valinnut tehdä <code>String</code>-datan oikeasta käsittelystä oletuskäyttäytymisen
+kaikille Rust-ohjelmille, mikä tarkoittaa, että ohjelmoijien täytyy miettiä
+UTF-8-datan käsittelyä etukäteen enemmän. Tämä kompromissi paljastaa enemmän
+merkkijonojen monimutkaisuutta kuin muissa ohjelmointikielissä näkyy, mutta se
+estää sinua joutumasta käsittelemään ei-ASCII-merkkeihin liittyviä virheitä
+myöhemmin kehityssyklin aikana.</p>
+<p>Hyvä uutinen on, että standardikirjasto tarjoaa paljon toiminnallisuutta, joka
+perustuu <code>String</code>- ja <code>&amp;str</code>-tyyppeihin auttamaan näiden monimutkaisten
+tilanteiden oikeassa käsittelyssä. Muista tutustua dokumentaatioon hyödyllisistä
+metodeista, kuten <code>contains</code> merkkijonosta etsimiseen ja <code>replace</code> merkkijonon
+osien korvaamiseen toisella merkkijonolla.</p>
+<p>Siirrytään hieman vähemmän monimutkaiseen asiaan: hajautustauluihin!</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="ch08-01-vectors.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="ch08-03-hash-maps.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="ch08-01-vectors.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="ch08-03-hash-maps.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="ferris.js"></script>
+
+
+    </div>
+    </body>
+</html>

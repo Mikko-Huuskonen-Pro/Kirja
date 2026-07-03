@@ -1,0 +1,302 @@
+<!DOCTYPE HTML>
+<html lang="fi" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Ympäristömuuttujien käyttö - Rust-ohjelmointikieli</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="ferris.css">
+        <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rust-ohjelmointikieli</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/rust-lang/book" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2 id="ympäristömuuttujien-käyttö"><a class="header" href="#ympäristömuuttujien-käyttö">Ympäristömuuttujien käyttö</a></h2>
+<p>Parannamme <code>minigrep</code>-ohjelmaa lisäämällä uuden ominaisuuden: mahdollisuuden
+suorittaa <strong>kirjainkoon huomioimaton haku</strong> ympäristömuuttujan avulla.
+Voisimme toteuttaa tämän myös komentoriviargumenttina, mutta ympäristömuuttujan
+käyttö antaa käyttäjälle mahdollisuuden asettaa kerran <code>IGNORE_CASE</code>-muuttuja
+ja käyttää sitä kaikissa hauissa saman istunnon aikana.</p>
+<h3 id="kirjoitetaan-epäonnistuva-testi-search_case_insensitive-funktiolle"><a class="header" href="#kirjoitetaan-epäonnistuva-testi-search_case_insensitive-funktiolle">Kirjoitetaan epäonnistuva testi <code>search_case_insensitive</code>-funktiolle</a></h3>
+<p>Lisäämme uuden <code>search_case_insensitive</code>-funktion, joka suorittaa
+kirjainkoon huomioimattoman haun. Jatkamme testivetoista kehitystä (TDD),
+joten ensimmäinen askel on kirjoittaa epäonnistuva testi. Lisäksi nimeämme
+olemassa olevan testin <code>one_result</code> uudelleen muotoon <code>case_sensitive</code>,
+jotta testien erot ovat selvemmät. <strong>Listing 12-20</strong> näyttää uuden testin:</p>
+<pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch12-an-io-project/listing-12-20/src/lib.rs:here}}</code></pre>
+<p>Muokkasimme myös aiemman testin <code>contents</code>-arvoa lisäämällä uuden rivin
+<code>"Duct tape."</code>, jossa <code>D</code> on isolla. Tämä varmistaa, että aiemmin toteutettu
+kirjainkoon huomioiva haku ei vahingossa rikkoudu. Sen tulisi edelleen löytää
+vain <code>"duct"</code> eikä <code>"Duct"</code>-muotoa.</p>
+<p>Uusi testi käyttää hakusanana <code>"rUsT"</code>, joka <code>search_case_insensitive</code>-funktion
+tulee löytää sekä <code>"Rust:"</code>-rivin että <code>"Trust me."</code>-rivin, huolimatta siitä,
+että niiden kirjainkoko eroaa kyselausekkeesta.</p>
+<p>Tämä testi epäonnistuu nyt käännöksessä, koska <code>search_case_insensitive</code>-funktiota
+ei ole vielä määritelty. Voit halutessasi lisätä sille väliaikaisen toteutuksen,
+joka palauttaa tyhjän vektorin, kuten teimme <code>search</code>-funktiolle <strong>Listing 12-16</strong>,
+ja tarkistaa, että testi kääntyy mutta epäonnistuu.</p>
+<h3 id="search_case_insensitive-funktion-toteutus"><a class="header" href="#search_case_insensitive-funktion-toteutus"><code>search_case_insensitive</code>-funktion toteutus</a></h3>
+<p><code>search_case_insensitive</code>-funktio toimii lähes samalla tavalla kuin <code>search</code>.
+Ainoa ero on, että se <strong>muuttaa sekä hakulausekkeen että jokaisen rivin
+pieniksi kirjaimiksi</strong> ennen vertailua. <strong>Listing 12-21</strong> näyttää tämän:</p>
+<pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch12-an-io-project/listing-12-21/src/lib.rs:here}}</code></pre>
+<p>Ensimmäisenä muutamme <code>query</code>-arvon pieniksi kirjaimiksi ja varastoimme sen
+uuteen muuttujaan <strong>varjostaen</strong> alkuperäisen muuttujan. <code>to_lowercase</code>-kutsun
+käyttö varmistaa, että hakusana <code>"rust"</code>, <code>"RUST"</code>, <code>"Rust"</code> tai <code>"rUsT"</code>
+tulkitaan aina samaksi <code>"rust"</code>-arvoksi.</p>
+<p>Koska <code>to_lowercase</code> palauttaa uuden <code>String</code>-arvon (eikä muokkaa olemassa olevaa
+viipaletta), meidän täytyy nyt käsitellä <code>query</code>-muuttujaa <code>String</code>-tyyppinä
+eikä viipaleena (<code>&amp;str</code>).</p>
+<p>Seuraavaksi muutamme myös <code>line</code>-muuttujan pieniksi kirjaimiksi. Nyt sekä
+hakusana että hakutulokset ovat pienaakkosiksi muunnettuja, ja voimme löytää
+osumia riippumatta alkuperäisestä kirjainkoosta.</p>
+<p>Testataan toiminnallisuutta:</p>
+<pre><code class="language-console">{{#include ../listings/ch12-an-io-project/listing-12-21/output.txt}}
+</code></pre>
+<p>Testit onnistuvat! Nyt voimme kutsua <code>search_case_insensitive</code>-funktiota
+<code>run</code>-funktiosta.</p>
+<h3 id="konfigurointikentän-lisääminen-config-rakenteeseen"><a class="header" href="#konfigurointikentän-lisääminen-config-rakenteeseen">Konfigurointikentän lisääminen <code>Config</code>-rakenteeseen</a></h3>
+<p>Lisäämme <code>Config</code>-rakenteeseen uuden kentän <code>ignore_case</code>, joka kertoo,
+tuleeko haku suorittaa kirjainkoon huomioivana vai ei.</p>
+<pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch12-an-io-project/listing-12-22/src/lib.rs:here}}</code></pre>
+<p><code>ignore_case</code>-kenttä on <code>bool</code>-tyyppinen. Seuraavaksi <code>run</code>-funktio tarkistaa
+tämän arvon ja valitsee käytettävän hakufunktion <strong>Listing 12-22</strong> mukaisesti:</p>
+<pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch12-an-io-project/listing-12-22/src/lib.rs:there}}</code></pre>
+<p>Tämä ei vielä käänny, koska emme ole alustaneet <code>ignore_case</code>-kenttää.</p>
+<h3 id="ympäristömuuttujan-tarkistaminen"><a class="header" href="#ympäristömuuttujan-tarkistaminen">Ympäristömuuttujan tarkistaminen</a></h3>
+<p>Lopuksi lisätään <code>IGNORE_CASE</code>-ympäristömuuttujan tarkistus. <strong>Listing 12-23</strong>
+esittää tämän muutoksen:</p>
+<pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch12-an-io-project/listing-12-23/src/lib.rs:here}}</code></pre>
+<p>Tässä luomme uuden muuttujan <code>ignore_case</code> ja asetamme sen arvon kutsumalla
+<code>env::var</code>-funktiota <code>IGNORE_CASE</code>-ympäristömuuttujalle. Jos muuttuja on
+asetettu, <code>env::var</code> palauttaa <code>Ok</code>, ja <code>is_ok</code>-kutsu palauttaa <code>true</code>,
+mikä tarkoittaa, että haun tulee olla kirjainkoon huomioimaton.</p>
+<p>Jos muuttujaa <strong>ei ole asetettu</strong>, <code>env::var</code> palauttaa <code>Err</code>, jolloin
+<code>is_ok</code>-kutsu palauttaa <code>false</code> ja ohjelma suorittaa <strong>kirjainkoon huomioivan haun</strong>.</p>
+<p>Lopuksi välitämme <code>ignore_case</code>-arvon <code>Config</code>-instanssille, jotta <code>run</code>-funktio
+voi valita oikean hakutavan.</p>
+<h3 id="testaaminen-ympäristömuuttujalla"><a class="header" href="#testaaminen-ympäristömuuttujalla">Testaaminen ympäristömuuttujalla</a></h3>
+<p>Kokeillaan ensin hakua ilman ympäristömuuttujaa:</p>
+<pre><code class="language-console">{{#include ../listings/ch12-an-io-project/listing-12-23/output.txt}}
+</code></pre>
+<p>Kaikki toimii odotetusti! Nyt asetetaan <code>IGNORE_CASE=1</code> ja kokeillaan uudelleen:</p>
+<pre><code class="language-console">$ IGNORE_CASE=1 cargo run -- to poem.txt
+</code></pre>
+<p>PowerShellissä ympäristömuuttujan asettaminen vaatii erillisen komennon:</p>
+<pre><code class="language-console">PS&gt; $Env:IGNORE_CASE=1; cargo run -- to poem.txt
+</code></pre>
+<p>Poista muuttuja käytöstä PowerShellissä näin:</p>
+<pre><code class="language-console">PS&gt; Remove-Item Env:IGNORE_CASE
+</code></pre>
+<p>Tuloksen pitäisi näyttää tältä:</p>
+<pre><code class="language-console">Are you nobody, too?
+How dreary to be somebody!
+To tell your name the livelong day
+To an admiring bog!
+</code></pre>
+<p>Nyt <code>minigrep</code> voi suorittaa kirjainkoon huomioimattomia hakuja ympäristömuuttujan avulla!
+Voimme myös yhdistää <strong>komentoriviargumentit ja ympäristömuuttujat</strong>, jolloin ohjelma
+voi antaa etusijan jommallekummalle riippuen siitä, kumpi on asetettu.</p>
+<p>Rustin <code>std::env</code>-moduuli tarjoaa monia muita hyödyllisiä ympäristömuuttujien hallinnan
+ominaisuuksia – tutustu sen dokumentaatioon oppiaksesi lisää!</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="ch12-04-testing-the-librarys-functionality.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="ch12-06-writing-to-stderr-instead-of-stdout.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="ch12-04-testing-the-librarys-functionality.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="ch12-06-writing-to-stderr-instead-of-stdout.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="ferris.js"></script>
+
+
+    </div>
+    </body>
+</html>

@@ -1,0 +1,520 @@
+<!DOCTYPE HTML>
+<html lang="fi" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Sulkeiset: anonyymit funktiot, jotka sieppaavat ympäristönsä - Rust-ohjelmointikieli</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="ferris.css">
+        <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rust-ohjelmointikieli</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/rust-lang/book" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <!-- Old heading. Do not remove or links may break. -->
+<p><a id="closures-anonymous-functions-that-can-capture-their-environment"></a></p>
+<h2 id="sulkeumat-anonyymit-funktiot-jotka-sieppaavat-ympäristönsä"><a class="header" href="#sulkeumat-anonyymit-funktiot-jotka-sieppaavat-ympäristönsä">Sulkeumat: anonyymit funktiot, jotka sieppaavat ympäristönsä</a></h2>
+<p>Rustin sulkeumat ovat anonyymejä funktioita, jotka voidaan tallentaa muuttujaan tai
+välittää argumenttina toisille funktioille. Sulkeuman voi määrittää yhdessä paikassa ja
+kutsua sitä myöhemmin toisessa yhteydessä sen arvioimiseksi. Toisin kuin funktiot,
+sulkeumat voivat siepata arvoja siitä laajuudesta, jossa ne on määritelty. Näytämme,
+miten nämä sulkeumien ominaisuudet mahdollistavat koodin uudelleenkäytön ja
+käyttäytymisen mukauttamisen.</p>
+<!-- Old headings. Do not remove or links may break. -->
+<p><a id="creating-an-abstraction-of-behavior-with-closures"></a>
+<a id="refactoring-using-functions"></a>
+<a id="refactoring-with-closures-to-store-code"></a></p>
+<h3 id="ympäristön-sieppaaminen-sulkeumilla"><a class="header" href="#ympäristön-sieppaaminen-sulkeumilla">Ympäristön sieppaaminen sulkeumilla</a></h3>
+<p>Tarkastelemme ensin, miten voimme käyttää sulkeumia sieppaamaan arvoja määrittelynsä
+ympäristöstä myöhempää käyttöä varten. Tässä on skenaario: aika ajoin T-paitayrityksemme
+antaa eksklusiivisen, rajoitetun erän paidan postituslistallamme olevalle henkilölle
+kampanjana. Postituslistan jäsenet voivat halutessaan lisätä suosikkivärinsä profiiliinsa.
+Jos ilmaispaidan voittajalla on suosikkiväri asetettuna, hän saa sen värisen paidan. Jos
+henkilö ei ole määrittänyt suosikkiväriä, hän saa sen värin, jota yrityksellä on tällä
+hetkellä eniten varastossa.</p>
+<p>Tämän toteuttamiseen on monia tapoja. Tässä esimerkissä käytämme <code>ShirtColor</code>-enumia,
+jolla on variantit <code>Red</code> ja <code>Blue</code> (rajoitamme värien määrän yksinkertaisuuden vuoksi).
+Yrityksen varastoa edustaa <code>Inventory</code>-rakenne, jossa on <code>shirts</code>-kenttä, joka sisältää
+<code>Vec&lt;ShirtColor&gt;</code>-vektorin varastossa olevista paidan väreistä. <code>Inventory</code>-rakenteelle
+määritelty <code>giveaway</code>-metodi saa ilmaispaidan voittajan valinnaisen paidan väripreferenssin
+ja palauttaa värin, jonka henkilö saa. Tämä asetelma on esitetty listauksessa 13-1:</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch13-functional-features/listing-13-01/src/main.rs}}</code></pre>
+<figcaption>Listing 13-1: T-paitayrityksen kampanjatilanne</figcaption>
+</figure>
+<p><code>main</code>-funktiossa määritellyssä <code>store</code>-muuttujassa on kaksi sinistä ja yksi punainen paita
+jäljellä jaettavaksi tässä rajoitetun erän kampanjassa. Kutsumme <code>giveaway</code>-metodia
+käyttäjälle, joka haluaa punaisen paidan, ja käyttäjälle, jolla ei ole mitään preferenssiä.</p>
+<p>Tämän koodin voisi toteuttaa monin tavoin, ja tässä keskitymme sulkeumiin, joten olemme
+pysytelleet käsitteissä, jotka olet jo oppinut, lukuun ottamatta <code>giveaway</code>-metodin runkoa,
+joka käyttää sulkeumaa. <code>giveaway</code>-metodissa saamme käyttäjän preferenssin parametrina
+tyypiltä <code>Option&lt;ShirtColor&gt;</code> ja kutsumme <code>unwrap_or_else</code>-metodia <code>user_preference</code>-arvolla.
+<a href="../std/option/enum.Option.html#method.unwrap_or_else"><code>unwrap_or_else</code>-metodi tyypille <code>Option&lt;T&gt;</code></a><!-- ignore --> on määritelty
+standardikirjastossa. Se ottaa yhden argumentin: sulkeuman ilman argumentteja, joka palauttaa
+arvon <code>T</code> (saman tyypin, joka on tallennettuna <code>Option&lt;T&gt;</code>-tyypin <code>Some</code>-varianttiin; tässä
+tapauksessa <code>ShirtColor</code>). Jos <code>Option&lt;T&gt;</code> on <code>Some</code>-variantti, <code>unwrap_or_else</code> palauttaa
+arvon <code>Some</code>-variantin sisältä. Jos <code>Option&lt;T&gt;</code> on <code>None</code>-variantti, <code>unwrap_or_else</code> kutsuu
+sulkeumaa ja palauttaa sulkeuman palauttaman arvon.</p>
+<p>Määrittelemme sulkeumalausekkeen <code>|| self.most_stocked()</code> argumentiksi <code>unwrap_or_else</code>-metodille.
+Tämä on sulkeuma, joka ei itse ota parametreja (jos sulkeumalla olisi parametreja, ne
+näkyisivät kahden pystyviivan välissä). Sulkeuman runko kutsuu <code>self.most_stocked()</code>-metodia.
+Määrittelemme sulkeuman tässä, ja <code>unwrap_or_else</code>-metodin toteutus arvioi sulkeuman myöhemmin,
+jos tulos tarvitaan.</p>
+<p>Tämän koodin suorittaminen tulostaa:</p>
+<pre><code class="language-console">{{#include ../listings/ch13-functional-features/listing-13-01/output.txt}}
+</code></pre>
+<p>Yksi mielenkiintoinen näkökohta on, että olemme välittäneet sulkeuman, joka kutsuu
+<code>self.most_stocked()</code>-metodia nykyisellä <code>Inventory</code>-instanssilla. Standardikirjaston ei
+tarvinnut tietää mitään määrittelemistämme <code>Inventory</code>- tai <code>ShirtColor</code>-tyypeistä tai
+logiikasta, jota haluamme käyttää tässä skenaariossa. Sulkeuma sieppaa muuttumattoman
+viittauksen <code>self</code>-<code>Inventory</code>-instanssiin ja välittää sen määrittelemämme koodin kanssa
+<code>unwrap_or_else</code>-metodille. Funktiot puolestaan eivät pysty sieppaamaan ympäristöään tällä
+tavalla.</p>
+<h3 id="sulkeumien-tyyppipäätelmä-ja-annotointi"><a class="header" href="#sulkeumien-tyyppipäätelmä-ja-annotointi">Sulkeumien tyyppipäätelmä ja annotointi</a></h3>
+<p>Funktioiden ja sulkeumien välillä on muitakin eroja. Sulkeumat eivät yleensä vaadi
+parametrien tai palautusarvon tyyppien annotointia kuten <code>fn</code>-funktiot. Funktioissa
+tyyppiannotaatiot ovat pakollisia, koska tyypit ovat osa käyttäjille paljastettua
+eksplisiittistä rajapintaa. Tämän rajapinnan jäykkä määrittely on tärkeää varmistaakseen,
+että kaikki ovat samaa mieltä siitä, minkä tyyppisiä arvoja funktio käyttää ja palauttaa.
+Sulkeumia ei puolestaan käytetä tällaisessa paljastetussa rajapinnassa: ne tallennetaan
+muuttujiin ja käytetään nimeämättä niitä ja paljastamatta niitä kirjastomme käyttäjille.</p>
+<p>Sulkeumat ovat tyypillisesti lyhyitä ja merkityksellisiä vain kapeassa kontekstissa eivätkä
+missä tahansa satunnaisessa skenaariossa. Näissä rajallisissa konteksteissa kääntäjä pystyy
+päättelemään parametrien ja palautustyypin tyypit, samoin kuin se pystyy päättelemään useimpien
+muuttujien tyypit (on harvinaisia tapauksia, joissa kääntäjä tarvitsee myös sulkeuman
+tyyppiannotaatioita).</p>
+<p>Kuten muuttujien kanssa, voimme lisätä tyyppiannotaatioita, jos haluamme lisätä eksplisiittisyyttä
+ja selkeyttä kustannuksella siitä, että olemme sanallisempia kuin on ehdottoman välttämätöntä.
+Sulkeuman tyyppien annotointi näyttäisi listauksessa 13-2 esitetyltä määrittelyltä. Tässä
+esimerkissä määrittelemme sulkeuman ja tallennamme sen muuttujaan sen sijaan, että määrittäisimme
+sulkeuman siinä kohdassa, jossa välitämme sen argumenttina, kuten teimme listauksessa 13-1.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch13-functional-features/listing-13-02/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 13-2: Sulkeuman parametrin ja palautusarvon tyyppien valinnaisten tyyppiannotaatioiden lisääminen</figcaption>
+</figure>
+<p>Tyyppiannotaatioiden lisäämisen jälkeen sulkeumien syntaksi näyttää enemmän funktioiden
+syntaksilta. Tässä määrittelemme funktion, joka lisää 1 parametrilleen, ja sulkeuman, jolla
+on sama käyttäytyminen, vertailua varten. Olemme lisänneet välilyöntejä kohdistaaksemme
+asiaankuuluvat osat. Tämä havainnollistaa, miten sulkeumien syntaksi on samankaltainen
+kuin funktioiden syntaksi, paitsi pystyviivojen käyttö ja valinnaisen syntaksin määrä:</p>
+<pre><code class="language-rust ignore">fn  add_one_v1   (x: u32) -&gt; u32 { x + 1 }
+let add_one_v2 = |x: u32| -&gt; u32 { x + 1 };
+let add_one_v3 = |x|             { x + 1 };
+let add_one_v4 = |x|               x + 1  ;</code></pre>
+<p>Ensimmäinen rivi näyttää funktion määrittelyn, ja toinen rivi näyttää täysin annotoidun
+sulkeuman määrittelyn. Kolmannella rivillä poistamme tyyppiannotaatiot sulkeuman määrittelystä.
+Neljännellä rivillä poistamme aaltosulkeet, jotka ovat valinnaisia, koska sulkeuman rungossa
+on vain yksi lauseke. Nämä ovat kaikki kelvollisia määrittelyjä, jotka tuottavat saman
+käyttäytymisen, kun niitä kutsutaan. <code>add_one_v3</code>- ja <code>add_one_v4</code>-rivit vaativat sulkeumien
+arviointia, jotta ne voivat kääntyä, koska tyypit päätellään niiden käytöstä. Tämä on
+samankaltaista kuin <code>let v = Vec::new();</code>, joka vaatii joko tyyppiannotaatioita tai jonkin
+tyypin arvoja lisättäväksi <code>Vec</code>-kokoelmaan, jotta Rust pystyy päättelemään tyypin.</p>
+<p>Sulkeumien määrittelyissä kääntäjä päättelee yhden konkreettisen tyypin kullekin niiden
+parametrille ja palautusarvolle. Esimerkiksi listaus 13-3 näyttää lyhyen sulkeuman määrittelyn,
+joka vain palauttaa parametrina saamansa arvon. Tämä sulkeuma ei ole kovin hyödyllinen muuten
+kuin tämän esimerkin tarkoituksia varten. Huomaa, ettemme ole lisänneet määrittelyyn mitään
+tyyppiannotaatioita. Koska tyyppiannotaatioita ei ole, voimme kutsua sulkeumaa millä tahansa
+tyypillä, minkä olemme tehneet tässä ensimmäisellä kerralla <code>String</code>-tyypillä. Jos yritämme
+sitten kutsua <code>example_closure</code>-sulkeumaa kokonaisluvulla, saamme virheen.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch13-functional-features/listing-13-03/src/main.rs:here}}</code></pre>
+<figcaption>Listing 13-3: Yritys kutsua sulkeumaa, jonka tyypit on päätelty, kahdella eri tyypillä</figcaption>
+</figure>
+<p>Kääntäjä antaa meille tämän virheen:</p>
+<pre><code class="language-console">{{#include ../listings/ch13-functional-features/listing-13-03/output.txt}}
+</code></pre>
+<p>Ensimmäisellä kerralla, kun kutsumme <code>example_closure</code>-sulkeumaa <code>String</code>-arvolla, kääntäjä
+päättelee <code>x</code>:n tyypiksi ja sulkeuman palautustyypiksi <code>String</code>. Nämä tyypit lukitaan sitten
+<code>example_closure</code>-sulkeumaan, ja saamme tyyppivirheen, kun yritämme seuraavaksi käyttää
+eri tyyppiä saman sulkeuman kanssa.</p>
+<h3 id="viittausten-sieppaaminen-tai-omistajuuden-siirtäminen"><a class="header" href="#viittausten-sieppaaminen-tai-omistajuuden-siirtäminen">Viittausten sieppaaminen tai omistajuuden siirtäminen</a></h3>
+<p>Sulkeumat voivat siepata arvoja ympäristöstään kolmella tavalla, jotka vastaavat suoraan
+kolmea tapaa, joilla funktio voi ottaa parametrin: lainata muuttumattomasti, lainata
+muuttuvasti ja ottaa omistajuuden. Sulkeuma päättää, kumpaa näistä käyttää, sen perusteella,
+mitä funktion runko tekee siepatuille arvoille.</p>
+<p>Listauksessa 13-4 määrittelemme sulkeuman, joka sieppaa muuttumattoman viittauksen <code>list</code>-nimiseen
+vektoriin, koska se tarvitsee vain muuttumattoman viittauksen arvon tulostamiseen:</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch13-functional-features/listing-13-04/src/main.rs}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 13-4: Muuttumattoman viittauksen sieppaavan sulkeuman määrittely ja kutsuminen</figcaption>
+</figure>
+<p>Tämä esimerkki havainnollistaa myös, että muuttuja voi sitoutua sulkeuman määrittelyyn, ja
+voimme myöhemmin kutsua sulkeumaa käyttämällä muuttujan nimeä ja sulkeita ikään kuin muuttujan
+nimi olisi funktion nimi.</p>
+<p>Koska voimme olla samanaikaisesti useita muuttumattomia viittauksia <code>list</code>-muuttujaan, <code>list</code>
+on edelleen käytettävissä koodista ennen sulkeuman määrittelyä, sulkeuman määrittelyn jälkeen
+mutta ennen sulkeuman kutsumista ja sulkeuman kutsumisen jälkeen. Tämä koodi kääntyy, suorittuu
+ja tulostaa:</p>
+<pre><code class="language-console">{{#include ../listings/ch13-functional-features/listing-13-04/output.txt}}
+</code></pre>
+<p>Seuraavaksi listauksessa 13-5 muutamme sulkeuman runkoa niin, että se lisää elementin <code>list</code>-vektoriin.
+Sulkeuma sieppaa nyt muuttuvan viittauksen:</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch13-functional-features/listing-13-05/src/main.rs}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 13-5: Muuttuvan viittauksen sieppaavan sulkeuman määrittely ja kutsuminen</figcaption>
+</figure>
+<p>Tämä koodi kääntyy, suorittuu ja tulostaa:</p>
+<pre><code class="language-console">{{#include ../listings/ch13-functional-features/listing-13-05/output.txt}}
+</code></pre>
+<p>Huomaa, ettei <code>println!</code>-kutsua ole enää <code>borrows_mutably</code>-sulkeuman määrittelyn ja kutsumisen
+välissä: kun <code>borrows_mutably</code> määritellään, se sieppaa muuttuvan viittauksen <code>list</code>-muuttujaan.
+Emme käytä sulkeumaa uudelleen sen kutsumisen jälkeen, joten muuttuva laina päättyy. Sulkeuman
+määrittelyn ja kutsumisen välissä muuttumatonta lainaa tulostusta varten ei sallita, koska muita
+lainoja ei sallita, kun on muuttuva laina. Kokeile lisätä <code>println!</code>-kutsu sinne ja katso,
+millaisen virheilmoituksen saat!</p>
+<p>Jos haluat pakottaa sulkeuman ottamaan omistajuuden arvoista, joita se käyttää ympäristössään,
+vaikka sulkeuman runko ei ehdottomasti tarvitsisikaan omistajuutta, voit käyttää <code>move</code>-avainsanaa
+parametrilistan edessä.</p>
+<p>Tämä tekniikka on enimmäkseen hyödyllinen, kun välitetään sulkeuma uudelle säikeelle siirtämään
+data niin, että uusi säie omistaa sen. Käsittelemme säikeitä ja syitä niiden käyttöön
+yksityiskohtaisesti luvussa 16 puhuessamme rinnakkaisuudesta, mutta tutkitaan nyt lyhyesti
+uuden säikeen luomista sulkeumalla, joka tarvitsee <code>move</code>-avainsanan. Listaus 13-6 näyttää
+listauksen 13-4 muutetun version, joka tulostaa vektorin uudessa säikeessä pääsäikeen sijaan:</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch13-functional-features/listing-13-06/src/main.rs}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 13-6: <code>move</code>-avainsanan käyttö pakottamaan säikeen sulkeuma ottamaan omistajuuden <code>list</code>-muuttujasta</figcaption>
+</figure>
+<p>Luomme uuden säikeen antamalla säikeelle sulkeuman argumenttina suoritettavaksi. Sulkeuman
+runko tulostaa listan. Listauksessa 13-4 sulkeuma sieppasi <code>list</code>-muuttujan vain muuttumattomalla
+viittauksella, koska se on vähimmän määrä pääsyä <code>list</code>-muuttujaan sen tulostamiseen. Tässä
+esimerkissä, vaikka sulkeuman runko tarvitsee edelleen vain muuttumattoman viittauksen, meidän
+täytyy määrittää, että <code>list</code> siirretään sulkeumaan asettamalla <code>move</code>-avainsana sulkeuman
+määrittelyn alkuun. Uusi säie saattaa valmistua ennen kuin pääsäie valmistuu, tai pääsäie
+saattaa valmistua ensin. Jos pääsäie säilyttäisi omistajuuden <code>list</code>-muuttujaan mutta päättyisi
+ennen uutta säiettä ja pudottaisi <code>list</code>-muuttujan, säikeen muuttumaton viittaus olisi virheellinen.
+Siksi kääntäjä vaatii, että <code>list</code> siirretään uudelle säikeelle annettuun sulkeumaan, jotta
+viittaus olisi kelvollinen. Kokeile poistaa <code>move</code>-avainsana tai käyttää <code>list</code>-muuttujaa
+pääsäikeessä sulkeuman määrittelyn jälkeen ja katso, mitä kääntäjävirheitä saat!</p>
+<!-- Old headings. Do not remove or links may break. -->
+<p><a id="storing-closures-using-generic-parameters-and-the-fn-traits"></a>
+<a id="limitations-of-the-cacher-implementation"></a>
+<a id="moving-captured-values-out-of-the-closure-and-the-fn-traits"></a></p>
+<h3 id="kaapattujen-arvojen-siirtäminen-sulkeumasta-ja-fn-traitit"><a class="header" href="#kaapattujen-arvojen-siirtäminen-sulkeumasta-ja-fn-traitit">Kaapattujen arvojen siirtäminen sulkeumasta ja <code>Fn</code>-traitit</a></h3>
+<p>Kun sulkeuma on siepannut viittauksen tai ottanut omistajuuden arvosta sulkeuman määrittelypaikan
+ympäristöstä (vaikuttaen siihen, mitä, jos mitään, siirretään sulkeumaan <em>sisään</em>), sulkeuman
+rungon koodi määrittää, mitä viittauksille tai arvoille tapahtuu, kun sulkeuma arvioidaan myöhemmin
+(vaikuttaen siihen, mitä, jos mitään, siirretään sulkeumasta <em>ulos</em>). Sulkeuman runko voi tehdä
+mitä tahansa seuraavista: siirtää siepatun arvon sulkeumasta ulos, mutatoida siepattua arvoa,
+ei siirtää eikä mutatoida arvoa, tai olla alun perin sieppaamatta mitään ympäristöstä.</p>
+<p>Tapa, jolla sulkeuma sieppaa ja käsittelee arvoja ympäristöstä, vaikuttaa siihen, mitä traitteja
+sulkeuma toteuttaa, ja traittien avulla funktiot ja rakenteet voivat määrittää, millaisia sulkeumia
+ne voivat käyttää. Sulkeumat toteuttavat automaattisesti yhden, kaksi tai kaikki kolme näistä
+<code>Fn</code>-traiteista additiivisesti sen perusteella, miten sulkeuman runko käsittelee arvoja:</p>
+<ol>
+<li><code>FnOnce</code> koskee sulkeumia, joita voidaan kutsua kerran. Kaikki sulkeumat toteuttavat
+vähintään tämän traitin, koska kaikkia sulkeumia voidaan kutsua. Sulkeuma, joka siirtää
+siepatut arvot rungostaan ulos, toteuttaa vain <code>FnOnce</code>-traitin eikä mitään muista <code>Fn</code>-traiteista,
+koska sitä voidaan kutsua vain kerran.</li>
+<li><code>FnMut</code> koskee sulkeumia, jotka eivät siirrä siepattuja arvoja rungostaan ulos, mutta
+jotka saattavat mutatoida siepattuja arvoja. Näitä sulkeumia voidaan kutsua useammin kuin
+kerran.</li>
+<li><code>Fn</code> koskee sulkeumia, jotka eivät siirrä siepattuja arvoja rungostaan ulos eivätkä mutatoi
+siepattuja arvoja, sekä sulkeumia, jotka eivät sieppaa mitään ympäristöstään. Näitä sulkeumia
+voidaan kutsua useammin kuin kerran mutatoimatta ympäristöään, mikä on tärkeää tapauksissa,
+kuten sulkeuman kutsumisessa useita kertoja rinnakkain.</li>
+</ol>
+<p>Katsotaan <code>unwrap_or_else</code>-metodin määrittelyä tyypille <code>Option&lt;T&gt;</code>, jota käytimme listauksessa 13-1:</p>
+<pre><code class="language-rust ignore">impl&lt;T&gt; Option&lt;T&gt; {
+    pub fn unwrap_or_else&lt;F&gt;(self, f: F) -&gt; T
+    where
+        F: FnOnce() -&gt; T
+    {
+        match self {
+            Some(x) =&gt; x,
+            None =&gt; f(),
+        }
+    }
+}</code></pre>
+<p>Muista, että <code>T</code> on geneerinen tyyppi, joka edustaa arvon tyyppiä <code>Option</code>-tyypin <code>Some</code>-variantissa.
+Tyyppi <code>T</code> on myös <code>unwrap_or_else</code>-funktion palautustyyppi: koodi, joka kutsuu <code>unwrap_or_else</code>-metodia
+<code>Option&lt;String&gt;</code>-arvolla, esimerkiksi, saa <code>String</code>-arvon.</p>
+<p>Seuraavaksi huomaa, että <code>unwrap_or_else</code>-funktiolla on lisägeneerinen tyyppiparametri <code>F</code>. <code>F</code>-tyyppi
+on parametrin <code>f</code> tyyppi, joka on sulkeuma, jonka annamme kutsuessamme <code>unwrap_or_else</code>-metodia.</p>
+<p>Geneeriselle tyypille <code>F</code> määritelty trait-raja on <code>FnOnce() -&gt; T</code>, mikä tarkoittaa, että <code>F</code>:n
+täytyy voida kutsua kerran, olla ilman argumentteja ja palauttaa <code>T</code>. <code>FnOnce</code>-traitin käyttö
+trait-rajassa ilmaisee rajoitteen, että <code>unwrap_or_else</code> kutsuu <code>f</code>:ää korkeintaan kerran.
+<code>unwrap_or_else</code>-metodin rungossa näemme, että jos <code>Option</code> on <code>Some</code>, <code>f</code>:ää ei kutsuta. Jos
+<code>Option</code> on <code>None</code>, <code>f</code>:ää kutsutaan kerran. Koska kaikki sulkeumat toteuttavat <code>FnOnce</code>-traitin,
+<code>unwrap_or_else</code> hyväksyy kaikki kolme sulkeumatyyppiä ja on niin joustava kuin mahdollista.</p>
+<blockquote>
+<p>Huom: Jos haluamamme ei vaadi arvon sieppaamista ympäristöstä, voimme käyttää funktion nimeä
+sulkeuman sijaan. Voimme esimerkiksi kutsua <code>unwrap_or_else(Vec::new)</code>-metodia <code>Option&lt;Vec&lt;T&gt;&gt;</code>-arvolla
+saadaksemme uuden tyhjän vektorin, jos arvo on <code>None</code>. Kääntäjä toteuttaa automaattisesti sen
+<code>Fn</code>-traiteista, joka soveltuu funktion määrittelyyn.</p>
+</blockquote>
+<p>Katsotaan nyt standardikirjaston <code>sort_by_key</code>-metodin määrittelyä viipaleille nähdäksemme, miten
+se eroaa <code>unwrap_or_else</code>-metodista ja miksi <code>sort_by_key</code> käyttää <code>FnMut</code>-traitia <code>FnOnce</code>-traitin
+sijaan trait-rajana. Sulkeuma saa yhden argumentin viittauksena tarkasteltavan viipaleen nykyiseen
+alkioon ja palauttaa järjestettävän tyypin <code>K</code> arvon. Tämä funktio on hyödyllinen, kun haluat
+järjestää viipaleen jonkin kunkin alkion ominaisuuden mukaan. Listauksessa 13-7 meillä on lista
+<code>Rectangle</code>-instansseja, ja käytämme <code>sort_by_key</code>-metodia järjestääksemme ne <code>width</code>-ominaisuuden
+mukaan alhaalta ylös:</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch13-functional-features/listing-13-07/src/main.rs}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 13-7: <code>sort_by_key</code>-metodin käyttö suorakulmioiden järjestämiseen leveyden mukaan</figcaption>
+</figure>
+<p>Tämä koodi tulostaa:</p>
+<pre><code class="language-console">{{#include ../listings/ch13-functional-features/listing-13-07/output.txt}}
+</code></pre>
+<p>Syy siihen, että <code>sort_by_key</code> on määritelty ottamaan <code>FnMut</code>-sulkeuma, on se, että se kutsuu
+sulkeumaa useita kertoja: kerran kullekin viipaleen alkiolle. Sulkeuma <code>|r| r.width</code> ei sieppaa,
+mutatoi tai siirrä mitään ulos ympäristöstään, joten se täyttää trait-rajavaatimukset.</p>
+<p>Sitä vastoin listaus 13-8 näyttää esimerkin sulkeumasta, joka toteuttaa vain <code>FnOnce</code>-traitin,
+koska se siirtää arvon ympäristöstään ulos. Kääntäjä ei anna meidän käyttää tätä sulkeumaa
+<code>sort_by_key</code>-metodin kanssa:</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch13-functional-features/listing-13-08/src/main.rs}}</code></pre>
+<figcaption>Listing 13-8: Yritys käyttää <code>FnOnce</code>-sulkeumaa <code>sort_by_key</code>-metodin kanssa</figcaption>
+</figure>
+<p>Tämä on keinotekoinen, mutkikas tapa (joka ei toimi) yrittää laskea, kuinka monta kertaa
+<code>sort_by_key</code> kutsuu sulkeumaa järjestäessään <code>list</code>-muuttujaa. Tämä koodi yrittää tehdä
+tämän laskennan työntämällä <code>value</code>-muuttujan — <code>String</code>-arvon sulkeuman ympäristöstä —
+<code>sort_operations</code>-vektoriin. Sulkeuma sieppaa <code>value</code>-muuttujan ja siirtää sen sitten sulkeumasta
+ulos siirtämällä <code>value</code>-muuttujan omistajuuden <code>sort_operations</code>-vektoriin. Tätä sulkeumaa
+voidaan kutsua kerran; yritys kutsua sitä toisen kerran ei toimisi, koska <code>value</code> ei olisi
+enää ympäristössä työnnettäväksi <code>sort_operations</code>-vektoriin uudelleen! Siksi tämä sulkeuma
+toteuttaa vain <code>FnOnce</code>-traitin. Kun yritämme kääntää tämän koodin, saamme tämän virheen,
+että <code>value</code>-muuttujaa ei voi siirtää sulkeumasta ulos, koska sulkeuman täytyy toteuttaa <code>FnMut</code>:</p>
+<pre><code class="language-console">{{#include ../listings/ch13-functional-features/listing-13-08/output.txt}}
+</code></pre>
+<p>Virhe osoittaa sulkeuman rungon rivin, joka siirtää <code>value</code>-muuttujan ympäristöstä ulos.
+Korjataksemme tämän meidän täytyy muuttaa sulkeuman runkoa niin, ettei se siirrä arvoja
+ympäristöstä ulos. Laskeaksemme, kuinka monta kertaa sulkeumaa kutsutaan, laskurin pitäminen
+ympäristössä ja sen arvon kasvattaminen sulkeuman rungossa on suoraviivaisempi tapa laskea se.
+Listauksen 13-9 sulkeuma toimii <code>sort_by_key</code>-metodin kanssa, koska se sieppaa vain muuttuvan
+viittauksen <code>num_sort_operations</code>-laskuriin ja voidaan siksi kutsua useammin kuin kerran:</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch13-functional-features/listing-13-09/src/main.rs}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 13-9: <code>FnMut</code>-sulkeuman käyttö <code>sort_by_key</code>-metodin kanssa on sallittua</figcaption>
+</figure>
+<p><code>Fn</code>-traitit ovat tärkeitä, kun määritellään tai käytetään funktioita tai tyyppejä, jotka
+käyttävät sulkeumia. Seuraavassa osiossa käsittelemme iteraattoreita. Monet iteraattorimetodit
+ottavat sulkeuma-argumentteja, joten pidä nämä sulkeumien yksityiskohdat mielessä jatkaessamme!</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="ch13-00-functional-features.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="ch13-02-iterators.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="ch13-00-functional-features.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="ch13-02-iterators.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="ferris.js"></script>
+
+
+    </div>
+    </body>
+</html>

@@ -1,0 +1,319 @@
+<!DOCTYPE HTML>
+<html lang="fi" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Viitesyklit voivat vuotaa muistia - Rust-ohjelmointikieli</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="ferris.css">
+        <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rust-ohjelmointikieli</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/rust-lang/book" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2 id="viittauskiertoja-voi-aiheuttaa-muistivuotoja"><a class="header" href="#viittauskiertoja-voi-aiheuttaa-muistivuotoja">Viittauskiertoja voi aiheuttaa muistivuotoja</a></h2>
+<p>Rustin muistiturvallisuustakuut tekevät vaikeaksi, mutta eivät mahdottomaksi, luoda vahingossa muistia, jota ei koskaan siivota (tunnetaan nimellä <em>muistivuoto</em>). Muistivuotojen täydellinen estäminen ei ole yksi Rustin takuista, mikä tarkoittaa, että muistivuodot ovat muistiturvallisia Rustissa. Näemme, että Rust sallii muistivuodot käyttämällä <code>Rc&lt;T&gt;</code>:tä ja <code>RefCell&lt;T&gt;</code>:tä: on mahdollista luoda viittauksia, joissa kohteet viittaavat toisiinsa kiertona. Tämä luo muistivuotoja, koska kunkin kierron kohteen viittauslaskuri ei koskaan saavuta arvoa 0, eikä arvoja koskaan pudoteta.</p>
+<h3 id="viittauskierron-luominen"><a class="header" href="#viittauskierron-luominen">Viittauskierron luominen</a></h3>
+<p>Katsotaan, miten viittauskierto voi syntyä ja miten se estetään, aloittaen <code>List</code>-enumin määrittelystä ja <code>tail</code>-metodista Listauksessa 15-25:</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch15-smart-pointers/listing-15-25/src/main.rs}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 15-25: Cons-listan määrittely, joka pitää <code>RefCell&lt;T&gt;</code>:tä, jotta voimme muokata sitä, mihin <code>Cons</code>-variantti viittaa</figcaption>
+</figure>
+<p>Käytämme toista variaatiota <code>List</code>-määrittelystä Listauksesta 15-5. <code>Cons</code>-variantin toinen elementti on nyt <code>RefCell&lt;Rc&lt;List&gt;&gt;</code>, mikä tarkoittaa, että sen sijaan, että voisimme muokata <code>i32</code>-arvoa kuten Listauksessa 15-24, haluamme muokata <code>List</code>-arvoa, johon <code>Cons</code>-variantti osoittaa. Lisäämme myös <code>tail</code>-metodin, jotta on kätevää päästä toiseen kohteeseen, jos meillä on <code>Cons</code>-variantti.</p>
+<p>Listauksessa 15-26 lisäämme <code>main</code>-funktion, joka käyttää Listauksen 15-25 määrittelyjä. Tämä koodi luo listan muuttujassa <code>a</code> ja listan muuttujassa <code>b</code>, joka osoittaa listaan <code>a</code>:ssa. Sitten se muokkaa listaa <code>a</code>:ssa osoittamaan <code>b</code>:hen, luoden viittauskierron. Matkan varrella on <code>println!</code>-lauseita, jotka näyttävät, mitkä viittauslaskurit ovat eri vaiheissa tässä prosessissa.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch15-smart-pointers/listing-15-26/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 15-26: Viittauskierron luominen kahdesta <code>List</code>-arvosta, jotka osoittavat toisiinsa</figcaption>
+</figure>
+<p>Luomme <code>Rc&lt;List&gt;</code>-instanssin, joka pitää <code>List</code>-arvoa muuttujassa <code>a</code> alkuperäisellä listalla <code>5, Nil</code>. Luomme sitten <code>Rc&lt;List&gt;</code>-instanssin, joka pitää toista <code>List</code>-arvoa muuttujassa <code>b</code>, joka sisältää arvon 10 ja osoittaa listaan <code>a</code>:ssa.</p>
+<p>Muokkaamme <code>a</code>:ta niin, että se osoittaa <code>b</code>:hen <code>Nil</code>-arvon sijaan, luoden kierron. Teemme tämän käyttämällä <code>tail</code>-metodia saadaksemme viittauksen <code>RefCell&lt;Rc&lt;List&gt;&gt;</code>-arvoon <code>a</code>:ssa, jonka laitamme muuttujaan <code>link</code>. Käytämme sitten <code>borrow_mut</code>-metodia <code>RefCell&lt;Rc&lt;List&gt;&gt;</code>-arvolla muuttaaksemme sisällä olevan arvon <code>Rc&lt;List&gt;</code>-arvosta, joka pitää <code>Nil</code>-arvoa, <code>Rc&lt;List&gt;</code>-arvoksi <code>b</code>:ssä.</p>
+<p>Kun suoritamme tämän koodin pitäen viimeinen <code>println!</code> kommentoituna toistaiseksi, saamme tämän tulosteen:</p>
+<pre><code class="language-console">{{#include ../listings/ch15-smart-pointers/listing-15-26/output.txt}}
+</code></pre>
+<p><code>Rc&lt;List&gt;</code>-instanssien viittauslaskurit sekä <code>a</code>:ssa että <code>b</code>:ssä ovat 2 sen jälkeen, kun muutamme listan <code>a</code>:ssa osoittamaan <code>b</code>:hen. <code>main</code>-funktion lopussa Rust pudottaa muuttujan <code>b</code>, mikä vähentää <code>b</code>-<code>Rc&lt;List&gt;</code>-instanssin viittauslaskuria 2:sta 1:een. <code>Rc&lt;List&gt;</code>-instanssin keossa olemaa muistia ei pudoteta tässä vaiheessa, koska sen viittauslaskuri on 1, ei 0. Sitten Rust pudottaa <code>a</code>:n, mikä vähentää <code>a</code>-<code>Rc&lt;List&gt;</code>-instanssin viittauslaskuria myös 2:sta 1:een. Tämän instanssin muistia ei myöskään voida pudottaa, koska toinen <code>Rc&lt;List&gt;</code>-instanssi viittaa siihen edelleen. Listalle varattu muisti pysyy keräämättömänä ikuisesti. Visualisoidaksemme tämän viittauskierron, olemme luoneet kaavion Kuvassa 15-4.</p>
+<img alt="Reference cycle of lists" src="img/trpl15-04.svg" class="center" />
+<p><span class="caption">Kuva 15-4: Viittauskierto listoista <code>a</code> ja <code>b</code>, jotka osoittavat toisiinsa</span></p>
+<p>Jos poistat kommentoinnin viimeisestä <code>println!</code>-lauseesta ja suoritat ohjelman, Rust yrittää tulostaa tämän kierron <code>a</code>:n osoittaessa <code>b</code>:hen, joka osoittaa <code>a</code>:han, ja niin edelleen, kunnes se ylivuotaa pinon.</p>
+<p>Verrattuna tosielämän ohjelmaan, viittauskierron luomisen seuraukset tässä esimerkissä eivät ole kovin vakavat: heti kierron luomisen jälkeen ohjelma päättyy. Jos kuitenkin monimutkaisempi ohjelma varaisi paljon muistia kiertoon ja pitäisi sitä hallussaan pitkään, ohjelma käyttäisi enemmän muistia kuin tarvitsisi ja saattaisi ylikuormittaa järjestelmän, jolloin käytettävissä oleva muisti loppuisi.</p>
+<p>Viittauskiertojen luominen ei ole helppoa, mutta se ei ole mahdotonta. Jos sinulla on <code>RefCell&lt;T&gt;</code>-arvoja, jotka sisältävät <code>Rc&lt;T&gt;</code>-arvoja tai vastaavia sisäkkäisiä yhdistelmiä tyypeistä, joilla on sisäinen mutabiliteetti ja viittauslaskenta, sinun täytyy varmistaa, ettei luoda kiertoja; et voi luottaa Rustin havaitsevan niitä. Viittauskierron luominen olisi looginen virhe ohjelmassasi, jota sinun pitäisi minimoida automatisoituilla testeillä, koodikatselmoinneilla ja muilla ohjelmistokehityskäytännöillä.</p>
+<p>Toinen ratkaisu viittauskiertojen välttämiseksi on järjestää tietorakenteet uudelleen niin, että jotkin viittaukset ilmaisevat omistajuutta ja jotkin eivät. Näin voit olla kiertoja, jotka koostuvat joistakin omistussuhteista ja joistakin ei-omistussuhteista, ja vain omistussuhteet vaikuttavat siihen, voidaanko arvo pudottaa. Listauksessa 15-25 haluamme aina, että <code>Cons</code>-variantit omistavat listansa, joten tietorakenteen uudelleenjärjestely ei ole mahdollista. Katsotaan esimerkkiä, jossa käytetään graafeja, jotka koostuvat vanhempisolmuista ja lapsisolmuista, nähdäksemme, milloin ei-omistussuhteet ovat sopiva tapa estää viittauskiertoja.</p>
+<h3 id="viittauskiertojen-estäminen-rctn-muuttaminen-weaktksi"><a class="header" href="#viittauskiertojen-estäminen-rctn-muuttaminen-weaktksi">Viittauskiertojen estäminen: <code>Rc&lt;T&gt;</code>:n muuttaminen <code>Weak&lt;T&gt;</code>:ksi</a></h3>
+<p>Tähän mennessä olemme osoittaneet, että <code>Rc::clone</code>-kutsu kasvattaa <code>Rc&lt;T&gt;</code>-instanssin <code>strong_count</code>-arvoa, ja <code>Rc&lt;T&gt;</code>-instanssi siivotaan vain, jos sen <code>strong_count</code> on 0. Voit myös luoda <em>heikon viittauksen</em> <code>Rc&lt;T&gt;</code>-instanssin sisällä olevaan arvoon kutsumalla <code>Rc::downgrade</code> ja välittämällä viittauksen <code>Rc&lt;T&gt;</code>-arvoon. <em>Vahvat viittaukset</em> ovat tapa, jolla voit jakaa <code>Rc&lt;T&gt;</code>-instanssin omistajuutta. <em>Heikot viittaukset</em> eivät ilmaise omistussuhdetta, eikä niiden laskuri vaikuta siihen, milloin <code>Rc&lt;T&gt;</code>-instanssi siivotaan. Ne eivät aiheuta viittauskiertoa, koska mikä tahansa kierto, johon liittyy heikkoja viittauksia, katkeaa, kun mukana olevien arvojen vahvan viittauksen laskuri on 0.</p>
+<p>Kun kutsut <code>Rc::downgrade</code>, saat älykkään osoittimen tyypillä <code>Weak&lt;T&gt;</code>. Sen sijaan, että <code>Rc::downgrade</code>-kutsu kasvattaisi <code>Rc&lt;T&gt;</code>-instanssin <code>strong_count</code>-arvoa yhdellä, se kasvattaa <code>weak_count</code>-arvoa yhdellä. <code>Rc&lt;T&gt;</code>-tyyppi käyttää <code>weak_count</code>-arvoa seuratakseen, kuinka monta <code>Weak&lt;T&gt;</code>-viittausta on olemassa, samalla tavalla kuin <code>strong_count</code>. Ero on, että <code>weak_count</code>-arvon ei tarvitse olla 0, jotta <code>Rc&lt;T&gt;</code>-instanssi siivottaisiin.</p>
+<p>Koska arvo, johon <code>Weak&lt;T&gt;</code> viittaa, on saatettu pudottaa, tehdäksesi mitään <code>Weak&lt;T&gt;</code>:n osoittaman arvon kanssa, sinun täytyy varmistaa, että arvo on edelleen olemassa. Tee tämä kutsumalla <code>upgrade</code>-metodia <code>Weak&lt;T&gt;</code>-instanssilla, joka palauttaa <code>Option&lt;Rc&lt;T&gt;&gt;</code>:n. Saat <code>Some</code>-tuloksen, jos <code>Rc&lt;T&gt;</code>-arvoa ei ole vielä pudotettu, ja <code>None</code>-tuloksen, jos <code>Rc&lt;T&gt;</code>-arvo on pudotettu. Koska <code>upgrade</code> palauttaa <code>Option&lt;Rc&lt;T&gt;&gt;</code>:n, Rust varmistaa, että <code>Some</code>- ja <code>None</code>-tapaukset käsitellään, eikä virheellistä osoitinta ole.</p>
+<p>Esimerkkinä sen sijaan, että käyttäisimme listaa, jonka kohteet tietävät vain seuraavasta kohteesta, luomme puun, jonka kohteet tietävät lapsikohteistaan <em>ja</em> vanhemmistaan.</p>
+<h4 id="puutietorakenteen-luominen-node-lapsisolmuineen"><a class="header" href="#puutietorakenteen-luominen-node-lapsisolmuineen">Puutietorakenteen luominen: <code>Node</code> lapsisolmuineen</a></h4>
+<p>Aloittaaksemme rakennamme puun solmuineen, jotka tietävät lapsisolmuistaan. Luomme rakenteen nimeltä <code>Node</code>, joka pitää omaa <code>i32</code>-arvoaan sekä viittauksia lapsi-<code>Node</code>-arvoihinsa:</p>
+<p><span class="filename">Tiedostonimi: src/main.rs</span></p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch15-smart-pointers/listing-15-27/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<p>Haluamme, että <code>Node</code> omistaa lapsensa, ja haluamme jakaa tämän omistajuuden muuttujien kanssa, jotta voimme käyttää jokaista <code>Node</code>-arvoa puussa suoraan. Tehdäksemme tämän, määrittelemme <code>Vec&lt;T&gt;</code>-kohteet olemaan tyyppiä <code>Rc&lt;Node&gt;</code>. Haluamme myös muokata, mitkä solmut ovat toisen solmun lapsia, joten meillä on <code>RefCell&lt;T&gt;</code> <code>children</code>-kentässä <code>Vec&lt;Rc&lt;Node&gt;&gt;</code>-arvon ympärillä.</p>
+<p>Seuraavaksi käytämme rakennemäärittelyämme ja luomme yhden <code>Node</code>-instanssin nimeltä <code>leaf</code> arvolla 3 ilman lapsia, ja toisen instanssin nimeltä <code>branch</code> arvolla 5 ja <code>leaf</code> yhtenä lapsenaan, kuten Listauksessa 15-27 on esitetty:</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch15-smart-pointers/listing-15-27/src/main.rs:there}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 15-27: <code>leaf</code>-solmun luominen ilman lapsia ja <code>branch</code>-solmun luominen, jolla <code>leaf</code> on yksi lapsistaan</figcaption>
+</figure>
+<p>Kloonaamme <code>Rc&lt;Node&gt;</code>-arvon <code>leaf</code>:ssa ja tallennamme sen <code>branch</code>:iin, mikä tarkoittaa, että <code>Node</code>-arvolla <code>leaf</code>:ssa on nyt kaksi omistajaa: <code>leaf</code> ja <code>branch</code>. Voimme päästä <code>leaf</code>:iin <code>branch</code>:n kautta <code>branch.children</code>-kentän avulla, mutta ei ole tapaa päästä <code>branch</code>:iin <code>leaf</code>:stä. Syy on, että <code>leaf</code>:llä ei ole viittausta <code>branch</code>:iin, eikä se tiedä, että ne liittyvät toisiinsa. Haluamme, että <code>leaf</code> tietää <code>branch</code>:n olevan sen vanhempi. Teemme sen seuraavaksi.</p>
+<h4 id="viittauksen-lisääminen-lapsesta-vanhempaan"><a class="header" href="#viittauksen-lisääminen-lapsesta-vanhempaan">Viittauksen lisääminen lapsesta vanhempaan</a></h4>
+<p>Jotta lapsisolmu tietäisi vanhemmastaan, meidän täytyy lisätä <code>parent</code>-kenttä <code>Node</code>-rakennemäärittelyymme. Ongelma on päättää, mikä <code>parent</code>-kentän tyypin pitäisi olla. Tiedämme, ettei se voi sisältää <code>Rc&lt;T&gt;</code>:tä, koska se loisi viittauskierron <code>leaf.parent</code>:n osoittaessa <code>branch</code>:iin ja <code>branch.children</code>:n osoittaessa <code>leaf</code>:iin, mikä aiheuttaisi niiden <code>strong_count</code>-arvojen olevan ikuisesti eri kuin 0.</p>
+<p>Ajatellen suhteita toisella tavalla, vanhempisolmun pitäisi omistaa lapsensa: jos vanhempisolmu pudotetaan, sen lapsisolmut pitäisi pudottaa myös. Lapsen ei kuitenkaan pitäisi omistaa vanhempaansa: jos pudotamme lapsisolmun, vanhemman pitäisi silti olla olemassa. Tämä on tapaus heikoille viittauksille!</p>
+<p>Sen sijaan, että käyttäisimme <code>Rc&lt;T&gt;</code>:tä, teemme <code>parent</code>-kentän tyypiksi <code>Weak&lt;T&gt;</code>, tarkemmin <code>RefCell&lt;Weak&lt;Node&gt;&gt;</code>. Nyt <code>Node</code>-rakennemäärittelymme näyttää tältä:</p>
+<p><span class="filename">Tiedostonimi: src/main.rs</span></p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch15-smart-pointers/listing-15-28/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<p>Solmu voi viitata vanhempisolmuunsa, mutta se ei omista vanhempaansa. Listauksessa 15-28 päivitämme <code>main</code>-funktion käyttämään tätä uutta määrittelyä, jotta <code>leaf</code>-solmulla on tapa viitata vanhempaansa, <code>branch</code>:iin:</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch15-smart-pointers/listing-15-28/src/main.rs:there}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 15-28: <code>leaf</code>-solmu heikolla viittauksella vanhempisolmuunsa <code>branch</code></figcaption>
+</figure>
+<p><code>leaf</code>-solmun luominen näyttää samalta kuin Listauksessa 15-27, paitsi <code>parent</code>-kentän osalta: <code>leaf</code>:lla ei ole aluksi vanhempaa, joten luomme uuden tyhjän <code>Weak&lt;Node&gt;</code>-viittausinstanssin.</p>
+<p>Tässä vaiheessa, kun yritämme saada viittauksen <code>leaf</code>:n vanhempaan <code>upgrade</code>-metodilla, saamme <code>None</code>-arvon. Näemme tämän ensimmäisen <code>println!</code>-lauseen tulosteesta:</p>
+<pre><code class="language-text">leaf parent = None
+</code></pre>
+<p>Kun luomme <code>branch</code>-solmun, sillä on myös uusi <code>Weak&lt;Node&gt;</code>-viittaus <code>parent</code>-kentässä, koska <code>branch</code>:lla ei ole vanhempisolmua. Meillä on edelleen <code>leaf</code> yhtenä <code>branch</code>:n lapsista. Kun meillä on <code>Node</code>-instanssi <code>branch</code>:ssa, voimme muokata <code>leaf</code>:tä antamaan sille <code>Weak&lt;Node&gt;</code>-viittauksen vanhempaansa. Käytämme <code>borrow_mut</code>-metodia <code>RefCell&lt;Weak&lt;Node&gt;&gt;</code>-arvolla <code>leaf</code>:n <code>parent</code>-kentässä, ja käytämme sitten <code>Rc::downgrade</code>-funktiota luodaksemme <code>Weak&lt;Node&gt;</code>-viittauksen <code>branch</code>:iin <code>Rc&lt;Node&gt;</code>-arvosta <code>branch</code>:ssa.</p>
+<p>Kun tulostamme <code>leaf</code>:n vanhemman uudelleen, tällä kertaa saamme <code>Some</code>-variantin, joka pitää <code>branch</code>:ia: nyt <code>leaf</code> voi käyttää vanhempaansa! Kun tulostamme <code>leaf</code>:n, vältämme myös kierron, joka lopulta päättyi pinon ylivuotoon kuten Listauksessa 15-26; <code>Weak&lt;Node&gt;</code>-viittaukset tulostetaan muodossa <code>(Weak)</code>:</p>
+<pre><code class="language-text">leaf parent = Some(Node { value: 5, parent: RefCell { value: (Weak) },
+children: RefCell { value: [Node { value: 3, parent: RefCell { value: (Weak) },
+children: RefCell { value: [] } }] } })
+</code></pre>
+<p>Äärettömän tulosteen puute osoittaa, että tämä koodi ei luonut viittauskiertoa. Voimme myös päätellä tämän katsomalla arvoja, jotka saamme kutsumalla <code>Rc::strong_count</code> ja <code>Rc::weak_count</code>.</p>
+<h4 id="strong_count--ja-weak_count-arvojen-muutosten-visualisointi"><a class="header" href="#strong_count--ja-weak_count-arvojen-muutosten-visualisointi"><code>strong_count</code>- ja <code>weak_count</code>-arvojen muutosten visualisointi</a></h4>
+<p>Katsotaan, miten <code>Rc&lt;Node&gt;</code>-instanssien <code>strong_count</code>- ja <code>weak_count</code>-arvot muuttuvat luomalla uuden sisäisen näkyvyysalueen ja siirtämällä <code>branch</code>:n luominen kyseiseen näkyvyysalueeseen. Näin voimme nähdä, mitä tapahtuu, kun <code>branch</code> luodaan ja sitten pudotetaan, kun se poistuu näkyvyysalueelta. Muutokset on esitetty Listauksessa 15-29:</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch15-smart-pointers/listing-15-29/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 15-29: <code>branch</code>:n luominen sisäisessä näkyvyysalueessa ja vahvojen ja heikkojen viittauslaskureiden tarkastelu</figcaption>
+</figure>
+<p><code>leaf</code>:n luomisen jälkeen sen <code>Rc&lt;Node&gt;</code>:lla on vahva laskuri 1 ja heikko laskuri 0. Sisäisessä näkyvyysalueessa luomme <code>branch</code>:in ja yhdistämme sen <code>leaf</code>:iin, jolloin kun tulostamme laskurit, <code>branch</code>:n <code>Rc&lt;Node&gt;</code>:lla on vahva laskuri 1 ja heikko laskuri 1 (<code>leaf.parent</code>:n osoittaessa <code>branch</code>:iin <code>Weak&lt;Node&gt;</code>-viittauksella). Kun tulostamme laskurit <code>leaf</code>:ssä, sillä on vahva laskuri 2, koska <code>branch</code>:lla on nyt klooni <code>leaf</code>:n <code>Rc&lt;Node&gt;</code>-arvosta tallennettuna <code>branch.children</code>:iin, mutta heikko laskuri on edelleen 0.</p>
+<p>Kun sisäinen näkyvyysalue päättyy, <code>branch</code> poistuu näkyvyysalueelta ja <code>Rc&lt;Node&gt;</code>:n vahva laskuri laskee 0:aan, joten sen <code>Node</code> pudotetaan. Heikko laskuri 1 <code>leaf.parent</code>:sta ei vaikuta siihen, pudotetaanko <code>Node</code> vai ei, joten emme saa muistivuotoja!</p>
+<p>Jos yritämme käyttää <code>leaf</code>:n vanhempaa näkyvyysalueen päättymisen jälkeen, saamme <code>None</code>:n uudelleen. Ohjelman lopussa <code>leaf</code>:n <code>Rc&lt;Node&gt;</code>:lla on vahva laskuri 1 ja heikko laskuri 0, koska muuttuja <code>leaf</code> on nyt ainoa viittaus <code>Rc&lt;Node&gt;</code>-arvoon.</p>
+<p>Kaikki laskureiden hallintaan ja arvojen pudottamiseen liittyvä logiikka on sisäänrakennettu <code>Rc&lt;T&gt;</code>:ään ja <code>Weak&lt;T&gt;</code>:ään ja niiden <code>Drop</code>-traitin toteutuksiin. Määrittämällä, että lapsen suhteen vanhempaansa pitäisi olla <code>Weak&lt;T&gt;</code>-viittaus <code>Node</code>-määrittelyssä, voit saada vanhempisolmut osoittamaan lapsisolmuihin ja päinvastoin luomatta viittauskiertoa ja muistivuotoja.</p>
+<h2 id="yhteenveto"><a class="header" href="#yhteenveto">Yhteenveto</a></h2>
+<p>Tämä luku käsitteli älykkäiden osoittimien käyttöä erilaisten takuujen ja kompromissien tekemiseksi verrattuna niihin, joita Rust tekee oletuksena tavallisilla viittauksilla. <code>Box&lt;T&gt;</code>-tyypillä on tunnettu koko, ja se osoittaa keossa varattuun dataan. <code>Rc&lt;T&gt;</code>-tyyppi seuraa viittausten määrää keossa olevaan dataan, jotta datalla voi olla useita omistajia. <code>RefCell&lt;T&gt;</code>-tyyppi sisäisellä mutabiliteetillaan antaa meille tyypin, jota voimme käyttää, kun tarvitsemme muuttumattoman tyypin mutta meidän täytyy muuttaa sen sisäistä arvoa; se myös pakottaa lainaussäännöt ajonaikana käännösaikan sijaan.</p>
+<p>Käsittelimme myös <code>Deref</code>- ja <code>Drop</code>-traitteja, jotka mahdollistavat suuren osan älykkäiden osoittimien toiminnallisuudesta. Tutkimme viittauskiertoja, jotka voivat aiheuttaa muistivuotoja, ja miten ne estetään käyttämällä <code>Weak&lt;T&gt;</code>:tä.</p>
+<p>Jos tämä luku on herättänyt kiinnostuksesi ja haluat toteuttaa omat älykkäät osoittimesi, tutustu <a href="../nomicon/index.html">”The Rustonomicon”</a> -teokseen saadaksesi lisää hyödyllistä tietoa.</p>
+<p>Seuraavaksi puhumme rinnakkaisuudesta Rustissa. Opit jopa muutamasta uudesta älykkäästä osoittimesta.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="ch15-05-interior-mutability.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="ch16-00-concurrency.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="ch15-05-interior-mutability.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="ch16-00-concurrency.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="ferris.js"></script>
+
+
+    </div>
+    </body>
+</html>

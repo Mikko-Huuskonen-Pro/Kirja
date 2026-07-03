@@ -1,0 +1,476 @@
+<!DOCTYPE HTML>
+<html lang="fi" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Yksisäikeisen palvelimen muuttaminen monisäikeiseksi palvelimeksi - Rust-ohjelmointikieli</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="ferris.css">
+        <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rust-ohjelmointikieli</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/rust-lang/book" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2 id="yksisäikeisen-palvelimen-muuttaminen-monisäikeiseksi-palvelimeksi"><a class="header" href="#yksisäikeisen-palvelimen-muuttaminen-monisäikeiseksi-palvelimeksi">Yksisäikeisen palvelimen muuttaminen monisäikeiseksi palvelimeksi</a></h2>
+<p>Tällä hetkellä palvelin käsittelee jokaisen pyynnön vuorotellen, eli se ei käsittele toista yhteyttä ennen kuin ensimmäinen on käsitelty loppuun. Jos palvelin saisi yhä enemmän pyyntöjä, tämä peräkkäinen suoritus olisi yhä vähemmän optimaalinen. Jos palvelin saa pyynnön, jonka käsittely kestää kauan, myöhempien pyyntöjen täytyy odottaa, kunnes pitkä pyyntö on valmis — vaikka uudet pyynnöt voisi käsitellä nopeasti. Meidän täytyy korjata tämä, mutta ensin katsomme ongelmaa käytännössä.</p>
+<h3 id="hitaan-pyynnön-simulointi-nykyisessä-palvelintoteutuksessa"><a class="header" href="#hitaan-pyynnön-simulointi-nykyisessä-palvelintoteutuksessa">Hitaan pyynnön simulointi nykyisessä palvelintoteutuksessa</a></h3>
+<p>Katsomme, miten hitaasti käsiteltävä pyyntö voi vaikuttaa muihin pyyntöihin, joita tehdään nykyiseen palvelintoteutukseemme. Listausta 21-10 toteuttaa pyynnön käsittelyn polulle <em>/sleep</em> simuloidulla hitaalla vastauksella, joka saa palvelimen nukkumaan viisi sekuntia ennen vastaamista.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust no_run edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch21-web-server/listing-21-10/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 21-10: Hitaan pyynnön simulointi nukkumalla 5 sekuntia</figcaption>
+</figure>
+<p>Vaihdoimme <code>if</code>-lausekkeesta <code>match</code>-lausekkeeseen, koska meillä on nyt kolme tapausta. Meidän täytyy eksplisiittisesti matchata <code>request_line</code>-viipaletta vasten merkkijonoliteraaliarvoja; <code>match</code> ei tee automaattista viittaamista ja käänteisviittaamista kuten yhtäsuuruusmetodi.</p>
+<p>Ensimmäinen haara on sama kuin <code>if</code>-lohko listauksessa 21-9. Toinen haara matchaa pyynnön polulle <em>/sleep</em>. Kun tällainen pyyntö vastaanotetaan, palvelin nukkuu viisi sekuntia ennen onnistuneen HTML-sivun renderöintiä. Kolmas haara on sama kuin <code>else</code>-lohko listauksessa 21-9.</p>
+<p>Näet, kuinka primitiivinen palvelimemme on: oikeat kirjastot käsittelisivät useiden pyyntöjen tunnistamisen paljon vähemmällä sanamäärällä!</p>
+<p>Käynnistä palvelin komennolla <code>cargo run</code>. Avaa sitten kaksi selainikkunaa: toinen osoitteeseen <em>http://127.0.0.1:7878/</em> ja toinen osoitteeseen <em>http://127.0.0.1:7878/sleep</em>. Jos syötät <em>/</em>-URI:n muutaman kerran kuten aiemmin, näet sen vastaavan nopeasti. Mutta jos syötät <em>/sleep</em> ja lataat sitten <em>/</em>, näet että <em>/</em> odottaa, kunnes <code>sleep</code> on nukkunut koko viisi sekuntiaan ennen latautumista.</p>
+<p>On useita tekniikoita, joilla voisimme välttää pyyntöjen jonoutumisen hitaan pyynnön taakse, mukaan lukien asyncin käyttö kuten teimme luvussa 17; toteutamme säikeiden poolin.</p>
+<h3 id="suorituskyvyn-parantaminen-säikeiden-poolilla"><a class="header" href="#suorituskyvyn-parantaminen-säikeiden-poolilla">Suorituskyvyn parantaminen säikeiden poolilla</a></h3>
+<p><em>Säikeiden pooli</em> on joukko luotuja säikeitä, jotka odottavat ja ovat valmiita käsittelemään tehtävän. Kun ohjelma vastaanottaa uuden tehtävän, se osoittaa yhden poolin säikeistä tehtävään, ja kyseinen säie käsittelee tehtävän. Poolin jäljellä olevat säikeet ovat käytettävissä käsittelemään muita saapuvia tehtäviä, kun ensimmäinen säie käsittelee. Kun ensimmäinen säie on käsitellyt tehtävänsä, se palautetaan joutilaan säikeiden pooliin, valmiina käsittelemään uuden tehtävän. Säikeiden pooli mahdollistaa yhteyksien käsittelyn rinnakkain ja kasvattaa palvelimen suorituskykyä.</p>
+<p>Rajoitamme säikeiden määrän poolissa pieneksi suojautuaksemme DoS-hyökkäyksiltä; jos ohjelma loisi uuden säikeen jokaiselle saapuvalle pyynnölle, joku, joka tekisi 10 miljoonaa pyyntöä palvelimellemme, voisi aiheuttaa kaaosta käyttämällä kaikki palvelimen resurssit ja pysäyttämällä pyyntöjen käsittelyn.</p>
+<p>Sen sijaan, että loisimme rajattomasti säikeitä, pidämme kiinteän määrän säikeitä odottamassa poolissa. Saapuvat pyynnöt lähetetään pooliin käsiteltäväksi. Pooli ylläpitää jonoa saapuvista pyynnöistä. Jokainen poolin säikeistä poimii pyynnön tästä jonosta, käsittelee pyynnön ja pyytää sitten jonosta seuraavan pyynnön. Tällä suunnittelulla voimme käsitellä jopa <em><code>N</code></em> pyyntöä rinnakkain, missä <em><code>N</code></em> on säikeiden määrä. Jos jokainen säie vastaa pitkään kestävään pyyntöön, myöhemmät pyynnöt voivat silti jonoutua, mutta olemme kasvattaneet pitkään kestävien pyyntöjen määrää, jonka voimme käsitellä ennen kuin saavutamme tuon pisteen.</p>
+<p>Tämä tekniikka on vain yksi monista tavoista parantaa verkkopalvelimen suorituskykyä. Muita vaihtoehtoja, joita voit tutkia, ovat fork/join-malli, yksisäikeinen async I/O -malli ja monisäikeinen async I/O -malli. Jos aihe kiinnostaa, voit lukea lisää muista ratkaisuista ja yrittää toteuttaa niitä; matalan tason kielellä kuten Rust kaikki nämä vaihtoehdot ovat mahdollisia.</p>
+<p>Ennen kuin alamme toteuttaa säikeiden poolia, puhutaan siitä, miltä poolin käyttö näyttää. Kun suunnittelet koodia, asiakasrajapinnan kirjoittaminen ensin voi ohjata suunnitteluasi. Kirjoita koodin API niin, että se on rakenteeltaan sellainen, jolla haluat kutsua sitä; toteuta sitten toiminnallisuus tuon rakenteen sisällä sen sijaan, että toteuttaisit toiminnallisuuden ja suunnittelisit julkisen API:n jälkikäteen.</p>
+<p>Samoin kuin käytimme testivetoista kehitystä luvun 12 projektissa, käytämme tässä kääntäjävetoista kehitystä. Kirjoitamme koodin, joka kutsuu haluamiamme funktioita, ja katsomme sitten kääntäjän virheitä selvittääksemme, mitä meidän pitää muuttaa seuraavaksi, jotta koodi toimii. Ennen sitä kuitenkin tutkimme tekniikan, jota emme aio käyttää lähtökohtana.</p>
+<!-- Old headings. Do not remove or links may break. -->
+<p><a id="code-structure-if-we-could-spawn-a-thread-for-each-request"></a></p>
+<h4 id="säikeen-luominen-jokaiselle-pyynnölle"><a class="header" href="#säikeen-luominen-jokaiselle-pyynnölle">Säikeen luominen jokaiselle pyynnölle</a></h4>
+<p>Tutkitaan ensin, miltä koodimme näyttäisi, jos se loisi uuden säikeen jokaiselle yhteydelle. Kuten aiemmin mainittiin, tämä ei ole lopullinen suunnitelmamme mahdollisesti rajattoman määrän säikeiden luomisen ongelmien vuoksi, mutta se on lähtökohta toimivan monisäikeisen palvelimen saamiseksi ensin. Lisäämme sitten säikeiden poolin parannuksena, ja kahden ratkaisun vertailu on helpompaa. Listausta 21-11 näyttää muutokset <code>main</code>-funktioon luodaksemme uuden säikeen käsittelemään jokaista streamia <code>for</code>-silmukan sisällä.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust no_run edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch21-web-server/listing-21-11/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 21-11: Uuden säikeen luominen jokaiselle streamille</figcaption>
+</figure>
+<p>Kuten opit luvussa 16, <code>thread::spawn</code> luo uuden säikeen ja suorittaa sitten sulkeuman koodin uudessa säikeessä. Jos suoritat tämän koodin ja lataat <em>/sleep</em> selaimessasi ja sitten <em>/</em> kahdessa muussa selainvälilehdessä, näet todellakin, etteivät <em>/</em>-pyynnöt joudu odottamaan <em>/sleep</em>-pyynnön valmistumista. Kuten mainitsimme, tämä kuitenkin lopulta ylikuormittaa järjestelmän, koska loisit uusia säikeitä ilman mitään rajaa.</p>
+<p>Saatat myös muistaa luvusta 17, että tämä on juuri sellainen tilanne, jossa async ja await todella loistavat! Pidä tämä mielessä, kun rakennamme säikeiden poolia, ja mieti, miltä asiat näyttäisivät erilaisilta tai samankaltaisilta asyncin kanssa.</p>
+<!-- Old headings. Do not remove or links may break. -->
+<p><a id="creating-a-similar-interface-for-a-finite-number-of-threads"></a></p>
+<h4 id="rajallisen-määrän-säikeitä-luovan-rajapinnan-luominen"><a class="header" href="#rajallisen-määrän-säikeitä-luovan-rajapinnan-luominen">Rajallisen määrän säikeitä luovan rajapinnan luominen</a></h4>
+<p>Haluamme säikeiden poolimme toimivan samankaltaisella, tutulla tavalla, jotta vaihtaminen säikeistä säikeiden pooliin ei vaadi suuria muutoksia API:tamme käyttävään koodiin. Listausta 21-12 näyttää hypoteettisen rajapinnan <code>ThreadPool</code>-rakenteelle, jota haluamme käyttää <code>thread::spawn</code>-funktion sijaan.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch21-web-server/listing-21-12/src/main.rs:here}}</code></pre>
+<figcaption>Listing 21-12: Ihanteellinen <code>ThreadPool</code>-rajapintamme</figcaption>
+</figure>
+<p>Käytämme <code>ThreadPool::new</code>-funktiota luodaksemme uuden säikeiden poolin konfiguroitavalla määrällä säikeitä — tässä tapauksessa neljä. Sitten <code>for</code>-silmukassa <code>pool.execute</code>-funktiolla on samankaltainen rajapinta kuin <code>thread::spawn</code>-funktiolla: se ottaa sulkeuman, jonka poolin pitäisi suorittaa jokaiselle streamille. Meidän täytyy toteuttaa <code>pool.execute</code> niin, että se ottaa sulkeuman ja antaa sen poolin säikeelle suoritettavaksi. Tämä koodi ei vielä käänny, mutta yritämme, jotta kääntäjä voi ohjata meitä korjaamaan sen.</p>
+<!-- Old headings. Do not remove or links may break. -->
+<p><a id="building-the-threadpool-struct-using-compiler-driven-development"></a></p>
+<h4 id="threadpool-rakenteen-rakentaminen-kääntäjävetoisella-kehityksellä"><a class="header" href="#threadpool-rakenteen-rakentaminen-kääntäjävetoisella-kehityksellä"><code>ThreadPool</code>-rakenteen rakentaminen kääntäjävetoisella kehityksellä</a></h4>
+<p>Tee listauksen 21-12 muutokset tiedostoon <em>src/main.rs</em>, ja käytetään sitten <code>cargo check</code>-komennon kääntäjävirheitä kehityksen ohjaamiseen. Tässä on ensimmäinen virhe, jonka saamme:</p>
+<pre><code class="language-console">{{#include ../listings/ch21-web-server/listing-21-12/output.txt}}
+</code></pre>
+<p>Hienoa! Tämä virhe kertoo, että tarvitsemme <code>ThreadPool</code>-tyypin tai -moduulin, joten rakennamme sellaisen nyt. <code>ThreadPool</code>-toteutuksemme on riippumaton siitä, millaista työtä verkkopalvelimemme tekee. Vaihdetaan siis <code>hello</code>-crate binaaricratesta kirjastocrateksi säilyttääksemme <code>ThreadPool</code>-toteutuksemme. Kun vaihdamme kirjastocrateksi, voimme myös käyttää erillistä säikeiden poolin kirjastoa mihin tahansa työhön, jossa haluamme käyttää säikeiden poolia — ei vain verkkopyyntöjen palvelemiseen.</p>
+<p>Luo tiedosto <em>src/lib.rs</em>, joka sisältää seuraavan — yksinkertaisimman <code>ThreadPool</code>-rakenteen määrittelyn, jonka voimme toistaiseksi tehdä:</p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
+<pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch21-web-server/no-listing-01-define-threadpool-struct/src/lib.rs}}</code></pre>
+</figure>
+<p>Muokkaa sitten tiedostoa <em>main.rs</em> tuomalla <code>ThreadPool</code> näkyviin kirjastocratesta lisäämällä seuraava koodi tiedoston <em>src/main.rs</em> alkuun:</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch21-web-server/no-listing-01-define-threadpool-struct/src/main.rs:here}}</code></pre>
+</figure>
+<p>Tämä koodi ei vieläkään toimi, mutta tarkistetaan se uudelleen saadaksemme seuraavan korjattavan virheen:</p>
+<pre><code class="language-console">{{#include ../listings/ch21-web-server/no-listing-01-define-threadpool-struct/output.txt}}
+</code></pre>
+<p>Tämä virhe osoittaa, että seuraavaksi meidän täytyy luoda <code>ThreadPool</code>-rakenteelle assosioitu funktio nimeltä <code>new</code>. Tiedämme myös, että <code>new</code>-funktiolla täytyy olla yksi parametri, joka voi ottaa <code>4</code> argumentiksi, ja sen pitäisi palauttaa <code>ThreadPool</code>-instanssi. Toteutetaan yksinkertaisin <code>new</code>-funktio, jolla on nämä ominaisuudet:</p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
+<pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch21-web-server/no-listing-02-impl-threadpool-new/src/lib.rs}}</code></pre>
+</figure>
+<p>Valitsimme <code>usize</code>-tyypin <code>size</code>-parametrille, koska tiedämme, ettei negatiivinen säikeiden määrä ole järkevä. Tiedämme myös käyttäväämme tätä <code>4</code>:ää säikeiden kokoelman elementtien määränä, mihin <code>usize</code>-tyyppi on tarkoitettu, kuten käsiteltiin <a href="ch03-02-data-types.html#integer-types">”Kokonaislukutyypit”</a><!-- ignore --> -osiossa luvussa 3.</p>
+<p>Tarkistetaan koodi uudelleen:</p>
+<pre><code class="language-console">{{#include ../listings/ch21-web-server/no-listing-02-impl-threadpool-new/output.txt}}
+</code></pre>
+<p>Nyt virhe johtuu siitä, ettei <code>ThreadPool</code>-rakenteella ole <code>execute</code>-metodia. Muista <a href="#creating-a-finite-number-of-threads">”Rajallisen määrän säikeitä luovan rajapinnan luominen”</a><!-- ignore --> -osiosta, että päätimme säikeiden poolimme rajapinnan olevan samankaltainen kuin <code>thread::spawn</code>. Lisäksi toteutamme <code>execute</code>-funktion niin, että se ottaa annetun sulkeuman ja antaa sen poolin joutilaalle säikeelle suoritettavaksi.</p>
+<p>Määrittelemme <code>execute</code>-metodin <code>ThreadPool</code>-rakenteelle ottamaan sulkeuman parametrina. Muista <a href="ch13-01-closures.html#moving-captured-values-out-of-the-closure-and-the-fn-traits">”Kaapattujen arvojen siirtäminen sulkeumasta ja <code>Fn</code>-traitit”</a><!-- ignore --> -osio luvusta 13, jossa voimme ottaa sulkeumia parametreina kolmella eri traitilla: <code>Fn</code>, <code>FnMut</code> ja <code>FnOnce</code>. Meidän täytyy päättää, millaista sulkeumaa käytämme tässä. Tiedämme päätyvämme tekemään jotain samankaltaista kuin standardikirjaston <code>thread::spawn</code>-toteutus, joten voimme katsoa, mitä rajoja <code>thread::spawn</code>-funktion parametri on. Dokumentaatio näyttää seuraavan:</p>
+<pre><code class="language-rust ignore">pub fn spawn&lt;F, T&gt;(f: F) -&gt; JoinHandle&lt;T&gt;
+    where
+        F: FnOnce() -&gt; T,
+        F: Send + 'static,
+        T: Send + 'static,</code></pre>
+<p><code>F</code>-tyyppiparametri on se, josta olemme kiinnostuneita tässä; <code>T</code>-tyyppiparametri liittyy palautusarvoon, eikä se meitä kiinnosta. Näemme, että <code>spawn</code> käyttää <code>FnOnce</code>-traitia rajana <code>F</code>:lle. Tämä on todennäköisesti se, mitä haluamme, koska lopulta välitämme <code>execute</code>-funktioon saamamme argumentin <code>spawn</code>-funktiolle. Voimme olla varmempia siitä, että <code>FnOnce</code> on haluamamme trait, koska pyynnön käsittelevä säie suorittaa kyseisen pyynnön sulkeuman vain kerran — mikä vastaa <code>FnOnce</code>-traitin <code>Once</code>-osaa.</p>
+<p><code>F</code>-tyyppiparametrilla on myös trait-raja <code>Send</code> ja elinikäraja <code>'static</code>, jotka ovat hyödyllisiä tilanteessamme: tarvitsemme <code>Send</code>-rajan siirtääksemme sulkeuman säikeestä toiseen ja <code>'static</code>-rajan, koska emme tiedä, kuinka kauan säikeen suoritus kestää. Luodaan <code>execute</code>-metodi <code>ThreadPool</code>-rakenteelle, joka ottaa geneerisen parametrin tyypiltä <code>F</code> näillä rajoilla:</p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
+<pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch21-web-server/no-listing-03-define-execute/src/lib.rs:here}}</code></pre>
+</figure>
+<p>Käytämme edelleen <code>()</code>-merkintää <code>FnOnce</code>-traitin jälkeen, koska tämä <code>FnOnce</code> edustaa sulkeumaa, joka ei ota parametreja ja palauttaa yksikkötyypin <code>()</code>. Kuten funktiomäärittelyissä, palautustyypin voi jättää pois allekirjoituksesta, mutta vaikka meillä ei olisi parametreja, tarvitsemme silti sulkeumat.</p>
+<p>Taaskin tämä on yksinkertaisin <code>execute</code>-metodin toteutus: se ei tee mitään, mutta yritämme vain saada koodin kääntymään. Tarkistetaan se uudelleen:</p>
+<pre><code class="language-console">{{#include ../listings/ch21-web-server/no-listing-03-define-execute/output.txt}}
+</code></pre>
+<p>Se kääntyy! Mutta huomaa, että jos yrität <code>cargo run</code>-komentoa ja teet pyynnön selaimessa, näet selaimessa samat virheet, joita näimme luvun alussa. Kirjastomme ei vielä kutsu <code>execute</code>-funktiolle välitettyä sulkeumaa!</p>
+<blockquote>
+<p>Huom: Kielistä, joilla on tiukat kääntäjät kuten Haskell ja Rust, saatat kuulla sanonnan: ”jos koodi kääntyy, se toimii.” Mutta tämä sanonta ei ole yleispätevästi totta. Projektimme kääntyy, mutta se ei tee yhtään mitään! Jos rakentaisimme oikean, valmiin projektin, tämä olisi hyvä hetki alkaa kirjoittaa yksikkötestejä varmistaaksemme, että koodi kääntyy <em>ja</em> käyttäytyy haluamallamme tavalla.</p>
+</blockquote>
+<p>Mieti: mitä olisi erilaista tässä, jos ajaisimme <em>futuren</em> sulkeuman sijaan?</p>
+<h4 id="säikeiden-määrän-validointi-new-funktiossa"><a class="header" href="#säikeiden-määrän-validointi-new-funktiossa">Säikeiden määrän validointi <code>new</code>-funktiossa</a></h4>
+<p>Emme tee mitään <code>new</code>- ja <code>execute</code>-funktioiden parametreilla. Toteutetaan näiden funktioiden rungot haluamallamme käyttäytymisellä. Aloitetaan <code>new</code>-funktiosta. Aiemmin valitsimme etumerkittömän tyypin <code>size</code>-parametrille, koska pooli negatiivisella säikeiden määrällä ei ole järkevä. Pooli nollalla säikeellä ei kuitenkaan myöskään ole järkevä, vaikka nolla on täysin kelvollinen <code>usize</code>-arvo. Lisäämme koodia, joka tarkistaa, että <code>size</code> on suurempi kuin nolla, ennen kuin palautamme <code>ThreadPool</code>-instanssin, ja saamme ohjelman panikoimaan, jos se saa nollan <code>assert!</code>-makron avulla, kuten listauksessa 21-13.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
+<pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch21-web-server/listing-21-13/src/lib.rs:here}}</code></pre>
+<figcaption>Listing 21-13: <code>ThreadPool::new</code>-toteutus, joka panikoi jos <code>size</code> on nolla</figcaption>
+</figure>
+<p>Olemme myös lisänneet dokumentaatiota <code>ThreadPool</code>-rakenteellemme doc-kommenteilla. Huomaa, että noudatimme hyviä dokumentointikäytäntöjä lisäämällä osion, joka kuvaa tilanteet, joissa funktiomme voi panikoida, kuten käsiteltiin luvussa 14. Kokeile ajaa <code>cargo doc --open</code> ja napsauta <code>ThreadPool</code>-rakennetta nähdäksesi, miltä <code>new</code>-funktion generoitu dokumentaatio näyttää!</p>
+<p>Sen sijaan, että lisäisimme <code>assert!</code>-makron kuten teimme tässä, voisimme muuttaa <code>new</code>-funktion <code>build</code>-funktioksi ja palauttaa <code>Result</code>-arvon kuten teimme <code>Config::build</code>-funktiolla I/O-projektissa listauksessa 12-9. Päätimme kuitenkin tässä tapauksessa, että säikeiden poolin luominen ilman säikeitä on palautumaton virhe. Jos olet kunnianhimoinen, yritä kirjoittaa funktio nimeltä <code>build</code> seuraavalla allekirjoituksella vertailua varten <code>new</code>-funktion kanssa:</p>
+<pre><code class="language-rust ignore">pub fn build(size: usize) -&gt; Result&lt;ThreadPool, PoolCreationError&gt; {</code></pre>
+<h4 id="tilaa-säikeiden-tallentamiseen"><a class="header" href="#tilaa-säikeiden-tallentamiseen">Tilaa säikeiden tallentamiseen</a></h4>
+<p>Nyt kun meillä on tapa varmistaa, että meillä on kelvollinen määrä säikeitä tallennettavaksi pooliin, voimme luoda nämä säikeet ja tallentaa ne <code>ThreadPool</code>-rakenteeseen ennen rakenteen palauttamista. Mutta miten ”tallennetaan” säie? Katsotaan <code>thread::spawn</code>-funktion allekirjoitusta uudelleen:</p>
+<pre><code class="language-rust ignore">pub fn spawn&lt;F, T&gt;(f: F) -&gt; JoinHandle&lt;T&gt;
+    where
+        F: FnOnce() -&gt; T,
+        F: Send + 'static,
+        T: Send + 'static,</code></pre>
+<p><code>spawn</code>-funktio palauttaa <code>JoinHandle&lt;T&gt;</code>-arvon, missä <code>T</code> on sulkeuman palauttama tyyppi. Kokeillaan käyttää myös <code>JoinHandle</code>-tyyppiä ja katsotaan, mitä tapahtuu. Tapauksessamme sulkeumat, jotka välitämme säikeiden poolille, käsittelevät yhteyden eivätkä palauta mitään, joten <code>T</code> on yksikkötyyppi <code>()</code>.</p>
+<p>Listauksen 21-14 koodi kääntyy, mutta ei vielä luo säikeitä. Olemme muuttaneet <code>ThreadPool</code>-rakenteen määrittelyn sisältämään vektorin <code>thread::JoinHandle&lt;()&gt;</code>-instansseja, alustaneet vektorin kapasiteetilla <code>size</code>, asettaneet <code>for</code>-silmukan, joka suorittaa koodia säikeiden luomiseksi, ja palauttaneet <code>ThreadPool</code>-instanssin, joka sisältää ne.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
+<pre><code class="language-rust ignore not_desired_behavior">{{#rustdoc_include ../listings/ch21-web-server/listing-21-14/src/lib.rs:here}}</code></pre>
+<figcaption>Listing 21-14: Vektorin luominen <code>ThreadPool</code>-rakenteelle säikeiden säilyttämiseksi</figcaption>
+</figure>
+<p>Olemme tuoneet <code>std::thread</code>-moduulin näkyviin kirjastocratessa, koska käytämme <code>thread::JoinHandle</code>-tyyppiä <code>ThreadPool</code>-rakenteen vektorin alkioille.</p>
+<p>Kun kelvollinen koko on vastaanotettu, <code>ThreadPool</code>-rakenteemme luo uuden vektorin, joka voi sisältää <code>size</code> alkiota. <code>with_capacity</code>-funktio tekee saman tehtävän kuin <code>Vec::new</code>, mutta tärkeällä erolla: se varaa tilan vektorille etukäteen. Koska tiedämme tarvitsevamme tallentaa <code>size</code> elementtiä vektoriin, tämä varaus etukäteen on hieman tehokkaampaa kuin <code>Vec::new</code>-funktion käyttö, joka muuttaa kokoaan elementtien lisäämisen yhteydessä.</p>
+<p>Kun ajat <code>cargo check</code>-komennon uudelleen, sen pitäisi onnistua.</p>
+<h4 id="worker-rakenne-joka-vastaa-koodin-lähettämisestä-threadpool-rakenteesta-säikeelle"><a class="header" href="#worker-rakenne-joka-vastaa-koodin-lähettämisestä-threadpool-rakenteesta-säikeelle"><code>Worker</code>-rakenne, joka vastaa koodin lähettämisestä <code>ThreadPool</code>-rakenteesta säikeelle</a></h4>
+<p>Jätimme kommentin <code>for</code>-silmukkaan listauksessa 21-14 säikeiden luomiseen liittyen. Tässä katsomme, miten säikeet todella luodaan. Standardikirjasto tarjoaa <code>thread::spawn</code>-funktion säikeiden luomiseen, ja <code>thread::spawn</code> odottaa saavansa koodin, jonka säikeen pitäisi suorittaa heti säikeen luomisen jälkeen. Tapauksessamme haluamme kuitenkin luoda säikeet ja saada ne <em>odottamaan</em> koodia, jonka lähetämme myöhemmin. Standardikirjaston säikeiden toteutus ei sisällä tapaa tehdä tätä; meidän täytyy toteuttaa se manuaalisesti.</p>
+<p>Toteutamme tämän käyttäytymisen esittelemällä uuden tietorakenteen <code>ThreadPool</code>-rakenteen ja säikeiden väliin hallitsemaan tätä uutta käyttäytymistä. Kutsumme tätä tietorakennetta <em>Worker</em>-rakenteeksi, mikä on yleinen termi poolitoteutuksissa. <code>Worker</code> poimii suoritettavaa koodia ja suorittaa koodin <code>Worker</code>-rakenteen säikeessä.</p>
+<p>Ajattele ravintolan keittiössä työskenteleviä ihmisiä: työntekijät odottavat, kunnes asiakkailta tulee tilauksia, ja he ovat vastuussa näiden tilausten ottamisesta ja täyttämisestä.</p>
+<p>Sen sijaan, että tallentaisimme vektorin <code>JoinHandle&lt;()&gt;</code>-instansseja säikeiden pooliin, tallennamme <code>Worker</code>-rakenteen instansseja. Jokainen <code>Worker</code> tallentaa yhden <code>JoinHandle&lt;()&gt;</code>-instanssin. Toteutamme sitten metodin <code>Worker</code>-rakenteelle, joka ottaa suoritettavan sulkeuman ja lähettää sen jo käynnissä olevalle säikeelle suoritettavaksi. Annamme myös jokaiselle <code>Worker</code>-rakenteelle <code>id</code>-tunnisteen, jotta voimme erottaa poolin eri <code>Worker</code>-instanssit lokituksessa tai virheenkorjauksessa.</p>
+<p>Tässä on uusi prosessi, joka tapahtuu, kun luomme <code>ThreadPool</code>-rakenteen. Toteutamme koodin, joka lähettää sulkeuman säikeelle, kun olemme asettaneet <code>Worker</code>-rakenteen tällä tavalla:</p>
+<ol>
+<li>Määrittele <code>Worker</code>-rakenne, joka sisältää <code>id</code>-kentän ja <code>JoinHandle&lt;()&gt;</code>-kentän.</li>
+<li>Muuta <code>ThreadPool</code> sisältämään vektori <code>Worker</code>-instansseja.</li>
+<li>Määrittele <code>Worker::new</code>-funktio, joka ottaa <code>id</code>-numeron ja palauttaa <code>Worker</code>-instanssin, joka sisältää <code>id</code>-kentän ja säikeen, joka on luotu tyhjällä sulkeumalla.</li>
+<li><code>ThreadPool::new</code>-funktiossa käytä <code>for</code>-silmukan laskuria generoimaan <code>id</code>, luo uusi <code>Worker</code> kyseisellä <code>id</code>:llä ja tallenna worker vektoriin.</li>
+</ol>
+<p>Jos haluat haastetta, yritä toteuttaa nämä muutokset itse ennen kuin katsot listauksen 21-15 koodia.</p>
+<p>Valmis? Tässä on listausta 21-15 yhdellä tavalla tehdä edellä kuvatut muutokset.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
+<pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch21-web-server/listing-21-15/src/lib.rs:here}}</code></pre>
+<figcaption>Listing 21-15: <code>ThreadPool</code>-rakenteen muuttaminen sisältämään <code>Worker</code>-instansseja säikeiden suoran tallentamisen sijaan</figcaption>
+</figure>
+<p>Olemme muuttaneet <code>ThreadPool</code>-rakenteen kentän nimen <code>threads</code>-kentästä <code>workers</code>-kentäksi, koska se sisältää nyt <code>Worker</code>-instansseja <code>JoinHandle&lt;()&gt;</code>-instanssien sijaan. Käytämme <code>for</code>-silmukan laskuria argumenttina <code>Worker::new</code>-funktiolle ja tallennamme jokaisen uuden <code>Worker</code>-rakenteen vektoriin nimeltä <code>workers</code>.</p>
+<p>Ulkoinen koodi (kuten palvelimemme tiedostossa <em>src/main.rs</em>) ei tarvitse tietää toteutuksen yksityiskohtia <code>Worker</code>-rakenteen käytöstä <code>ThreadPool</code>-rakenteen sisällä, joten teemme <code>Worker</code>-rakenteen ja sen <code>new</code>-funktion yksityisiksi. <code>Worker::new</code>-funktio käyttää antamaamme <code>id</code>:tä ja tallentaa <code>JoinHandle&lt;()&gt;</code>-instanssin, joka on luotu luomalla uusi säie tyhjällä sulkeumalla.</p>
+<blockquote>
+<p>Huom: Jos käyttöjärjestelmä ei voi luoda säiettä, koska järjestelmäresursseja ei ole tarpeeksi, <code>thread::spawn</code> panikoi. Se saa koko palvelimemme panikoimaan, vaikka osa säikeiden luomisesta saattaisi onnistua. Yksinkertaisuuden vuoksi tämä käyttäytyminen on ok, mutta tuotantokäyttöön tarkoitetussa säikeiden poolin toteutuksessa käyttäisit todennäköisesti <a href="../std/thread/struct.Builder.html"><code>std::thread::Builder</code></a><!-- ignore --> -rakenteen ja sen <a href="../std/thread/struct.Builder.html#method.spawn"><code>spawn</code></a><!-- ignore --> -metodia, joka palauttaa <code>Result</code>-arvon.</p>
+</blockquote>
+<p>Tämä koodi kääntyy ja tallentaa määrän <code>Worker</code>-instansseja, jonka annoimme argumenttina <code>ThreadPool::new</code>-funktiolle. Mutta emme <em>vieläkään</em> käsittele sulkeumaa, jonka saamme <code>execute</code>-funktiossa. Katsotaan seuraavaksi, miten se tehdään.</p>
+<h4 id="pyyntöjen-lähettäminen-säikeille-kanavien-kautta"><a class="header" href="#pyyntöjen-lähettäminen-säikeille-kanavien-kautta">Pyyntöjen lähettäminen säikeille kanavien kautta</a></h4>
+<p>Seuraava ongelma, johon tartumme, on se, että <code>thread::spawn</code>-funktiolle annetut sulkeumat eivät tee yhtään mitään. Tällä hetkellä saamme sulkeuman, jonka haluamme suorittaa, <code>execute</code>-metodissa. Mutta meidän täytyy antaa <code>thread::spawn</code>-funktiolle sulkeuma suoritettavaksi, kun luomme jokaisen <code>Worker</code>-rakenteen <code>ThreadPool</code>-rakenteen luomisen yhteydessä.</p>
+<p>Haluamme juuri luomiemme <code>Worker</code>-rakenteiden hakevan suoritettavan koodin jonosta, jonka <code>ThreadPool</code> pitää hallussaan, ja lähettävän kyseisen koodin säikeelleen suoritettavaksi.</p>
+<p>Luvussa 16 opitut kanavat — yksinkertainen tapa kommunikoida kahden säikeen välillä — sopisivat tähän käyttötapaukseen täydellisesti. Käytämme kanavaa työjonona, ja <code>execute</code> lähettää työn <code>ThreadPool</code>-rakenteesta <code>Worker</code>-instansseille, jotka lähettävät työn säikeelleen. Tässä on suunnitelma:</p>
+<ol>
+<li><code>ThreadPool</code> luo kanavan ja pitää lähettäjän hallussaan.</li>
+<li>Jokainen <code>Worker</code> pitää vastaanottajan hallussaan.</li>
+<li>Luomme uuden <code>Job</code>-rakenteen, joka sisältää sulkeumat, jotka haluamme lähettää kanavaa pitkin.</li>
+<li><code>execute</code>-metodi lähettää suoritettavan työn lähettäjän kautta.</li>
+<li>Säikeessään <code>Worker</code> silmukoi vastaanottajansa yli ja suorittaa kaikkien vastaanottamiensa töiden sulkeumat.</li>
+</ol>
+<p>Aloitetaan luomalla kanava <code>ThreadPool::new</code>-funktiossa ja tallentamalla lähettäjä <code>ThreadPool</code>-instanssiin, kuten listauksessa 21-16. <code>Job</code>-rakenne ei toistaiseksi sisällä mitään, mutta se on tyyppi, jota lähetämme kanavaa pitkin.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
+<pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch21-web-server/listing-21-16/src/lib.rs:here}}</code></pre>
+<figcaption>Listing 21-16: <code>ThreadPool</code>-rakenteen muuttaminen tallentamaan kanavan lähettäjä, joka välittää <code>Job</code>-instansseja</figcaption>
+</figure>
+<p><code>ThreadPool::new</code>-funktiossa luomme uuden kanavan ja annamme poolin pitää lähettäjän hallussaan. Tämä kääntyy onnistuneesti.</p>
+<p>Kokeillaan välittää kanavan vastaanottaja jokaiselle <code>Worker</code>-rakenteelle, kun säikeiden pooli luo kanavan. Tiedämme haluavamme käyttää vastaanottajaa säikeessä, jonka <code>Worker</code>-instanssit luovat, joten viittaamme <code>receiver</code>-parametriin sulkeumassa. Listauksen 21-17 koodi ei vielä aivan käänny.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
+<pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch21-web-server/listing-21-17/src/lib.rs:here}}</code></pre>
+<figcaption>Listing 21-17: Vastaanottajan välittäminen jokaiselle <code>Worker</code>-rakenteelle</figcaption>
+</figure>
+<p>Olemme tehneet pieniä ja suoraviivaisia muutoksia: välitämme vastaanottajan <code>Worker::new</code>-funktiolle ja käytämme sitä sitten sulkeuman sisällä.</p>
+<p>Kun yritämme tarkistaa tämän koodin, saamme tämän virheen:</p>
+<pre><code class="language-console">{{#include ../listings/ch21-web-server/listing-21-17/output.txt}}
+</code></pre>
+<p>Koodi yrittää välittää <code>receiver</code>-arvon useille <code>Worker</code>-instansseille. Tämä ei toimi, kuten muistat luvusta 16: Rustin tarjoama kanavatoteutus on useita <em>tuottajia</em>, yksi <em>kuluttaja</em>. Tämä tarkoittaa, ettei voi vain kloonata kanavan kuluttajapäätä korjataksemme tämän koodin. Emme myöskään halua lähettää viestiä useita kertoja useille kuluttajille; haluamme yhden viestilistan useilla <code>Worker</code>-instansseilla siten, että jokainen viesti käsitellään kerran.</p>
+<p>Lisäksi työn poimiminen kanavan jonosta edellyttää <code>receiver</code>-arvon mutatoimista, joten säikeiden täytyy jakaa ja muokata <code>receiver</code>-arvoa turvallisesti; muuten saatamme saada kilpailutilanteita (kuten käsiteltiin luvussa 16).</p>
+<p>Muista luvussa 16 käsitellyt säieturvalliset älykkäät osoittimet: jakaaksemme omistajuuden useiden säikeiden välillä ja salliaksemme säikeiden mutatoida arvoa, meidän täytyy käyttää <code>Arc&lt;Mutex&lt;T&gt;&gt;</code>-rakennetta. <code>Arc</code>-tyyppi antaa useiden <code>Worker</code>-instanssien omistaa vastaanottajan, ja <code>Mutex</code> varmistaa, että vain yksi <code>Worker</code> saa työn vastaanottajalta kerrallaan. Listausta 21-18 näyttää tarvittavat muutokset.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
+<pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch21-web-server/listing-21-18/src/lib.rs:here}}</code></pre>
+<figcaption>Listing 21-18: Vastaanottajan jakaminen <code>Worker</code>-instanssien kesken <code>Arc</code>- ja <code>Mutex</code>-rakenteiden avulla</figcaption>
+</figure>
+<p><code>ThreadPool::new</code>-funktiossa laitamme vastaanottajan <code>Arc</code>- ja <code>Mutex</code>-rakenteisiin. Jokaiselle uudelle <code>Worker</code>-rakenteelle kloonaamme <code>Arc</code>-rakenteen kasvattaaksemme viittauslaskuria, jotta <code>Worker</code>-instanssit voivat jakaa vastaanottajan omistajuuden.</p>
+<p>Näillä muutoksilla koodi kääntyy! Olemme lähellä maalia!</p>
+<h4 id="execute-metodin-toteuttaminen"><a class="header" href="#execute-metodin-toteuttaminen"><code>execute</code>-metodin toteuttaminen</a></h4>
+<p>Toteutetaan vihdoin <code>execute</code>-metodi <code>ThreadPool</code>-rakenteelle. Muutamme myös <code>Job</code>-rakenteen rakenteesta tyyppialiaaksi trait-objektille, joka sisältää <code>execute</code>-funktion vastaanottaman sulkeuman tyypin. Kuten käsiteltiin <a href="ch20-03-advanced-types.html#creating-type-synonyms-with-type-aliases">”Tyyppialiaasien luominen”</a><!-- ignore --> -osiossa luvussa 20, tyyppialiaasit antavat meidän lyhentää pitkiä tyyppejä helpompaa käyttöä varten. Katso listaus 21-19.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
+<pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch21-web-server/listing-21-19/src/lib.rs:here}}</code></pre>
+<figcaption>Listing 21-19: <code>Job</code>-tyyppialiaasin luominen <code>Box</code>-rakenteelle, joka sisältää jokaisen sulkeuman, ja työn lähettäminen kanavaa pitkin</figcaption>
+</figure>
+<p>Kun olemme luoneet uuden <code>Job</code>-instanssin <code>execute</code>-funktiossa saamallamme sulkeumalla, lähetämme työn kanavan lähettäjäpäähän. Kutsumme <code>unwrap</code>-metodia <code>send</code>-funktiolle tapauksessa, jossa lähetys epäonnistuu. Tämä voi tapahtua esimerkiksi, jos pysäytämme kaikki säikeemme suorittamasta, mikä tarkoittaa, että vastaanottajapää on lopettanut uusien viestien vastaanottamisen. Tällä hetkellä emme voi pysäyttää säikeitämme suorittamasta: säikeemme jatkavat suoritusta niin kauan kuin pooli on olemassa. Käytämme <code>unwrap</code>-metodia, koska tiedämme epäonnistumistapauksen olevan mahdoton, mutta kääntäjä ei tiedä sitä.</p>
+<p>Mutta emme ole vielä valmiita! <code>Worker</code>-rakenteessa sulkeuma, joka välitetään <code>thread::spawn</code>-funktiolle, <em>viittaa</em> edelleen vain kanavan vastaanottajapäähän. Sen sijaan tarvitsemme sulkeuman, joka silmukoi ikuisesti pyytäen työtä kanavan vastaanottajapäästä ja suorittaen työn saadessaan sellaisen. Tehdään listauksessa 21-20 näytetty muutos <code>Worker::new</code>-funktioon.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
+<pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch21-web-server/listing-21-20/src/lib.rs:here}}</code></pre>
+<figcaption>Listing 21-20: Töiden vastaanottaminen ja suorittaminen <code>Worker</code>-instanssin säikeessä</figcaption>
+</figure>
+<p>Tässä kutsumme ensin <code>lock</code>-metodia <code>receiver</code>-arvolla hankkiaksemme mutexin, ja sitten kutsumme <code>unwrap</code>-metodia panikoidaksemme mahdollisista virheistä. Lukon hankkiminen voi epäonnistua, jos mutex on <em>myrkytetty</em> tilassa, mikä voi tapahtua, jos jokin toinen säie panikoi pitäessään lukkoa sen sijaan, että vapauttaisi sen. Tässä tilanteessa <code>unwrap</code>-kutsu, joka saa tämän säikeen panikoimaan, on oikea toimenpide. Voit vapaasti muuttaa tämän <code>unwrap</code>-kutsun <code>expect</code>-kutsuksi merkityksellisellä virheilmoituksella.</p>
+<p>Jos saamme lukon mutexiin, kutsumme <code>recv</code>-metodia vastaanottaaksemme <code>Job</code>-työn kanavalta. Lopullinen <code>unwrap</code>-kutsu ohittaa myös mahdolliset virheet tässä, mikä voi tapahtua, jos lähettäjää pitävä säie on sulkeutunut — samalla tavalla kuin <code>send</code>-metodi palauttaa <code>Err</code>-arvon, jos vastaanottaja sulkeutuu.</p>
+<p><code>recv</code>-kutsu blokkaa, joten jos työtä ei vielä ole, nykyinen säie odottaa, kunnes työ tulee saataville. <code>Mutex&lt;T&gt;</code> varmistaa, että vain yksi <code>Worker</code>-säie kerrallaan yrittää pyytää työtä.</p>
+<p>Säikeiden poolimme on nyt toimivassa tilassa! Aja <code>cargo run</code> ja tee muutama pyyntö:</p>
+<!-- manual-regeneration
+cd listings/ch21-web-server/listing-21-20
+cargo run
+make some requests to 127.0.0.1:7878
+Can't automate because the output depends on making requests
+-->
+<pre><code class="language-console">$ cargo run
+   Compiling hello v0.1.0 (file:///projects/hello)
+warning: field `workers` is never read
+ --&gt; src/lib.rs:7:5
+  |
+6 | pub struct ThreadPool {
+  |            ---------- field in this struct
+7 |     workers: Vec&lt;Worker&gt;,
+  |     ^^^^^^^
+  |
+  = note: `#[warn(dead_code)]` on by default
+
+warning: fields `id` and `thread` are never read
+  --&gt; src/lib.rs:48:5
+   |
+47 | struct Worker {
+   |        ------ fields in this struct
+48 |     id: usize,
+   |     ^^
+49 |     thread: thread::JoinHandle&lt;()&gt;,
+   |     ^^^^^^
+
+warning: `hello` (lib) generated 2 warnings
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 4.91s
+     Running `target/debug/hello`
+Worker 0 got a job; executing.
+Worker 2 got a job; executing.
+Worker 1 got a job; executing.
+Worker 3 got a job; executing.
+Worker 0 got a job; executing.
+Worker 2 got a job; executing.
+Worker 1 got a job; executing.
+Worker 3 got a job; executing.
+Worker 0 got a job; executing.
+Worker 2 got a job; executing.
+</code></pre>
+<p>Onnistui! Meillä on nyt säikeiden pooli, joka käsittelee yhteyksiä asynkronisesti. Enintään neljä säiettä luodaan, joten järjestelmämme ei ylikuormitu, jos palvelin saa paljon pyyntöjä. Jos teemme pyynnön polulle <em>/sleep</em>, palvelin voi palvella muita pyyntöjä antamalla toisen säikeen suorittaa ne.</p>
+<blockquote>
+<p>Huom: Jos avaat <em>/sleep</em>-polun useissa selainikkunoissa samanaikaisesti, ne saattavat latautua viiden sekunnin välein yksi kerrallaan. Jotkin verkkoselaimet suorittavat useita saman pyynnön instansseja peräkkäin välimuistisyistä. Tämä rajoitus ei johdu verkkopalvelimestamme.</p>
+</blockquote>
+<p>Tämä on hyvä hetki pysähtyä ja miettiä, miten listauksien 21-18, 21-19 ja 21-20 koodi olisi erilainen, jos käyttäisimme futureja sulkeuman sijaan tehtävänä. Mitkä tyypit muuttuisivat? Miten metodien allekirjoitukset olisivat erilaisia, jos ollenkaan? Mitkä koodin osat pysyisivät samoina?</p>
+<p>Kun olet oppinut <code>while let</code> -silmukasta luvuissa 17 ja 18, saatat ihmetellä, miksi emme kirjoittaneet worker-säikeen koodia kuten listauksessa 21-21.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
+<pre><code class="language-rust ignore not_desired_behavior">{{#rustdoc_include ../listings/ch21-web-server/listing-21-21/src/lib.rs:here}}</code></pre>
+<figcaption>Listing 21-21: Vaihtoehtoinen <code>Worker::new</code>-toteutus <code>while let</code> -silmukan avulla</figcaption>
+</figure>
+<p>Tämä koodi kääntyy ja suoritetaan, mutta ei tuota haluttua säikeiden käyttäytymistä: hidas pyyntö saa edelleen muut pyynnöt odottamaan käsittelyä. Syy on hieman hienovarainen: <code>Mutex</code>-rakenteella ei ole julkista <code>unlock</code>-metodia, koska lukon omistajuus perustuu <code>lock</code>-metodin palauttaman <code>LockResult&lt;MutexGuard&lt;T&gt;&gt;</code>-rakenteen sisällä olevan <code>MutexGuard&lt;T&gt;</code>-rakenteen elinikään. Käännösaikana lainantarkistin voi sitten pakottaa säännön, että <code>Mutex</code>-rakenteen suojaamaa resurssia ei voi käyttää, ellemme pidä lukkoa. Tämä toteutus voi kuitenkin myös johtaa siihen, että lukkoa pidetään pidempään kuin tarkoitettu, jos emme ole tietoisia <code>MutexGuard&lt;T&gt;</code>-rakenteen elinikästä.</p>
+<p>Listauksen 21-20 koodi, joka käyttää <code>let job = receiver.lock().unwrap().recv().unwrap();</code>, toimii, koska <code>let</code>-lausekkeella kaikki lausekkeen oikean puolen väliaikaiset arvot pudotetaan heti, kun <code>let</code>-lause päättyy. <code>while let</code> (ja <code>if let</code> ja <code>match</code>) eivät kuitenkaan pudota väliaikaisia arvoja ennen kuin liittyvä lohko päättyy. Listauksessa 21-21 lukko pysyy hallussa <code>job()</code>-kutsun keston ajan, mikä tarkoittaa, etteivät muut <code>Worker</code>-instanssit voi vastaanottaa töitä.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="ch21-01-single-threaded.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="ch21-03-graceful-shutdown-and-cleanup.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="ch21-01-single-threaded.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="ch21-03-graceful-shutdown-and-cleanup.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="ferris.js"></script>
+
+
+    </div>
+    </body>
+</html>

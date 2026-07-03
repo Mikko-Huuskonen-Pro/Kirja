@@ -1,0 +1,483 @@
+<!DOCTYPE HTML>
+<html lang="fi" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Miten testejä kirjoitetaan - Rust-ohjelmointikieli</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="ferris.css">
+        <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rust-ohjelmointikieli</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/rust-lang/book" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2 id="testien-kirjoittaminen"><a class="header" href="#testien-kirjoittaminen">Testien kirjoittaminen</a></h2>
+<p>Testit ovat Rust-funktioita, jotka varmistavat, että ei-testikoodi toimii odotetulla tavalla.
+Testifunktioiden rungot suorittavat tyypillisesti nämä kolme toimintoa:</p>
+<ul>
+<li>Tarvittavan datan tai tilan valmistelu.</li>
+<li>Testattavan koodin suorittaminen.</li>
+<li>Varmistus, että tulokset ovat odotetut.</li>
+</ul>
+<p>Tarkastellaan ominaisuuksia, joita Rust tarjoaa erityisesti testien kirjoittamiseen ja jotka toteuttavat nämä toiminnot,
+mukaan lukien <code>test</code>-attribuutti, muutama makro ja <code>should_panic</code>-attribuutti.</p>
+<h3 id="testifunktion-rakenne"><a class="header" href="#testifunktion-rakenne">Testifunktion rakenne</a></h3>
+<p>Yksinkertaisimmillaan testi Rustissa on funktio, joka on merkitty <code>test</code>-attribuutilla.
+Attribuutit ovat metatietoa Rust-koodin osista; yksi esimerkki on <code>derive</code>-attribuutti, jota käytimme structeissa Luvussa 5.
+Muuttaaksesi funktion testifunktioksi, lisää <code>#[test]</code> riville ennen <code>fn</code>:ää. Kun ajat testit <code>cargo test</code> -komennolla,
+Rust rakentaa testiajaminen binäärin, joka suorittaa merkityt funktiot ja raportoi, läpäiseekö kukin testifunktio vai epäonnistuuko se.</p>
+<p>Aina kun luomme uuden kirjastoprojektin Cargolla, testimoduuli testifunktiolla luodaan automaattisesti puolestamme.
+Tämä moduuli antaa mallipohjan testien kirjoittamiseen, joten sinun ei tarvitse etsiä tarkkaa rakennetta ja syntaksia
+joka kerta, kun aloitat uuden projektin. Voit lisätä niin monta lisätestifunktiota ja testimoduulia kuin haluat!</p>
+<p>Tutkimme testien toiminnan joitakin näkökohtia kokeilemalla mallipohjatestiä ennen kuin testaamme varsinaista koodia.
+Sitten kirjoitamme joitakin tosielämän testejä, jotka kutsuvat kirjoittamaamme koodia ja varmistavat sen käyttäytymisen.</p>
+<p>Luodaan uusi kirjastoprojekti nimeltä <code>adder</code>, joka laskee kaksi lukua yhteen:</p>
+<pre><code class="language-console">$ cargo new adder --lib
+     Created library `adder` project
+$ cd adder
+</code></pre>
+<p><code>adder</code>-kirjaston <em>src/lib.rs</em>-tiedoston sisällön pitäisi näyttää Listaukselta 11-1.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
+<!-- manual-regeneration
+cd listings/ch11-writing-automated-tests
+rm -rf listing-11-01
+cargo new listing-11-01 --lib --name adder
+cd listing-11-01
+echo "$ cargo test" > output.txt
+RUSTFLAGS="-A unused_variables -A dead_code" RUST_TEST_THREADS=1 cargo test >> output.txt 2>&1
+git diff output.txt # commit any relevant changes; discard irrelevant ones
+cd ../../..
+-->
+<pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch11-writing-automated-tests/listing-11-01/src/lib.rs}}</code></pre>
+<figcaption>Listing 11-1: <code>cargo new</code> -komennon automaattisesti luoma koodi</figcaption>
+</figure>
+<p>Tiedosto alkaa esimerkki-<code>add</code>-funktiolla, jotta meillä on jotain testattavaa.</p>
+<p>Keskitytään toistaiseksi pelkästään <code>it_works</code>-funktioon. Huomaa <code>#[test]</code>-annotaatio: tämä attribuutti ilmaisee,
+että kyseessä on testifunktio, joten testiajaminen tietää käsitellä tätä funktiota testinä. <code>tests</code>-moduulissa voi olla
+myös ei-testifunktioita yhteisten skenaarioiden valmisteluun tai yleisiin operaatioihin, joten meidän täytyy aina
+ilmaista, mitkä funktiot ovat testejä.</p>
+<p>Esimerkkifunktion runko käyttää <code>assert_eq!</code>-makroa varmistaakseen, että <code>result</code>, joka sisältää <code>add(2, 2)</code>-kutsun tuloksen, on yhtä suuri kuin 4.
+Tämä varmistus toimii esimerkkinä tyypillisestä testin muodosta. Ajetaan se nähdäksemme, että testi läpäisee.</p>
+<p><code>cargo test</code> -komento ajaa kaikki projektin testit, kuten Listauksessa 11-2 näytetään.</p>
+<figure class="listing">
+<pre><code class="language-console">{{#include ../listings/ch11-writing-automated-tests/listing-11-01/output.txt}}
+</code></pre>
+<figcaption>Listing 11-2: Automaattisesti luodun testin ajamisen tuloste</figcaption>
+</figure>
+<p>Cargo käänsi ja ajoi testin. Näemme rivin <code>running 1 test</code>. Seuraavalla rivillä näkyy luodun testifunktion nimi <code>tests::it_works</code>
+ja sen ajamisen tulos <code>ok</code>. Yhteenveto <code>test result: ok.</code> tarkoittaa, että kaikki testit läpäisivät, ja osio <code>1 passed; 0 failed</code>
+laskee läpäisseiden ja epäonnistuneiden testien määrän.</p>
+<p>Testin voi merkitä ohitetuksi, jolloin sitä ei ajeta tietyssä tilanteessa; käsittelemme tämän myöhemmin tässä luvussa
+<a href="ch11-02-running-tests.html#ignoring-some-tests-unless-specifically-requested">”Joidenkin testien ohittaminen, ellei niitä erikseen pyydetä”</a><!-- ignore --> -osiossa. Koska emme ole tehneet sitä tässä,
+yhteenveto näyttää <code>0 ignored</code>. Voimme myös välittää argumentin <code>cargo test</code> -komennolle ajaaaksemme vain testit,
+joiden nimi vastaa merkkijonoa; tätä kutsutaan <em>suodatukseksi</em>, ja käsittelemme sen
+<a href="ch11-02-running-tests.html#running-a-subset-of-tests-by-name">”Testien osajoukon ajaminen nimen perusteella”</a><!-- ignore --> -osiossa. Tässä emme ole suodattaneet ajettavia testejä,
+joten yhteenvedon lopussa näkyy <code>0 filtered out</code>.</p>
+<p>Tilasto <code>0 measured</code> on suorituskykytesteille, jotka mittaavat suorituskykyä. Suorituskykytestit ovat kirjoitushetkellä
+saatavilla vain yönightly-Rustissa. Katso <a href="../unstable-book/library-features/test.html">suorituskykytestien dokumentaatio</a> oppiaksesi lisää.</p>
+<p>Testitulosteen seuraava osa alkaen <code>Doc-tests adder</code> on dokumentaatiotestien tuloksille. Meillä ei ole vielä dokumentaatiotestejä,
+mutta Rust voi kääntää API-dokumentaatiossamme esiintyvät koodiesimerkit. Tämä ominaisuus auttaa pitämään dokumentaation
+ja koodin synkassa! Käsittelemme dokumentaatiotestien kirjoittamista Luvun 14
+<a href="ch14-02-publishing-to-crates-io.html#documentation-comments-as-tests">”Dokumentaatiokommentit testeinä”</a><!-- ignore --> -osiossa. Toistaiseksi ohitamme <code>Doc-tests</code>-tulosteen.</p>
+<p>Aloitetaan testin mukauttaminen omiin tarpeisiimme. Muutetaan ensin <code>it_works</code>-funktion nimi erilaiseksi, kuten <code>exploration</code>, näin:</p>
+<p><span class="filename">Tiedostonimi: src/lib.rs</span></p>
+<pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch11-writing-automated-tests/no-listing-01-changing-test-name/src/lib.rs}}</code></pre>
+<p>Aja sitten <code>cargo test</code> uudelleen. Tulosteessa näkyy nyt <code>exploration</code> <code>it_works</code>-funktion sijaan:</p>
+<pre><code class="language-console">{{#include ../listings/ch11-writing-automated-tests/no-listing-01-changing-test-name/output.txt}}
+</code></pre>
+<p>Lisätään nyt toinen testi, mutta tällä kertaa teemme testin, joka epäonnistuu! Testit epäonnistuvat, kun jokin testifunktiossa kaataa ohjelman.
+Jokainen testi ajetaan uudessa säikeessä, ja kun pääsäie huomaa testisäikeen kuolleen, testi merkitään epäonnistuneeksi.
+Luvussa 9 puhuimme siitä, että yksinkertaisin tapa kaataa ohjelma on kutsua <code>panic!</code>-makroa. Syötä uusi testi funktiona nimeltä <code>another</code>,
+jolloin <em>src/lib.rs</em>-tiedostosi näyttää Listaukselta 11-3.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
+<pre><code class="language-rust panics noplayground">{{#rustdoc_include ../listings/ch11-writing-automated-tests/listing-11-03/src/lib.rs}}</code></pre>
+<figcaption>Listing 11-3: Toisen testin lisääminen, joka epäonnistuu, koska kutsumme <code>panic!</code>-makroa</figcaption>
+</figure>
+<p>Aja testit uudelleen <code>cargo test</code> -komennolla. Tulosteen pitäisi näyttää Listaukselta 11-4, joka näyttää, että <code>exploration</code>-testi läpäisi ja <code>another</code> epäonnistui.</p>
+<figure class="listing">
+<pre><code class="language-console">{{#include ../listings/ch11-writing-automated-tests/listing-11-03/output.txt}}
+</code></pre>
+<figcaption>Listing 11-4: Testitulokset, kun yksi testi läpäisee ja yksi epäonnistuu</figcaption>
+</figure>
+<!-- manual-regeneration
+rg panicked listings/ch11-writing-automated-tests/listing-11-03/output.txt
+check the line number of the panic matches the line number in the following paragraph
+ -->
+<p><code>ok</code>-tekstin sijaan rivi <code>test tests::another</code> näyttää <code>FAILED</code>. Kaksi uutta osiota ilmestyy yksittäisten tulosten ja yhteenvedon väliin:
+ensimmäinen näyttää yksityiskohtaisen syyn kunkin testin epäonnistumiselle. Tässä tapauksessa saamme tiedot, että <code>another</code> epäonnistui,
+koska se <code>panicked at 'Make this test fail'</code> rivillä 17 <em>src/lib.rs</em>-tiedostossa. Seuraava osio listaa vain kaikkien epäonnistuneiden testien nimet,
+mikä on hyödyllistä, kun testejä ja paljon yksityiskohtaista epäonnistumistulostetta on runsaasti. Voimme käyttää epäonnistuneen testin nimeä
+ajaaaksemme vain kyseisen testin virheenkorjausta varten helpommin; puhumme lisää testien ajamisen tavoista
+<a href="ch11-02-running-tests.html#controlling-how-tests-are-run">”Testien ajamisen hallinta”</a><!-- ignore --> -osiossa.</p>
+<p>Yhteenvetorivi näytetään lopussa: kaiken kaikkiaan testituloksemme on <code>FAILED</code>. Yksi testi läpäisi ja yksi epäonnistui.</p>
+<p>Nyt kun olet nähnyt, miltä testitulokset näyttävät eri tilanteissa, tarkastellaan joitakin muita makroja kuin <code>panic!</code>, jotka ovat hyödyllisiä testeissä.</p>
+<h3 id="tulosten-tarkistaminen-assert-makrolla"><a class="header" href="#tulosten-tarkistaminen-assert-makrolla">Tulosten tarkistaminen <code>assert!</code>-makrolla</a></h3>
+<p><code>assert!</code>-makro, jonka standardikirjasto tarjoaa, on hyödyllinen, kun haluat varmistaa, että jokin ehto testissä evaluoituu arvoksi <code>true</code>.
+Annamme <code>assert!</code>-makrolle argumentin, joka evaluoituu totuusarvoksi. Jos arvo on <code>true</code>, mitään ei tapahdu ja testi läpäisee.
+Jos arvo on <code>false</code>, <code>assert!</code>-makro kutsuu <code>panic!</code>-makroa aiheuttaakseen testin epäonnistumisen. <code>assert!</code>-makron käyttö auttaa
+varmistamaan, että koodimme toimii tarkoittamallamme tavalla.</p>
+<p>Luvun 5 Listauksessa 5-15 käytimme <code>Rectangle</code>-structia ja <code>can_hold</code>-metodia, jotka toistetaan tässä Listauksessa 11-5.
+Laitetaan tämä koodi <em>src/lib.rs</em>-tiedostoon ja kirjoitetaan sille testejä <code>assert!</code>-makron avulla.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
+<pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch11-writing-automated-tests/listing-11-05/src/lib.rs}}</code></pre>
+<figcaption>Listing 11-5: <code>Rectangle</code>-struct ja sen <code>can_hold</code>-metodi Luvusta 5</figcaption>
+</figure>
+<p><code>can_hold</code>-metodi palauttaa totuusarvon, joten se on täydellinen käyttötapaus <code>assert!</code>-makrolle.
+Listauksessa 11-6 kirjoitamme testin, joka testaa <code>can_hold</code>-metodia luomalla <code>Rectangle</code>-instanssin,
+jonka leveys on 8 ja korkeus 7, ja varmistamalla, että se voi sisältää toisen <code>Rectangle</code>-instanssin,
+jonka leveys on 5 ja korkeus 1.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
+<pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch11-writing-automated-tests/listing-11-06/src/lib.rs:here}}</code></pre>
+<figcaption>Listing 11-6: Testi <code>can_hold</code>-metodille, joka tarkistaa, voiko suurempi suorakulmio todella sisältää pienemmän</figcaption>
+</figure>
+<p>Huomaa <code>use super::*;</code> -rivi <code>tests</code>-moduulin sisällä. <code>tests</code>-moduuli on tavallinen moduuli, joka noudattaa tavallisia
+näkyvyyssääntöjä, joita käsittelimme Luvussa 7 <a href="ch07-03-paths-for-referring-to-an-item-in-the-module-tree.html">”Polut viittaamiseen moduulipuun kohteeseen”</a><!-- ignore -->
+-osiossa. Koska <code>tests</code>-moduuli on sisämoduuli, meidän täytyy tuoda testattava koodi ulommassa moduulissa sisämoduulin näkyvyysalueelle.
+Käytämme tässä globia, joten kaikki mitä määrittelemme ulommassa moduulissa on käytettävissä tälle <code>tests</code>-moduulille.</p>
+<p>Olemme nimenneet testimme <code>larger_can_hold_smaller</code> ja luoneet kaksi tarvitsemaamme <code>Rectangle</code>-instanssia.
+Sitten kutsuimme <code>assert!</code>-makroa ja välitimme sille <code>larger.can_hold(&amp;smaller)</code>-kutsun tuloksen. Tämän lausekkeen pitäisi
+palauttaa <code>true</code>, joten testimme pitäisi läpäistä. Katsotaan!</p>
+<pre><code class="language-console">{{#include ../listings/ch11-writing-automated-tests/listing-11-06/output.txt}}
+</code></pre>
+<p>Se läpäisee! Lisätään toinen testi, jossa varmistamme, ettei pienempi suorakulmio voi sisältää suurempaa suorakulmiota:</p>
+<p><span class="filename">Tiedostonimi: src/lib.rs</span></p>
+<pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch11-writing-automated-tests/no-listing-02-adding-another-rectangle-test/src/lib.rs:here}}</code></pre>
+<p>Koska <code>can_hold</code>-funktion oikea tulos tässä tapauksessa on <code>false</code>, meidän täytyy kääntää tuo tulos ennen kuin välitämme sen <code>assert!</code>-makrolle.
+Näin testimme läpäisee, jos <code>can_hold</code> palauttaa <code>false</code>:</p>
+<pre><code class="language-console">{{#include ../listings/ch11-writing-automated-tests/no-listing-02-adding-another-rectangle-test/output.txt}}
+</code></pre>
+<p>Kaksi testiä läpäisee! Katsotaan nyt, mitä testituloksille tapahtuu, kun tuomme bugin koodiimme. Muutamme <code>can_hold</code>-metodin toteutusta
+korvaamalla suurempi-ku-merkin pienempi-ku-merkillä leveyksiä verrattaessa:</p>
+<pre><code class="language-rust not_desired_behavior noplayground">{{#rustdoc_include ../listings/ch11-writing-automated-tests/no-listing-03-introducing-a-bug/src/lib.rs:here}}</code></pre>
+<p>Testien ajaminen nyt tuottaa seuraavan:</p>
+<pre><code class="language-console">{{#include ../listings/ch11-writing-automated-tests/no-listing-03-introducing-a-bug/output.txt}}
+</code></pre>
+<p>Testimme löysivät bugin! Koska <code>larger.width</code> on <code>8</code> ja <code>smaller.width</code> on <code>5</code>, leveyksien vertailu <code>can_hold</code>-metodissa palauttaa nyt <code>false</code>: 8 ei ole pienempi kuin 5.</p>
+<h3 id="yhtäsuuruuden-testaaminen-assert_eq--ja-assert_ne-makroilla"><a class="header" href="#yhtäsuuruuden-testaaminen-assert_eq--ja-assert_ne-makroilla">Yhtäsuuruuden testaaminen <code>assert_eq!</code>- ja <code>assert_ne!</code>-makroilla</a></h3>
+<p>Yleinen tapa varmistaa toiminnallisuus on testata testattavan koodin tuloksen ja odotetun paluuarvon yhtäsuuruus.
+Voit tehdä tämän käyttämällä <code>assert!</code>-makroa ja välittämällä sille lausekkeen <code>==</code>-operaattorilla. Tämä on kuitenkin niin yleinen testi,
+että standardikirjasto tarjoaa makroparin — <code>assert_eq!</code> ja <code>assert_ne!</code> — suorittamaan tämän testin kätevämmin.
+Nämä makrot vertaavat kahta argumenttia yhtäsuuruuden tai erisuuruuden osalta. Ne myös tulostavat kaksi arvoa, jos varmistus epäonnistuu,
+mikä helpottaa näkemään <em>miksi</em> testi epäonnistui; päinvastoin <code>assert!</code>-makro ilmaisee vain, että se sai <code>false</code>-arvon <code>==</code>-lausekkeelle
+tulostamatta arvoja, jotka johtivat <code>false</code>-arvoon.</p>
+<p>Listauksessa 11-7 kirjoitamme funktion nimeltä <code>add_two</code>, joka lisää <code>2</code> parametriinsa, ja testaamme tämän funktion <code>assert_eq!</code>-makrolla.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
+<pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch11-writing-automated-tests/listing-11-07/src/lib.rs}}</code></pre>
+<figcaption>Listing 11-7: Funktion <code>add_two</code> testaaminen <code>assert_eq!</code>-makrolla</figcaption>
+</figure>
+<p>Tarkistetaan, että se läpäisee!</p>
+<pre><code class="language-console">{{#include ../listings/ch11-writing-automated-tests/listing-11-07/output.txt}}
+</code></pre>
+<p>Luomme muuttujan nimeltä <code>result</code>, joka sisältää <code>add_two(2)</code>-kutsun tuloksen. Sitten välitämme <code>result</code>-arvon ja <code>4</code>:n argumenteiksi <code>assert_eq!</code>-makrolle.
+Tämän testin tulosrivi on <code>test tests::it_adds_two ... ok</code>, ja <code>ok</code>-teksti ilmaisee, että testimme läpäisi!</p>
+<p>Tuodaan bugi koodiimme nähdäksemme, miltä <code>assert_eq!</code> näyttää epäonnistuessaan. Muutetaan <code>add_two</code>-funktion toteutus lisäämään <code>3</code> <code>2</code>:n sijaan:</p>
+<pre><code class="language-rust not_desired_behavior noplayground">{{#rustdoc_include ../listings/ch11-writing-automated-tests/no-listing-04-bug-in-add-two/src/lib.rs:here}}</code></pre>
+<p>Aja testit uudelleen:</p>
+<pre><code class="language-console">{{#include ../listings/ch11-writing-automated-tests/no-listing-04-bug-in-add-two/output.txt}}
+</code></pre>
+<p>Testimme löysi bugin! <code>it_adds_two</code>-testi epäonnistui, ja viesti kertoo, että epäonnistunut varmistus oli <code>assertion `left == right` failed</code>
+ja mitkä <code>left</code>- ja <code>right</code>-arvot ovat. Tämä viesti auttaa aloittamaan virheenkorjauksen: <code>left</code>-argumentti, jossa oli <code>add_two(2)</code>-kutsun tulos, oli <code>5</code>,
+mutta <code>right</code>-argumentti oli <code>4</code>. Voit kuvitella, että tästä olisi erityisen hyötyä, kun testejä on paljon.</p>
+<p>Huomaa, että joissakin kielissä ja testikehyksissä yhtäsuuruusvarmistusfunktioiden parametreja kutsutaan <code>expected</code> ja <code>actual</code>,
+ja argumenttien järjestyksellä on merkitystä. Rustissa niitä kutsutaan kuitenkin <code>left</code> ja <code>right</code>, eikä sillä, missä järjestyksessä määrittelemme
+odotetun arvon ja koodin tuottaman arvon, ole merkitystä. Voisimme kirjoittaa tämän testin varmistuksen muodossa <code>assert_eq!(4, result)</code>,
+mikä johtaisi samaan epäonnistumisviestiin, joka näyttää <code>assertion failed: `(left == right)`</code>.</p>
+<p><code>assert_ne!</code>-makro läpäisee, jos kaksi antamaamme arvoa eivät ole yhtä suuret, ja epäonnistuu, jos ne ovat. Tämä makro on hyödyllisin tapauksissa,
+joissa emme ole varmoja, mikä arvo <em>tulee</em> olemaan, mutta tiedämme, mikä arvo <em>ei ehdottomasti</em> saa olla. Esimerkiksi jos testaamme funktiota,
+joka muuttaa syötteensä taatusti jollain tavalla, mutta tapa, jolla syöte muuttuu, riippuu viikonpäivästä, jolloin ajamme testejä,
+paras varmistus voi olla, että funktion tulos ei ole yhtä suuri kuin syöte.</p>
+<p>Pinnan alla <code>assert_eq!</code>- ja <code>assert_ne!</code>-makrot käyttävät operaattoreita <code>==</code> ja <code>!=</code>. Kun varmistukset epäonnistuvat, nämä makrot tulostavat
+argumenttinsa debug-muotoilulla, mikä tarkoittaa, että vertailtavien arvojen täytyy toteuttaa <code>PartialEq</code>- ja <code>Debug</code>-traitit.
+Kaikki primitiivityypit ja useimmat standardikirjaston tyypit toteuttavat nämä traitit. Itse määrittelemillesi structeille ja enumeille
+täytyy toteuttaa <code>PartialEq</code> varmistaaksesi näiden tyyppien yhtäsuuruuden. Täytyy myös toteuttaa <code>Debug</code> tulostaaksesi arvot, kun varmistus epäonnistuu.
+Koska molemmat traitit ovat johdettavia traitteja, kuten mainittiin Luvun 5 Listauksessa 5-12, tämä on yleensä yhtä suoraviivaista
+kuin <code>#[derive(PartialEq, Debug)]</code>-annotaation lisääminen struct- tai enum-määrittelyysi. Katso liite C,
+<a href="appendix-03-derivable-traits.html">”Johdettavat traitit”</a><!-- ignore --> lisätietoja näistä ja muista johdettavista traiteista.</p>
+<h3 id="mukautettujen-virheilmoitusten-lisääminen"><a class="header" href="#mukautettujen-virheilmoitusten-lisääminen">Mukautettujen virheilmoitusten lisääminen</a></h3>
+<p>Voit myös lisätä mukautetun viestin, joka tulostetaan epäonnistumisviestin kanssa, valinnaisina argumentteina <code>assert!</code>-, <code>assert_eq!</code>- ja <code>assert_ne!</code>-makroille.
+Kaikki pakollisten argumenttien jälkeen määritetyt argumentit välitetään <code>format!</code>-makrolle (käsiteltiin Luvun 8
+<a href="ch08-02-strings.html#concatenation-with-the--operator-or-the-format-macro">”Ketjutus <code>+</code>-operaattorilla tai <code>format!</code>-makrolla”</a><!-- ignore --> -osiossa),
+joten voit välittää muotoilumerkkijonon, joka sisältää <code>{}</code>-paikkamerkit, ja arvot näihin paikkamerkkeihin. Mukautetut viestit ovat hyödyllisiä
+dokumentoimaan, mitä varmistus tarkoittaa; kun testi epäonnistuu, sinulla on parempi käsitys siitä, mikä koodissa on vialla.</p>
+<p>Esimerkiksi oletetaan, että meillä on funktio, joka tervehtii ihmisiä nimellä, ja haluamme testata, että funktiolle välitetty nimi näkyy tulosteessa:</p>
+<p><span class="filename">Tiedostonimi: src/lib.rs</span></p>
+<pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch11-writing-automated-tests/no-listing-05-greeter/src/lib.rs}}</code></pre>
+<p>Tämän ohjelman vaatimuksista ei ole vielä sovittu, ja olemme melko varmoja, että tervehdyksen alussa oleva <code>Hello</code>-teksti muuttuu.
+Päätimme, ettei meidän tarvitse päivittää testiä vaatimusten muuttuessa, joten sen sijaan, että tarkistaisimme tarkkaa yhtäsuuruutta
+<code>greeting</code>-funktion palauttamaan arvoon, varmistamme vain, että tuloste sisältää syöteparametrin tekstin.</p>
+<p>Tuodaan nyt bugi tähän koodiin muuttamalla <code>greeting</code>-funktiota jättämään <code>name</code> pois nähdäksemme, miltä oletusarvoinen testin epäonnistuminen näyttää:</p>
+<pre><code class="language-rust not_desired_behavior noplayground">{{#rustdoc_include ../listings/ch11-writing-automated-tests/no-listing-06-greeter-with-bug/src/lib.rs:here}}</code></pre>
+<p>Tämän testin ajaminen tuottaa seuraavan:</p>
+<pre><code class="language-console">{{#include ../listings/ch11-writing-automated-tests/no-listing-06-greeter-with-bug/output.txt}}
+</code></pre>
+<p>Tämä tulos ilmaisee vain, että varmistus epäonnistui ja millä rivillä varmistus on. Hyödyllisempi epäonnistumisviesti tulostaisi arvon
+<code>greeting</code>-funktiosta. Lisätään mukautettu epäonnistumisviesti, joka koostuu muotoilumerkkijonosta paikkamerkillä, joka täytetään
+<code>greeting</code>-funktiosta saadulla todellisella arvolla:</p>
+<pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch11-writing-automated-tests/no-listing-07-custom-failure-message/src/lib.rs:here}}</code></pre>
+<p>Nyt kun ajamme testin, saamme informatiivisemman virheilmoituksen:</p>
+<pre><code class="language-console">{{#include ../listings/ch11-writing-automated-tests/no-listing-07-custom-failure-message/output.txt}}
+</code></pre>
+<p>Näemme testitulosteessa todellisen arvon, jonka saimme, mikä auttaa selvittämään, mitä tapahtui sen sijaan, mitä odotimme tapahtuvan.</p>
+<h3 id="kaatumisen-tarkistaminen-should_panic-attribuutilla"><a class="header" href="#kaatumisen-tarkistaminen-should_panic-attribuutilla">Kaatumisen tarkistaminen <code>should_panic</code>-attribuutilla</a></h3>
+<p>Paluuarvojen tarkistamisen lisäksi on tärkeää varmistaa, että koodimme käsittelee virhetilanteet odottamallamme tavalla.
+Esimerkiksi tarkastele Luvun 9 Listauksessa 9-13 luomaamme <code>Guess</code>-tyyppiä. Muu koodi, joka käyttää <code>Guess</code>-tyyppiä,
+luottaa siihen, että <code>Guess</code>-instanssit sisältävät vain arvoja välillä 1–100. Voimme kirjoittaa testin, joka varmistaa,
+että <code>Guess</code>-instanssin luominen arvolla tuon alueen ulkopuolelta kaataa ohjelman.</p>
+<p>Teemme tämän lisäämällä <code>should_panic</code>-attribuutin testifunktioomme. Testi läpäisee, jos funktion sisällä oleva koodi kaataa ohjelman;
+testi epäonnistuu, jos funktion sisällä oleva koodi ei kaada ohjelmaa.</p>
+<p>Listaus 11-8 näyttää testin, joka tarkistaa, että <code>Guess::new</code>-funktion virhetilanteet tapahtuvat odottamallamme tavalla.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
+<pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch11-writing-automated-tests/listing-11-08/src/lib.rs}}</code></pre>
+<figcaption>Listing 11-8: Testaus, että ehto aiheuttaa <code>panic!</code>-kutsun</figcaption>
+</figure>
+<p>Sijoitamme <code>#[should_panic]</code>-attribuutin <code>#[test]</code>-attribuutin jälkeen ja ennen sitä koskevaa testifunktiota. Katsotaan tulos, kun tämä testi läpäisee:</p>
+<pre><code class="language-console">{{#include ../listings/ch11-writing-automated-tests/listing-11-08/output.txt}}
+</code></pre>
+<p>Näyttää hyvältä! Tuodaan nyt bugi koodiimme poistamalla ehto, jonka perusteella <code>new</code>-funktio kaataa ohjelman, jos arvo on suurempi kuin 100:</p>
+<pre><code class="language-rust not_desired_behavior noplayground">{{#rustdoc_include ../listings/ch11-writing-automated-tests/no-listing-08-guess-with-bug/src/lib.rs:here}}</code></pre>
+<p>Kun ajamme Listauksen 11-8 testin, se epäonnistuu:</p>
+<pre><code class="language-console">{{#include ../listings/ch11-writing-automated-tests/no-listing-08-guess-with-bug/output.txt}}
+</code></pre>
+<p>Emme saa tässä tapauksessa kovin hyödyllistä viestiä, mutta kun katsomme testifunktiota, näemme että se on merkitty <code>#[should_panic]</code>-attribuutilla.
+Saamamme epäonnistuminen tarkoittaa, että testifunktion koodi ei aiheuttanut kaatumista.</p>
+<p><code>should_panic</code>-attribuuttia käyttävät testit voivat olla epätarkkoja. <code>should_panic</code>-testi läpäisisi, vaikka testi kaatuisi eri syystä kuin odotimme.
+Tehdäksemme <code>should_panic</code>-testeistä tarkempia, voimme lisätä valinnaisen <code>expected</code>-parametrin <code>should_panic</code>-attribuuttiin.
+Testikehys varmistaa, että virheilmoitus sisältää annetun tekstin. Esimerkiksi tarkastele Listauksen 11-9 muokattua <code>Guess</code>-koodia,
+jossa <code>new</code>-funktio kaataa ohjelman eri viesteillä riippuen siitä, onko arvo liian pieni vai liian suuri.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
+<pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch11-writing-automated-tests/listing-11-09/src/lib.rs:here}}</code></pre>
+<figcaption>Listing 11-9: Testaus <code>panic!</code>-kutsulle, jonka viesti sisältää määritellyn osamerkkijonon</figcaption>
+</figure>
+<p>Tämä testi läpäisee, koska arvo, jonka laitamme <code>should_panic</code>-attribuutin <code>expected</code>-parametriin, on osamerkkijono viestistä,
+jonka kanssa <code>Guess::new</code>-funktio kaataa ohjelman. Olisimme voineet määrittää koko odottamamme kaatumisviestin,
+joka tässä tapauksessa olisi <code>Guess value must be less than or equal to 100, got 200</code>. Mitä määrität, riippuu siitä,
+kuinka ainutlaatuinen tai dynaaminen kaatumisviesti on ja kuinka tarkka haluat testisi olevan. Tässä tapauksessa
+kaatumisviestin osamerkkijono riittää varmistamaan, että testifunktion koodi suorittaa <code>else if value &gt; 100</code> -haaran.</p>
+<p>Nähdäksemme, mitä tapahtuu, kun <code>should_panic</code>-testi <code>expected</code>-viestillä epäonnistuu, tuodaan taas bugi koodiimme vaihtamalla
+<code>if value &lt; 1</code> - ja <code>else if value &gt; 100</code> -lohkojen rungot:</p>
+<pre><code class="language-rust ignore not_desired_behavior">{{#rustdoc_include ../listings/ch11-writing-automated-tests/no-listing-09-guess-with-panic-msg-bug/src/lib.rs:here}}</code></pre>
+<p>Tällä kertaa kun ajamme <code>should_panic</code>-testin, se epäonnistuu:</p>
+<pre><code class="language-console">{{#include ../listings/ch11-writing-automated-tests/no-listing-09-guess-with-panic-msg-bug/output.txt}}
+</code></pre>
+<p>Epäonnistumisviesti ilmaisee, että tämä testi todella kaatoi ohjelman odottamallamme tavalla, mutta kaatumisviesti ei sisältänyt
+odotettua merkkijonoa <code>less than or equal to 100</code>. Saamamme kaatumisviesti oli <code>Guess value must be greater than or equal to 1, got 200.</code>
+Nyt voimme alkaa selvittää, missä bugimme on!</p>
+<h3 id="resultt-e-tyypin-käyttö-testeissä"><a class="header" href="#resultt-e-tyypin-käyttö-testeissä"><code>Result&lt;T, E&gt;</code>-tyypin käyttö testeissä</a></h3>
+<p>Testimme tähän mennessä ovat kaikki kaatuneet epäonnistuessaan. Voimme myös kirjoittaa testejä, jotka käyttävät <code>Result&lt;T, E&gt;</code>-tyyppiä!
+Tässä on Listauksen 11-1 testi uudelleenkirjoitettuna käyttämään <code>Result&lt;T, E&gt;</code>-tyyppiä ja palauttamaan <code>Err</code> kaatumisen sijaan:</p>
+<pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch11-writing-automated-tests/no-listing-10-result-in-tests/src/lib.rs:here}}</code></pre>
+<p><code>it_works</code>-funktiolla on nyt paluutyyppi <code>Result&lt;(), String&gt;</code>. Funktion rungossa <code>assert_eq!</code>-makron kutsumisen sijaan palautamme <code>Ok(())</code>,
+kun testi läpäisee, ja <code>Err</code>-arvon, jonka sisällä on <code>String</code>, kun testi epäonnistuu.</p>
+<p>Testien kirjoittaminen niin, että ne palauttavat <code>Result&lt;T, E&gt;</code>-tyypin, mahdollistaa kysymysmerkkioperaattorin käytön testien rungossa,
+mikä voi olla kätevä tapa kirjoittaa testejä, joiden pitäisi epäonnistua, jos mikä tahansa niiden sisällä oleva operaatio palauttaa <code>Err</code>-variantin.</p>
+<p>Et voi käyttää <code>#[should_panic]</code>-annotaatiota testeissä, jotka käyttävät <code>Result&lt;T, E&gt;</code>-tyyppiä. Varmistaaksesi, että operaatio palauttaa <code>Err</code>-variantin,
+<em>älä</em> käytä kysymysmerkkioperaattoria <code>Result&lt;T, E&gt;</code>-arvolla. Käytä sen sijaan <code>assert!(value.is_err())</code>.</p>
+<p>Nyt kun tiedät useita tapoja kirjoittaa testejä, tarkastellaan, mitä tapahtuu testejä ajettaessa ja tutkitaan eri vaihtoehtoja, joita <code>cargo test</code> tarjoaa.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="ch11-00-testing.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="ch11-02-running-tests.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="ch11-00-testing.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="ch11-02-running-tests.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="ferris.js"></script>
+
+
+    </div>
+    </body>
+</html>

@@ -1,0 +1,296 @@
+<!DOCTYPE HTML>
+<html lang="fi" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>D - Useful Development Tools - Rust-ohjelmointikieli</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="ferris.css">
+        <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rust-ohjelmointikieli</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/rust-lang/book" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2 id="liite-d---hyödylliset-kehitystyökalut"><a class="header" href="#liite-d---hyödylliset-kehitystyökalut">Liite D - Hyödylliset kehitystyökalut</a></h2>
+<p>Tässä liitteessä käsittelemme joitakin hyödyllisiä kehitystyökaluja, joita Rust-projekti tarjoaa. Käymme läpi automaattisen muotoilun, nopeita tapoja korjata varoituksia, linterin sekä IDE-integroinnin.</p>
+<h3 id="koodin-automaattinen-muotoilu-rustfmt-työkalulla"><a class="header" href="#koodin-automaattinen-muotoilu-rustfmt-työkalulla">Koodin automaattinen muotoilu <code>rustfmt</code>-työkalulla</a></h3>
+<p><code>rustfmt</code>-työkalu muotoilee koodisi yhteisön hyväksymän koodityylin mukaisesti. Monet yhteistyöhankkeet käyttävät <code>rustfmt</code>-työkalua estääkseen kiistat siitä, mitä tyyliä Rust-koodissa tulisi käyttää – kaikki muotoilevat koodinsa tällä työkalulla.</p>
+<p>Asenna <code>rustfmt</code> seuraavalla komennolla:</p>
+<pre><code class="language-console">$ rustup component add rustfmt
+</code></pre>
+<p>Tämä komento asentaa sekä <code>rustfmt</code>:n että <code>cargo-fmt</code>:n, aivan kuten Rust asentaa sekä <code>rustc</code>:n että <code>cargo</code>:n. Voit muotoilla minkä tahansa Cargo-projektin seuraavasti:</p>
+<pre><code class="language-console">$ cargo fmt
+</code></pre>
+<p>Tämä komento muotoilee kaiken nykyisen käännösyksikön Rust-koodin. Sen pitäisi muuttaa vain koodityyliä, ei koodin toiminnallisuutta. Lisätietoja <code>rustfmt</code>-työkalusta löytyy sen <a href="https://github.com/rust-lang/rustfmt">dokumentaatiosta</a>.</p>
+<h3 id="koodin-korjaaminen-rustfix-työkalulla"><a class="header" href="#koodin-korjaaminen-rustfix-työkalulla">Koodin korjaaminen <code>rustfix</code>-työkalulla</a></h3>
+<p>Rust-asennuksen mukana tuleva <code>rustfix</code>-työkalu voi automaattisesti korjata kääntäjän varoitukset, joiden ratkaisu on selkeä. Esimerkiksi alla olevassa koodissa:</p>
+<p><span class="filename">Tiedostonimi: src/main.rs</span></p>
+<pre><pre class="playground"><code class="language-rust edition2024">fn main() {
+    let mut x = 42;
+    println!("{x}");
+}</code></pre></pre>
+<p>Muuttuja <code>x</code> on määritelty <strong>mut</strong>-avainsanalla, mutta sitä ei koskaan muokata. Rust antaa tästä varoituksen:</p>
+<pre><code class="language-console">$ cargo build
+   Compiling myprogram v0.1.0 (file:///projects/myprogram)
+warning: variable does not need to be mutable
+ --&gt; src/main.rs:2:9
+  |
+2 |     let mut x = 0;
+  |         ----^
+  |         |
+  |         help: remove this `mut`
+  |
+  = note: `#[warn(unused_mut)]` on by default
+</code></pre>
+<p>Varoitus ehdottaa, että <code>mut</code>-avainsana poistetaan. Tämä voidaan tehdä automaattisesti <code>rustfix</code>-työkalulla suorittamalla seuraava komento:</p>
+<pre><code class="language-console">$ cargo fix
+    Checking myprogram v0.1.0 (file:///projects/myprogram)
+      Fixing src/main.rs (1 fix)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.59s
+</code></pre>
+<p>Kun tarkastelemme tiedostoa <strong>src/main.rs</strong>, huomaamme, että <code>cargo fix</code> on päivittänyt koodin:</p>
+<pre><pre class="playground"><code class="language-rust edition2024">fn main() {
+    let x = 42;
+    println!("{x}");
+}</code></pre></pre>
+<p>Muuttuja <code>x</code> on nyt muuttumaton, eikä varoitusta enää näy.</p>
+<p><code>cargo fix</code> -komentoa voi myös käyttää koodin siirtämiseen eri Rust-versioiden välillä. Rustin eri versiot käsitellään <a href="appendix-05-editions.html">liitteessä E</a>.</p>
+<h3 id="lisää-tarkastuksia-clippyllä"><a class="header" href="#lisää-tarkastuksia-clippyllä">Lisää tarkastuksia Clippyllä</a></h3>
+<p>Clippy on kokoelma lintereitä, jotka analysoivat koodiasi ja auttavat löytämään yleisiä virheitä sekä parantamaan Rust-koodia.</p>
+<p>Asenna Clippy seuraavasti:</p>
+<pre><code class="language-console">$ rustup component add clippy
+</code></pre>
+<p>Aja Clippy missä tahansa Cargo-projektissa:</p>
+<pre><code class="language-console">$ cargo clippy
+</code></pre>
+<p>Jos kirjoitat esimerkiksi ohjelman, joka käyttää likimääräistä matemaattista vakioarvoa, kuten piitä:</p>
+<p><span class="filename">Tiedostonimi: src/main.rs</span></p>
+<pre><pre class="playground"><code class="language-rust edition2024">fn main() {
+    let x = 3.1415;
+    let r = 8.0;
+    println!("ympyrän pinta-ala on {}", x * r * r);
+}</code></pre></pre>
+<p>Suorittamalla <code>cargo clippy</code> saat seuraavan virheilmoituksen:</p>
+<pre><code class="language-text">error: approximate value of `f{32, 64}::consts::PI` found
+ --&gt; src/main.rs:2:13
+  |
+2 |     let x = 3.1415;
+  |             ^^^^^^
+  |
+  = note: `#[deny(clippy::approx_constant)]` on by default
+  = help: consider using the constant directly
+  = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#approx_constant
+</code></pre>
+<p>Clippy ilmoittaa, että Rustissa on jo tarkempi <code>PI</code>-vakio, jota tulisi käyttää.</p>
+<p>Korjaamalla koodin:</p>
+<pre><pre class="playground"><code class="language-rust edition2024">fn main() {
+    let x = std::f64::consts::PI;
+    let r = 8.0;
+    println!("ympyrän pinta-ala on {}", x * r * r);
+}</code></pre></pre>
+<p>Virheilmoitus katoaa, ja Clippy ei löydä huomautettavaa.</p>
+<p>Lisätietoja Clippystä löytyy sen <a href="https://github.com/rust-lang/rust-clippy">dokumentaatiosta</a>.</p>
+<h3 id="ide-integraatio-rust-analyzer-työkalulla"><a class="header" href="#ide-integraatio-rust-analyzer-työkalulla">IDE-integraatio <code>rust-analyzer</code>-työkalulla</a></h3>
+<p>Rust-yhteisö suosittelee käyttämään <a href="https://rust-analyzer.github.io"><code>rust-analyzer</code></a><!-- ignore --> -työkalua IDE-integraatioon. Tämä työkalu sisältää kääntäjälähtöisiä apuvälineitä ja tukee <a href="http://langserver.org/">Language Server Protocol</a><!-- ignore --> -määritystä, jonka avulla eri IDE:t ja ohjelmointikielet voivat kommunikoida keskenään.</p>
+<p>Asennusohjeet löytyvät <code>rust-analyzer</code>-projektin <a href="https://rust-analyzer.github.io">kotisivulta</a><!-- ignore -->. Asennuksen jälkeen saat käyttöösi ominaisuuksia kuten automaattisen täydennyksen, siirtymisen määrityksiin ja reaaliaikaiset virheilmoitukset.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="appendix-03-derivable-traits.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="appendix-05-editions.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="appendix-03-derivable-traits.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="appendix-05-editions.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="ferris.js"></script>
+
+
+    </div>
+    </body>
+</html>

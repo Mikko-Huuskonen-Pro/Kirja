@@ -1,0 +1,287 @@
+<!DOCTYPE HTML>
+<html lang="fi" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Funktiot - Rust-ohjelmointikieli</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="ferris.css">
+        <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rust-ohjelmointikieli</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/rust-lang/book" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2 id="funktiot"><a class="header" href="#funktiot">Funktiot</a></h2>
+<p>Funktiot ovat yleisiä Rust-koodissa. Olet jo nähnyt yhden kielen tärkeimmistä funktioista: <code>main</code>-funktion, joka on monien ohjelmien aloituspiste. Olet myös nähnyt <code>fn</code>-avainsanan, joka mahdollistaa uusien funktioiden määrittämisen.</p>
+<p>Rust käyttää <em>snake case</em> -tyyliä funktioiden ja muuttujien nimissä, mikä tarkoittaa, että kaikki kirjaimet ovat pieniä ja sanat erotetaan alaviivoilla. Tässä on esimerkki funktion määrittämisestä:</p>
+<p><span class="filename">Tiedostonimi: src/main.rs</span></p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-16-functions/src/main.rs}}
+<span class="boring">}</span></code></pre></pre>
+<p>Määritämme funktion kirjoittamalla <code>fn</code>, sitten funktion nimen ja sulut. Aaltosulkeet kertovat kääntäjälle, missä funktion runko alkaa ja loppuu.</p>
+<p>Voimme kutsua mitä tahansa määrittämäämme funktiota kirjoittamalla sen nimen ja sulut. Koska <code>another_function</code> on määritetty ohjelmassa, sitä voidaan kutsua <code>main</code>-funktion sisältä. Huomaa, että määritimme <code>another_function</code>-funktion <em>main</em>-funktion jälkeen lähdekoodissa; olisimme voineet määrittää sen myös ennen. Rustille ei ole väliä, missä kohdin funktiosi määritetään, kunhan ne on määritetty näkyvässä alueessa.</p>
+<p>Aloitetaan uusi binääriprojekti nimeltään <em>functions</em> ja tutkitaan funktioita tarkemmin. Sijoita <code>another_function</code>-esimerkki <em>src/main.rs</em>-tiedostoon ja suorita se. Sinun pitäisi nähdä seuraava tulostus:</p>
+<pre><code class="language-console">{{#include ../listings/ch03-common-programming-concepts/no-listing-16-functions/output.txt}}
+</code></pre>
+<p>Rivit suoritetaan <code>main</code>-funktion sisällä siinä järjestyksessä kuin ne esiintyvät. Ensin tulostetaan “Hello, world!” -viesti, ja sitten kutsutaan <code>another_function</code>, joka tulostaa oman viestinsä.</p>
+<h3 id="parametrit"><a class="header" href="#parametrit">Parametrit</a></h3>
+<p>Voimme määrittää funktioita, joilla on <em>parametreja</em>, eli erikoismuuttujia, jotka ovat osa funktion määrittelyä. Kun funktiolla on parametreja, voit antaa niille konkreettisia arvoja. Teknisesti konkreettisia arvoja kutsutaan <em>argumenteiksi</em>, mutta arjessa ihmiset käyttävät sanoja <em>parametri</em> ja <em>argumentti</em> usein toistensa synonyymeinä.</p>
+<p>Tässä versiossa <code>another_function</code>-funktiosta lisäämme parametrin:</p>
+<p><span class="filename">Tiedostonimi: src/main.rs</span></p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-17-functions-with-parameters/src/main.rs}}
+<span class="boring">}</span></code></pre></pre>
+<p>Suorita ohjelma; sen pitäisi antaa seuraava tulostus:</p>
+<pre><code class="language-console">{{#include ../listings/ch03-common-programming-concepts/no-listing-17-functions-with-parameters/output.txt}}
+</code></pre>
+<p>Funktion <code>another_function</code> määrittelyssä on yksi parametri nimeltä <code>x</code>. Sen tyyppi on <code>i32</code>. Kun välitämme arvon <code>5</code> funktiolle <code>another_function</code>, <code>println!</code>-makro sijoittaa <code>5</code>:n siihen kohtaan, jossa <code>{x}</code> oli muotoilujonossa.</p>
+<p>Funktion parametrit <em>on pakko</em> määrittää tyyppeineen. Tämä on Rustin suunnitteluperiaate: koska funktioiden parametrit vaativat tyyppimäärittelyn, kääntäjä ei juuri koskaan tarvitse muita vihjeitä koodista sen selvittämiseksi, mitä tyyppiä tarkoitetaan. Tämä myös parantaa virheilmoituksia.</p>
+<p>Jos määrität useita parametreja, erota ne pilkulla, kuten tässä:</p>
+<p><span class="filename">Tiedostonimi: src/main.rs</span></p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-18-functions-with-multiple-parameters/src/main.rs}}
+<span class="boring">}</span></code></pre></pre>
+<p>Tämä funktio, <code>print_labeled_measurement</code>, ottaa kaksi parametria: <code>value</code> on <code>i32</code>, ja <code>unit_label</code> on <code>char</code>. Funktio tulostaa molemmat arvot.</p>
+<h3 id="lausekkeet-ja-lauseet"><a class="header" href="#lausekkeet-ja-lauseet">Lausekkeet ja lauseet</a></h3>
+<p>Funktion runko koostuu sarjasta lauseita, jotka voivat päättyä lausekkeeseen. Rust on lausekepohjainen kieli, joten tämä ero on tärkeä ymmärtää.</p>
+<ul>
+<li><strong>Lauseet</strong> suorittavat jonkin toiminnon, mutta eivät palauta arvoa.</li>
+<li><strong>Lausekkeet</strong> palauttavat arvon.</li>
+</ul>
+<p>Olemme jo käyttäneet sekä lauseita että lausekkeita. Esimerkiksi <code>let y = 6;</code> on lause.</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch03-common-programming-concepts/listing-03-01/src/main.rs}}
+<span class="boring">}</span></code></pre></pre>
+<p>Funktion määritys on myös lause. Mutta funktiokutsut ovat lausekkeita.</p>
+<p>Koska lauseet eivät palauta arvoa, et voi sijoittaa <code>let</code>-lausetta muuttujaan:</p>
+<pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-19-statements-vs-expressions/src/main.rs}}</code></pre>
+<p>Tämä aiheuttaa virheen, koska <code>let y = 6;</code> ei palauta arvoa.</p>
+<p>Lausekkeet, kuten <code>5 + 6</code>, palauttavat arvon. Esimerkiksi lohko:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{
+    let x = 3;
+    x + 1
+}
+<span class="boring">}</span></code></pre></pre>
+<p>on lauseke, joka palauttaa arvon <code>4</code>, joka sitoutuu muuttujaan <code>y</code>.</p>
+<h3 id="funktiot-ja-palautusarvot"><a class="header" href="#funktiot-ja-palautusarvot">Funktiot ja palautusarvot</a></h3>
+<p>Funktiot voivat palauttaa arvoja. Rustissa funktio palauttaa viimeisen lausekkeen arvon.</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-21-function-return-values/src/main.rs}}
+<span class="boring">}</span></code></pre></pre>
+<p>Tässä funktiossa <code>five</code> ei sisällä mitään muuta kuin <code>5</code>, mikä on täysin kelvollinen funktio Rustissa. Funktion paluuarvo määritellään <code>-&gt; i32</code>.</p>
+<p>Toinen esimerkki:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-22-function-parameter-and-return/src/main.rs}}
+<span class="boring">}</span></code></pre></pre>
+<p>Tulostaa <code>The value of x is: 6</code>. Mutta jos lisäisimme puolipisteen riville <code>x + 1</code>, saisimme virheen, koska lauseet eivät palauta arvoa.</p>
+<pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-23-statements-dont-return-values/src/main.rs}}</code></pre>
+<p>Rustin virheilmoitus ehdottaa puolipisteen poistamista, mikä korjaisi virheen.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="ch03-02-data-types.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="ch03-04-comments.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="ch03-02-data-types.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="ch03-04-comments.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="ferris.js"></script>
+
+
+    </div>
+    </body>
+</html>

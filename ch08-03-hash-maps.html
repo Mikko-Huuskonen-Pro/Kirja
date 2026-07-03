@@ -1,0 +1,300 @@
+<!DOCTYPE HTML>
+<html lang="fi" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Avainten tallentaminen liittyvine arvoineen hajautustaulukoissa - Rust-ohjelmointikieli</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="ferris.css">
+        <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rust-ohjelmointikieli</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/rust-lang/book" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2 id="avaimien-ja-niihin-liittyvien-arvojen-tallentaminen-hajautustauluilla"><a class="header" href="#avaimien-ja-niihin-liittyvien-arvojen-tallentaminen-hajautustauluilla">Avaimien ja niihin liittyvien arvojen tallentaminen hajautustauluilla</a></h2>
+<p>Viimeinen yleinen kokoelmatyyppi, jota tarkastelemme, on <strong>hajautustaulu</strong> (<em>hash map</em>). <code>HashMap&lt;K, V&gt;</code>-tyyppi tallentaa avain-arvo -pareja käyttäen <strong>hajautusfunktiota</strong>, joka määrittää, miten avaimet ja arvot sijoitetaan muistiin. Monet ohjelmointikielet tukevat vastaavaa tietorakennetta, mutta sitä kutsutaan eri nimillä, kuten <strong>hash</strong>, <strong>map</strong>, <strong>dictionary</strong>, <strong>associative array</strong> tai <strong>hash table</strong>.</p>
+<p>Hajautustaulut ovat hyödyllisiä silloin, kun tietoa halutaan hakea <strong>avaimen</strong> eikä <strong>indeksin</strong> perusteella. Esimerkiksi pelissä voidaan seurata joukkueiden pisteitä käyttämällä hajautustaulua, jossa avaimina ovat joukkueiden nimet ja arvoina pisteet.</p>
+<p>Käymme tässä osiossa läpi hajautustaulujen perusominaisuudet, mutta Rustin standardikirjastosta löytyy monia hyödyllisiä lisäominaisuuksia.</p>
+<h3 id="uuden-hajautustaulun-luominen"><a class="header" href="#uuden-hajautustaulun-luominen">Uuden hajautustaulun luominen</a></h3>
+<p>Voimme luoda tyhjän hajautustaulun käyttämällä <code>new</code>-metodia ja lisätä siihen avain-arvo -pareja <code>insert</code>-metodilla. Seuraavassa esimerkissä tallennetaan kahden joukkueen pisteet:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch08-common-collections/listing-08-20/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<p>Huomaa, että <code>HashMap</code>-tietorakenne tulee erikseen tuoda standardikirjaston <code>collections</code>-osasta. Hajautustaulut eivät ole yhtä yleisesti käytettyjä kuin vektorit ja merkkijonot, joten niitä ei tuoda automaattisesti esiin Rustin <strong>prelude</strong>-määrittelyllä.</p>
+<p>Hajautustaulut muistuttavat vektoreita siinä mielessä, että ne tallennetaan <strong>kekoon</strong> (<em>heap</em>). Tässä esimerkissä <code>HashMap</code> sisältää <strong>String</strong>-tyyppisiä avaimia ja <strong>i32</strong>-tyyppisiä arvoja. Kuten vektorit, myös hajautustaulut ovat <strong>homogeenisia</strong>, eli kaikki avaimet ja kaikki arvot ovat aina samaa tietotyyppiä.</p>
+<h3 id="arvojen-hakeminen-hajautustaulusta"><a class="header" href="#arvojen-hakeminen-hajautustaulusta">Arvojen hakeminen hajautustaulusta</a></h3>
+<p>Voimme hakea arvoja hajautustaulusta <code>get</code>-metodilla antamalla sille avaimen:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch08-common-collections/listing-08-21/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<p>Tässä <code>score</code> saa <strong>Blue</strong>-joukkueen arvon, joka on <code>10</code>. <code>get</code> palauttaa <code>Option&lt;&amp;V&gt;</code>-tyypin: jos avainta ei löydy, palautetaan <code>None</code>. Tässä tapauksessa <code>copied</code>-metodilla muunnetaan <code>Option&lt;&amp;i32&gt;</code> muotoon <code>Option&lt;i32&gt;</code>, ja <code>unwrap_or</code>-metodilla määritetään, että puuttuvien avainten kohdalla tuloksena on <code>0</code>.</p>
+<p>Voimme myös iteroida avain-arvo -parien yli <code>for</code>-silmukalla:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch08-common-collections/no-listing-03-iterate-over-hashmap/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<p>Tulostusjärjestys voi olla satunnainen:</p>
+<pre><code class="language-text">Yellow: 50
+Blue: 10
+</code></pre>
+<h3 id="hajautustaulut-ja-omistus"><a class="header" href="#hajautustaulut-ja-omistus">Hajautustaulut ja omistus</a></h3>
+<p>Jos avaimet ja arvot ovat tyyppejä, jotka toteuttavat <code>Copy</code>-piirteen (esim. <code>i32</code>), ne <strong>kopioidaan</strong> hajautustauluun. Jos taas tallennamme omistettuja arvoja, kuten <code>String</code>, ne <strong>siirtyvät</strong> hajautustaulun omistukseen:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch08-common-collections/listing-08-22/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<p>Tämän jälkeen <code>field_name</code> ja <code>field_value</code> eivät ole enää käytettävissä, koska niiden omistajuus on siirtynyt hajautustaululle.</p>
+<p>Jos haluamme välttää omistajuuden siirtymisen, voimme lisätä tauluun <strong>viittauksia</strong>. Tällöin viitatun tiedon täytyy pysyä olemassa vähintään niin kauan kuin hajautustaulu on käytössä.</p>
+<h3 id="hajautustaulun-päivittäminen"><a class="header" href="#hajautustaulun-päivittäminen">Hajautustaulun päivittäminen</a></h3>
+<p>Vaikka hajautustauluun voi lisätä uusia avain-arvo -pareja, <strong>sama avain voi sisältää vain yhden arvon kerrallaan</strong>. Arvon päivittäessä on valittava, miten olemassa oleva arvo käsitellään:</p>
+<ul>
+<li><strong>Vanha arvo korvataan uudella</strong></li>
+<li><strong>Uusi arvo lisätään vain, jos avainta ei ole vielä olemassa</strong></li>
+<li><strong>Vanha ja uusi arvo yhdistetään</strong></li>
+</ul>
+<h4 id="arvon-korvaaminen"><a class="header" href="#arvon-korvaaminen">Arvon korvaaminen</a></h4>
+<p>Jos lisäämme avaimelle uuden arvon, vanha arvo ylikirjoitetaan:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch08-common-collections/listing-08-23/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<p>Tuloste:</p>
+<pre><code class="language-text">{"Blue": 25}
+</code></pre>
+<p>Ensimmäinen <code>insert("Blue", 10)</code> korvautuu toisella <code>insert("Blue", 25)</code>, joten vain viimeisin arvo jää talteen.</p>
+<h4 id="avain-arvo--parin-lisääminen-vain-jos-avainta-ei-vielä-ole"><a class="header" href="#avain-arvo--parin-lisääminen-vain-jos-avainta-ei-vielä-ole">Avain-arvo -parin lisääminen vain, jos avainta ei vielä ole</a></h4>
+<p>Rust tarjoaa <code>entry</code>-API:n, joka mahdollistaa uuden arvon lisäämisen vain, jos avainta ei vielä ole:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch08-common-collections/listing-08-24/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<p>Tuloste:</p>
+<pre><code class="language-text">{"Yellow": 50, "Blue": 10}
+</code></pre>
+<p>Ensimmäinen <code>entry("Yellow")</code> lisää uuden arvon <code>50</code>, koska <strong>Yellow</strong>-avain puuttuu. <strong>Blue</strong>-avain on jo olemassa, joten sen arvoa ei muuteta.</p>
+<h4 id="arvon-päivittäminen-vanhan-arvon-perusteella"><a class="header" href="#arvon-päivittäminen-vanhan-arvon-perusteella">Arvon päivittäminen vanhan arvon perusteella</a></h4>
+<p>Seuraavassa esimerkissä lasketaan, kuinka monta kertaa kukin sana esiintyy tekstissä:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch08-common-collections/listing-08-25/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<p>Tuloste:</p>
+<pre><code class="language-text">{"world": 2, "hello": 1, "wonderful": 1}
+</code></pre>
+<p>Ohjelma jakaa tekstin sanoiksi ja käyttää <code>entry().or_insert(0)</code> -kutsua varmistaakseen, että jokaiselle sanalle on alkulukema <code>0</code>. Sitten se kasvattaa sanan esiintymiskertaa.</p>
+<h3 id="hajautusfunktioiden-käyttäminen"><a class="header" href="#hajautusfunktioiden-käyttäminen">Hajautusfunktioiden käyttäminen</a></h3>
+<p>Rustin <code>HashMap</code> käyttää oletuksena <strong>SipHash</strong>-hajautusfunktiota, joka suojaa <strong>palvelunestohyökkäyksiä</strong> (<em>DoS attacks</em>) vastaan. Tämä ei ole nopein mahdollinen hajautusalgoritmi, mutta se tarjoaa hyvän tasapainon <strong>turvallisuuden ja suorituskyvyn</strong> välillä.</p>
+<p>Jos ohjelmasi vaatii nopeampaa hajautusta, voit määrittää <strong>eri hajautusfunktion</strong>. Tätä varten on olemassa <strong><code>BuildHasher</code>-rajapinta</strong>, jota voidaan käyttää erilaisten hajautusalgoritmien kanssa. Näitä löytyy esimerkiksi Rustin <a href="https://crates.io/">crates.io</a> -kirjastosta.</p>
+<hr />
+<h2 id="yhteenveto"><a class="header" href="#yhteenveto">Yhteenveto</a></h2>
+<p>Tässä luvussa opimme käyttämään <strong>vektoreita, merkkijonoja ja hajautustauluja</strong> tiedon tallentamiseen, hakemiseen ja päivittämiseen.</p>
+<h3 id="harjoitustehtävät"><a class="header" href="#harjoitustehtävät">Harjoitustehtävät</a></h3>
+<ol>
+<li>Anna joukko kokonaislukuja vektorina ja laske <strong>mediaani</strong> (järjestettynä keskimmäinen arvo) ja <strong>moodi</strong> (yleisin arvo). Hajautustaulu voi olla hyödyllinen tähän.</li>
+<li>Muunna merkkijonot <strong>pig latin</strong> -kielelle: siirrä sanan ensimmäinen konsonantti loppuun ja lisää <em>ay</em>, esim. <strong>“first” → “irst-fay”</strong>. Jos sana alkaa vokaalilla, lisää <em>hay</em>, esim. <strong>“apple” → “apple-hay”</strong>.</li>
+<li>Luo <strong>tekstikäyttöliittymä</strong>, jonka avulla käyttäjä voi lisätä työntekijöitä osastoille ja hakea heitä hajautustaulusta. Tulosta työntekijät aakkosjärjestyksessä.</li>
+</ol>
+<p>Seuraavaksi käsittelemme <strong>virheidenhallintaa</strong>, koska alamme siirtyä monimutkaisempiin ohjelmiin, joissa operaatioita voi epäonnistua!</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="ch08-02-strings.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="ch09-00-error-handling.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="ch08-02-strings.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="ch09-00-error-handling.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="ferris.js"></script>
+
+
+    </div>
+    </body>
+</html>

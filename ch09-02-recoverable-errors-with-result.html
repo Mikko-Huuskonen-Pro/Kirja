@@ -1,0 +1,561 @@
+<!DOCTYPE HTML>
+<html lang="fi" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Palautuvat virheet Result-tyypillä - Rust-ohjelmointikieli</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="ferris.css">
+        <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rust-ohjelmointikieli</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/rust-lang/book" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2 id="palautettavat-virheet-result-tyypillä"><a class="header" href="#palautettavat-virheet-result-tyypillä">Palautettavat virheet <code>Result</code>-tyypillä</a></h2>
+<p>Useimmat virheet eivät ole niin vakavia, että ohjelma täytyisi pysäyttää kokonaan.
+Joskus funktion epäonnistuminen johtuu syystä, jonka voit helposti tulkita ja käsitellä.
+Esimerkiksi jos yrität avata tiedoston ja operaatio epäonnistuu, koska tiedostoa ei ole olemassa,
+voit haluta luoda tiedoston sen sijaan, että prosessi päättyisi.</p>
+<p>Muistathan Luvun 2 kohdasta <a href="ch02-00-guessing-game-tutorial.html#handling-potential-failure-with-result">”Mahdollisen epäonnistumisen käsittely <code>Result</code>-tyypillä”</a><!--
+ignore -->, että <code>Result</code>-enum on määritelty kahdella variantilla, <code>Ok</code> ja <code>Err</code>, seuraavasti:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>enum Result&lt;T, E&gt; {
+    Ok(T),
+    Err(E),
+}
+<span class="boring">}</span></code></pre></pre>
+<p><code>T</code> ja <code>E</code> ovat geneerisiä tyyppiparametreja: käsittelemme geneerisiä tyyppejä tarkemmin Luvussa 10.
+Mitä sinun täytyy tietää nyt, on että <code>T</code> edustaa onnistuneessa tapauksessa <code>Ok</code>-variantin sisällä
+palautettavan arvon tyyppiä ja <code>E</code> edustaa epäonnistumistapauksessa <code>Err</code>-variantin sisällä palautettavan
+virheen tyyppiä. Koska <code>Result</code>-tyypillä on nämä geneeriset tyyppiparametrit, voimme käyttää <code>Result</code>-tyyppiä
+ja siihen määriteltyjä funktioita monissa eri tilanteissa, joissa haluamamme onnistuneen arvon ja virhearvon
+tyypit voivat vaihdella.</p>
+<p>Kutsutaan funktiota, joka palauttaa <code>Result</code>-arvon, koska funktio voi epäonnistua.
+Listauksessa 9-3 yritämme avata tiedoston.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch09-error-handling/listing-09-03/src/main.rs}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 9-3: Tiedoston avaaminen</figcaption>
+</figure>
+<p><code>File::open</code>-funktion paluutyyppi on <code>Result&lt;T, E&gt;</code>. Geneerinen parametri <code>T</code> on täytetty
+<code>File::open</code>-toteutuksessa onnistuneen arvon tyypillä <code>std::fs::File</code>, joka on tiedostokahva.
+Virhearvossa käytetty <code>E</code>-tyyppi on <code>std::io::Error</code>. Tämä paluutyyppi tarkoittaa, että <code>File::open</code>-kutsu
+voi onnistua ja palauttaa tiedostokahvan, josta voimme lukea tai johon voimme kirjoittaa.
+Funktiokutsu voi myös epäonnistua: esimerkiksi tiedostoa ei ehkä ole olemassa tai meillä ei ehkä ole
+oikeutta käyttää tiedostoa. <code>File::open</code>-funktiolla täytyy olla tapa kertoa meille, onnistuiko se vai epäonnistuiko,
+ja antaa samalla joko tiedostokahva tai virhetiedot. Tämän tiedon välittää juuri <code>Result</code>-enum.</p>
+<p>Tapauksessa, jossa <code>File::open</code> onnistuu, muuttujan <code>greeting_file_result</code> arvo on <code>Ok</code>-instanssi,
+joka sisältää tiedostokahvan. Tapauksessa, jossa se epäonnistuu, muuttujan <code>greeting_file_result</code> arvo
+on <code>Err</code>-instanssi, joka sisältää lisätietoja tapahtuneesta virheestä.</p>
+<p>Meidän täytyy lisätä Listauksen 9-3 koodiin toimintoja, jotka riippuvat siitä, minkä arvon <code>File::open</code> palauttaa.
+Listaus 9-4 näyttää yhden tavan käsitellä <code>Result</code>-arvoa perustyökalulla, <code>match</code>-lausekkeella, josta puhuimme Luvussa 6.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust should_panic edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch09-error-handling/listing-09-04/src/main.rs}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 9-4: <code>match</code>-lausekkeen käyttö mahdollisesti palautettavien <code>Result</code>-varianttien käsittelyyn</figcaption>
+</figure>
+<p>Huomaa, että kuten <code>Option</code>-enum, myös <code>Result</code>-enum ja sen variantit on tuotu näkyvyysalueelle preludessa,
+joten emme tarvitse määrittää <code>Result::</code>-etuliitettä ennen <code>Ok</code>- ja <code>Err</code>-variantteja <code>match</code>-haaroissa.</p>
+<p>Kun tulos on <code>Ok</code>, tämä koodi palauttaa sisäisen <code>file</code>-arvon <code>Ok</code>-variantista, ja sitten sijoitamme
+tämän tiedostokahvan arvon muuttujaan <code>greeting_file</code>. <code>match</code>-lausekkeen jälkeen voimme käyttää tiedostokahvaa lukemiseen tai kirjoittamiseen.</p>
+<p><code>match</code>-lausekkeen toinen haara käsittelee tapauksen, jossa saamme <code>Err</code>-arvon <code>File::open</code>-funktiosta.
+Tässä esimerkissä olemme valinneet kutsua <code>panic!</code>-makroa. Jos nykyisessä hakemistossamme ei ole
+tiedostoa nimeltä <em>hello.txt</em> ja ajamme tämän koodin, näemme seuraavan tulosteen <code>panic!</code>-makrosta:</p>
+<pre><code class="language-console">{{#include ../listings/ch09-error-handling/listing-09-04/output.txt}}
+</code></pre>
+<p>Kuten tavallisesti, tämä tuloste kertoo meille tarkalleen, mikä meni pieleen.</p>
+<h3 id="erilaisten-virheiden-täsmäyttäminen"><a class="header" href="#erilaisten-virheiden-täsmäyttäminen">Erilaisten virheiden täsmäyttäminen</a></h3>
+<p>Listauksen 9-4 koodi kutsuu <code>panic!</code>-makroa riippumatta siitä, miksi <code>File::open</code> epäonnistui.
+Haluamme kuitenkin tehdä eri toimintoja eri epäonnistumissyistä. Jos <code>File::open</code> epäonnistui,
+koska tiedostoa ei ole olemassa, haluamme luoda tiedoston ja palauttaa kahvan uudelle tiedostolle.
+Jos <code>File::open</code> epäonnistui jostain muusta syystä — esimerkiksi koska meillä ei ollut oikeutta avata tiedostoa —
+haluamme silti, että koodi kutsuu <code>panic!</code>-makroa samalla tavalla kuin Listauksessa 9-4.
+Tätä varten lisäämme sisäkkäisen <code>match</code>-lausekkeen, kuten Listauksessa 9-5 näytetään.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<!-- ignore this test because otherwise it creates hello.txt which causes other
+tests to fail lol -->
+<pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch09-error-handling/listing-09-05/src/main.rs}}</code></pre>
+<figcaption>Listing 9-5: Eri virhetyyppien käsittely eri tavoin</figcaption>
+</figure>
+<p><code>File::open</code>-funktion <code>Err</code>-variantin sisällä palauttaman arvon tyyppi on <code>io::Error</code>,
+joka on standardikirjaston tarjoama struct. Tällä structilla on metodi <code>kind</code>, jota voimme kutsua
+saadaksemme <code>io::ErrorKind</code>-arvon. Enum <code>io::ErrorKind</code> on standardikirjaston tarjoama ja sillä on variantteja,
+jotka edustavat eri virhetyyppejä, joita <code>io</code>-operaatio voi tuottaa. Variantti, jota haluamme käyttää,
+on <code>ErrorKind::NotFound</code>, joka ilmaisee, että tiedostoa, jota yritämme avata, ei vielä ole olemassa.
+Täsmäytämme siis <code>greeting_file_result</code>-arvoon, mutta meillä on myös sisäinen <code>match</code> <code>error.kind()</code>-arvoon.</p>
+<p>Ehto, jonka haluamme tarkistaa sisäisessä <code>match</code>-lausekkeessa, on se, onko <code>error.kind()</code>-funktion
+palauttama arvo <code>ErrorKind</code>-enumin <code>NotFound</code>-variantti. Jos on, yritämme luoda tiedoston <code>File::create</code>-funktiolla.
+Koska <code>File::create</code> voi myös epäonnistua, tarvitsemme toisen haaran sisäiseen <code>match</code>-lausekkeeseen.
+Kun tiedostoa ei voida luoda, tulostetaan eri virheilmoitus. Ulomman <code>match</code>-lausekkeen toinen haara pysyy samana,
+joten ohjelma kaatuu kaikissa virheissä paitsi puuttuvan tiedoston virheessä.</p>
+<section class="note" aria-role="note">
+<h4 id="vaihtoehtoja-match-lausekkeen-käytölle-resultt-e-tyypin-kanssa"><a class="header" href="#vaihtoehtoja-match-lausekkeen-käytölle-resultt-e-tyypin-kanssa">Vaihtoehtoja <code>match</code>-lausekkeen käytölle <code>Result&lt;T, E&gt;</code>-tyypin kanssa</a></h4>
+<p>Se on paljon <code>match</code>-lausekkeita! <code>match</code>-lauseke on hyvin hyödyllinen, mutta myös hyvin primitiivinen.
+Luvussa 13 opit closureja, joita käytetään monien <code>Result&lt;T, E&gt;</code>-tyypille määriteltyjen metodien kanssa.
+Nämä metodit voivat olla tiiviimpiä kuin <code>match</code>-lausekkeen käyttö <code>Result&lt;T, E&gt;</code>-arvojen käsittelyssä koodissasi.</p>
+<p>Esimerkiksi tässä on toinen tapa kirjoittaa sama logiikka kuin Listauksessa 9-5, tällä kertaa käyttäen closureja
+ja <code>unwrap_or_else</code>-metodia:</p>
+<!-- CAN'T EXTRACT SEE https://github.com/rust-lang/mdBook/issues/1127 -->
+<pre><code class="language-rust ignore">use std::fs::File;
+use std::io::ErrorKind;
+
+fn main() {
+    let greeting_file = File::open("hello.txt").unwrap_or_else(|error| {
+        if error.kind() == ErrorKind::NotFound {
+            File::create("hello.txt").unwrap_or_else(|error| {
+                panic!("Problem creating the file: {error:?}");
+            })
+        } else {
+            panic!("Problem opening the file: {error:?}");
+        }
+    });
+}</code></pre>
+<p>Vaikka tämä koodi käyttäytyy samoin kuin Listaus 9-5, siinä ei ole yhtään <code>match</code>-lauseketta ja se on selkeämpää lukea.
+Palaa tähän esimerkkiin Luvun 13 lukemisen jälkeen ja etsi <code>unwrap_or_else</code>-metodia standardikirjaston dokumentaatiosta.
+Paljon muita näitä metodeja voi siivota valtavia sisäkkäisiä <code>match</code>-lausekkeita, kun käsittelet virheitä.</p>
+</section>
+<h4 id="oikotiet-kaatumiseen-virheessä-unwrap-ja-expect"><a class="header" href="#oikotiet-kaatumiseen-virheessä-unwrap-ja-expect">Oikotiet kaatumiseen virheessä: <code>unwrap</code> ja <code>expect</code></a></h4>
+<p><code>match</code>-lausekkeen käyttö toimii tarpeeksi hyvin, mutta se voi olla hieman sanallista eikä aina välitä aikomusta hyvin.
+<code>Result&lt;T, E&gt;</code>-tyypillä on monia apumetodeja erilaisiin, tarkempiin tehtäviin. <code>unwrap</code>-metodi on oikotie,
+joka on toteutettu aivan kuten Listauksessa 9-4 kirjoittamamme <code>match</code>-lauseke. Jos <code>Result</code>-arvo on <code>Ok</code>-variantti,
+<code>unwrap</code> palauttaa <code>Ok</code>:n sisällä olevan arvon. Jos <code>Result</code> on <code>Err</code>-variantti, <code>unwrap</code> kutsuu <code>panic!</code>-makroa puolestamme.
+Tässä on esimerkki <code>unwrap</code>-metodista käytössä:</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust should_panic edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch09-error-handling/no-listing-04-unwrap/src/main.rs}}
+<span class="boring">}</span></code></pre></pre>
+</figure>
+<p>Jos ajamme tämän koodin ilman <em>hello.txt</em>-tiedostoa, näemme virheilmoituksen <code>unwrap</code>-metodin tekemästä <code>panic!</code>-kutsusta:</p>
+<!-- manual-regeneration
+cd listings/ch09-error-handling/no-listing-04-unwrap
+cargo run
+copy and paste relevant text
+-->
+<pre><code class="language-text">thread 'main' panicked at src/main.rs:4:49:
+called `Result::unwrap()` on an `Err` value: Os { code: 2, kind: NotFound, message: "No such file or directory" }
+</code></pre>
+<p>Vastaavasti <code>expect</code>-metodi antaa meidän valita myös <code>panic!</code>-virheilmoituksen.
+<code>expect</code>-metodin käyttö <code>unwrap</code>-metodin sijaan ja hyvien virheilmoitusten antaminen voi välittää aikomuksesi
+ja helpottaa kaatumisen lähteen jäljittämistä. <code>expect</code>-metodin syntaksi näyttää tältä:</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust should_panic edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch09-error-handling/no-listing-05-expect/src/main.rs}}
+<span class="boring">}</span></code></pre></pre>
+</figure>
+<p>Käytämme <code>expect</code>-metodia samalla tavalla kuin <code>unwrap</code>-metodia: palauttaaksemme tiedostokahvan tai kutsuaksemme <code>panic!</code>-makroa.
+<code>expect</code>-metodin <code>panic!</code>-kutsussa käyttämä virheilmoitus on parametri, jonka välitämme <code>expect</code>-metodille,
+eikä <code>unwrap</code>-metodin käyttämä oletusarvoinen <code>panic!</code>-viesti. Tältä se näyttää:</p>
+<!-- manual-regeneration
+cd listings/ch09-error-handling/no-listing-05-expect
+cargo run
+copy and paste relevant text
+-->
+<pre><code class="language-text">thread 'main' panicked at src/main.rs:5:10:
+hello.txt should be included in this project: Os { code: 2, kind: NotFound, message: "No such file or directory" }
+</code></pre>
+<p>Tuotantolaatuisessa koodissa useimmat rustilaiset valitsevat <code>expect</code>-metodin <code>unwrap</code>-metodin sijaan
+ja antavat enemmän kontekstia siitä, miksi operaation odotetaan aina onnistuvan.
+Näin, jos oletuksesi osoittautuvat joskus vääriksi, sinulla on enemmän tietoa virheenkorjaukseen.</p>
+<h3 id="virheiden-propagointi"><a class="header" href="#virheiden-propagointi">Virheiden propagointi</a></h3>
+<p>Kun funktion toteutus kutsuu jotain, mikä voi epäonnistua, sen sijaan että käsittelisit virheen funktion sisällä,
+voit palauttaa virheen kutsuvalle koodille, jotta se voi päättää, mitä tehdä. Tätä kutsutaan virheen <em>propagoinniksi</em>,
+ja se antaa enemmän hallintaa kutsuvalle koodille, jossa voi olla enemmän tietoa tai logiikkaa virheen käsittelyyn
+kuin mitä sinulla on käytettävissä koodisi kontekstissa.</p>
+<p>Esimerkiksi Listaus 9-6 näyttää funktion, joka lukee käyttäjänimen tiedostosta. Jos tiedostoa ei ole olemassa
+tai sitä ei voida lukea, tämä funktio palauttaa nämä virheet koodille, joka kutsui funktiota.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<!-- Deliberately not using rustdoc_include here; the `main` function in the
+file panics. We do want to include it for reader experimentation purposes, but
+don't want to include it for rustdoc testing purposes. -->
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#include ../listings/ch09-error-handling/listing-09-06/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 9-6: Funktio, joka palauttaa virheet kutsuvalle koodille <code>match</code>-lausekkeen avulla</figcaption>
+</figure>
+<p>Tämä funktio voidaan kirjoittaa paljon lyhyemmin, mutta aloitamme tekemällä suuren osan manuaalisesti
+virheenkäsittelyn tutkimiseksi; lopussa näytämme lyhyemmän tavan. Tarkastellaan ensin funktion paluutyyppiä:
+<code>Result&lt;String, io::Error&gt;</code>. Tämä tarkoittaa, että funktio palauttaa <code>Result&lt;T, E&gt;</code>-tyypin arvon,
+jossa geneerinen parametri <code>T</code> on täytetty konkreettisella tyypillä <code>String</code> ja geneerinen tyyppi <code>E</code>
+on täytetty konkreettisella tyypillä <code>io::Error</code>.</p>
+<p>Jos tämä funktio onnistuu ilman ongelmia, koodi, joka kutsuu tätä funktiota, saa <code>Ok</code>-arvon, joka sisältää
+<code>String</code>-tyypin — tämän funktion tiedostosta lukeman <code>username</code>-arvon. Jos tämä funktio kohtaa ongelmia,
+kutsuva koodi saa <code>Err</code>-arvon, joka sisältää <code>io::Error</code>-instanssin lisätiedoilla ongelmista.
+Valitsimme <code>io::Error</code>-tyypin tämän funktion paluutyypiksi, koska se sattuu olemaan virhearvon tyyppi,
+jonka molemmat funktion rungossa kutsumamme operaatiot voivat palauttaa epäonnistuessaan: <code>File::open</code>-funktio
+ja <code>read_to_string</code>-metodi.</p>
+<p>Funktion runko alkaa kutsumalla <code>File::open</code>-funktiota. Sitten käsittelemme <code>Result</code>-arvon <code>match</code>-lausekkeella,
+joka on samanlainen kuin Listauksen 9-4 <code>match</code>. Jos <code>File::open</code> onnistuu, tiedostokahva kuviomuuttujassa <code>file</code>
+tulee muuttujan <code>username_file</code> arvoksi ja funktio jatkuu. <code>Err</code>-tapauksessa <code>panic!</code>-kutsun sijaan käytämme
+<code>return</code>-avainsanaa palataksemme aikaisin kokonaan funktiosta ja välittääksemme <code>File::open</code>-funktion virhearvon,
+nyt kuviomuuttujassa <code>e</code>, takaisin kutsuvalle koodille tämän funktion virhearvona.</p>
+<p>Jos meillä on siis tiedostokahva muuttujassa <code>username_file</code>, funktio luo sitten uuden <code>String</code>-tyypin muuttujaan <code>username</code>
+ja kutsuu <code>read_to_string</code>-metodia tiedostokahvassa <code>username_file</code> lukeakseen tiedoston sisällön muuttujaan <code>username</code>.
+<code>read_to_string</code>-metodi palauttaa myös <code>Result</code>-tyypin, koska se voi epäonnistua, vaikka <code>File::open</code> onnistui.
+Tarvitsemme siis toisen <code>match</code>-lausekkeen käsittelemään tuota <code>Result</code>-arvoa: jos <code>read_to_string</code> onnistuu,
+funktiomme on onnistunut ja palautamme tiedostosta nyt <code>username</code>-muuttujassa olevan käyttäjänimen <code>Ok</code>-arvoon käärittynä.
+Jos <code>read_to_string</code> epäonnistuu, palautamme virhearvon samalla tavalla kuin palautimme virhearvon <code>match</code>-lausekkeessa,
+joka käsitteli <code>File::open</code>-funktion paluuarvon. Emme kuitenkaan tarvitse eksplisiittisesti sanoa <code>return</code>,
+koska tämä on funktion viimeinen lauseke.</p>
+<p>Tämän koodin kutsuva koodi käsittelee sitten joko <code>Ok</code>-arvon, joka sisältää käyttäjänimen, tai <code>Err</code>-arvon,
+joka sisältää <code>io::Error</code>-virheen. Kutsuvalle koodille jää päätettäväksi, mitä näille arvoille tehdään.
+Jos kutsuva koodi saa <code>Err</code>-arvon, se voi kutsua <code>panic!</code>-makroa ja kaataa ohjelman, käyttää oletuskäyttäjänimeä
+tai etsiä käyttäjänimen jostain muualta kuin tiedostosta, esimerkiksi. Meillä ei ole tarpeeksi tietoa siitä,
+mitä kutsuva koodi todella yrittää tehdä, joten propagoidamme kaiken onnistumis- tai virhetiedon ylöspäin,
+jotta se voi käsitellä sen asianmukaisesti.</p>
+<p>Tämä virheiden propagoinnin malli on niin yleinen Rustissa, että Rust tarjoaa kysymysmerkkioperaattorin <code>?</code>
+helpottamaan tätä.</p>
+<h4 id="oikotie-virheiden-propagointiin--operaattori"><a class="header" href="#oikotie-virheiden-propagointiin--operaattori">Oikotie virheiden propagointiin: <code>?</code>-operaattori</a></h4>
+<p>Listaus 9-7 näyttää <code>read_username_from_file</code>-funktion toteutuksen, jolla on sama toiminnallisuus kuin Listauksessa 9-6,
+mutta tässä toteutuksessa käytetään <code>?</code>-operaattoria.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<!-- Deliberately not using rustdoc_include here; the `main` function in the
+file panics. We do want to include it for reader experimentation purposes, but
+don't want to include it for rustdoc testing purposes. -->
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#include ../listings/ch09-error-handling/listing-09-07/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 9-7: Funktio, joka palauttaa virheet kutsuvalle koodille <code>?</code>-operaattorin avulla</figcaption>
+</figure>
+<p><code>Result</code>-arvon perässä oleva <code>?</code> on määritelty toimimaan lähes samalla tavalla kuin <code>match</code>-lausekkeet,
+jotka määritimme <code>Result</code>-arvojen käsittelyyn Listauksessa 9-6. Jos <code>Result</code>-arvon arvo on <code>Ok</code>,
+<code>Ok</code>:n sisällä oleva arvo palautetaan tästä lausekkeesta ja ohjelma jatkuu. Jos arvo on <code>Err</code>,
+<code>Err</code> palautetaan koko funktiosta ikään kuin olisimme käyttäneet <code>return</code>-avainsanaa, jolloin virhearvo
+propagoituu kutsuvalle kodelle.</p>
+<p>On ero Listauksen 9-6 <code>match</code>-lausekkeen ja <code>?</code>-operaattorin välillä: virhearvot, joille kutsutaan <code>?</code>-operaattoria,
+käyvät läpi <code>from</code>-funktion, joka on määritelty standardikirjaston <code>From</code>-traitissa ja jota käytetään arvojen
+muuntamiseen tyypistä toiseen. Kun <code>?</code>-operaattori kutsuu <code>from</code>-funktiota, vastaanotettu virhetyyppi muunnetaan
+nykyisen funktion paluutyypissä määriteltyyn virhetyyppiin. Tämä on hyödyllistä, kun funktio palauttaa yhden virhetyypin
+edustaakseen kaikkia tapoja, joilla funktio voi epäonnistua, vaikka osat voivat epäonnistua monista eri syistä.</p>
+<p>Esimerkiksi voisimme muuttaa Listauksen 9-7 <code>read_username_from_file</code>-funktion palauttamaan mukautetun virhetyypin
+nimeltä <code>OurError</code>, jonka määrittelemme. Jos määrittelemme myös <code>impl From&lt;io::Error&gt; for OurError</code> rakentaaksemme
+<code>OurError</code>-instanssin <code>io::Error</code>-virheestä, <code>read_username_from_file</code>-funktion rungon <code>?</code>-operaattorikutsut
+kutsuvat <code>from</code>-funktiota ja muuntavat virhetyypit lisäämättä enempää koodia funktioon.</p>
+<p>Listauksen 9-7 kontekstissa <code>File::open</code>-kutsun lopussa oleva <code>?</code> palauttaa <code>Ok</code>:n sisällä olevan arvon
+muuttujaan <code>username_file</code>. Jos virhe tapahtuu, <code>?</code>-operaattori palaa aikaisin koko funktiosta ja antaa
+minkä tahansa <code>Err</code>-arvon kutsuvalle kodelle. Sama pätee <code>read_to_string</code>-kutsun lopussa olevaan <code>?</code>-operaattoriin.</p>
+<p><code>?</code>-operaattori poistaa paljon pohjakoodia ja yksinkertaistaa tämän funktion toteutusta.
+Voimme jopa lyhentää tätä koodia ketjuttamalla metodikutsuja heti <code>?</code>-operaattorin jälkeen, kuten Listauksessa 9-8 näytetään.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<!-- Deliberately not using rustdoc_include here; the `main` function in the
+file panics. We do want to include it for reader experimentation purposes, but
+don't want to include it for rustdoc testing purposes. -->
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#include ../listings/ch09-error-handling/listing-09-08/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 9-8: Metodikutsujen ketjuttaminen <code>?</code>-operaattorin jälkeen</figcaption>
+</figure>
+<p>Olemme siirtäneet uuden <code>String</code>-tyypin luomisen muuttujaan <code>username</code> funktion alkuun; tuo osa ei ole muuttunut.
+Sen sijaan, että loisimme muuttujan <code>username_file</code>, olemme ketjuttaneet <code>read_to_string</code>-kutsun suoraan
+<code>File::open("hello.txt")?</code>-kutsun tulokseen. Meillä on silti <code>?</code> <code>read_to_string</code>-kutsun lopussa, ja palautamme edelleen
+<code>Ok</code>-arvon, joka sisältää <code>username</code>-arvon, kun sekä <code>File::open</code> että <code>read_to_string</code> onnistuvat virheiden palauttamisen sijaan.
+Toiminnallisuus on taas sama kuin Listauksissa 9-6 ja 9-7; tämä on vain erilainen, ergonomisempi tapa kirjoittaa se.</p>
+<p>Listaus 9-9 näyttää tavan tehdä tämä vielä lyhyemmäksi käyttämällä <code>fs::read_to_string</code>-funktiota.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<!-- Deliberately not using rustdoc_include here; the `main` function in the
+file panics. We do want to include it for reader experimentation purposes, but
+don't want to include it for rustdoc testing purposes. -->
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#include ../listings/ch09-error-handling/listing-09-09/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 9-9: <code>fs::read_to_string</code>-funktion käyttö tiedoston avaamisen ja lukemisen sijaan</figcaption>
+</figure>
+<p>Tiedoston lukeminen merkkijonoon on melko yleinen operaatio, joten standardikirjasto tarjoaa kätevän
+<code>fs::read_to_string</code>-funktion, joka avaa tiedoston, luo uuden <code>String</code>-tyypin, lukee tiedoston sisällön,
+laittaa sisällön kyseiseen <code>String</code>-tyyppiin ja palauttaa sen. Totta kai <code>fs::read_to_string</code>-funktion käyttö
+ei anna meille mahdollisuutta selittää kaikkea virheenkäsittelyä, joten teimme sen ensin pidemmällä tavalla.</p>
+<h4 id="missä--operaattoria-voi-käyttää"><a class="header" href="#missä--operaattoria-voi-käyttää">Missä <code>?</code>-operaattoria voi käyttää</a></h4>
+<p><code>?</code>-operaattoria voi käyttää vain funktioissa, joiden paluutyyppi on yhteensopiva arvon kanssa, jolle <code>?</code> käytetään.
+Tämä johtuu siitä, että <code>?</code>-operaattori on määritelty suorittamaan aikaisen paluun arvosta funktiosta samalla tavalla
+kuin Listauksessa 9-6 määrittelemämme <code>match</code>-lauseke. Listauksessa 9-6 <code>match</code> käytti <code>Result</code>-arvoa,
+ja aikaisen paluun haara palautti <code>Err(e)</code>-arvon. Funktion paluutyypin täytyy olla <code>Result</code>, jotta se on yhteensopiva tämän <code>return</code>-kutsun kanssa.</p>
+<p>Listauksessa 9-10 tarkastellaan virhettä, jonka saamme, jos käytämme <code>?</code>-operaattoria <code>main</code>-funktiossa,
+jonka paluutyyppi ei ole yhteensopiva tyypin kanssa, jolle käytämme <code>?</code>-operaattoria.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch09-error-handling/listing-09-10/src/main.rs}}</code></pre>
+<figcaption>Listing 9-10: <code>?</code>-operaattorin käyttö <code>main</code>-funktiossa, joka palauttaa <code>()</code>, ei käänny.</figcaption>
+</figure>
+<p>Tämä koodi avaa tiedoston, mikä voi epäonnistua. <code>?</code>-operaattori seuraa <code>File::open</code>-funktion palauttamaa <code>Result</code>-arvoa,
+mutta tällä <code>main</code>-funktiolla on paluutyyppi <code>()</code>, ei <code>Result</code>. Kun käännamme tämän koodin, saamme seuraavan virheilmoituksen:</p>
+<pre><code class="language-console">{{#include ../listings/ch09-error-handling/listing-09-10/output.txt}}
+</code></pre>
+<p>Tämä virhe osoittaa, että saamme käyttää <code>?</code>-operaattoria vain funktiossa, joka palauttaa <code>Result</code>-, <code>Option</code>-tyypin
+tai muun <code>FromResidual</code>-traitin toteuttavan tyypin.</p>
+<p>Virheen korjaamiseksi on kaksi vaihtoehtoa. Toinen on muuttaa funktion paluutyyppi yhteensopivaksi arvon kanssa,
+jolle käytät <code>?</code>-operaattoria, kunhan sinulla ei ole rajoituksia, jotka estävät sen. Toinen on käyttää <code>match</code>-lauseketta
+tai jotakin <code>Result&lt;T, E&gt;</code>-tyypin metodeista käsitelläksesi <code>Result&lt;T, E&gt;</code>-arvon sopivalla tavalla.</p>
+<p>Virheilmoitus mainitsi myös, että <code>?</code>-operaattoria voi käyttää <code>Option&lt;T&gt;</code>-arvojen kanssa. Kuten <code>Result</code>-tyypin kanssa,
+voit käyttää <code>?</code>-operaattoria <code>Option</code>-tyypillä vain funktiossa, joka palauttaa <code>Option</code>-tyypin. <code>?</code>-operaattorin käyttäytyminen,
+kun sitä kutsutaan <code>Option&lt;T&gt;</code>-arvolla, on samanlainen kuin kun sitä kutsutaan <code>Result&lt;T, E&gt;</code>-arvolla:
+jos arvo on <code>None</code>, <code>None</code> palautetaan aikaisin funktiosta siinä vaiheessa. Jos arvo on <code>Some</code>, <code>Some</code>:n sisällä oleva arvo
+on lausekkeen tulosarvo ja funktio jatkuu. Listaus 9-11 sisältää esimerkin funktiosta, joka etsii annetun tekstin ensimmäisen rivin viimeisen merkin.</p>
+<figure class="listing">
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch09-error-handling/listing-09-11/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 9-11: <code>?</code>-operaattorin käyttö <code>Option&lt;T&gt;</code>-arvolla</figcaption>
+</figure>
+<p>Tämä funktio palauttaa <code>Option&lt;char&gt;</code>, koska siellä voi olla merkki, mutta se voi myös olla, ettei ole.
+Tämä koodi ottaa <code>text</code>-merkkijonoviipaleargumentin ja kutsuu sen <code>lines</code>-metodia, joka palauttaa iteraattorin
+merkkijonon riveille. Koska tämä funktio haluaa tarkastella ensimmäistä riviä, se kutsuu <code>next</code>-metodia iteraattorilla
+saadakseen ensimmäisen arvon iteraattorista. Jos <code>text</code> on tyhjä merkkijono, tämä <code>next</code>-kutsu palauttaa <code>None</code>,
+jolloin käytämme <code>?</code>-operaattoria pysähtyäksemme ja palauttaaksemme <code>None</code>:n <code>last_char_of_first_line</code>-funktiosta.
+Jos <code>text</code> ei ole tyhjä merkkijono, <code>next</code> palauttaa <code>Some</code>-arvon, joka sisältää merkkijonoviipaleen tekstin ensimmäisestä rivistä.</p>
+<p><code>?</code> purkaa merkkijonoviipaleen, ja voimme kutsua <code>chars</code>-metodia kyseisellä merkkijonoviipaleella saadaksemme
+sen merkkien iteraattorin. Olemme kiinnostuneita tämän ensimmäisen rivin viimeisestä merkistä, joten kutsumme <code>last</code>-metodia
+palauttaaksemme iteraattorin viimeisen kohteen. Tämä on <code>Option</code>, koska ensimmäinen rivi voi olla tyhjä merkkijono;
+esimerkiksi jos <code>text</code> alkaa tyhjällä rivillä mutta sisältää merkkejä muilla riveillä, kuten <code>"\nhi"</code>.
+Jos ensimmäisellä rivillä on kuitenkin viimeinen merkki, se palautetaan <code>Some</code>-variantissa. Keskellä oleva <code>?</code>-operaattori
+antaa meille tiiviin tavan ilmaista tämä logiikka, jolloin voimme toteuttaa funktion yhdellä rivillä. Jos emme voisi käyttää
+<code>?</code>-operaattoria <code>Option</code>-tyypillä, meidän täytyisi toteuttaa tämä logiikka useammilla metodikutsuilla tai <code>match</code>-lausekkeella.</p>
+<p>Huomaa, että voit käyttää <code>?</code>-operaattoria <code>Result</code>-arvolla funktiossa, joka palauttaa <code>Result</code>-tyypin, ja voit käyttää
+<code>?</code>-operaattoria <code>Option</code>-arvolla funktiossa, joka palauttaa <code>Option</code>-tyypin, mutta et voi sekoittaa niitä.
+<code>?</code>-operaattori ei automaattisesti muunna <code>Result</code>-tyyppiä <code>Option</code>-tyypiksi tai päinvastoin; näissä tapauksissa
+voit käyttää metodeja kuten <code>ok</code>-metodia <code>Result</code>-tyypillä tai <code>ok_or</code>-metodia <code>Option</code>-tyypillä tehdäksesi muunnoksen eksplisiittisesti.</p>
+<p>Tähän mennessä kaikki käyttämämme <code>main</code>-funktiot ovat palauttaneet <code>()</code>. <code>main</code>-funktio on erityinen, koska se on
+suoritettavan ohjelman sisään- ja uloskäyntipiste, ja sen paluutyypillä on rajoituksia, jotta ohjelma käyttäytyy odotetusti.</p>
+<p>Onneksi <code>main</code> voi myös palauttaa <code>Result&lt;(), E&gt;</code>. Listaus 9-12 sisältää Listauksen 9-10 koodin, mutta olemme muuttaneet
+<code>main</code>-funktion paluutyypiksi <code>Result&lt;(), Box&lt;dyn Error&gt;&gt;</code> ja lisänneet paluuarvon <code>Ok(())</code> loppuun. Tämä koodi kääntyy nyt.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch09-error-handling/listing-09-12/src/main.rs}}</code></pre>
+<figcaption>Listing 9-12: <code>main</code>-funktion muuttaminen palauttamaan <code>Result&lt;(), E&gt;</code> sallii <code>?</code>-operaattorin käytön <code>Result</code>-arvoilla.</figcaption>
+</figure>
+<p><code>Box&lt;dyn Error&gt;</code>-tyyppi on <em>trait-objekti</em>, josta puhumme Luvun 18 <a href="ch18-02-trait-objects.html#using-trait-objects-that-allow-for-values-of-different-types">”Trait-objektien käyttö eri tyyppisten arvojen sallimiseksi”</a><!--
+ignore --> -osiossa. Toistaiseksi voit lukea <code>Box&lt;dyn Error&gt;</code> merkityksenä ”mikä tahansa virhetyyppi”.
+<code>?</code>-operaattorin käyttö <code>Result</code>-arvolla <code>main</code>-funktiossa, jonka virhetyyppi on <code>Box&lt;dyn Error&gt;</code>, on sallittua,
+koska se sallii minkä tahansa <code>Err</code>-arvon palauttamisen aikaisin. Vaikka tämän <code>main</code>-funktion runko palauttaa
+vain <code>std::io::Error</code>-tyyppisiä virheitä, määrittämällä <code>Box&lt;dyn Error&gt;</code> tämä signatuuri pysyy oikeana,
+vaikka <code>main</code>-funktion runkoon lisättäisiin enemmän koodia, joka palauttaa muita virheitä.</p>
+<p>Kun <code>main</code>-funktio palauttaa <code>Result&lt;(), E&gt;</code>, suoritettava ohjelma päättyy arvolla <code>0</code>, jos <code>main</code> palauttaa <code>Ok(())</code>,
+ja päättyy nollasta poikkeavalla arvolla, jos <code>main</code> palauttaa <code>Err</code>-arvon. C-kielellä kirjoitetut suoritettavat tiedostot
+palauttavat kokonaislukuja päättyessään: onnistuneesti päättyvät ohjelmat palauttavat kokonaisluvun <code>0</code>,
+ja virheelliset ohjelmat palauttavat jonkin muun kuin nollan. Rust palauttaa myös kokonaislukuja suoritettavista tiedostoista
+tämän käytännön mukaisuuden vuoksi.</p>
+<p><code>main</code>-funktio voi palauttaa mitä tahansa tyyppejä, jotka toteuttavat <a href="../std/process/trait.Termination.html">standardikirjaston <code>Termination</code>-traitin</a><!-- ignore -->,
+joka sisältää <code>report</code>-funktion, joka palauttaa <code>ExitCode</code>-tyypin. Katso standardikirjaston dokumentaatiosta lisätietoja
+<code>Termination</code>-traitin toteuttamisesta omille tyypeillesi.</p>
+<p>Nyt kun olemme käsitelleet <code>panic!</code>-kutsun tai <code>Result</code>-paluun yksityiskohdat, palataan aiheeseen siitä,
+miten päättää, kumpaa on sopivaa käyttää missäkin tilanteessa.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="ch09-01-unrecoverable-errors-with-panic.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="ch09-03-to-panic-or-not-to-panic.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="ch09-01-unrecoverable-errors-with-panic.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="ch09-03-to-panic-or-not-to-panic.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="ferris.js"></script>
+
+
+    </div>
+    </body>
+</html>

@@ -1,0 +1,426 @@
+<!DOCTYPE HTML>
+<html lang="fi" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Metodisyntaksi - Rust-ohjelmointikieli</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="ferris.css">
+        <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rust-ohjelmointikieli</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/rust-lang/book" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2 id="metodisyntaksi"><a class="header" href="#metodisyntaksi">Metodisyntaksi</a></h2>
+<p><em>Metodit</em> ovat samankaltaisia kuin funktiot: ne määritellään <code>fn</code>-avainsanalla ja
+nimellä, niillä voi olla parametreja ja palautusarvo, ja ne sisältävät koodia,
+joka suoritetaan, kun metodia kutsutaan jostakin muualta. Toisin kuin funktiot,
+metodit määritellään rakenteen (tai luettelotyypin tai trait-objektin, joita
+käsitellään <a href="ch06-00-enums.html">Luvussa 6</a><!-- ignore --> ja <a href="ch18-02-trait-objects.html">Luvussa
+18</a><!-- ignore -->, vastaavasti) yhteydessä, ja niiden ensimmäinen
+parametri on aina <code>self</code>, joka edustaa rakenteen instanssia, jolle metodia
+kutsutaan.</p>
+<h3 id="metodin-määrittely"><a class="header" href="#metodin-määrittely">Metodin määrittely</a></h3>
+<p>Muutetaan <code>area</code>-funktio, jolla on <code>Rectangle</code>-instanssi parametrina, ja
+tehdään sen sijaan <code>area</code>-metodi, joka määritellään <code>Rectangle</code>-rakenteelle,
+kuten Listauksessa 5-13 on esitetty.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch05-using-structs-to-structure-related-data/listing-05-13/src/main.rs}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 5-13: <code>area</code>-metodin määrittely <code>Rectangle</code>-rakenteelle</figcaption>
+</figure>
+<p>Määrittääksemme funktion <code>Rectangle</code>-kontekstissa, aloitamme <code>impl</code>
+(toteutus) -lohkon <code>Rectangle</code>-rakenteelle. Kaikki tämän <code>impl</code>-lohkon sisällä
+on liitetty <code>Rectangle</code>-tyyppiin. Siirrämme sitten <code>area</code>-funktion <code>impl</code>-lohkon
+aaltosulkeiden sisään ja muutamme ensimmäisen (ja tässä tapauksessa ainoan)
+parametrin signatuurissa ja kaikkialla rungossa muotoon <code>self</code>. <code>main</code>-funktiossa,
+jossa kutsuimme <code>area</code>-funktiota ja välitimme <code>rect1</code>:n argumenttina, voimme
+sen sijaan käyttää <em>metodisyntaksia</em> kutsuaksemme <code>area</code>-metodia
+<code>Rectangle</code>-instanssillamme. Metodisyntaksi tulee instanssin jälkeen: lisäämme
+pisteen, metodin nimen, sulkeet ja mahdolliset argumentit.</p>
+<p><code>area</code>-metodin signatuurissa käytämme <code>&amp;self</code>:ää <code>rectangle: &amp;Rectangle</code>:n
+sijaan. <code>&amp;self</code> on itse asiassa lyhenne muodolle <code>self: &amp;Self</code>. <code>impl</code>-lohkon
+sisällä tyyppi <code>Self</code> on alias tyypille, jolle <code>impl</code>-lohko on tarkoitettu.
+Metodeilla täytyy olla ensimmäisenä parametrinaan nimeltään <code>self</code> tyyppiä
+<code>Self</code>, joten Rust antaa sinun lyhentää tämän pelkällä nimellä <code>self</code>
+ensimmäisessä parametripaikassa. Huomaa, että meidän täytyy silti käyttää <code>&amp;</code>:ää
+<code>self</code>-lyhenteen edessä osoittaaksemme, että tämä metodi lainaa <code>Self</code>-instanssia,
+aivan kuten teimme <code>rectangle: &amp;Rectangle</code>:ssa. Metodit voivat ottaa omistajuuden
+<code>self</code>:stä, lainata <code>self</code>:ää muuttumattomasti, kuten teimme tässä, tai lainata
+<code>self</code>:ää muuttuvasti, aivan kuten ne voivat tehdä mille tahansa muulle
+parametrille.</p>
+<p>Valitsimme <code>&amp;self</code>:n tässä samasta syystä kuin käytimme <code>&amp;Rectangle</code>:a
+funktioversiossa: emme halua ottaa omistajuutta, ja haluamme vain lukea
+rakenteen dataa, emme kirjoittaa siihen. Jos haluaisimme muuttaa instanssia,
+jolle metodia kutsutaan, osana sitä, mitä metodi tekee, käyttäisimme
+<code>&amp;mut self</code>:ää ensimmäisenä parametrina. Metodi, joka ottaa omistajuuden
+instanssista käyttämällä pelkkää <code>self</code>:ää ensimmäisenä parametrina, on harvinainen;
+tätä tekniikkaa käytetään yleensä silloin, kun metodi muuntaa <code>self</code>:n joksikin
+muuksi ja haluat estää kutsujaa käyttämästä alkuperäistä instanssia muunnoksen
+jälkeen.</p>
+<p>Pääsyy metodien käyttämiseen funktioiden sijaan, metodisyntaksin tarjoamisen ja
+sen lisäksi, ettei <code>self</code>:n tyyppiä tarvitse toistaa jokaisen metodin
+signatuurissa, on organisointi. Olemme sijoittaneet kaikki asiat, joita voimme
+tehdä tyypin instanssilla, yhteen <code>impl</code>-lohkoon sen sijaan, että pakottaisimme
+koodimme tulevat käyttäjät etsimään <code>Rectangle</code>:n ominaisuuksia eri paikoista
+tarjoamassamme kirjastossa.</p>
+<p>Huomaa, että voimme halutessamme antaa metodille saman nimen kuin rakenteen
+kentällä on. Esimerkiksi voimme määritellä <code>Rectangle</code>-rakenteelle metodin, joka
+on myös nimeltään <code>width</code>:</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch05-using-structs-to-structure-related-data/no-listing-06-method-field-interaction/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+</figure>
+<p>Tässä valitsemme, että <code>width</code>-metodi palauttaa <code>true</code>, jos instanssin <code>width</code>-
+kentän arvo on suurempi kuin <code>0</code>, ja <code>false</code>, jos arvo on <code>0</code>: voimme käyttää
+kenttää saman nimisen metodin sisällä mihin tahansa tarkoitukseen. <code>main</code>-funktiossa,
+kun <code>rect1.width</code>:n jälkeen tulee sulkeet, Rust tietää, että tarkoitamme metodia
+<code>width</code>. Kun emme käytä sulkeita, Rust tietää, että tarkoitamme kenttää <code>width</code>.</p>
+<p>Usein, mutta ei aina, kun annamme metodille saman nimen kuin kentällä on, haluamme
+sen vain palauttavan kentän arvon eikä tekevän mitään muuta. Tällaisia metodeja
+kutsutaan <em>gettereiksi</em>, eikä Rust toteuta niitä automaattisesti rakenteen
+kentille, kuten jotkut muut kielet tekevät. Getterit ovat hyödyllisiä, koska voit
+tehdä kentästä yksityisen mutta metodista julkisen ja siten mahdollistaa
+vain-luku-pääsyn kyseiseen kenttään osana tyypin julkista API:a. Käsittelemme,
+mitä julkinen ja yksityinen ovat ja miten kenttä tai metodi merkitään julkiseksi
+tai yksityiseksi, <a href="ch07-03-paths-for-referring-to-an-item-in-the-module-tree.html#exposing-paths-with-the-pub-keyword">Luvussa 7</a><!-- ignore -->.</p>
+<section class="note" aria-role="note">
+<h3 id="missä-on---operaattori"><a class="header" href="#missä-on---operaattori">Missä on <code>-&gt;</code>-operaattori?</a></h3>
+<p>C:ssä ja C++:ssa käytetään kahta eri operaattoria metodien kutsumiseen: käytät
+<code>.</code>:a, jos kutsut metodia suoraan objektille, ja <code>-&gt;</code>:a, jos kutsut metodia
+objektin osoittimella ja sinun täytyy ensin dereferoida osoitin. Toisin sanoen,
+jos <code>object</code> on osoitin, <code>object-&gt;something()</code> on samankaltainen kuin
+<code>(*object).something()</code>.</p>
+<p>Rustilla ei ole vastaavaa <code>-&gt;</code>-operaattoria; sen sijaan Rustissa on ominaisuus
+nimeltä <em>automaattinen viittaaminen ja dereferointi</em>. Metodien kutsuminen on
+yksi harvoista paikoista Rustissa, joissa tämä käyttäytyminen esiintyy.</p>
+<p>Näin se toimii: kun kutsut metodia <code>object.something()</code>:lla, Rust lisää
+automaattisesti <code>&amp;</code>:n, <code>&amp;mut</code>:n tai <code>*</code>:n, jotta <code>object</code> vastaa metodin
+signatuuria. Toisin sanoen seuraavat ovat samat:</p>
+<!-- CAN'T EXTRACT SEE BUG https://github.com/rust-lang/mdBook/issues/1127 -->
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span><span class="boring">#[derive(Debug,Copy,Clone)]
+</span><span class="boring">struct Point {
+</span><span class="boring">    x: f64,
+</span><span class="boring">    y: f64,
+</span><span class="boring">}
+</span><span class="boring">
+</span><span class="boring">impl Point {
+</span><span class="boring">   fn distance(&amp;self, other: &amp;Point) -&gt; f64 {
+</span><span class="boring">       let x_squared = f64::powi(other.x - self.x, 2);
+</span><span class="boring">       let y_squared = f64::powi(other.y - self.y, 2);
+</span><span class="boring">
+</span><span class="boring">       f64::sqrt(x_squared + y_squared)
+</span><span class="boring">   }
+</span><span class="boring">}
+</span><span class="boring">let p1 = Point { x: 0.0, y: 0.0 };
+</span><span class="boring">let p2 = Point { x: 5.0, y: 6.5 };
+</span>p1.distance(&amp;p2);
+(&amp;p1).distance(&amp;p2);
+<span class="boring">}</span></code></pre></pre>
+<p>Ensimmäinen näyttää paljon siistimmältä. Tämä automaattinen viittaamisen
+käyttäytyminen toimii, koska metodeilla on selkeä vastaanottaja—<code>self</code>:n tyyppi.
+Vastaanottajan ja metodin nimen perusteella Rust voi selvästi päätellä, lukeeko
+metodi (<code>&amp;self</code>), muuttaako (<code>&amp;mut self</code>) vai kuluttaako (<code>self</code>) instanssia.
+Se, että Rust tekee lainaamisesta implisiittistä metodien vastaanottajille, on
+merkittävä osa omistajuuden käytännön ergonomiaa.</p>
+</section>
+<h3 id="metodit-joilla-on-useita-parametreja"><a class="header" href="#metodit-joilla-on-useita-parametreja">Metodit, joilla on useita parametreja</a></h3>
+<p>Harjoitellaan metodien käyttöä toteuttamalla toinen metodi <code>Rectangle</code>-rakenteelle.
+Tällä kertaa haluamme, että <code>Rectangle</code>-instanssi ottaa toisen <code>Rectangle</code>-
+instanssin ja palauttaa <code>true</code>, jos toinen <code>Rectangle</code> mahtuu kokonaan <code>self</code>:n
+(eli ensimmäisen <code>Rectangle</code>:n) sisään; muuten sen pitäisi palauttaa <code>false</code>.
+Toisin sanoen, kun olemme määritelleet <code>can_hold</code>-metodin, haluamme pystyä
+kirjoittamaan Listauksessa 5-14 näytetyn ohjelman.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch05-using-structs-to-structure-related-data/listing-05-14/src/main.rs}}</code></pre>
+<figcaption>Listing 5-14: Vielä kirjoittamattoman <code>can_hold</code>-metodin käyttö</figcaption>
+</figure>
+<p>Odotettu tuloste näyttäisi seuraavalta, koska <code>rect2</code>:n molemmat mitat ovat
+pienempiä kuin <code>rect1</code>:n mitat, mutta <code>rect3</code> on leveämpi kuin <code>rect1</code>:</p>
+<pre><code class="language-text">Can rect1 hold rect2? true
+Can rect1 hold rect3? false
+</code></pre>
+<p>Tiedämme, että haluamme määritellä metodin, joten se on <code>impl Rectangle</code> -lohkon
+sisällä. Metodin nimi on <code>can_hold</code>, ja se ottaa parametrina muuttumattoman
+lainauksen toisesta <code>Rectangle</code>:sta. Voimme päätellä parametrin tyypin
+katsomalla koodia, joka kutsuu metodia: <code>rect1.can_hold(&amp;rect2)</code> välittää
+<code>&amp;rect2</code>:n, joka on muuttumaton lainaus <code>rect2</code>:sta, <code>Rectangle</code>-instanssista.
+Tämä on järkevää, koska meidän täytyy vain lukea <code>rect2</code>:a (eikä kirjoittaa,
+mikä tarkoittaisi, että tarvitsisimme muuttuvan lainauksen), ja haluamme <code>main</code>:in
+säilyttävän omistajuuden <code>rect2</code>:sta, jotta voimme käyttää sitä uudelleen
+<code>can_hold</code>-metodin kutsumisen jälkeen. <code>can_hold</code>-metodin palautusarvo on
+totuusarvo, ja toteutus tarkistaa, ovatko <code>self</code>:n leveys ja korkeus suurempia
+kuin toisen <code>Rectangle</code>:n leveys ja korkeus, vastaavasti. Lisätään uusi
+<code>can_hold</code>-metodi Listauksen 5-13 <code>impl</code>-lohkoon, kuten Listauksessa 5-15 on
+esitetty.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch05-using-structs-to-structure-related-data/listing-05-15/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 5-15: <code>can_hold</code>-metodin toteutus <code>Rectangle</code>-rakenteelle, joka ottaa toisen <code>Rectangle</code>-instanssin parametrina</figcaption>
+</figure>
+<p>Kun ajamme tämän koodin Listauksen 5-14 <code>main</code>-funktiolla, saamme haluamamme
+tulosteen. Metodeilla voi olla useita parametreja, jotka lisätään signatuuriin
+<code>self</code>-parametrin jälkeen, ja nämä parametrit toimivat aivan kuten parametrit
+funktioissa.</p>
+<h3 id="liittyvät-funktiot"><a class="header" href="#liittyvät-funktiot">Liittyvät funktiot</a></h3>
+<p>Kaikkia <code>impl</code>-lohkon sisällä määriteltyjä funktioita kutsutaan <em>liittyviksi
+funktioiksi</em>, koska ne liittyvät <code>impl</code>:n jälkeen nimettyyn tyyppiin. Voimme
+määritellä liittyviä funktioita, joilla ei ole <code>self</code>:ää ensimmäisenä
+parametrinaan (ja jotka siten eivät ole metodeja), koska niiden ei tarvitse
+tyypin instanssia työskennelläkseen. Olemme jo käyttäneet tällaista funktiota:
+<code>String::from</code>-funktiota, joka on määritelty <code>String</code>-tyypille.</p>
+<p>Liittyviä funktioita, jotka eivät ole metodeja, käytetään usein konstruktoreina,
+jotka palauttavat rakenteen uuden instanssin. Näitä kutsutaan usein <code>new</code>:ksi,
+mutta <code>new</code> ei ole erityinen nimi eikä se ole sisäänrakennettu kieleen. Esimerkiksi
+voisimme halutessamme tarjota liittyvän funktion nimeltä <code>square</code>, jolla olisi
+yksi mittaparametri ja joka käyttäisi sitä sekä leveytenä että korkeutena, mikä
+helpottaisi neliön muotoisen <code>Rectangle</code>:n luomista sen sijaan, että joutuisimme
+määrittämään saman arvon kahdesti:</p>
+<p><span class="filename">Tiedostonimi: src/main.rs</span></p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch05-using-structs-to-structure-related-data/no-listing-03-associated-functions/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<p><code>Self</code>-avainsanat palautustyypissä ja funktion rungossa ovat aliaksia tyypille,
+joka esiintyy <code>impl</code>-avainsanan jälkeen, joka tässä tapauksessa on <code>Rectangle</code>.</p>
+<p>Kutsuaksemme tätä liittyvää funktiota, käytämme <code>::</code>-syntaksia rakenteen nimen
+kanssa; <code>let sq = Rectangle::square(3);</code> on esimerkki. Tämä funktio on
+rakenteen nimiavaruudessa: <code>::</code>-syntaksia käytetään sekä liittyville funktioille
+että moduulien luomille nimiavaruuksille. Käsittelemme moduuleja <a href="ch07-02-defining-modules-to-control-scope-and-privacy.html">Luvussa
+7</a><!-- ignore -->.</p>
+<h3 id="useita-impl-lohkoja"><a class="header" href="#useita-impl-lohkoja">Useita <code>impl</code>-lohkoja</a></h3>
+<p>Jokaisella rakenteella saa olla useita <code>impl</code>-lohkoja. Esimerkiksi Listausta 5-15
+vastaa Listauksessa 5-16 näytetty koodi, jossa jokainen metodi on omassa
+<code>impl</code>-lohkossaan.</p>
+<figure class="listing">
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch05-using-structs-to-structure-related-data/listing-05-16/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 5-16: Listauksen 5-15 uudelleenkirjoitus useilla <code>impl</code>-lohkoilla</figcaption>
+</figure>
+<p>Ei ole syytä erotella näitä metodeja useisiin <code>impl</code>-lohkoihin tässä, mutta
+tämä on kelvollista syntaksia. Näemme tapauksen, jossa useat <code>impl</code>-lohkot
+ovat hyödyllisiä Luvussa 10, jossa käsittelemme geneerisiä tyyppejä ja traitteja.</p>
+<h2 id="yhteenveto"><a class="header" href="#yhteenveto">Yhteenveto</a></h2>
+<p>Rakenteet antavat sinun luoda mukautettuja tyyppejä, jotka ovat merkityksellisiä
+sovellusalueellesi. Rakenteiden avulla voit pitää toisiinsa liittyvät datan osat
+yhteydessä toisiinsa ja nimetä jokaisen osan, jotta koodisi on selkeää.
+<code>impl</code>-lohkoissa voit määritellä tyypillesi liittyviä funktioita, ja metodit
+ovat eräänlaisia liittyviä funktioita, joiden avulla voit määrittää käyttäytymisen,
+joka rakenteidesi instansseilla on.</p>
+<p>Mutta rakenteet eivät ole ainoa tapa luoda mukautettuja tyyppejä: siirrytään
+Rustin luettelotyyppi-ominaisuuteen lisätäksemme työkalupakkiisi uuden työkalun.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="ch05-02-example-structs.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="ch06-00-enums.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="ch05-02-example-structs.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="ch06-00-enums.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="ferris.js"></script>
+
+
+    </div>
+    </body>
+</html>

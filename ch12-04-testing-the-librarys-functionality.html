@@ -1,0 +1,307 @@
+<!DOCTYPE HTML>
+<html lang="fi" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Kirjaston toiminnallisuuden kehittäminen testivetoista kehitystä käyttäen - Rust-ohjelmointikieli</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="ferris.css">
+        <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rust-ohjelmointikieli</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/rust-lang/book" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2 id="kirjaston-toiminnallisuuden-kehittäminen-testivetoisesti"><a class="header" href="#kirjaston-toiminnallisuuden-kehittäminen-testivetoisesti">Kirjaston toiminnallisuuden kehittäminen testivetoisesti</a></h2>
+<p>Nyt kun olemme siirtäneet ohjelmalogiikan tiedostoon <em>src/lib.rs</em> ja jättäneet
+argumenttien käsittelyn sekä virheiden hallinnan <em>src/main.rs</em>-tiedostoon, on
+paljon helpompaa kirjoittaa testejä koodin keskeiselle toiminnallisuudelle.
+Voimme kutsua funktioita suoraan erilaisilla argumenteilla ja tarkistaa niiden
+paluuarvot ilman, että tarvitsemme suorittaa binääriä komentoriviltä.</p>
+<p>Tässä osiossa lisäämme hakutoiminnallisuuden <code>minigrep</code>-ohjelmaan
+testivetoisen kehityksen (TDD) prosessin avulla:</p>
+<ol>
+<li>Kirjoitetaan testi, joka epäonnistuu, ja ajetaan se varmistaaksemme, että
+se epäonnistuu odotetusta syystä.</li>
+<li>Kirjoitetaan tai muokataan koodia juuri sen verran, että testi menee läpi.</li>
+<li>Refaktoroidaan lisätty tai muutettu koodi varmistaen, että testit yhä toimivat.</li>
+<li>Palataan kohtaan 1 ja toistetaan!</li>
+</ol>
+<p>Vaikka tämä on vain yksi monista tavoista kirjoittaa ohjelmistoa, TDD auttaa
+rakentamaan testikattavuutta ja ohjaa koodin suunnittelua. Kun testi kirjoitetaan
+ennen toiminnallisuuden toteutusta, se varmistaa, että testit pysyvät ajan tasalla
+ja kattavat koko kehitysprosessin.</p>
+<p>Toteutamme hakufunktion, joka etsii hakusanaa tiedoston sisällöstä ja palauttaa
+vain ne rivit, jotka sisältävät kyseisen hakusanan. Lisätään tämä toiminnallisuus
+<code>search</code>-nimiseen funktioon.</p>
+<h3 id="kirjoitetaan-epäonnistuva-testi"><a class="header" href="#kirjoitetaan-epäonnistuva-testi">Kirjoitetaan epäonnistuva testi</a></h3>
+<p>Poistetaan <em>src/lib.rs</em> ja <em>src/main.rs</em> -tiedostoista aiemmin lisätyt <code>println!</code>-
+komennot, koska emme enää tarvitse niitä. Lisäämme sen jälkeen <em>src/lib.rs</em>-tiedostoon
+testimoduulin, kuten teimme <a href="ch11-01-writing-tests.html#the-anatomy-of-a-test-function">luvussa 11</a>.</p>
+<p>Alla oleva testi määrittelee, miten <code>search</code>-funktion pitäisi käyttäytyä: sen
+tulisi ottaa vastaan hakusana ja etsittävä teksti, ja palauttaa vain ne rivit,
+joissa hakusana esiintyy. <strong>Listing 12-15</strong> näyttää tämän testin:</p>
+<pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch12-an-io-project/listing-12-15/src/lib.rs:here}}</code></pre>
+<p>Testi etsii merkkijonoa <code>"duct"</code>. Haettavassa tekstissä on kolme riviä, joista
+vain yksi sisältää <code>"duct"</code>-sanan. Testissä varmistamme, että <code>search</code> palauttaa
+vain tämän rivin.</p>
+<p>Tällä hetkellä emme voi vielä suorittaa testiä, koska <code>search</code>-funktiota ei
+ole olemassa! TDD-periaatteen mukaisesti lisäämme juuri sen verran koodia,
+että testi kääntyy ja suoritetaan. Alla <strong>Listing 12-16</strong> näyttää, kuinka lisäämme
+<code>search</code>-funktion, joka toistaiseksi vain palauttaa tyhjän vektorin:</p>
+<pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch12-an-io-project/listing-12-16/src/lib.rs:here}}</code></pre>
+<p><code>search</code>-funktion määrityksessä meidän täytyy määrittää elinikä <code>'a</code>, jota käytetään
+<code>contents</code>-parametrille ja palautusarvolle. Tämä varmistaa, että palautettava
+vektori sisältää merkkijonoviipaleita, jotka viittaavat <code>contents</code>-parametrin
+viipaleisiin.</p>
+<p>Nyt voimme ajaa testin:</p>
+<pre><code class="language-console">{{#include ../listings/ch12-an-io-project/listing-12-16/output.txt}}
+</code></pre>
+<p>Testi epäonnistui, kuten odotettiin. Seuraavaksi saamme sen onnistumaan!</p>
+<h3 id="kirjoitetaan-koodi-joka-saa-testin-läpäisemään"><a class="header" href="#kirjoitetaan-koodi-joka-saa-testin-läpäisemään">Kirjoitetaan koodi, joka saa testin läpäisemään</a></h3>
+<p>Testi epäonnistuu tällä hetkellä, koska <code>search</code> palauttaa aina tyhjän vektorin.
+Korjataksemme tämän lisäämme seuraavat vaiheet:</p>
+<ol>
+<li>Käydään läpi jokainen rivi <code>contents</code>-muuttujasta.</li>
+<li>Tarkistetaan, sisältääkö rivi haettavan hakusanan.</li>
+<li>Jos kyllä, lisätään se palautettavaan listaan.</li>
+<li>Muussa tapauksessa ei tehdä mitään.</li>
+<li>Palautetaan hakutulokset sisältävä lista.</li>
+</ol>
+<h4 id="rivien-läpikäynti-lines-metodilla"><a class="header" href="#rivien-läpikäynti-lines-metodilla">Rivien läpikäynti <code>lines</code>-metodilla</a></h4>
+<p>Rust tarjoaa <code>lines</code>-metodin, joka helpottaa tekstin käsittelyä rivitasolla.
+Seuraava koodi (Listing 12-17) esittää rivien iteroimisen:</p>
+<pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch12-an-io-project/listing-12-17/src/lib.rs:here}}</code></pre>
+<p><code>lines</code> palauttaa iteraattorin, jonka avulla voimme käsitellä jokaista riviä erikseen.</p>
+<h4 id="hakusanan-etsiminen-contains-metodilla"><a class="header" href="#hakusanan-etsiminen-contains-metodilla">Hakusanan etsiminen <code>contains</code>-metodilla</a></h4>
+<p>Lisätään hakutoiminnallisuus hyödyntämällä <code>contains</code>-metodia:</p>
+<pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch12-an-io-project/listing-12-18/src/lib.rs:here}}</code></pre>
+<p>Nyt funktio tarkistaa, sisältääkö rivi hakusanan.</p>
+<h4 id="osumien-tallentaminen"><a class="header" href="#osumien-tallentaminen">Osumien tallentaminen</a></h4>
+<p>Seuraavaksi lisäämme mekanismin osumien tallentamiseen:</p>
+<pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch12-an-io-project/listing-12-19/src/lib.rs:here}}</code></pre>
+<p>Nyt <code>search</code> palauttaa vain ne rivit, jotka sisältävät hakusanan. Ajetaan testi:</p>
+<pre><code class="language-console">{{#include ../listings/ch12-an-io-project/listing-12-19/output.txt}}
+</code></pre>
+<p>Testi onnistui!</p>
+<p>Seuraavaksi voisimme optimoida <code>search</code>-funktion käyttämään iterointia tehokkaammin,
+mutta palaamme tähän <a href="ch13-02-iterators.html">luvussa 13</a>, jossa käsittelemme iterointia
+yksityiskohtaisemmin.</p>
+<h3 id="search-funktion-käyttäminen-run-funktiossa"><a class="header" href="#search-funktion-käyttäminen-run-funktiossa"><code>search</code>-funktion käyttäminen <code>run</code>-funktiossa</a></h3>
+<p>Nyt kun <code>search</code> toimii ja on testattu, kutsumme sitä <code>run</code>-funktiosta. Seuraavassa
+koodissa (Listing 12-20) kutsutaan <code>search</code>-funktiota ja tulostetaan osumat:</p>
+<pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch12-an-io-project/no-listing-02-using-search-in-run/src/lib.rs:here}}</code></pre>
+<p>Nyt voimme kokeilla ohjelmaa!</p>
+<p>Etsitään sanaa <code>"frog"</code>, jonka pitäisi palauttaa yksi rivi:</p>
+<pre><code class="language-console">{{#include ../listings/ch12-an-io-project/no-listing-02-using-search-in-run/output.txt}}
+</code></pre>
+<p>Etsitään sanaa <code>"body"</code>, jonka pitäisi palauttaa useita rivejä:</p>
+<pre><code class="language-console">{{#include ../listings/ch12-an-io-project/output-only-03-multiple-matches/output.txt}}
+</code></pre>
+<p>Etsitään sanaa, joka ei esiinny tiedostossa:</p>
+<pre><code class="language-console">{{#include ../listings/ch12-an-io-project/output-only-04-no-matches/output.txt}}
+</code></pre>
+<p>Kaikki toimii! Olemme rakentaneet oman miniversiomme klassisesta <code>grep</code>-työkalusta
+ja oppineet paljon Rustin ohjelmoinnista.</p>
+<p>Seuraavaksi opimme, miten ympäristömuuttujia ja <strong>standard error</strong> -tulostusta
+voidaan hyödyntää komentoriviohjelmissa.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="ch12-03-improving-error-handling-and-modularity.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="ch12-05-working-with-environment-variables.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="ch12-03-improving-error-handling-and-modularity.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="ch12-05-working-with-environment-variables.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="ferris.js"></script>
+
+
+    </div>
+    </body>
+</html>

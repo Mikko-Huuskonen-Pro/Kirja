@@ -1,0 +1,472 @@
+<!DOCTYPE HTML>
+<html lang="fi" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Ohjausrakenne - Rust-ohjelmointikieli</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="ferris.css">
+        <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rust-ohjelmointikieli</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/rust-lang/book" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2 id="ohjausrakenne"><a class="header" href="#ohjausrakenne">Ohjausrakenne</a></h2>
+<p>Kyky suorittaa koodia riippuen siitä, onko ehto <code>true</code>, ja suorittaa koodia toistuvasti niin kauan
+kuin ehto on <code>true</code>, ovat perusrakennuspalikoita useimmissa ohjelmointikielissä. Yleisimmät
+rakenteet, joilla voit hallita Rust-koodin suorituksen kulkua, ovat <code>if</code>-lausekkeet ja silmukat.</p>
+<h3 id="if-lausekkeet"><a class="header" href="#if-lausekkeet"><code>if</code>-lausekkeet</a></h3>
+<p><code>if</code>-lauseke antaa sinun haarauttaa koodiasi ehtojen perusteella. Annat ehdon ja määrität:
+”Jos tämä ehto täyttyy, suorita tämä koodilohko. Jos ehto ei täyty, älä suorita tätä koodilohkoa.”</p>
+<p>Luo uusi projekti nimeltä <em>branches</em> hakemistoon <em>projects</em> tutkiaksesi <code>if</code>-lauseketta. Syötä
+tiedostoon <em>src/main.rs</em> seuraava:</p>
+<p><span class="filename">Tiedostonimi: src/main.rs</span></p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-26-if-true/src/main.rs}}
+<span class="boring">}</span></code></pre></pre>
+<p>Kaikki <code>if</code>-lausekkeet alkavat avainsanalla <code>if</code>, jota seuraa ehto. Tässä tapauksessa ehto
+tarkistaa, onko muuttujan <code>number</code> arvo alle 5. Sijoitamme koodilohkon, joka suoritetaan, jos ehto
+on <code>true</code>, heti ehdon jälkeen aaltosulkeiden sisään. <code>if</code>-lausekkeiden ehtoihin liittyviä
+koodilohkoja kutsutaan joskus <em>haaroiksi</em>, aivan kuten <code>match</code>-lausekkeiden haaroja, joita
+käsittelimme <a href="ch02-00-guessing-game-tutorial.html#comparing-the-guess-to-the-secret-number">”Arvauksen vertaaminen salaisuuteen”</a><!--
+ignore --> -osiossa luvussa 2.</p>
+<p>Valinnaisesti voimme myös sisällyttää <code>else</code>-lausekkeen, minkä valitsimme tehdä tässä, antaaksemme
+ohjelmalle vaihtoehtoisen koodilohkon suoritettavaksi, jos ehto evaluoituu arvoksi <code>false</code>. Jos et
+anna <code>else</code>-lauseketta ja ehto on <code>false</code>, ohjelma vain ohittaa <code>if</code>-lohkon ja siirtyy seuraavaan
+kohtaan.</p>
+<p>Kokeile suorittaa tämä koodi; sinun pitäisi nähdä seuraava tuloste:</p>
+<pre><code class="language-console">{{#include ../listings/ch03-common-programming-concepts/no-listing-26-if-true/output.txt}}
+</code></pre>
+<p>Kokeillaan muuttaa <code>number</code>-muuttujan arvoksi sellainen, joka tekee ehdosta <code>false</code>, ja katsotaan,
+mitä tapahtuu:</p>
+<pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-27-if-false/src/main.rs:here}}</code></pre>
+<p>Suorita ohjelma uudelleen ja katso tuloste:</p>
+<pre><code class="language-console">{{#include ../listings/ch03-common-programming-concepts/no-listing-27-if-false/output.txt}}
+</code></pre>
+<p>On myös syytä huomata, että tämän koodin ehdon <em>täytyy</em> olla <code>bool</code>. Jos ehto ei ole <code>bool</code>, saamme
+virheen. Kokeile esimerkiksi suorittaa seuraava koodi:</p>
+<p><span class="filename">Tiedostonimi: src/main.rs</span></p>
+<pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-28-if-condition-must-be-bool/src/main.rs}}</code></pre>
+<p><code>if</code>-ehto evaluoituu tällä kertaa arvoksi <code>3</code>, ja Rust antaa virheen:</p>
+<pre><code class="language-console">{{#include ../listings/ch03-common-programming-concepts/no-listing-28-if-condition-must-be-bool/output.txt}}
+</code></pre>
+<p>Virhe osoittaa, että Rust odotti <code>bool</code>-tyyppiä mutta sai kokonaisluvun. Toisin kuin kielet kuten
+Ruby ja JavaScript, Rust ei yritä automaattisesti muuntaa ei-totuusarvoisia tyyppejä totuusarvoiksi.
+Sinun täytyy olla eksplisiittinen ja antaa <code>if</code>-lausekkeelle aina totuusarvo ehtona. Jos haluamme,
+että <code>if</code>-koodilohko suoritetaan vain, kun luku ei ole yhtä suuri kuin <code>0</code>, voimme muuttaa
+<code>if</code>-lausekkeen seuraavaksi:</p>
+<p><span class="filename">Tiedostonimi: src/main.rs</span></p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-29-if-not-equal-0/src/main.rs}}
+<span class="boring">}</span></code></pre></pre>
+<p>Tämän koodin suorittaminen tulostaa <code>number was something other than zero</code>.</p>
+<h4 id="useiden-ehtojen-käsittely-else-if-rakenteella"><a class="header" href="#useiden-ehtojen-käsittely-else-if-rakenteella">Useiden ehtojen käsittely <code>else if</code>-rakenteella</a></h4>
+<p>Voit käyttää useita ehtoja yhdistämällä <code>if</code>- ja <code>else</code>-lausekkeet <code>else if</code> -lausekkeeseen.
+Esimerkiksi:</p>
+<p><span class="filename">Tiedostonimi: src/main.rs</span></p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-30-else-if/src/main.rs}}
+<span class="boring">}</span></code></pre></pre>
+<p>Tällä ohjelmalla on neljä mahdollista polkua. Sen suorittamisen jälkeen sinun pitäisi nähdä
+seuraava tuloste:</p>
+<pre><code class="language-console">{{#include ../listings/ch03-common-programming-concepts/no-listing-30-else-if/output.txt}}
+</code></pre>
+<p>Kun tämä ohjelma suoritetaan, se tarkistaa jokaisen <code>if</code>-lausekkeen vuorollaan ja suorittaa ensimmäisen
+rungon, jonka ehto evaluoituu arvoksi <code>true</code>. Huomaa, että vaikka 6 on jaollinen kahdella, emme näe
+tulostetta <code>number is divisible by 2</code>, emmekä <code>number is not divisible by 4, 3, or 2</code> -tekstiä
+<code>else</code>-lohkosta. Se johtuu siitä, että Rust suorittaa vain ensimmäisen <code>true</code>-ehdon lohkon, ja kun
+se löytää sellaisen, se ei edes tarkista loput.</p>
+<p>Liian monen <code>else if</code> -lausekkeen käyttö voi sotkea koodiasi, joten jos sinulla on useampi kuin yksi,
+saatat haluta refaktoroida koodiasi. Luku 6 kuvaa tehokkaan Rustin haarautumisrakenteen nimeltä
+<code>match</code> näitä tapauksia varten.</p>
+<h4 id="if-lausekkeen-käyttö-let-lauseessa"><a class="header" href="#if-lausekkeen-käyttö-let-lauseessa"><code>if</code>-lausekkeen käyttö <code>let</code>-lauseessa</a></h4>
+<p>Koska <code>if</code> on lauseke, voimme käyttää sitä <code>let</code>-lauseen oikealla puolella sijoittaaksemme tuloksen
+muuttujaan, kuten listauksessa 3-2.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch03-common-programming-concepts/listing-03-02/src/main.rs}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 3-2: <code>if</code>-lausekkeen tuloksen sijoittaminen muuttujaan</figcaption>
+</figure>
+<p>Muuttuja <code>number</code> sidotaan arvoon <code>if</code>-lausekkeen tuloksen perusteella. Suorita tämä koodi nähdäksesi,
+mitä tapahtuu:</p>
+<pre><code class="language-console">{{#include ../listings/ch03-common-programming-concepts/listing-03-02/output.txt}}
+</code></pre>
+<p>Muista, että koodilohkot evaluoituvat viimeiseen lausekkeeseensa, ja luvut itsessään ovat myös
+lausekkeita. Tässä tapauksessa koko <code>if</code>-lausekkeen arvo riippuu siitä, mikä koodilohko suoritetaan.
+Tämä tarkoittaa, että arvojen, joilla on potentiaalia olla tuloksia kustakin <code>if</code>-lausekkeen haarasta,
+täytyy olla sama tyyppi; listauksessa 3-2 sekä <code>if</code>-haaran että <code>else</code>-haaran tulokset olivat
+<code>i32</code>-kokonaislukuja. Jos tyypit eivät täsmää, kuten seuraavassa esimerkissä, saamme virheen:</p>
+<p><span class="filename">Tiedostonimi: src/main.rs</span></p>
+<pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-31-arms-must-return-same-type/src/main.rs}}</code></pre>
+<p>Kun yritämme kääntää tämän koodin, saamme virheen. <code>if</code>- ja <code>else</code>-haaroilla on yhteensopimattomat
+arvotyypit, ja Rust osoittaa tarkalleen, mistä ongelma löytyy ohjelmasta:</p>
+<pre><code class="language-console">{{#include ../listings/ch03-common-programming-concepts/no-listing-31-arms-must-return-same-type/output.txt}}
+</code></pre>
+<p><code>if</code>-lohkon lauseke evaluoituu kokonaisluvuksi, ja <code>else</code>-lohkon lauseke evaluoituu merkkijonoksi.
+Tämä ei toimi, koska muuttujilla täytyy olla yksi tyyppi, ja Rustin täytyy tietää käännösaikana
+varmasti, mikä tyyppi <code>number</code>-muuttujalla on. <code>number</code>-muuttujan tyypin tunteminen antaa kääntäjälle
+mahdollisuuden varmistaa, että tyyppi on kelvollinen kaikkialla, missä käytämme <code>number</code>-muuttujaa.
+Rust ei pystyisi tekemään sitä, jos <code>number</code>-muuttujan tyyppi määräytyisi vasta suorituksen aikana;
+kääntäjä olisi monimutkaisempi ja antaisi vähemmän takeita koodista, jos sen täytyisi seurata useita
+hypoteettisia tyyppejä mille tahansa muuttujalle.</p>
+<h3 id="toisto-silmukoilla"><a class="header" href="#toisto-silmukoilla">Toisto silmukoilla</a></h3>
+<p>On usein hyödyllistä suorittaa koodilohko useammin kuin kerran. Tätä tehtävää varten Rust tarjoaa
+useita <em>silmukoita</em>, jotka suorittavat silmukan rungon sisällä olevan koodin loppuun ja alkavat
+sitten heti alusta. Kokeillaksemme silmukoita luodaan uusi projekti nimeltä <em>loops</em>.</p>
+<p>Rustissa on kolmenlaisia silmukoita: <code>loop</code>, <code>while</code> ja <code>for</code>. Kokeillaan kutakin.</p>
+<h4 id="koodin-toistaminen-loop-silmukalla"><a class="header" href="#koodin-toistaminen-loop-silmukalla">Koodin toistaminen <code>loop</code>-silmukalla</a></h4>
+<p><code>loop</code>-avainsana käskee Rustia suorittamaan koodilohkoa yhä uudelleen ikuisesti tai kunnes käsket
+sitä eksplisiittisesti lopettamaan.</p>
+<p>Esimerkkinä muuta <em>loops</em>-hakemiston <em>src/main.rs</em>-tiedosto näyttämään tältä:</p>
+<p><span class="filename">Tiedostonimi: src/main.rs</span></p>
+<pre><code class="language-rust ignore">{{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-32-loop/src/main.rs}}</code></pre>
+<p>Kun suoritamme tämän ohjelman, näemme <code>again!</code> tulostettuna yhä uudelleen, kunnes pysäytämme ohjelman
+manuaalisesti. Useimmat terminaalit tukevat näppäinyhdistelmää <kbd>ctrl</kbd>-<kbd>c</kbd>
+keskeyttääkseen ohjelman, joka on jumissa jatkuvassa silmukassa. Kokeile sitä:</p>
+<!-- manual-regeneration
+cd listings/ch03-common-programming-concepts/no-listing-32-loop
+cargo run
+CTRL-C
+-->
+<pre><code class="language-console">$ cargo run
+   Compiling loops v0.1.0 (file:///projects/loops)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.08s
+     Running `target/debug/loops`
+again!
+again!
+again!
+again!
+^Cagain!
+</code></pre>
+<p>Symboli <code>^C</code> edustaa kohtaa, jossa painoit <kbd>ctrl</kbd>-<kbd>c</kbd>. Saatat nähdä tai et näe
+sanaa <code>again!</code> tulostettuna <code>^C</code>:n jälkeen riippuen siitä, missä kohdassa silmukkaa koodi oli, kun
+se sai keskeytyssignaalin.</p>
+<p>Onneksi Rust tarjoaa myös tavan poistua silmukasta koodilla. Voit sijoittaa <code>break</code>-avainsanan
+silmukan sisään kertoaksesi ohjelmalle, milloin lopettaa silmukan suorittaminen. Muistathan, että
+teimme tämän arvauspelissä <a href="ch02-00-guessing-game-tutorial.html#quitting-after-a-correct-guess">”Lopettaminen oikean arvauksen jälkeen”</a><!-- ignore
+--> -osiossa luvussa 2 poistuaksemme ohjelmasta, kun käyttäjä voitti pelin arvaamalla oikean luvun.</p>
+<p>Käytimme myös <code>continue</code>-avainsanaa arvauspelissä, mikä silmukassa käskee ohjelmaa ohittamaan
+jäljellä olevan koodin tässä silmukan iteraatiossa ja siirtymään seuraavaan iteraatioon.</p>
+<h4 id="arvojen-palauttaminen-silmukoista"><a class="header" href="#arvojen-palauttaminen-silmukoista">Arvojen palauttaminen silmukoista</a></h4>
+<p>Yksi <code>loop</code>-silmukan käyttötarkoituksista on yrittää uudelleen operaatiota, jonka tiedät voivan
+epäonnistua, kuten tarkistaa, onko säie suorittanut tehtävänsä. Saatat myös tarvita operaation
+tuloksen välittämistä silmukasta muulle koodillesi. Voit tehdä tämän lisäämällä palautettavan arvon
+<code>break</code>-lausekkeen jälkeen, jota käytät silmukan pysäyttämiseen; kyseinen arvo palautetaan silmukasta,
+jotta voit käyttää sitä, kuten tässä näytetään:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-33-return-value-from-loop/src/main.rs}}
+<span class="boring">}</span></code></pre></pre>
+<p>Ennen silmukkaa määrittelemme muuttujan nimeltä <code>counter</code> ja alustamme sen arvoon <code>0</code>. Sitten
+määrittelemme muuttujan nimeltä <code>result</code> pitämään silmukasta palautettavaa arvoa. Jokaisella
+silmukan iteraatiolla lisäämme <code>1</code>:n <code>counter</code>-muuttujaan ja tarkistamme sitten, onko <code>counter</code>
+yhtä suuri kuin <code>10</code>. Kun se on, käytämme <code>break</code>-avainsanaa arvolla <code>counter * 2</code>. Silmukan jälkeen
+käytämme puolipistettä lopettaaksemme lauseen, joka sijoittaa arvon muuttujaan <code>result</code>. Lopuksi
+tulostamme <code>result</code>-muuttujan arvon, joka tässä tapauksessa on <code>20</code>.</p>
+<p>Voit myös <code>return</code>-palauttaa silmukan sisältä. Vaikka <code>break</code> poistuu vain nykyisestä silmukasta,
+<code>return</code> poistuu aina nykyisestä funktiosta.</p>
+<h4 id="silmukkaetiketit-useiden-silmukoiden-erottamiseen"><a class="header" href="#silmukkaetiketit-useiden-silmukoiden-erottamiseen">Silmukkaetiketit useiden silmukoiden erottamiseen</a></h4>
+<p>Jos sinulla on silmukoita silmukoiden sisällä, <code>break</code> ja <code>continue</code> koskevat kyseisen kohdan
+sisintä silmukkaa. Voit valinnaisesti määrittää <em>silmukkaetiketin</em> silmukalle, jota voit sitten
+käyttää <code>break</code>- tai <code>continue</code>-avainsanojen kanssa määrittääksesi, että nämä avainsanat koskevat
+merkittyä silmukkaa sisimmän silmukan sijaan. Silmukkaetikettien täytyy alkaa yksittäisellä
+heittomerkillä. Tässä on esimerkki kahdesta sisäkkäisestä silmukasta:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-32-5-loop-labels/src/main.rs}}
+<span class="boring">}</span></code></pre></pre>
+<p>Ulompi silmukka on merkitty etiketillä <code>'counting_up</code>, ja se laskee ylöspäin 0:sta 2:een.
+Sisempi silmukka ilman etikettiä laskee alaspäin 10:stä 9:ään. Ensimmäinen <code>break</code>, joka ei määritä
+etikettiä, poistuu vain sisemmästä silmukasta. Lauseke <code>break 'counting_up;</code> poistuu ulommasta
+silmukasta. Tämä koodi tulostaa:</p>
+<pre><code class="language-console">{{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-32-5-loop-labels/output.txt}}
+</code></pre>
+<h4 id="ehdolliset-silmukat-while-silmukalla"><a class="header" href="#ehdolliset-silmukat-while-silmukalla">Ehdolliset silmukat <code>while</code>-silmukalla</a></h4>
+<p>Ohjelman täytyy usein evaluoida ehtoa silmukan sisällä. Niin kauan kuin ehto on <code>true</code>, silmukka
+suoritetaan. Kun ehto ei enää ole <code>true</code>, ohjelma kutsuu <code>break</code>-avainsanaa pysäyttäen silmukan.
+On mahdollista toteuttaa tämänkaltainen käyttäytyminen yhdistelmällä <code>loop</code>-, <code>if</code>-, <code>else</code>- ja
+<code>break</code>-rakenteita; voit kokeilla sitä nyt ohjelmassa, jos haluat. Tämä malli on kuitenkin niin
+yleinen, että Rustissa on sisäänrakennettu kielen rakenne sille, nimeltä <code>while</code>-silmukka.
+Listauksessa 3-3 käytämme <code>while</code>-silmukkaa silmukan suorittamiseen kolme kertaa, laskemalla
+joka kerta alaspäin, ja tulostamme sitten viestin ja poistumme.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch03-common-programming-concepts/listing-03-03/src/main.rs}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 3-3: <code>while</code>-silmukan käyttö koodin suorittamiseen niin kauan kuin ehto on tosi</figcaption>
+</figure>
+<p>Tämä rakenne poistaa paljon sisäkkäisyyttä, joka olisi tarpeen, jos käyttäisit <code>loop</code>-, <code>if</code>-,
+<code>else</code>- ja <code>break</code>-rakenteita, ja se on selkeämpi. Niin kauan kuin ehto evaluoituu arvoksi <code>true</code>,
+koodi suoritetaan; muuten silmukasta poistutaan.</p>
+<h4 id="kokoelman-läpikäynti-for-silmukalla"><a class="header" href="#kokoelman-läpikäynti-for-silmukalla">Kokoelman läpikäynti <code>for</code>-silmukalla</a></h4>
+<p>Voit myös käyttää <code>while</code>-rakennetta kokoelman, kuten taulukon, elementtien läpikäyntiin.
+Esimerkiksi listauksen 3-4 silmukka tulostaa jokaisen taulukon <code>a</code> elementin.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch03-common-programming-concepts/listing-03-04/src/main.rs}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 3-4: Kokoelman jokaisen elementin läpikäynti <code>while</code>-silmukalla</figcaption>
+</figure>
+<p>Tässä koodi laskee taulukon elementtien läpi. Se alkaa indeksistä <code>0</code> ja silmukoi, kunnes se saavuttaa
+taulukon viimeisen indeksin (eli kun <code>index &lt; 5</code> ei enää ole <code>true</code>). Tämän koodin suorittaminen
+tulostaa jokaisen taulukon elementin:</p>
+<pre><code class="language-console">{{#include ../listings/ch03-common-programming-concepts/listing-03-04/output.txt}}
+</code></pre>
+<p>Kaikki viisi taulukon arvoa ilmestyvät terminaaliin odotetusti. Vaikka <code>index</code> saavuttaa jossain
+vaiheessa arvon <code>5</code>, silmukka lopettaa suorittamisen ennen kuin yrittää hakea kuudetta arvoa
+taulukosta.</p>
+<p>Tämä lähestymistapa on kuitenkin virhealtis; voisimme saada ohjelman panikoimaan, jos indeksiarvo
+tai testiehto on virheellinen. Esimerkiksi jos muuttaisit taulukon <code>a</code> määrittelyä sisältämään neljä
+elementtiä mutta unohtaisit päivittää ehdoksi <code>while index &lt; 4</code>, koodi panikoisi. Se on myös hidas,
+koska kääntäjä lisää suoritusaikaista koodia tarkistamaan jokaisella silmukan iteraatiolla, onko
+indeksi taulukon rajojen sisällä.</p>
+<p>Tiiviimpänä vaihtoehtona voit käyttää <code>for</code>-silmukkaa ja suorittaa koodia jokaiselle kokoelman
+kohteelle. <code>for</code>-silmukka näyttää listauksen 3-5 koodilta.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch03-common-programming-concepts/listing-03-05/src/main.rs}}
+<span class="boring">}</span></code></pre></pre>
+<figcaption>Listing 3-5: Kokoelman jokaisen elementin läpikäynti <code>for</code>-silmukalla</figcaption>
+</figure>
+<p>Kun suoritamme tämän koodin, näemme saman tulosteen kuin listauksessa 3-4. Tärkeämpää on, että olemme
+nyt lisänneet koodin turvallisuutta ja poistaneet mahdollisuuden virheille, jotka voisivat johtua
+taulukon lopun ylittämisestä tai liian vähäisestä etenemisestä ja joidenkin kohteiden ohittamisesta.</p>
+<p>Käyttämällä <code>for</code>-silmukkaa sinun ei tarvitse muistaa muuttaa muuta koodia, jos muutat taulukon
+arvojen määrää, toisin kuin listauksessa 3-4 käytetyllä menetelmällä.</p>
+<p><code>for</code>-silmukoiden turvallisuus ja tiiviys tekevät niistä yleisimmin käytetyn silmukkarakenteen
+Rustissa. Jopa tilanteissa, joissa haluat suorittaa koodia tietyn määrän kertoja, kuten
+lähtölaskennassa, joka käytti <code>while</code>-silmukkaa listauksessa 3-3, useimmat rustilaiset käyttäisivät
+<code>for</code>-silmukkaa. Tapa tehdä se olisi käyttää vakiokirjaston tarjoamaa <em>Range</em>-tyyppiä, joka generoi
+kaikki luvut peräkkäin yhdestä luvusta toiseen lukuun asti.</p>
+<p>Tältä lähtölaskenta näyttäisi käyttäen <code>for</code>-silmukkaa ja toista menetelmää, josta emme ole vielä
+puhuneet, <code>rev</code>-metodia, kääntääkseen alueen:</p>
+<p><span class="filename">Tiedostonimi: src/main.rs</span></p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-34-for-range/src/main.rs}}
+<span class="boring">}</span></code></pre></pre>
+<p>Tämä koodi on hieman siistimpi, eikö olekin?</p>
+<h2 id="yhteenveto"><a class="header" href="#yhteenveto">Yhteenveto</a></h2>
+<p>Sinä teit sen! Tämä oli suuri luku: opit muuttujista, skaari- ja yhdistetyistä tietotyypeistä,
+funktioista, kommenteista, <code>if</code>-lausekkeista ja silmukoista! Harjoitellaksesi tässä luvussa
+käsittelemiämme käsitteitä kokeile rakentaa ohjelmia, jotka tekevät seuraavaa:</p>
+<ul>
+<li>Muuntavat lämpötiloja Fahrenheitin ja Celsiusin välillä.</li>
+<li>Generoivat <em>n</em>:nnen Fibonacci-luvun.</li>
+<li>Tulostavat joululaulun ”The Twelve Days of Christmas” sanat hyödyntäen laulun toistoa.</li>
+</ul>
+<p>Kun olet valmis jatkamaan, puhumme Rustin käsitteestä, jota <em>ei</em> yleensä ole muissa
+ohjelmointikielissä: omistajuudesta.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="ch03-04-comments.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="ch04-00-understanding-ownership.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="ch03-04-comments.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="ch04-00-understanding-ownership.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="ferris.js"></script>
+
+
+    </div>
+    </body>
+</html>

@@ -1,0 +1,291 @@
+<!DOCTYPE HTML>
+<html lang="fi" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Testien suorituksen hallinta - Rust-ohjelmointikieli</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="ferris.css">
+        <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rust-ohjelmointikieli</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/rust-lang/book" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2 id="testien-suorittamisen-hallinta"><a class="header" href="#testien-suorittamisen-hallinta">Testien suorittamisen hallinta</a></h2>
+<p>Samalla tavalla kuin <code>cargo run</code> kääntää koodisi ja ajaa lopullisen binääritiedoston, <code>cargo test</code> kääntää koodisi <strong>testitilassa</strong> ja suorittaa testiohjelman. Oletuksena <code>cargo test</code> suorittaa kaikki testit <strong>rinnakkain</strong> ja kaappaa testien aikana syntyneen tulosteen, jotta testitulosten lukeminen on helpompaa. Voit kuitenkin muuttaa tätä käyttäytymistä antamalla komentoriviparametreja.</p>
+<p>Jotkut argumentit menevät suoraan <code>cargo test</code> -komennolle, ja toiset menevät testiohjelmalle. Erottamaan nämä toisistaan, listaa ensin <code>cargo test</code> -parametrit, lisää <code>--</code>-erotin ja sitten testiohjelman parametrit. Voit tarkastella <code>cargo test</code> -valintoja suorittamalla:</p>
+<pre><code class="language-console">$ cargo test --help
+</code></pre>
+<p>ja testiohjelman valintoja suorittamalla:</p>
+<pre><code class="language-console">$ cargo test -- --help
+</code></pre>
+<p>Näitä vaihtoehtoja on myös dokumentoitu <a href="https://doc.rust-lang.org/rustc/tests/index.html">Rustc-kirjan testausosiossa</a>.</p>
+<h3 id="testien-suorittaminen-rinnakkain-tai-peräkkäin"><a class="header" href="#testien-suorittaminen-rinnakkain-tai-peräkkäin">Testien suorittaminen rinnakkain tai peräkkäin</a></h3>
+<p>Oletuksena useita testejä ajetaan <strong>rinnakkain</strong> säikeitä hyödyntäen, jotta testit valmistuvat nopeammin. Koska testit suoritetaan samanaikaisesti, varmista, että testit eivät <strong>riipu toisistaan</strong> eivätkä jaetusta tilasta, kuten nykyisestä hakemistosta tai ympäristömuuttujista.</p>
+<p>Jos esimerkiksi jokainen testi kirjoittaa tiedostoon <code>_test-output.txt_</code>, mutta jokainen testi odottaa eri sisältöä, testit voivat <strong>häiritä toisiaan</strong> rinnakkaissuorituksessa. Yksi ratkaisu on kirjoittaa eri tiedostoihin, toinen on suorittaa testit <strong>yksi kerrallaan</strong>.</p>
+<p>Voit määrittää testisäikeiden määrän <code>--test-threads</code>-lipulla:</p>
+<pre><code class="language-console">$ cargo test -- --test-threads=1
+</code></pre>
+<p>Tällöin testit suoritetaan <strong>yksi kerrallaan</strong>, jolloin ne eivät vaikuta toisiinsa. Tämä vie enemmän aikaa kuin rinnakkainen suoritus.</p>
+<h3 id="tulosteen-näyttäminen"><a class="header" href="#tulosteen-näyttäminen">Tulosteen näyttäminen</a></h3>
+<p>Oletuksena Rustin testikirjasto <strong>kaappaa</strong> kaiken <code>println!</code>-tulosteen onnistuneilta testeilta. Jos testi epäonnistuu, tuloste näytetään virheilmoituksen yhteydessä.</p>
+<p>Esimerkiksi seuraava testiohjelma:</p>
+<pre><code class="language-rust panics noplayground">{{#rustdoc_include ../listings/ch11-writing-automated-tests/listing-11-10/src/lib.rs}}</code></pre>
+<p>tuottaa seuraavan tulosteen:</p>
+<pre><code class="language-console">{{#include ../listings/ch11-writing-automated-tests/listing-11-10/output.txt}}
+</code></pre>
+<p>Huomaa, että <code>I got the value 4</code> -tulostetta <strong>ei näy</strong>, koska testi onnistui. Sen sijaan epäonnistuneen testin <code>I got the value 8</code> näkyy.</p>
+<p>Jos haluat nähdä <strong>kaikkien testien tulosteen</strong>, käytä <code>--show-output</code>-lippua:</p>
+<pre><code class="language-console">$ cargo test -- --show-output
+</code></pre>
+<p>Tällöin saat kaikki <code>println!</code>-tulosteet riippumatta testin lopputuloksesta.</p>
+<h3 id="testien-osajoukon-suorittaminen-nimen-perusteella"><a class="header" href="#testien-osajoukon-suorittaminen-nimen-perusteella">Testien osajoukon suorittaminen nimen perusteella</a></h3>
+<p>Jos sinulla on paljon testejä ja haluat ajaa vain tietyn osan niistä, voit antaa <code>cargo test</code> -komennolle yksittäisen testin <strong>nimen</strong> tai osan siitä.</p>
+<p>Esimerkiksi meillä voi olla seuraavat testit:</p>
+<pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch11-writing-automated-tests/listing-11-11/src/lib.rs}}</code></pre>
+<p>Kaikkien testien suorittaminen:</p>
+<pre><code class="language-console">{{#include ../listings/ch11-writing-automated-tests/listing-11-11/output.txt}}
+</code></pre>
+<h4 id="yksittäisen-testin-ajaminen"><a class="header" href="#yksittäisen-testin-ajaminen">Yksittäisen testin ajaminen</a></h4>
+<p>Voit ajaa vain yhden testin antamalla sen nimen:</p>
+<pre><code class="language-console">$ cargo test one_hundred
+</code></pre>
+<p>Tulostus:</p>
+<pre><code class="language-console">{{#include ../listings/ch11-writing-automated-tests/output-only-02-single-test/output.txt}}
+</code></pre>
+<p>Huomaa, että vain <code>one_hundred</code> ajettiin, ja muut testit <strong>suodatettiin pois</strong>.</p>
+<h4 id="useiden-testien-ajaminen-suodattamalla"><a class="header" href="#useiden-testien-ajaminen-suodattamalla">Useiden testien ajaminen suodattamalla</a></h4>
+<p>Voit myös suodattaa testejä osittaisella nimellä:</p>
+<pre><code class="language-console">$ cargo test add
+</code></pre>
+<p>Tämä ajaa <strong>kaikki testit, joiden nimessä on “add”</strong>, ja suodattaa pois muut:</p>
+<pre><code class="language-console">{{#include ../listings/ch11-writing-automated-tests/output-only-03-multiple-tests/output.txt}}
+</code></pre>
+<p>Lisäksi voit suorittaa <strong>kaikki testit tietystä moduulista</strong> suodattamalla moduulin nimen perusteella.</p>
+<h3 id="tiettyjen-testien-ohittaminen"><a class="header" href="#tiettyjen-testien-ohittaminen">Tiettyjen testien ohittaminen</a></h3>
+<p>Jos tietyt testit ovat <strong>aikaavieviä</strong>, voit merkitä ne <code>#[ignore]</code>-attribuutilla, jolloin ne <strong>eivät ajeta oletuksena</strong>:</p>
+<pre><code class="language-rust noplayground">{{#rustdoc_include ../listings/ch11-writing-automated-tests/no-listing-11-ignore-a-test/src/lib.rs:here}}</code></pre>
+<p>Kun suoritat <code>cargo test</code>, <code>expensive_test</code> merkitään ohitetuksi:</p>
+<pre><code class="language-console">{{#include ../listings/ch11-writing-automated-tests/no-listing-11-ignore-a-test/output.txt}}
+</code></pre>
+<p>Voit suorittaa <strong>vain ohitetut testit</strong> komennolla:</p>
+<pre><code class="language-console">$ cargo test -- --ignored
+</code></pre>
+<p>Tulostus:</p>
+<pre><code class="language-console">{{#include ../listings/ch11-writing-automated-tests/output-only-04-running-ignored/output.txt}}
+</code></pre>
+<p>Jos haluat ajaa <strong>kaikki testit</strong> (mukaan lukien ohitetut), käytä:</p>
+<pre><code class="language-console">$ cargo test -- --include-ignored
+</code></pre>
+<p>Tällä tavoin voit nopeuttaa testejä keskittymällä oleellisiin testejä kehitystyön aikana ja ajaa pidemmät testit vain tarvittaessa.</p>
+<hr />
+<h2 id="yhteenveto"><a class="header" href="#yhteenveto">Yhteenveto</a></h2>
+<p>Tässä osiossa opimme:</p>
+<ul>
+<li><strong>Kuinka hallita testien rinnakkaisuutta</strong> <code>--test-threads</code>-valinnalla.</li>
+<li><strong>Miten näyttää testitulosteet myös onnistuneista testeistä</strong> <code>--show-output</code>-valinnalla.</li>
+<li><strong>Kuinka suorittaa yksittäisiä testejä</strong> nimeämällä ne <code>cargo test</code> -komennossa.</li>
+<li><strong>Kuinka merkitä testit ohitettaviksi</strong> <code>#[ignore]</code>-attribuutilla ja suorittaa ne tarvittaessa.</li>
+</ul>
+<p>Seuraavaksi tutkimme <strong>integraatiotestien</strong> käyttöä testikoodin järjestämiseen tehokkaasti!</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="ch11-01-writing-tests.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="ch11-03-test-organization.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="ch11-01-writing-tests.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="ch11-03-test-organization.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="ferris.js"></script>
+
+
+    </div>
+    </body>
+</html>

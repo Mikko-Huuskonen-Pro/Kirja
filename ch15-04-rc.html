@@ -1,0 +1,247 @@
+<!DOCTYPE HTML>
+<html lang="fi" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Rc&lt;T&gt;, viitelaskennallinen älykäs osoitin - Rust-ohjelmointikieli</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="ferris.css">
+        <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rust-ohjelmointikieli</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/rust-lang/book" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2 id="rct-viittauslaskentaan-perustuva-älykäs-osoitin"><a class="header" href="#rct-viittauslaskentaan-perustuva-älykäs-osoitin"><code>Rc&lt;T&gt;</code>, viittauslaskentaan perustuva älykäs osoitin</a></h2>
+<p>Useimmissa tapauksissa omistajuus on yksiselitteistä: tiedät tarkalleen, mikä muuttuja omistaa tietyn arvon. On kuitenkin tilanteita, joissa yhdellä arvolla voi olla useita omistajia. Esimerkiksi graafirakenteissa useat reunat voivat viitata samaan solmuun, ja tuo solmu kuuluu konseptuaalisesti kaikille reunoille, jotka siihen viittaavat. Solmua ei tulisi poistaa muistista, ennen kuin mikään reuna ei enää viittaa siihen.</p>
+<p>Rustissa usean omistajan mahdollistaminen vaatii <code>Rc&lt;T&gt;</code>-tyypin käyttämistä. <code>Rc&lt;T&gt;</code> tarkoittaa <em>reference counting</em> eli viittauslaskentaa. <code>Rc&lt;T&gt;</code> seuraa, kuinka monta viittausta tiettyyn arvoon on olemassa, ja vapauttaa arvon muistista vasta, kun viittauksia ei ole enää yhtään.</p>
+<p>Voit ajatella <code>Rc&lt;T&gt;</code>:tä kuin perheen yhteistä televisiota: kun joku saapuu katsomaan televisiota, hän laittaa sen päälle. Useampi henkilö voi liittyä seuraan ja katsoa samaa televisiota. Kun viimeinen henkilö poistuu huoneesta, televisio sammutetaan, koska kukaan ei enää katso sitä. Jos joku sammuttaisi television kesken muiden katselun, syntyisi sekasorto.</p>
+<p>Käytämme <code>Rc&lt;T&gt;</code>-tyyppiä, kun haluamme tallentaa tietoa keolle ja jakaa sen useiden ohjelman osien kesken, mutta emme voi ennalta tietää, mikä osa lopettaa sen käytön viimeisenä. Jos tietäisimme tämän, voisimme tehdä siitä osasta omistajan, ja normaalit omistajuussäännöt riittäisivät.</p>
+<p>Huomaa, että <code>Rc&lt;T&gt;</code> toimii vain yksisäikeisissä ohjelmissa. Luvussa 16 käsittelemme, kuinka viittauslaskentaa voidaan käyttää monisäikeisissä ohjelmissa.</p>
+<h3 id="rctn-käyttäminen-datan-jakamiseen"><a class="header" href="#rctn-käyttäminen-datan-jakamiseen"><code>Rc&lt;T&gt;</code>:n käyttäminen datan jakamiseen</a></h3>
+<p>Palataan cons-listaesimerkkiin (Listing 15-5). Tässä luomme kaksi listaa, jotka jakavat omistajuuden kolmannen listan kanssa. Tämä tilanne voidaan kuvata seuraavasti:</p>
+<img alt="Kaksi listaa jakavat kolmannen listan omistajuuden" src="img/trpl15-03.svg" class="center" />
+<p>Luomme listan <code>a</code>, joka sisältää arvot <code>5</code> ja <code>10</code>. Sen jälkeen luomme kaksi muuta listaa: <code>b</code>, joka alkaa luvulla <code>3</code>, ja <code>c</code>, joka alkaa luvulla <code>4</code>. Molemmat listat jakavat <code>a</code>-listan.</p>
+<p>Jos yrittäisimme toteuttaa tämän <code>Box&lt;T&gt;</code>-tyypillä, se ei toimisi (Listing 15-17):</p>
+<pre><code class="language-rust ignore does_not_compile">{{#rustdoc_include ../listings/ch15-smart-pointers/listing-15-17/src/main.rs}}</code></pre>
+<p>Kun käännämme tämän koodin, saamme virheen:</p>
+<pre><code class="language-console">{{#include ../listings/ch15-smart-pointers/listing-15-17/output.txt}}
+</code></pre>
+<p>Tämä johtuu siitä, että <code>Cons</code>-variantti omistaa sen sisältämän datan. Kun luomme listan <code>b</code>, <code>a</code> siirtyy <code>b</code>:n omistukseen. Kun yritämme käyttää <code>a</code>:ta uudelleen <code>c</code>:n luomisessa, se ei ole enää sallittua, koska <code>a</code> on jo siirtynyt <code>b</code>:n omistukseen.</p>
+<p>Voisimme muuttaa <code>Cons</code>-variantin niin, että se tallentaa viittauksia arvon sijaan, mutta silloin tarvitsisimme elinaikaparameetreja, mikä tekisi koodista monimutkaisempaa. Sen sijaan käytämme <code>Rc&lt;T&gt;</code>-tyyppiä:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch15-smart-pointers/listing-15-18/src/main.rs}}
+<span class="boring">}</span></code></pre></pre>
+<p>Tässä <code>Cons</code> sisältää arvon ja <code>Rc&lt;T&gt;</code>-osoittimen <code>List</code>:iin. Sen sijaan että <code>b</code> ottaisi <code>a</code>:n omistukseensa, se kutsuu <code>Rc::clone(&amp;a)</code>, mikä kasvattaa viittauslaskuria. Sama tapahtuu <code>c</code>:lle. <code>Rc::clone</code> ei tee syväkopiota datasta, vaan ainoastaan kasvattaa viittauslaskuria.</p>
+<h3 id="rctn-kloonaaminen-kasvattaa-viittauslaskuria"><a class="header" href="#rctn-kloonaaminen-kasvattaa-viittauslaskuria"><code>Rc&lt;T&gt;</code>:n kloonaaminen kasvattaa viittauslaskuria</a></h3>
+<p>Voimme muokata koodia niin, että näemme viittauslaskurin muuttuvan, kun luomme ja poistamme viittauksia <code>Rc&lt;List&gt;</code>-instanssiin <code>a</code>:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>{{#rustdoc_include ../listings/ch15-smart-pointers/listing-15-19/src/main.rs:here}}
+<span class="boring">}</span></code></pre></pre>
+<p>Kutsumme <code>Rc::strong_count</code>-metodia tarkistaaksemme viittauslaskurin arvon. Tämä tulostaa seuraavaa:</p>
+<pre><code class="language-console">{{#include ../listings/ch15-smart-pointers/listing-15-19/output.txt}}
+</code></pre>
+<p>Kun <code>c</code> poistuu laajuudesta, viittauslaskuri vähenee automaattisesti. <code>Drop</code>-traitin toteutus huolehtii viittauksen vähentämisestä, kun <code>Rc&lt;T&gt;</code> poistuu laajuudesta.</p>
+<p><code>Rc&lt;T&gt;</code> mahdollistaa saman arvon jakamisen useiden ohjelman osien kesken lukemista varten. <code>Rc&lt;T&gt;</code> ei kuitenkaan salli useita muuttuvia viittauksia, sillä se rikkoisi Rustin lainaussäännöt. Seuraavassa osiossa käsittelemme <em>sisäisen mutabiliteetin</em> mallia ja <code>RefCell&lt;T&gt;</code>-tyyppiä, joka mahdollistaa muuttuvan datan käytön yhdessä <code>Rc&lt;T&gt;</code>:n kanssa.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="ch15-03-drop.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="ch15-05-interior-mutability.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="ch15-03-drop.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="ch15-05-interior-mutability.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="ferris.js"></script>
+
+
+    </div>
+    </body>
+</html>

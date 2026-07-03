@@ -1,0 +1,267 @@
+<!DOCTYPE HTML>
+<html lang="fi" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>G - How Rust is Made and “Nightly Rust” - Rust-ohjelmointikieli</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="ferris.css">
+        <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rust-ohjelmointikieli</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/rust-lang/book" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2 id="liite-g---miten-rustia-kehitetään-ja-mitä-on-nightly-rust"><a class="header" href="#liite-g---miten-rustia-kehitetään-ja-mitä-on-nightly-rust">Liite G - Miten Rustia kehitetään ja mitä on “Nightly Rust”</a></h2>
+<p>Tässä liitteessä käsitellään Rustin kehitysprosessia ja sen vaikutuksia Rust-kehittäjiin.</p>
+<h3 id="vakautta-ilman-pysähtyneisyyttä"><a class="header" href="#vakautta-ilman-pysähtyneisyyttä">Vakautta ilman pysähtyneisyyttä</a></h3>
+<p>Rust panostaa erityisen paljon koodin vakauteen. Tarkoituksena on, että Rust toimii <strong>luotettavana perustana</strong>, jonka varaan voi rakentaa. Jos kieli muuttuisi jatkuvasti, tämä olisi mahdotonta. Toisaalta, jos uusia ominaisuuksia ei voisi kokeilla ennen niiden julkaisua, mahdolliset ongelmat huomattaisiin vasta, kun muutoksia ei enää voida tehdä.</p>
+<p>Ratkaisumme tähän ongelmaan on <strong>“vakautta ilman pysähtyneisyyttä”</strong>, ja ohjaavana periaatteena on tämä: <strong>Rustin päivittämisen ei tulisi koskaan aiheuttaa pelkoa</strong>. Jokaisen uuden version tulisi olla helppo ottaa käyttöön, tuoda uusia ominaisuuksia, vähentää bugeja ja nopeuttaa kääntämistä.</p>
+<h3 id="julkaisumalli--junamalli"><a class="header" href="#julkaisumalli--junamalli">Julkaisumalli – “junamalli”</a></h3>
+<p>Rust kehitetään <strong>“junamallilla”</strong>, jossa kaikki kehitystyö tehdään <strong><code>master</code></strong>-haarassa. Julkaisut tapahtuvat ohjelmistojen julkaisujunamallin mukaisesti, jota ovat käyttäneet muun muassa <strong>Cisco IOS</strong> ja muut suuret ohjelmistoprojektit. Rustilla on kolme <strong>julkaisukanavaa</strong>:</p>
+<ul>
+<li><strong>Nightly</strong> (yöllinen koonti uusilla ominaisuuksilla)</li>
+<li><strong>Beta</strong> (testausvaihe ennen vakaata julkaisua)</li>
+<li><strong>Stable</strong> (vakaa, tuotantokäyttöön tarkoitettu versio)</li>
+</ul>
+<p>Useimmat Rust-kehittäjät käyttävät ensisijaisesti <strong>vakaa (stable)</strong> -versiota, mutta kehittäjät, jotka haluavat kokeilla <strong>uusimpia kokeellisia ominaisuuksia</strong>, käyttävät <strong>nightly</strong>- tai <strong>beta</strong>-versioita.</p>
+<p>Joka <strong>kuudes viikko</strong>, uusi beta-julkaisu haarautuu <code>master</code>-haarasta. Tämän jälkeen se testataan, ja <strong>vakaa julkaisu</strong> tehdään beta-haarasta kuuden viikon kuluttua.</p>
+<pre><code class="language-text">nightly: * - - * - - * - - * - - * - - * - * - *
+                     |                         |
+beta:                * - - - - - - - - *       *
+                                       |
+stable:                                *
+</code></pre>
+<p>Koska Rustin julkaisut ovat <strong>aikataulutettuja</strong>, jokainen uusi ominaisuus, joka ei ehdi tiettyyn julkaisuun, <strong>tulee mukaan seuraavaan</strong>. Tämä vähentää painetta yrittää saada keskeneräisiä ominaisuuksia mukaan viime hetkellä.</p>
+<h3 id="ylläpito-ja-tuen-elinkaari"><a class="header" href="#ylläpito-ja-tuen-elinkaari">Ylläpito ja tuen elinkaari</a></h3>
+<p>Rust-projekti tukee <strong>vain uusinta vakaata versiota</strong>. Kun uusi vakaa versio julkaistaan, vanha versio <strong>ei enää saa virhekorjauksia</strong>. Tämä tarkoittaa, että jokainen versio saa tukea <strong>vain kuusi viikkoa</strong>.</p>
+<h3 id="epävakaat-ominaisuudet-unstable-features"><a class="header" href="#epävakaat-ominaisuudet-unstable-features">Epävakaat ominaisuudet (Unstable Features)</a></h3>
+<p>Rustin kehitysmallissa kokeelliset ominaisuudet lisätään ensin <strong><code>master</code>-haaraan</strong>, mutta ne pidetään <strong>feature flag</strong> -valinnan takana. Tämä tarkoittaa, että:</p>
+<ul>
+<li>Jos käytät <strong>nightly</strong>-versiota, voit ottaa kokeelliset ominaisuudet käyttöön <strong>feature flag</strong> -määritteellä.</li>
+<li>Jos käytät <strong>beta- tai stable</strong>-versiota, <strong>kokeellisia ominaisuuksia ei voi käyttää</strong>.</li>
+</ul>
+<p>Tämä mahdollistaa uusien ominaisuuksien <strong>testaamisen ja arvioinnin</strong> ennen niiden lopullista vakauttamista. <strong>Vakaa Rust</strong> tarjoaa rock-solid-kokemuksen ilman odottamattomia muutoksia.</p>
+<p>Tämä kirja käsittelee <strong>vain vakaita ominaisuuksia</strong>, sillä kehitteillä olevat ominaisuudet voivat muuttua ennen kuin ne tulevat vakaisiin julkaisuihin. <strong>Kokeellisten ominaisuuksien dokumentaatio löytyy Rustin virallisilta sivuilta.</strong></p>
+<h3 id="rustup-ja-nightly-rustin-käyttö"><a class="header" href="#rustup-ja-nightly-rustin-käyttö">Rustup ja Nightly Rustin käyttö</a></h3>
+<p><code>rustup</code>-työkalu helpottaa eri Rust-julkaisukanavien hallintaa sekä koko järjestelmässä että projektikohtaisesti. Oletuksena asennettuna on <strong>vakaa Rust</strong>. Voit asentaa <strong>nightly</strong>-version komennolla:</p>
+<pre><code class="language-console">$ rustup toolchain install nightly
+</code></pre>
+<p>Voit tarkistaa asennetut Rust-versiot seuraavalla komennolla:</p>
+<pre><code class="language-powershell">&gt; rustup toolchain list
+stable-x86_64-pc-windows-msvc (default)
+beta-x86_64-pc-windows-msvc
+nightly-x86_64-pc-windows-msvc
+</code></pre>
+<p>Jos haluat käyttää <strong>nightly</strong>-versiota vain tietyssä projektissa, voit tehdä sen seuraavasti:</p>
+<pre><code class="language-console">$ cd ~/projects/needs-nightly
+$ rustup override set nightly
+</code></pre>
+<p>Tämä varmistaa, että <strong>vain kyseisessä projektikansiossa</strong> käytetään nightly-versiota, vaikka järjestelmän oletus olisi vakaa Rust.</p>
+<h3 id="rfc-prosessi-ja-rustin-kehitysryhmät"><a class="header" href="#rfc-prosessi-ja-rustin-kehitysryhmät">RFC-prosessi ja Rustin kehitysryhmät</a></h3>
+<p>Rustin kehitystä ohjaa <strong>RFC-prosessi (Request For Comments)</strong>. Jos haluat parannuksia Rustiin, voit kirjoittaa <strong>RFC-ehdotuksen</strong>, jonka Rust-tiimi arvioi.</p>
+<p>Rust-tiimi koostuu useista <strong>aihekohtaisista tiimeistä</strong>, kuten:</p>
+<ul>
+<li><strong>Kielisuunnittelu</strong> (language design)</li>
+<li><strong>Kääntäjän toteutus</strong> (compiler implementation)</li>
+<li><strong>Infra ja työkalut</strong> (infrastructure &amp; tooling)</li>
+<li><strong>Dokumentaatio</strong> (documentation)</li>
+</ul>
+<p>Täydellinen lista tiimeistä löytyy <a href="https://www.rust-lang.org/governance">Rustin virallisilta sivuilta</a>.</p>
+<p>Jos RFC hyväksytään, siitä avataan <strong>GitHub-issue</strong>, jonka kuka tahansa voi toteuttaa. Kun toteutus valmistuu, se lisätään <strong>master-haaraan</strong>, mutta se pidetään ensin kokeellisena ominaisuutena <strong>feature flagin takana</strong>.</p>
+<p>Kun tarpeeksi <strong>nightly-käyttäjiä on testannut ominaisuutta</strong>, Rust-tiimi arvioi, pitäisikö se tuoda vakaaseen Rustiin. Jos kyllä, <strong>feature flag poistetaan</strong> ja ominaisuus lisätään vakaaseen julkaisuun seuraavassa aikataulun mukaisessa versiossa.</p>
+<p>Tämä prosessi varmistaa, että Rust <strong>kehittyy jatkuvasti ilman että vakaus kärsii</strong> – eli <strong>“stability without stagnation”</strong>.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="appendix-06-translation.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="appendix-06-translation.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="ferris.js"></script>
+
+
+    </div>
+    </body>
+</html>
