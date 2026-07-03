@@ -20,10 +20,10 @@ useful.
 </Listing>
 
 The iterator is stored in the `v1_iter` variable. Once we’ve created an
-iterator, we can use it in a variety of ways. In Listing 3-5 in Chapter 3, we
-iterated over an array using a `for` loop to execute some code on each of its
-items. Under the hood this implicitly created and then consumed an iterator,
-but we glossed over how exactly that works until now.
+iterator, we can use it in a variety of ways. In Listing 3-5, we iterated over
+an array using a `for` loop to execute some code on each of its items. Under
+the hood, this implicitly created and then consumed an iterator, but we glossed
+over how exactly that works until now.
 
 In the example in Listing 13-11, we separate the creation of the iterator from
 the use of the iterator in the `for` loop. When the `for` loop is called using
@@ -44,7 +44,7 @@ you would likely write this same functionality by starting a variable at index
 incrementing the variable value in a loop until it reached the total number of
 items in the vector.
 
-Iterators handle all that logic for you, cutting down on repetitive code you
+Iterators handle all of that logic for you, cutting down on repetitive code you
 could potentially mess up. Iterators give you more flexibility to use the same
 logic with many different kinds of sequences, not just data structures you can
 index into, like vectors. Let’s examine how iterators do that.
@@ -64,8 +64,8 @@ pub trait Iterator {
 }
 ```
 
-Notice this definition uses some new syntax: `type Item` and `Self::Item`,
-which are defining an _associated type_ with this trait. We’ll talk about
+Notice that this definition uses some new syntax: `type Item` and `Self::Item`,
+which are defining an associated type with this trait. We’ll talk about
 associated types in depth in Chapter 20. For now, all you need to know is that
 this code says implementing the `Iterator` trait requires that you also define
 an `Item` type, and this `Item` type is used in the return type of the `next`
@@ -73,8 +73,8 @@ method. In other words, the `Item` type will be the type returned from the
 iterator.
 
 The `Iterator` trait only requires implementors to define one method: the
-`next` method, which returns one item of the iterator at a time wrapped in
-`Some` and, when iteration is over, returns `None`.
+`next` method, which returns one item of the iterator at a time, wrapped in
+`Some`, and, when iteration is over, returns `None`.
 
 We can call the `next` method on iterators directly; Listing 13-12 demonstrates
 what values are returned from repeated calls to `next` on the iterator created
@@ -88,11 +88,11 @@ from the vector.
 
 </Listing>
 
-Note that we needed to make `v1_iter` mutable: calling the `next` method on an
+Note that we needed to make `v1_iter` mutable: Calling the `next` method on an
 iterator changes internal state that the iterator uses to keep track of where
 it is in the sequence. In other words, this code _consumes_, or uses up, the
 iterator. Each call to `next` eats up an item from the iterator. We didn’t need
-to make `v1_iter` mutable when we used a `for` loop because the loop took
+to make `v1_iter` mutable when we used a `for` loop, because the loop took
 ownership of `v1_iter` and made it mutable behind the scenes.
 
 Also note that the values we get from the calls to `next` are immutable
@@ -102,7 +102,7 @@ ownership of `v1` and returns owned values, we can call `into_iter` instead of
 `iter`. Similarly, if we want to iterate over mutable references, we can call
 `iter_mut` instead of `iter`.
 
-### Methods that Consume the Iterator
+### Methods That Consume the Iterator
 
 The `Iterator` trait has a number of different methods with default
 implementations provided by the standard library; you can find out about these
@@ -111,12 +111,12 @@ trait. Some of these methods call the `next` method in their definition, which
 is why you’re required to implement the `next` method when implementing the
 `Iterator` trait.
 
-Methods that call `next` are called _consuming adapters_, because calling them
+Methods that call `next` are called _consuming adapters_ because calling them
 uses up the iterator. One example is the `sum` method, which takes ownership of
 the iterator and iterates through the items by repeatedly calling `next`, thus
 consuming the iterator. As it iterates through, it adds each item to a running
 total and returns the total when iteration is complete. Listing 13-13 has a
-test illustrating a use of the `sum` method:
+test illustrating a use of the `sum` method.
 
 <Listing number="13-13" file-name="src/lib.rs" caption="Calling the `sum` method to get the total of all items in the iterator">
 
@@ -126,10 +126,10 @@ test illustrating a use of the `sum` method:
 
 </Listing>
 
-We aren’t allowed to use `v1_iter` after the call to `sum` because `sum` takes
+We aren’t allowed to use `v1_iter` after the call to `sum`, because `sum` takes
 ownership of the iterator we call it on.
 
-### Methods that Produce Other Iterators
+### Methods That Produce Other Iterators
 
 _Iterator adapters_ are methods defined on the `Iterator` trait that don’t
 consume the iterator. Instead, they produce different iterators by changing
@@ -139,7 +139,7 @@ Listing 13-14 shows an example of calling the iterator adapter method `map`,
 which takes a closure to call on each item as the items are iterated through.
 The `map` method returns a new iterator that produces the modified items. The
 closure here creates a new iterator in which each item from the vector will be
-incremented by 1:
+incremented by 1.
 
 <Listing number="13-14" file-name="src/main.rs" caption="Calling the iterator adapter `map` to create a new iterator">
 
@@ -156,19 +156,18 @@ However, this code produces a warning:
 ```
 
 The code in Listing 13-14 doesn’t do anything; the closure we’ve specified
-never gets called. The warning reminds us why: iterator adapters are lazy, and
+never gets called. The warning reminds us why: Iterator adapters are lazy, and
 we need to consume the iterator here.
 
 To fix this warning and consume the iterator, we’ll use the `collect` method,
-which we used in Chapter 12 with `env::args` in Listing 12-1. This method
-consumes the iterator and collects the resulting values into a collection data
-type.
+which we used with `env::args` in Listing 12-1. This method consumes the
+iterator and collects the resultant values into a collection data type.
 
 In Listing 13-15, we collect the results of iterating over the iterator that’s
 returned from the call to `map` into a vector. This vector will end up
-containing each item from the original vector incremented by 1.
+containing each item from the original vector, incremented by 1.
 
-<Listing number="13-15" file-name="src/main.rs" caption="Calling the `map` method to create a new iterator and then calling the `collect` method to consume the new iterator and create a vector">
+<Listing number="13-15" file-name="src/main.rs" caption="Calling the `map` method to create a new iterator, and then calling the `collect` method to consume the new iterator and create a vector">
 
 ```rust
 {{#rustdoc_include ../listings/ch13-functional-features/listing-13-15/src/main.rs:here}}
@@ -185,7 +184,11 @@ You can chain multiple calls to iterator adapters to perform complex actions in
 a readable way. But because all iterators are lazy, you have to call one of the
 consuming adapter methods to get results from calls to iterator adapters.
 
-### Using Closures that Capture Their Environment
+<!-- Old headings. Do not remove or links may break. -->
+
+<a id="using-closures-that-capture-their-environment"></a>
+
+### Closures That Capture Their Environment
 
 Many iterator adapters take closures as arguments, and commonly the closures
 we’ll specify as arguments to iterator adapters will be closures that capture
@@ -193,7 +196,7 @@ their environment.
 
 For this example, we’ll use the `filter` method that takes a closure. The
 closure gets an item from the iterator and returns a `bool`. If the closure
-returns `true`, the value will be included in the iteration produced by
+returns `true`, the value will be included in the iterator produced by
 `filter`. If the closure returns `false`, the value won’t be included.
 
 In Listing 13-16, we use `filter` with a closure that captures the `shoe_size`
@@ -212,15 +215,15 @@ The `shoes_in_size` function takes ownership of a vector of shoes and a shoe
 size as parameters. It returns a vector containing only shoes of the specified
 size.
 
-In the body of `shoes_in_size`, we call `into_iter` to create an iterator
-that takes ownership of the vector. Then we call `filter` to adapt that
-iterator into a new iterator that only contains elements for which the closure
-returns `true`.
+In the body of `shoes_in_size`, we call `into_iter` to create an iterator that
+takes ownership of the vector. Then, we call `filter` to adapt that iterator
+into a new iterator that only contains elements for which the closure returns
+`true`.
 
 The closure captures the `shoe_size` parameter from the environment and
 compares the value with each shoe’s size, keeping only shoes of the size
 specified. Finally, calling `collect` gathers the values returned by the
 adapted iterator into a vector that’s returned by the function.
 
-The test shows that when we call `shoes_in_size`, we get back only shoes
-that have the same size as the value we specified.
+The test shows that when we call `shoes_in_size`, we get back only shoes that
+have the same size as the value we specified.

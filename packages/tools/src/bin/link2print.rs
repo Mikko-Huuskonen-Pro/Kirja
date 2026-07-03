@@ -30,12 +30,11 @@ fn parse_references(buffer: String) -> (String, HashMap<String, String>) {
         .unwrap();
     let output = re
         .replace_all(&buffer, |caps: &Captures<'_>| {
-            let key = caps.get(1).unwrap().as_str().to_uppercase();
+            let key_def = caps.get(1).unwrap().as_str();
+            let key = key_def.to_uppercase();
             let val = caps.get(2).unwrap().as_str().to_string();
             if ref_map.insert(key, val).is_some() {
-                panic!(
-                    "Did not expect markdown page to have duplicate reference"
-                );
+                panic!("unexpected page had duplicate reference for {key_def}",);
             }
             "".to_string()
         })
@@ -365,7 +364,7 @@ note: required by `std::fmt::Display::fmt`
 
 [I'm a reference-style link][Arbitrary case-insensitive reference text]
 
-[I'm a relative reference to a repository file](../blob/master/LICENSE)
+[I'm a relative reference to a repository file](../blob/HEAD/LICENSE)
 
 [You can use numbers for reference-style link definitions][1]
 
@@ -388,7 +387,7 @@ I'm an inline-style link with title at *https://www.google.com*
 
 I'm a reference-style link at *https://www.mozilla.org*
 
-I'm a relative reference to a repository file at *../blob/master/LICENSE*
+I'm a relative reference to a repository file at *../blob/HEAD/LICENSE*
 
 You can use numbers for reference-style link definitions at *http://slashdot.org*
 

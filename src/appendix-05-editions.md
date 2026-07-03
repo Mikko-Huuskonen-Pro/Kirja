@@ -1,4 +1,4 @@
-## Appendix E - Editions
+## Appendix E: Editions
 
 In Chapter 1, you saw that `cargo new` adds a bit of metadata to your
 _Cargo.toml_ file about an edition. This appendix talks about what that means!
@@ -10,7 +10,7 @@ while, all of these tiny changes add up. But from release to release, it can be
 difficult to look back and say, “Wow, between Rust 1.10 and Rust 1.31, Rust has
 changed a lot!”
 
-Every two or three years, the Rust team produces a new Rust _edition_. Each
+Every three years or so, the Rust team produces a new Rust _edition_. Each
 edition brings together the features that have landed into a clear package with
 fully updated documentation and tooling. New editions ship as part of the usual
 six-week release process.
@@ -46,12 +46,14 @@ Rust 2018, your project will compile and be able to use that dependency. The
 opposite situation, where your project uses Rust 2018 and a dependency uses
 Rust 2015, works as well.
 
-To be clear: most features will be available on all editions. Developers using
+To be clear: Most features will be available on all editions. Developers using
 any Rust edition will continue to see improvements as new stable releases are
 made. However, in some cases, mainly when new keywords are added, some new
 features might only be available in later editions. You will need to switch
 editions if you want to take advantage of such features.
 
-For more details, the [_Edition Guide_](https://doc.rust-lang.org/stable/edition-guide/) is a complete book
-about editions that enumerates the differences between editions and explains
-how to automatically upgrade your code to a new edition via `cargo fix`.
+For more details, see [_The Rust Edition Guide_][edition-guide]. This is a
+complete book that enumerates the differences between editions and explains how
+to automatically upgrade your code to a new edition via `cargo fix`.
+
+[edition-guide]: https://doc.rust-lang.org/stable/edition-guide

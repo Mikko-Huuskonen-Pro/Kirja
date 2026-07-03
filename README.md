@@ -35,7 +35,7 @@ Kirjan kokoaminen vaatii [mdBook]-työkalun, mieluiten version mitä
 rust-lang/rust käyttää tässä [tässä tiedostossa][rust-mdbook]. Saat sen täältä:
 
 [mdBook]: https://github.com/rust-lang/mdBook
-[rust-mdbook]: https://github.com/rust-lang/rust/blob/master/src/tools/rustbook/Cargo.toml
+[rust-mdbook]: https://github.com/rust-lang/rust/blob/HEAD/src/tools/rustbook/Cargo.toml
 
 ```bash
 $ cargo install mdbook --locked --version <version_num>
