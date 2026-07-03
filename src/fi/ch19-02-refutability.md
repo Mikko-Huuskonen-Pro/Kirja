@@ -1,44 +1,94 @@
-## Mallien refutaatio ja ehdollisuus
+## Kumoavuus: voiko malli epäonnistua vastaamaan
 
-Rustissa mallit voivat olla **refutoitavia** tai **ei-refutoitavia**. Tämä tarkoittaa, voiko malli epäonnistua sovituksessa vai ei. Tällä on vaikutusta siihen, missä voimme käyttää tiettyjä malleja.
+Malleja on kahdessa muodossa: kumottavia ja kiistämättömiä. Mallit, jotka
+vastaavat mitä tahansa mahdollista välitettyä arvoa, ovat _kiistämättömiä_.
+Esimerkki olisi `x` lausekkeessa `let x = 5;`, koska `x` vastaa mitä tahansa
+eikä siksi voi epäonnistua vastaamaan. Mallit, jotka voivat epäonnistua
+vastaamaan joitakin mahdollisia arvoja, ovat _kumottavia_. Esimerkki olisi
+`Some(x)` lausekkeessa `if let Some(x) = a_value`, koska jos muuttujan
+`a_value` arvo on `None` eikä `Some`, malli `Some(x)` ei vastaa.
 
-### Ei-refutoitavat ja refutoitavat mallit
+Funktioiden parametrit, `let`-lauseet ja `for`-silmukat hyväksyvät vain
+kiistämättömiä malleja, koska ohjelma ei voi tehdä mitään järkevää, kun
+arvot eivät vastaa. `if let`- ja `while let` -lausekkeet sekä `let...else`-
+lause hyväksyvät kumottavia ja kiistämättömiä malleja, mutta kääntäjä
+varoittaa kiistämättömistä malleista, koska ne on määritelmän mukaan
+tarkoitettu käsittelemään mahdollista epäonnistumista: ehdollisen rakenteen
+toiminta perustuu kykyyn käyttäytyä eri tavalla onnistumisen ja epäonnistumisen
+mukaan.
 
-- **Ei-refutoitavat mallit** (irrefutable) sovittuvat aina annettuun arvoon. Esimerkiksi `let`-lausunnoissa käytettävät mallit ovat aina ei-refutoitavia:
-  ```rust
-  let x = 5; // Tämä ei voi epäonnistua.
-  ```
+Yleensä sinun ei tarvitse huolehtia erosta kumottavien ja kiistämättömien
+mallien välillä; sinun täytyy kuitenkin tuntea kumoavuuden käsite, jotta
+voit reagoida, kun näet sen virheilmoituksessa. Näissä tapauksissa sinun
+täytyy muuttaa joko mallia tai rakennetta, jossa käytät mallia, riippuen
+koodin tarkoitetusta käyttäytymisestä.
 
-- **Refutoitavat mall...
+Katsotaan esimerkkiä siitä, mitä tapahtuu, kun yritämme käyttää kumottavaa
+mallia siellä, missä Rust vaatii kiistämätöntä mallia, ja päinvastoin.
+Listaus 19-8 näyttää `let`-lauseen, mutta malliksi olemme määrittäneet
+`Some(x)`, kumottavan mallin. Kuten saattaa odottaa, tämä koodi ei käänny.
 
-### Ei-refutoitavat mallit `let`-lausunnoissa
+<Listing number="19-8" caption="Yritys käyttää kumottavaa mallia `let`-lauseessa">
 
-Koska `let`-lausunnot eivät voi epäonnistua, niissä on käytettävä ei-refutoitavia malleja:
-
-```rust,ignore
-let Some(x) = Some(5); // Tämä antaa virheen, koska `Some(x)` on refutoitava malli.
+```rust,ignore,does_not_compile
+{{#rustdoc_include ../listings/ch19-patterns-and-matching/listing-19-08/src/main.rs:here}}
 ```
 
-Rust sallii kuitenkin mallin käytön `if let`-rakenteessa, koska siinä epäonnistuminen voidaan käsitellä:
+</Listing>
+
+Jos `some_option_value` olisi `None`-arvo, se ei vastaisi mallia `Some(x)`,
+mikä tarkoittaa, että malli on kumottava. `let`-lause voi kuitenkin hyväksyä
+vain kiistämättömän mallin, koska koodilla ei ole mitään järkevää tekemistä
+`None`-arvolla. Käännösaikana Rust valittaa, että olemme yrittäneet käyttää
+kumottavaa mallia siellä, missä kiistämätön malli vaaditaan:
+
+```console
+{{#include ../listings/ch19-patterns-and-matching/listing-19-08/output.txt}}
+```
+
+Koska emme kattaneet (emmekä voineet kattaa!) jokaista kelvollista arvoa
+mallilla `Some(x)`, Rust oikeutetusti tuottaa kääntäjävirheen.
+
+Jos meillä on kumottava malli siellä, missä kiistämätön malli tarvitaan,
+voimme korjata sen muuttamalla mallia käyttävää koodia: `let`-lauseen sijaan
+voimme käyttää `let...else`-lausetta. Jos malli ei vastaa, aaltosulkeiden
+sisällä oleva koodi käsittelee arvon. Listaus 19-9 näyttää, miten listauksen
+19-8 koodi korjataan.
+
+<Listing number="19-9" caption="`let...else`-lauseen ja lohkon käyttö kumottavien mallien kanssa `let`-lauseen sijaan">
 
 ```rust
-if let Some(x) = Some(5) {
-    println!("Löytyi: {}", x);
-}
+{{#rustdoc_include ../listings/ch19-patterns-and-matching/listing-19-09/src/main.rs:here}}
 ```
 
-### Refutoitavat mallit `match`-lauseissa
+</Listing>
 
-`match`-lauseiden tulee kattaa kaikki mahdolliset tapaukset, mutta ne voivat käyttää refutoitavia malleja, koska Rust tarkistaa, että kaikki mahdolliset arvot käsitellään:
+Olemme antaneet koodille ulospääsyn! Tämä koodi on täysin kelvollinen, vaikka
+se tarkoittaakin, ettemme voi käyttää kiistämätöntä mallia ilman varoitusta.
+Jos annamme `let...else`-lauseelle mallin, joka vastaa aina, kuten `x`, kuten
+listauksessa 19-10, kääntäjä antaa varoituksen.
+
+<Listing number="19-10" caption="Yritys käyttää kiistämätöntä mallia `let...else`-lauseessa">
 
 ```rust
-match Some(5) {
-    Some(x) => println!("Löytyi: {}", x),
-    None => println!("Ei arvoa"),
-}
+{{#rustdoc_include ../listings/ch19-patterns-and-matching/listing-19-10/src/main.rs:here}}
 ```
 
----
+</Listing>
 
-Tässä luvussa opimme, kuinka Rust käsittelee refutoitavia ja ei-refutoitavia malleja. Tämä auttaa ymmärtämään, miksi jotkin mallit toimivat vain tietyissä rakenteissa, kuten `let` tai `if let`.
+Rust valittaa, ettei `let...else`-lauseen käyttäminen kiistämättömän mallin
+kanssa ole järkevää:
 
+```console
+{{#include ../listings/ch19-patterns-and-matching/listing-19-10/output.txt}}
+```
+
+Tästä syystä match-haarojen täytyy käyttää kumottavia malleja, paitsi
+viimeisessä haarassa, joka vastaa jäljellä olevia arvoja kiistämättömällä
+mallilla. Rust sallii kiistämättömän mallin käytön `match`-lausekkeessa,
+jossa on vain yksi haara, mutta tämä syntaksi ei ole erityisen hyödyllinen
+ja sen voisi korvata yksinkertaisemmalla `let`-lauseella.
+
+Nyt kun tiedät, missä malleja käytetään ja mikä on ero kumottavien ja
+kiistämättömien mallien välillä, käydään läpi kaikki syntaksi, jota voimme
+käyttää mallien luomiseen.

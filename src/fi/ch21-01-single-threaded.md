@@ -30,7 +30,7 @@ Syötä nyt listauksen 21-1 koodi _src/main.rs_-tiedostoon aloittaaksesi. Tämä
 
 Tässä skenaariossa `bind`-funktio toimii kuten `new`-funktio siinä mielessä, että se palauttaa uuden `TcpListener`-instanssin. Funktiota kutsutaan `bind`-nimiseksi, koska verkkoyhteyksissä porttiin yhdistämistä kuuntelemista varten kutsutaan ”porttiin sitomiseksi” (_binding to a port_).
 
-`bind`-funktio palauttaa `Result<T, E>`-arvon, mikä osoittaa, että sitominen voi epäonnistua. Esimerkiksi porttiin 80 yhdistäminen vaatii järjestelmänvalvojan oikeudet (ei-järjestelmänvalvojat voivat kuunnella vain portteja, jotka ovat suurempia kuin 1023), joten jos yrittäisimme yhdistää porttiin 80 ilman järjestelmänvalvojan oikeuksia, sitominen ei toimisi. Sitominen ei myöskään toimisi, jos esimerkiksi ajaisimme kaksi ohjelman instanssia ja siten kaksi ohjelmaa kuuntelisi samaa porttia. Koska kirjoitamme peruspalvelimen vain oppimistarkoituksiin, emme huolehdi tällaisten virheiden käsittelystä; sen sijaan käytämme `unwrap`-metodia lopettaaksemme ohjelman, jos virheitä tapahtuu.
+`bind`-funktio palauttaa `Result<T, E>`-arvon, mikä osoittaa, että sitominen voi epäonnistua — esimerkiksi jos ajamme kaksi ohjelman instanssia ja siten kaksi ohjelmaa kuuntelee samaa porttia. Koska kirjoitamme peruspalvelimen vain oppimistarkoituksiin, emme huolehdi tällaisten virheiden käsittelystä; sen sijaan käytämme `unwrap`-metodia lopettaaksemme ohjelman, jos virheitä tapahtuu.
 
 `TcpListener`-rakenteen `incoming`-metodi palauttaa iteraattorin, joka antaa meille streamien sarjan (tarkemmin sanottuna `TcpStream`-tyyppisten streamien). Yksittäinen _stream_ edustaa avointa yhteyttä asiakkaan ja palvelimen välillä. _Yhteys_ on nimi koko pyyntö-vastaus-prosessille, jossa asiakas yhdistää palvelimeen, palvelin tuottaa vastauksen ja palvelin sulkee yhteyden. Näin ollen luemme `TcpStream`-rakenteesta nähdäksemme, mitä asiakas lähetti, ja kirjoitamme sitten vastauksemme streamiin lähettääksemme dataa takaisin asiakkaalle. Kaiken kaikkiaan tämä `for`-silmukka käsittelee jokaisen yhteyden vuorollaan ja tuottaa meille streamien sarjan käsiteltäväksi.
 
@@ -47,9 +47,13 @@ Connection established!
 
 Joskus näet useita viestejä tulostettuna yhdestä selainpyynnöstä; syy voi olla se, että selain tekee pyynnön sivulle sekä pyynnön muille resursseille, kuten _favicon.ico_-kuvakkeelle, joka näkyy selaimen välilehdessä.
 
-Voi myös olla, että selain yrittää yhdistää palvelimeen useita kertoja, koska palvelin ei vastaa millään datalla. Kun `stream` menee näkyvyysalueen ulkopuolelle ja pudotetaan silmukan lopussa, yhteys suljetaan osana `drop`-toteutusta. Selaimet käsittelevät joskus suljettuja yhteyksiä yrittämällä uudelleen, koska ongelma saattaa olla tilapäinen. Tärkeä tekijä on, että olemme onnistuneesti saaneet käsitteen TCP-yhteydestä!
+Voi myös olla, että selain yrittää yhdistää palvelimeen useita kertoja, koska palvelin ei vastaa millään datalla. Kun `stream` menee näkyvyysalueen ulkopuolelle ja pudotetaan silmukan lopussa, yhteys suljetaan osana `drop`-toteutusta. Selaimet käsittelevät joskus suljettuja yhteyksiä yrittämällä uudelleen, koska ongelma saattaa olla tilapäinen.
 
-Muista pysäyttää ohjelma painamalla <kbd>ctrl</kbd>-<kbd>c</kbd>, kun olet valmis tietyn koodiversion ajamisen kanssa. Käynnistä sitten ohjelma uudelleen kutsumalla `cargo run` -komentoa jokaisen koodimuutoksen jälkeen varmistaaksesi, että ajat uusinta koodia.
+Selaimet avaavat joskus useita yhteyksiä palvelimeen lähettämättä pyyntöjä, jotta jos ne _myöhemmin_ lähettävät pyyntöjä, ne voivat tapahtua nopeammin. Kun näin tapahtuu, palvelimemme näkee jokaisen yhteyden riippumatta siitä, lähetetäänkö kyseisen yhteyden yli pyyntöjä. Monet Chrome-pohjaiset selaimet tekevät näin; voit poistaa tämän optimoinnin käytöstä yksityisen selaamisen tilassa tai käyttämällä toista selainta.
+
+Tärkeä tekijä on, että olemme onnistuneesti saaneet käsitteen TCP-yhteydestä!
+
+Muista pysäyttää ohjelma painamalla <kbd>ctrl</kbd>-<kbd>C</kbd>, kun olet valmis tietyn koodiversion ajamisen kanssa. Käynnistä sitten ohjelma uudelleen kutsumalla `cargo run` -komentoa jokaisen koodimuutoksen jälkeen varmistaaksesi, että ajat uusinta koodia.
 
 ### Pyynnön lukeminen
 
@@ -101,6 +105,11 @@ Request: [
 Selaimestasi riippuen saatat saada hieman erilaisen tulosteen. Nyt kun tulostamme pyyntödataa, voimme nähdä, miksi saamme useita yhteyksiä yhdestä selainpyynnöstä katsomalla polkua `GET`-rivin jälkeen. Jos toistuvat yhteydet pyytävät kaikki _/_, tiedämme, että selain yrittää hakea _/_ toistuvasti, koska se ei saa vastausta ohjelmastamme.
 
 Puretaan tämä pyyntödata ymmärtääksemme, mitä selain pyytää ohjelmaltamme.
+
+<!-- Old headings. Do not remove or links may break. -->
+
+<a id="a-closer-look-at-an-http-request"></a>
+<a id="looking-closer-at-an-http-request"></a>
 
 ### Tarkempi katsaus HTTP-pyyntöön
 
@@ -229,6 +238,10 @@ Tässä vastauksessamme on tilarivi tilakoodilla 404 ja syy-lausekkeella `NOT FO
 </Listing>
 
 Näillä muutoksilla käynnistä palvelimesi uudelleen. Pyyntö _127.0.0.1:7878_ pitäisi palauttaa _hello.html_-tiedoston sisällön, ja mikä tahansa muu pyyntö, kuten _127.0.0.1:7878/foo_, pitäisi palauttaa virhe-HTML _404.html_-tiedostosta.
+
+<!-- Old headings. Do not remove or links may break. -->
+
+<a id="a-touch-of-refactoring"></a>
 
 ### Pieni refaktorointi
 

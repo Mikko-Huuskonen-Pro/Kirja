@@ -1,31 +1,20 @@
 # Yleiset ohjelmointikäsitteet
 
-Nyt kun olemme kirjoittaneet jo muutamia ohjelmia, tarkastellaan joitakin peruskonsepteja, joita kaikki ohjelmat käyttävät. 
-Tässä luvussa käsittelemme muuttujia, tietotyyppejä, funktioita, ohjausrakenteita kuten haarautumisia (`if`-lausekkeet) ja silmukoita.
+Tämä luku käsittelee käsitteitä, jotka esiintyvät lähes jokaisessa ohjelmointikielessä, ja sitä,
+miten ne toimivat Rustissa. Monilla ohjelmointikielillä on paljon yhteistä ytimessään. Mikään tässä
+luvussa esitelty käsite ei ole ainutlaatuinen Rustille, mutta käsittelemme ne Rustin kontekstissa
+ja selitämme niiden käyttöön liittyvät käytännöt.
 
-Jos sinulla on aikaisempaa ohjelmointikokemusta, huomaat, että nämä käsitteet ovat samankaltaisia monissa muissa kielissä, 
-mutta Rustilla on omat erityispiirteensä, jotka tekevät siitä erilaisen.
-
-Tässä luvussa opimme:
-
-- Miten muuttujat ja muuttumattomuus toimivat Rustissa
-- Miten Rustin tietotyypit käyttäytyvät
-- Kuinka funktiot määritellään ja käytetään
-- Miten ohjausrakenteet kuten `if`-lauseet ja silmukat toimivat
-
-Rust antaa ohjelmoijille tarkkaa hallintaa suorituskyvystä ja turvallisuudesta, ja nämä ohjelmointikäsitteet muodostavat perustan 
-Rustilla ohjelmoinnille. Tämä luku auttaa sinua ymmärtämään Rustin ainutlaatuisia ominaisuuksia ja miten voit hyödyntää niitä omissa ohjelmissasi.
-
-Seuraavissa osioissa tutustumme Rustin **muuttujiin ja muuttumattomuuteen**.
+Erityisesti opit muuttujista, perustyypeistä, funktioista, kommenteista ja ohjausrakenteista. Nämä
+perusteet ovat jokaisessa Rust-ohjelmassa, ja niiden oppiminen varhain antaa sinulle vahvan ytimen,
+josta lähteä.
 
 > #### Avainsanat
 >
->Rust-kielellä on joukko _avainsanoja_, jotka on varattu vain
-> kielen käyttöön, kuten monissa muissakin ohjelmointikielissä. Muista, että et voi käyttää
-> näitä sanoja muuttujien tai funktioiden niminä. Useimmilla avainsanoilla on
-> erityinen merkitys, ja käytät niitä erilaisiin tehtäviin Rust-
-> ohjelmissasi; Joillakin avainsanoilla ei tällä hetkellä ole mitään toiminnallisuutta, mutta ne on
-> mutta ne on varattu tulevaisuuden mahdollisia lisäyksiä varten.
-> Voit löytää listan avainsanoista [liitteeestä-A][appendix_a]<!-- ignore -->.
+> Rust-kielellä on joukko _avainsanoja_, jotka on varattu vain kielen käyttöön, kuten muissakin
+> kielissä. Muista, että et voi käyttää näitä sanoja muuttujien tai funktioiden niminä. Useimmilla
+> avainsanoilla on erityisiä merkityksiä, ja käytät niitä erilaisiin tehtäviin Rust-ohjelmissasi;
+> muutamilla ei ole tällä hetkellä liitettyä toiminnallisuutta, mutta ne on varattu toiminnallisuudelle,
+> joka saatetaan lisätä Rustiin tulevaisuudessa. Löydät avainsanojen listan [Liitteestä A][appendix_a]<!-- ignore -->.
 
 [appendix_a]: appendix-01-keywords.md

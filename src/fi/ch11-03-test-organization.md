@@ -1,18 +1,39 @@
 ## Testien organisointi
 
-Kuten luvun alussa mainittiin, testaus on monimutkainen ala, ja eri ihmiset käyttävät eri terminologiaa ja organisointia. Rust-yhteisö ajattelee testejä kahden pääkategorian kautta: yksikkötestit ja integraatiotestit. _Yksikkötestit_ ovat pieniä ja keskittyneempiä, testaavat yhden moduulin erillään kerrallaan ja voivat testata yksityisiä rajapintoja. _Integraatiotestit_ ovat täysin kirjastosi ulkopuolella ja käyttävät koodiasi samalla tavalla kuin mikä tahansa muu ulkoinen koodi, käyttäen vain julkista rajapintaa ja mahdollisesti testaten useita moduuleja per testi.
+Kuten luvun alussa mainittiin, testaus on monimutkainen ala, ja eri ihmiset
+käyttävät eri terminologiaa ja organisointia. Rust-yhteisö ajattelee testejä
+kahden pääkategorian kautta: yksikkötestit ja integraatiotestit. _Yksikkötestit_
+ovat pieniä ja keskittyneempiä, testaten yhtä moduulia erillään muusta koodista
+kerrallaan, ja ne voivat testata yksityisiä rajapintoja. _Integraatiotestit_ ovat
+täysin kirjastosi ulkopuolella ja käyttävät koodiasi samalla tavalla kuin
+mikä tahansa muu ulkoinen koodi, käyttäen vain julkista rajapintaa ja
+mahdollisesti testaten useita moduuleja per testi.
 
-Molempien testityyppien kirjoittaminen on tärkeää varmistaaksesi, että kirjastosi osat toimivat odottamallasi tavalla erikseen ja yhdessä.
+Molempien testityyppien kirjoittaminen on tärkeää varmistaaksesi, että
+kirjastosi osat tekevät odottamasi asiat erikseen ja yhdessä.
 
 ### Yksikkötestit
 
-Yksikkötestien tarkoitus on testata jokainen koodin yksikkö erillään muusta koodista, jotta voit nopeasti paikantaa, missä koodi toimii ja missä ei odotetulla tavalla. Sijoitat yksikkötestit _src_-hakemistoon kuhunkin tiedostoon, jossa on testattava koodi. Käytäntö on luoda jokaiseen tiedostoon `tests`-niminen moduuli testifunktioita varten ja merkitä moduuli `cfg(test)`:llä.
+Yksikkötestien tarkoitus on testata jokainen koodin yksikkö erillään muusta
+koodista nopeasti paikantaakseen, missä koodi toimii ja missä ei odotetulla
+tavalla. Laitat yksikkötestit _src_-hakemistoon kuhunkin tiedostoon sen koodin
+kanssa, jota ne testaavat. Käytäntö on luoda `tests`-niminen moduuli kuhunkin
+tiedostoon testifunktioiden säilyttämiseksi ja merkitä moduuli `cfg(test)`-
+attribuutilla.
 
-#### Testimoduuli ja `#[cfg(test)]`
+#### `tests`-moduuli ja `#[cfg(test)]`
 
-`#[cfg(test)]`-annotaatio `tests`-moduulissa kertoo Rustille kääntämään ja ajamaan testikoodin vain, kun ajat `cargo test`:in, ei kun ajat `cargo build`:in. Tämä säästää käännösaikaa, kun haluat vain rakentaa kirjaston, ja säästää tilaa lopullisessa käännettyssä artefaktissa, koska testit eivät sisälly siihen. Näet, että koska integraatiotestit sijoitetaan eri hakemistoon, ne eivät tarvitse `#[cfg(test)]`-annotaatiota. Koska yksikkötestit ovat samoissa tiedostoissa kuin koodi, käytät `#[cfg(test)]`:ää määrittämään, ettei niitä sisällytetä käännettyyn tulokseen.
+`#[cfg(test)]`-merkintä `tests`-moduulissa kertoo Rustille kääntää ja ajaa
+testikoodin vain, kun ajat `cargo test`, ei kun ajat `cargo build`. Tämä säästää
+käännösaikaa, kun haluat vain rakentaa kirjaston, ja säästää tilaa syntyneessä
+käännettyssä artefaktissa, koska testejä ei sisällytetä. Näet, että koska
+integraatiotestit menevät eri hakemistoon, niillä ei tarvitse olla `#[cfg(test)]`-
+merkintää. Koska yksikkötestit menevät samoihin tiedostoihin koodin kanssa,
+käytät `#[cfg(test)]`:ää määrittääksesi, ettei niitä sisällytetä käännettyyn
+tulokseen.
 
-Muista, että kun loimme uuden `adder`-projektin tämän luvun ensimmäisessä osiossa, Cargo generoi tämän koodin puolestamme:
+Muista, että kun loimme uuden `adder`-projektin tämän luvun ensimmäisessä
+osiossa, Cargo loi meille tämän koodin:
 
 <span class="filename">Filename: src/lib.rs</span>
 
@@ -20,11 +41,26 @@ Muista, että kun loimme uuden `adder`-projektin tämän luvun ensimmäisessä o
 {{#rustdoc_include ../listings/ch11-writing-automated-tests/listing-11-01/src/lib.rs}}
 ```
 
-Automaattisesti generoidussa `tests`-moduulissa attribuutti `cfg` tarkoittaa _konfiguraatiota_ ja kertoo Rustille, että seuraava kohde pitäisi sisällyttää vain tietyn konfiguraatioasetuksen perusteella. Tässä tapauksessa konfiguraatioasetus on `test`, jonka Rust tarjoaa testien kääntämiseen ja ajamiseen. `cfg`-attribuutin avulla Cargo kääntää testikoodimme vain, jos aktiivisesti ajamme testit `cargo test`:llä. Tämä sisältää kaikki apufunktiot, jotka saattavat olla tämän moduulin sisällä, `#[test]`:lla merkittyjen funktioiden lisäksi.
+Automaattisesti luodussa `tests`-moduulissa `cfg`-attribuutti tarkoittaa
+_konfiguraatiota_ (*configuration*) ja kertoo Rustille, että seuraava kohde
+tulisi sisällyttää vain tietyn konfiguraatiovaihtoehdon ollessa voimassa. Tässä
+tapauksessa konfiguraatiovaihtoehto on `test`, jonka Rust tarjoaa testien
+kääntämiseen ja ajamiseen. Käyttämällä `cfg`-attribuuttia Cargo kääntää
+testikoodimme vain, jos aktiivisesti ajamme testit `cargo test` -komennolla.
+Tämä sisältää kaikki apufunktiot, jotka voivat olla tässä moduulissa, sekä
+`#[test]`-merkityt funktiot.
+
+<!-- Old headings. Do not remove or links may break. -->
+
+<a id="testing-private-functions"></a>
 
 #### Yksityisten funktioiden testaaminen
 
-Testausyhteisössä on keskustelua siitä, pitäisikö yksityisiä funktioita testata suoraan, ja muut kielet tekevät yksityisten funktioiden testaamisesta vaikeaa tai mahdotonta. Riippumatta siitä, mihin testausideologiaan sitoudut, Rustin yksityisyyssäännöt sallivat yksityisten funktioiden testaamisen. Harkitse Listauksen 11-12 koodia, jossa on yksityinen funktio `internal_adder`.
+Testausyhteisössä on keskustelua siitä, pitäisikö yksityisiä funktioita testata
+suoraan, ja muut kielet tekevät yksityisten funktioiden testaamisesta vaikeaa
+tai mahdotonta. Riippumatta siitä, mihin testausideologiaan sitoudut, Rustin
+näkyvyyssäännöt sallivat yksityisten funktioiden testaamisen. Harkitse listauksen
+11-12 koodia yksityisellä `internal_adder`-funktiolla.
 
 <Listing number="11-12" file-name="src/lib.rs" caption="Yksityisen funktion testaaminen">
 
@@ -34,17 +70,35 @@ Testausyhteisössä on keskustelua siitä, pitäisikö yksityisiä funktioita te
 
 </Listing>
 
-Huomaa, että `internal_adder`-funktiota ei ole merkitty `pub`:iksi. Testit ovat vain Rust-koodia, ja `tests`-moduuli on vain toinen moduuli. Kuten käsittelimme [”Polut kohteen viittaamiseen moduulipuussa”][paths]<!-- ignore --> -osiossa, lapsimoduulien kohteet voivat käyttää esi-isämoduuliensa kohteita. Tässä testissä tuomme kaikki `tests`-moduulin emon kohteet laajuuteen `use super::*`:lla, ja sitten testi voi kutsua `internal_adder`:ia. Jos et mielestäsi yksityisiä funktioita pitäisi testata, Rustissa ei ole mitään, mikä pakottaisi sinua tekemään niin.
+Huomaa, että `internal_adder`-funktiota ei ole merkitty `pub`-määritteellä.
+Testit ovat vain Rust-koodia, ja `tests`-moduuli on vain toinen moduuli. Kuten
+käsiteltiin osiossa [”Polut moduulipuun kohteeseen viittaamiseen”][paths]<!-- ignore -->,
+lapsimoduulien kohteet voivat käyttää esi-isämoduuliensa kohteita. Tässä
+testissä tuomme kaikki `tests`-moduulin vanhemman moduulin kohteet näkyviin
+`use super::*` -lauseella, ja sitten testi voi kutsua `internal_adder`-funktiota.
+Jos et mielestäsi yksityisiä funktioita pitäisi testata, Rustissa ei ole mitään,
+mikä pakottaisi sinua tekemään niin.
 
 ### Integraatiotestit
 
-Rustissa integraatiotestit ovat täysin kirjastosi ulkopuolella. Ne käyttävät kirjastoasi samalla tavalla kuin mikä tahansa muu koodi, mikä tarkoittaa, että ne voivat kutsua vain kirjastosi julkisen API:n osia olevia funktioita. Niiden tarkoitus on testata, toimiiko kirjastosi monet osat yhdessä oikein. Koodin yksiköt, jotka toimivat oikein erikseen, voivat aiheuttaa ongelmia integroituna, joten integroidun koodin testikattavuus on myös tärkeää. Integraatiotestien luomiseksi tarvitset ensin _tests_-hakemiston.
+Rustissa integraatiotestit ovat täysin kirjastosi ulkopuolella. Ne käyttävät
+kirjastoasi samalla tavalla kuin mikä tahansa muu koodi, mikä tarkoittaa, että
+ne voivat kutsua vain kirjastosi julkisen API:n funktioita. Niiden tarkoitus on
+testata, toimivatko kirjastosi monet osat yhdessä oikein. Koodin yksiköt, jotka
+toimivat oikein yksinään, voivat aiheuttaa ongelmia integroituna, joten
+integroidun koodin testikattavuus on myös tärkeää. Luodaksesi integraatiotestejä
+tarvitset ensin _tests_-hakemiston.
 
 #### _tests_-hakemisto
 
-Luomme _tests_-hakemiston projektihakemiston ylätasolle, _src_:n viereen. Cargo tietää etsiä integraatiotestitiedostoja tästä hakemistosta. Voimme sitten tehdä niin monta testitiedostoa kuin haluamme, ja Cargo kääntää jokaisen tiedoston erillisenä cratenä.
+Luomme _tests_-hakemiston projektihakemiston ylätasolle, _src_-hakemiston
+viereen. Cargo tietää etsiä integraatiotestitiedostoja tästä hakemistosta.
+Voimme sitten tehdä niin monta testitiedostoa kuin haluamme, ja Cargo kääntää
+jokaisen tiedoston erillisenä cratena.
 
-Luodaan integraatiotesti. Kun Listauksen 11-12 koodi on edelleen tiedostossa _src/lib.rs_, tee _tests_-hakemisto ja luo uusi tiedosto nimeltä _tests/integration_test.rs_. Hakemistorakenteesi pitäisi näyttää tältä:
+Luodaan integraatiotesti. Kun listauksen 11-12 koodi on vielä _src/lib.rs_-
+tiedostossa, tee _tests_-hakemisto ja luo uusi tiedosto nimeltä
+_tests/integration_test.rs_. Hakemistorakenteesi pitäisi näyttää tältä:
 
 ```text
 adder
@@ -56,7 +110,7 @@ adder
     └── integration_test.rs
 ```
 
-Kirjoita Listauksen 11-13 koodi tiedostoon _tests/integration_test.rs_.
+Syötä listauksen 11-13 koodi _tests/integration_test.rs_-tiedostoon.
 
 <Listing number="11-13" file-name="tests/integration_test.rs" caption="Integraatiotesti `adder`-craten funktiolle">
 
@@ -66,35 +120,67 @@ Kirjoita Listauksen 11-13 koodi tiedostoon _tests/integration_test.rs_.
 
 </Listing>
 
-Jokainen tiedosto _tests_-hakemistossa on erillinen crate, joten meidän täytyy tuoda kirjastomme kunkin testicraten laajuuteen. Tätä varten lisäämme koodin alkuun `use adder::add_two;`, jota emme tarvinne yksikkötesteissä.
+Jokainen tiedosto _tests_-hakemistossa on erillinen crate, joten meidän täytyy
+tuoda kirjastomme kunkin testicraten näkyvyysalueelle. Siksi lisäämme `use
+adder::add_two;` koodin alkuun, jota emme tarvinne yksikkötesteissä.
 
-Meidän ei tarvitse merkitä mitään koodia tiedostossa _tests/integration_test.rs_ annotaatiolla `#[cfg(test)]`. Cargo käsittelee _tests_-hakemiston erityisesti ja kääntää tämän hakemiston tiedostot vain, kun ajamme `cargo test`:in. Aja `cargo test` nyt:
+Emme tarvitse merkitä mitään koodia _tests/integration_test.rs_-tiedostossa
+`#[cfg(test)]`-attribuutilla. Cargo käsittelee _tests_-hakemistoa erityisesti
+ja kääntää tämän hakemiston tiedostot vain, kun ajamme `cargo test`. Aja
+`cargo test` nyt:
 
 ```console
 {{#include ../listings/ch11-writing-automated-tests/listing-11-13/output.txt}}
 ```
 
-Tulosteen kolme osiota sisältävät yksikkötestit, integraatiotestin ja dokumentaatiotestit. Huomaa, että jos mikä tahansa testi osiossa epäonnistuu, seuraavia osioita ei ajeta. Esimerkiksi jos yksikkötesti epäonnistuu, integraatio- ja dokumentaatiotesteistä ei tule tulostetta, koska ne ajetaan vain, jos kaikki yksikkötestit läpäisevät.
+Tulosteen kolme osiota sisältävät yksikkötestit, integraatiotestin ja
+dokumentaatiotestit. Huomaa, että jos mikä tahansa testi osiossa epäonnistuu,
+seuraavia osioita ei ajeta. Esimerkiksi jos yksikkötesti epäonnistuu, integraatio-
+ja dokumentaatiotesteistä ei ole tulostetta, koska nämä testit ajetaan vain,
+jos kaikki yksikkötestit läpäisevät.
 
-Yksikkötestien ensimmäinen osio on sama kuin olemme nähneet: yksi rivi kutakin yksikkötestiä kohti (yksi nimeltä `internal`, jonka lisäsimme Listauksessa 11-12) ja sitten yhteenvetorivi yksikkötesteille.
+Yksikkötestien ensimmäinen osio on sama kuin olemme nähneet: yksi rivi
+kullekin yksikkötestille (yksi nimeltä `internal`, jonka lisäsimme listauksessa
+11-12) ja sitten yhteenvetorivi yksikkötesteille.
 
-Integraatiotestien osio alkaa rivillä `Running tests/integration_test.rs`. Seuraavaksi on rivi kutakin kyseisen integraatiotestin testifunktiota kohti ja yhteenvetorivi integraatiotestin tuloksille juuri ennen kuin `Doc-tests adder` -osio alkaa.
+Integraatiotestien osio alkaa rivillä `Running tests/integration_test.rs`.
+Seuraavaksi on rivi kullekin integraatiotestin testifunktiolle ja
+yhteenvetorivi integraatiotestin tuloksille juuri ennen kuin `Doc-tests adder`-
+osio alkaa.
 
-Jokaisella integraatiotestitiedostolla on oma osionsa, joten jos lisäämme lisää tiedostoja _tests_-hakemistoon, tulee lisää integraatiotestien osioita.
+Jokaisella integraatiotestitiedostolla on oma osionsa, joten jos lisäämme
+lisää tiedostoja _tests_-hakemistoon, tulee lisää integraatiotestien osioita.
 
-Voimme silti ajaa tietyn integraatiotestifunktion määrittämällä testifunktion nimen argumentiksi `cargo test`:lle. Ajaaaksemme kaikki testit tietyssä integraatiotestitiedostossa, käytä `cargo test`:n `--test`-argumenttia, jota seuraa tiedoston nimi:
+Voimme silti ajaa tietyn integraatiotestifunktion määrittämällä testifunktion
+nimen argumentiksi `cargo test` -komennolle. Ajaaaksesi kaikki testit tietyssä
+integraatiotestitiedostossa, käytä `cargo test` -komennon `--test`-argumenttia
+ja tiedoston nimeä:
 
 ```console
 {{#include ../listings/ch11-writing-automated-tests/output-only-05-single-integration/output.txt}}
 ```
 
-Tämä komento ajaa vain testit tiedostossa _tests/integration_test.rs_.
+Tämä komento ajaa vain _tests/integration_test.rs_-tiedoston testit.
 
 #### Alimodulit integraatiotesteissä
 
-Kun lisäät integraatiotestejä, saatat haluta tehdä lisää tiedostoja _tests_-hakemistoon niiden organisoimiseksi; voit esimerkiksi ryhmitellä testifunktiot sen toiminnallisuuden mukaan, jota ne testaavat. Kuten aiemmin mainittiin, jokainen tiedosto _tests_-hakemistossa käännetään omana erillisenä cratenään, mikä on hyödyllistä erillisten laajuuksien luomiseen, jotta käyttäytyminen muistuttaa läheisemmin sitä, miten loppukäyttäjät käyttävät crateasi. Tämä tarkoittaa kuitenkin, että _tests_-hakemiston tiedostot eivät jaa samaa käyttäytymistä kuin _src_:n tiedostot, kuten opit Luvussa 7 koodin jakamisesta moduuleihin ja tiedostoihin.
+Kun lisäät integraatiotestejä, saatat haluta tehdä lisää tiedostoja _tests_-
+hakemistoon järjestääksesi niitä; esimerkiksi voit ryhmitellä testifunktiot
+sen toiminnallisuuden mukaan, jota ne testaavat. Kuten aiemmin mainittiin,
+jokainen tiedosto _tests_-hakemistossa käännetään omana erillisenä cratenaan,
+mikä on hyödyllistä erillisten näkyvyysalueiden luomiseen, jotka jäljittelevät
+läheisemmin sitä, miten loppukäyttäjät käyttävät crateasi. Tämä tarkoittaa
+kuitenkin, että _tests_-hakemiston tiedostot eivät jaa samaa käyttäytymistä
+kuin _src_-hakemiston tiedostot, kuten opit luvussa 7 koodin jakamisesta
+moduuleihin ja tiedostoihin.
 
-_tests_-hakemiston tiedostojen erilainen käyttäytyminen näkyy selvimmin, kun sinulla on joukko apufunktioita käytettäväksi useissa integraatiotestitiedostoissa ja yrität seurata Luvun 7 [”Moduulien erottaminen eri tiedostoihin”][separating-modules-into-files]<!-- ignore --> -osion ohjeita erottamaan ne yhteiseen moduuliin. Esimerkiksi, jos luomme tiedoston _tests/common.rs_ ja sijoitamme siihen funktion nimeltä `setup`, voimme lisätä `setup`-funktioon koodia, jota haluamme kutsua useista testifunktioista useissa testitiedostoissa:
+_tests_-hakemiston tiedostojen erilainen käyttäytyminen näkyy selvimmin, kun
+sinulla on joukko apufunktioita useissa integraatiotestitiedostoissa, ja yrität
+seurata luvun 7 osion [”Moduulien erottaminen eri tiedostoihin”][separating-modules-into-files]<!-- ignore -->
+vaiheita erottaaksesi ne yhteiseen moduuliin. Esimerkiksi jos luomme
+_tests/common.rs_-tiedoston ja sijoitamme siihen `setup`-nimisen funktion,
+voimme lisätä `setup`-funktioon koodia, jota haluamme kutsua useista testifunktioista
+useissa testitiedostoissa:
 
 <span class="filename">Filename: tests/common.rs</span>
 
@@ -102,13 +188,19 @@ _tests_-hakemiston tiedostojen erilainen käyttäytyminen näkyy selvimmin, kun 
 {{#rustdoc_include ../listings/ch11-writing-automated-tests/no-listing-12-shared-test-code-problem/tests/common.rs}}
 ```
 
-Kun ajamme testit uudelleen, näemme testitulosteessa uuden osion _common.rs_-tiedostolle, vaikka tämä tiedosto ei sisällä testifunktioita eikä me kutsuneet `setup`-funktiota mistään:
+Kun ajamme testit uudelleen, näemme uuden osion testitulosteessa _common.rs_-
+tiedostolle, vaikka tässä tiedostossa ei ole testifunktioita eikä me kutsunut
+`setup`-funktiota mistään:
 
 ```console
 {{#include ../listings/ch11-writing-automated-tests/no-listing-12-shared-test-code-problem/output.txt}}
 ```
 
-Se, että `common` näkyy testituloksissa ja sille näytetään `running 0 tests`, ei ole sitä, mitä halusimme. Halusimme vain jakaa koodia muiden integraatiotestitiedostojen kanssa. Välttääksemme `common`:in näkymisen testitulosteessa, sen sijaan että loisimme _tests/common.rs_:n, luomme _tests/common/mod.rs_:n. Projektihakemisto näyttää nyt tältä:
+`common`-näkyminen testituloksissa `running 0 tests` -tulosteella ei ole sitä,
+mitä halusimme. Halusimme vain jakaa koodia muiden integraatiotestitiedostojen
+kanssa. Välttääksemme `common`-näkymisen testitulosteessa, sen sijaan että
+loisimme _tests/common.rs_-tiedoston, luomme _tests/common/mod.rs_-tiedoston.
+Projektihakemisto näyttää nyt tältä:
 
 ```text
 ├── Cargo.lock
@@ -121,9 +213,18 @@ Se, että `common` näkyy testituloksissa ja sille näytetään `running 0 tests
     └── integration_test.rs
 ```
 
-Tämä on vanhempi nimeämiskäytäntö, jonka Rust myös ymmärtää ja josta mainitsimme [”Vaihtoehtoiset tiedostopolut”][alt-paths]<!-- ignore --> -osiossa Luvussa 7. Tämä tiedoston nimeäminen kertoo Rustille, ettei `common`-moduulia käsitellä integraatiotestitiedostona. Kun siirrämme `setup`-funktion koodin tiedostoon _tests/common/mod.rs_ ja poistamme tiedoston _tests/common.rs_, osio testitulosteessa ei enää näy. _tests_-hakemiston alihakemistojen tiedostoja ei käännetä erillisinä crateina eikä niille tule osioita testitulosteessa.
+Tämä on vanhempi nimeämiskäytäntö, jonka Rust myös ymmärtää ja josta mainittiin
+luvun 7 osiossa [”Vaihtoehtoiset tiedostopolut”][alt-paths]<!-- ignore -->.
+Tämän niminen tiedosto kertoo Rustille, ettei se käsittele `common`-moduulia
+integraatiotestitiedostona. Kun siirrämme `setup`-funktion koodin
+_tests/common/mod.rs_-tiedostoon ja poistamme _tests/common.rs_-tiedoston,
+testitulosteen osio ei enää näy. _tests_-hakemiston alihakemistojen tiedostoja
+ei käännetä erillisinä crateina eikä niillä ole osioita testitulosteessa.
 
-Kun olemme luoneet _tests/common/mod.rs_:n, voimme käyttää sitä mistä tahansa integraatiotestitiedostosta moduulina. Tässä on esimerkki `setup`-funktion kutsumisesta `it_adds_two`-testistä tiedostossa _tests/integration_test.rs_:
+Kun olemme luoneet _tests/common/mod.rs_-tiedoston, voimme käyttää sitä
+miltä tahansa integraatiotestitiedostolta moduulina. Tässä on esimerkki
+`setup`-funktion kutsumisesta `it_adds_two`-testistä _tests/integration_test.rs_-
+tiedostossa:
 
 <span class="filename">Filename: tests/integration_test.rs</span>
 
@@ -131,19 +232,39 @@ Kun olemme luoneet _tests/common/mod.rs_:n, voimme käyttää sitä mistä tahan
 {{#rustdoc_include ../listings/ch11-writing-automated-tests/no-listing-13-fix-shared-test-code-problem/tests/integration_test.rs}}
 ```
 
-Huomaa, että `mod common;`-määrittely on sama kuin moduulimäärittely, jonka demonstroimme Listauksessa 7-21. Sitten testifunktiossa voimme kutsua funktiota `common::setup()`.
+Huomaa, että `mod common;` -ilmoitus on sama kuin moduuli-ilmoitus, jonka
+demonstroimme listauksessa 7-21. Sitten testifunktiossa voimme kutsua
+`common::setup()`-funktiota.
 
 #### Integraatiotestit binääricrateille
 
-Jos projektimme on binääricrate, joka sisältää vain tiedoston _src/main.rs_ eikä tiedostoa _src/lib.rs_, emme voi luoda integraatiotestejä _tests_-hakemistoon ja tuoda _src/main.rs_:ssä määriteltyjä funktioita laajuuteen `use`-lausekkeella. Vain kirjastocratet paljastavat funktioita, joita muut cratet voivat käyttää; binääricratet on tarkoitettu ajettaviksi itsenäisesti.
+Jos projektimme on binääricrate, joka sisältää vain _src/main.rs_-tiedoston
+eikä _src/lib.rs_-tiedostoa, emme voi luoda integraatiotestejä _tests_-
+hakemistoon ja tuoda _src/main.rs_-tiedostossa määriteltyjä funktioita näkyviin
+`use`-lauseella. Vain kirjastocratet paljastavat funktioita, joita muut cratet
+voivat käyttää; binääricratet on tarkoitettu ajettaviksi itsenäisesti.
 
-Tämä on yksi syy siihen, miksi Rust-projektit, jotka tarjoavat binäärin, käyttävät yksinkertaista _src/main.rs_-tiedostoa, joka kutsuu logiikkaa, joka asuu _src/lib.rs_-tiedostossa. Tällä rakenteella integraatiotestit _voivat_ testata kirjastocratea `use`:lla tuoden tärkeän toiminnallisuuden saataville. Jos tärkeä toiminnallisuus toimii, pieni määrä koodia tiedostossa _src/main.rs_ toimii myös, eikä sitä pientä koodimäärää tarvitse testata.
+Tämä on yksi syy siihen, miksi Rust-projektit, jotka tarjoavat binäärin, käyttävät
+suoraviivaista _src/main.rs_-tiedostoa, joka kutsuu logiikkaa, joka asuu
+_src/lib.rs_-tiedostossa. Tällä rakenteella integraatiotestit _voivat_ testata
+kirjastocratea `use`-lauseella tuodakseen tärkeän toiminnallisuuden näkyviin.
+Jos tärkeä toiminnallisuus toimii, pieni määrä koodia _src/main.rs_-tiedostossa
+toimii myös, eikä sitä pientä koodimäärää tarvitse testata.
 
 ## Yhteenveto
 
-Rustin testausominaisuudet tarjoavat tavan määrittää, miten koodin pitäisi toimia varmistaaksesi, että se jatkaa toimimista odottamallasi tavalla, vaikka teet muutoksia. Yksikkötestit harjoittavat kirjaston eri osia erikseen ja voivat testata yksityisiä toteutustietoja. Integraatiotestit tarkistavat, että kirjaston monet osat toimivat yhdessä oikein, ja ne käyttävät kirjaston julkista API:a testatakseen koodin samalla tavalla kuin ulkoinen koodi käyttää sitä. Vaikka Rustin tyyppijärjestelmä ja omistussäännöt auttavat estämään joitakin virhetyyppejä, testit ovat silti tärkeitä vähentämään logiikkavirheitä, jotka liittyvät siihen, miten koodisi odotetaan käyttäytyvän.
+Rustin testausominaisuudet tarjoavat tavan määrittää, miten koodin pitäisi
+toimia varmistaaksesi, että se jatkaa toimimista odottamallasi tavalla, vaikka
+teet muutoksia. Yksikkötestit testaavat kirjaston eri osia erikseen ja voivat
+testata yksityisiä toteutustietoja. Integraatiotestit tarkistavat, että
+kirjaston monet osat toimivat yhdessä oikein, ja ne käyttävät kirjaston julkista
+API:a testatakseen koodia samalla tavalla kuin ulkoinen koodi käyttää sitä.
+Vaikka Rustin tyyppijärjestelmä ja omistajuussäännöt auttavat estämään
+joitakin virhetyyppejä, testit ovat silti tärkeitä vähentämään logiikkavirheitä,
+jotka liittyvät siihen, miten koodisi odotetaan käyttäytyvän.
 
-Yhdistetään tässä luvussa ja aiemmissa luvuissa oppimasi tieto ja työskennellään projektin parissa!
+Yhdistetään tässä luvussa ja aiemmissa luvuissa oppimasi tieto ja työskennellään
+projektin parissa!
 
 [paths]: ch07-03-paths-for-referring-to-an-item-in-the-module-tree.html
 [separating-modules-into-files]: ch07-05-separating-modules-into-different-files.html

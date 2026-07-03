@@ -1,30 +1,21 @@
 # Rust-ohjelmointikieli
 
-**Kirjoittajat:** Steve Klabnik, Carol Nichols ja Chris Krycho, sekä Rust-yhteisön kontribuutiot
+_kirjoittanut Steve Klabnik, Carol Nichols ja Chris Krycho, Rust-yhteisön kontribuutioilla_
 
-**Rust-versio:** Tämä kirja perustuu Rust **1.85.0** -versioon (julkaistu 17.2.2025).
+Tämä tekstin versio olettaa, että käytät Rustia 1.96.0 (julkaistu 28.5.2026) tai uudempaa versiota ja että kaikissa projekteissa on *Cargo.toml*-tiedostossa `edition = "2024"`, jotta ne käyttävät Rust 2024 -editionin idiomeja. Katso [luvun 1 ”Asennus”-osio][install]<!-- ignore --> ohjeista Rustin asentamiseen tai päivittämiseen ja [liite E][appendix-e]<!-- ignore --> tietoa editioneista.
 
-## Rustin asentaminen
+HTML-muoto on saatavilla verkossa osoitteessa
+[https://doc.rust-lang.org/stable/book/](https://doc.rust-lang.org/stable/book/)
+ja offline-tilassa `rustup`-asennuksen mukana; avaa kirja komennolla `rustup doc
+--book`.
 
-Jos sinulla ei vielä ole Rustia asennettuna, katso [luku 1](ch01-00-getting-started.html), jossa on asennusohjeet.
+Useita yhteisön [käännöksiä] on myös saatavilla.
 
-## Saatavuus
+Teksti on saatavilla [No Starch Pressin][nsprust] painettuna ja e-kirjana.
 
-Tämä kirja on saatavilla useissa eri muodoissa:
+[install]: ch01-01-installation.html
+[appendix-e]: appendix-05-editions.html
+[nsprust]: https://nostarch.com/rust-programming-language-3rd-edition
+[translations]: appendix-06-translation.html
 
-- **HTML-muodossa verkossa**: [Rust-kirja](https://doc.rust-lang.org/stable/book/)
-- **Offline-tilassa**: Voit avata kirjan Rustin mukana tulevalla `rustup`-komennolla:
-
-  ```sh
-  rustup doc --book
-  ```
-
-- **Painettuna ja e-kirjana**: Saatavilla kustantajalta [No Starch Press](https://nostarch.com/rust-programming-language-2nd-edition).
-
-- **Käännökset muille kielille**: Rust-yhteisö ylläpitää käännöksiä useille kielille. Niitä löytyy [Rust-kirjan GitHub-sivulta](https://github.com/rust-lang/book).
-
-## Vuorovaikutteinen versio
-
-Brownin yliopiston tietojenkäsittelytieteen osasto on julkaissut interaktiivisen version tästä kirjasta, joka sisältää kyselyitä, muistiinpanomahdollisuuksia ja visualisointeja. Voit tutustua siihen täällä:
-
-[Interaktiivinen Rust-kirja](https://rust-book.cs.brown.edu)
+> **🚨 Haluatko interaktiivisemman oppimiskokemuksen? Kokeile toista versiota Rust-kirjasta, jossa on: kyselyitä, korostuksia, visualisointeja ja muuta**: <https://rust-book.cs.brown.edu>

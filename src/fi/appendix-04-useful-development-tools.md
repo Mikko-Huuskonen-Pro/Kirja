@@ -1,32 +1,36 @@
-## Liite D - Hyödylliset kehitystyökalut
+## Liite D: Hyödylliset kehitystyökalut
 
-Tässä liitteessä käsittelemme joitakin hyödyllisiä kehitystyökaluja, joita Rust-projekti tarjoaa. Käymme läpi automaattisen muotoilun, nopeita tapoja korjata varoituksia, linterin sekä IDE-integroinnin.
+Tässä liitteessä käsittelemme joitakin hyödyllisiä kehitystyökaluja, joita Rust-projekti
+tarjoaa. Käymme läpi automaattisen muotoilun, nopeita tapoja soveltaa varoitusten korjauksia,
+linterin ja integraation IDE:iden kanssa.
 
-### Koodin automaattinen muotoilu `rustfmt`-työkalulla
+### Automaattinen muotoilu `rustfmt`-työkalulla
 
-`rustfmt`-työkalu muotoilee koodisi yhteisön hyväksymän koodityylin mukaisesti. Monet yhteistyöhankkeet käyttävät `rustfmt`-työkalua estääkseen kiistat siitä, mitä tyyliä Rust-koodissa tulisi käyttää – kaikki muotoilevat koodinsa tällä työkalulla.
+`rustfmt`-työkalu muotoilee koodisi yhteisön koodityylin mukaisesti. Monet yhteistyöhankkeet
+käyttävät `rustfmt`-työkalua estääkseen kiistoja siitä, mitä tyyliä Rust-kirjoituksessa
+käytetään: kaikki muotoilevat koodinsa työkalulla.
 
-Asenna `rustfmt` seuraavalla komennolla:
-
-```console
-$ rustup component add rustfmt
-```
-
-Tämä komento asentaa sekä `rustfmt`:n että `cargo-fmt`:n, aivan kuten Rust asentaa sekä `rustc`:n että `cargo`:n. Voit muotoilla minkä tahansa Cargo-projektin seuraavasti:
+Rust-asennukset sisältävät `rustfmt`-työkalun oletuksena, joten järjestelmässäsi pitäisi jo
+olla ohjelmat `rustfmt` ja `cargo-fmt`. Nämä kaksi komentoa vastaavat `rustc`- ja `cargo`-
+komentoja siinä mielessä, että `rustfmt` tarjoaa tarkemman hallinnan ja `cargo-fmt` ymmärtää
+Cargoa käyttävän projektin käytännöt. Muotoillaksesi minkä tahansa Cargo-projektin, anna
+seuraava komento:
 
 ```console
 $ cargo fmt
 ```
 
-Tämä komento muotoilee kaiken nykyisen käännösyksikön Rust-koodin. Sen pitäisi muuttaa vain koodityyliä, ei koodin toiminnallisuutta. Lisätietoja `rustfmt`-työkalusta löytyy sen [dokumentaatiosta][rustfmt].
-
-[rustfmt]: https://github.com/rust-lang/rustfmt
+Tämän komennon suorittaminen muotoilee kaiken nykyisen paketin Rust-koodin. Sen pitäisi muuttaa
+vain koodityyliä, ei koodin semantiikkaa. Lisätietoja `rustfmt`-työkalusta löytyy [sen
+dokumentaatiosta][rustfmt].
 
 ### Koodin korjaaminen `rustfix`-työkalulla
 
-Rust-asennuksen mukana tuleva `rustfix`-työkalu voi automaattisesti korjata kääntäjän varoitukset, joiden ratkaisu on selkeä. Esimerkiksi alla olevassa koodissa:
+`rustfix`-työkalu sisältyy Rust-asennuksiin ja voi automaattisesti korjata kääntäjän
+varoituksia, joilla on selkeä korjaustapa, joka todennäköisesti on se, mitä haluat. Olet
+todennäköisesti nähnyt kääntäjän varoituksia aiemmin. Esimerkiksi tarkastele tätä koodia:
 
-<span class="filename">Tiedostonimi: src/main.rs</span>
+<span class="filename">Filename: src/main.rs</span>
 
 ```rust
 fn main() {
@@ -35,7 +39,8 @@ fn main() {
 }
 ```
 
-Muuttuja `x` on määritelty **mut**-avainsanalla, mutta sitä ei koskaan muokata. Rust antaa tästä varoituksen:
+Tässä määrittelemme muuttujan `x` muuttuvaksi, mutta emme koskaan muuta sitä. Rust varoittaa
+siitä:
 
 ```console
 $ cargo build
@@ -51,7 +56,8 @@ warning: variable does not need to be mutable
   = note: `#[warn(unused_mut)]` on by default
 ```
 
-Varoitus ehdottaa, että `mut`-avainsana poistetaan. Tämä voidaan tehdä automaattisesti `rustfix`-työkalulla suorittamalla seuraava komento:
+Varoitus ehdottaa, että poistamme `mut`-avainsanan. Voimme soveltaa ehdotusta automaattisesti
+`rustfix`-työkalulla suorittamalla komennon `cargo fix`:
 
 ```console
 $ cargo fix
@@ -60,7 +66,9 @@ $ cargo fix
     Finished dev [unoptimized + debuginfo] target(s) in 0.59s
 ```
 
-Kun tarkastelemme tiedostoa **src/main.rs**, huomaamme, että `cargo fix` on päivittänyt koodin:
+Kun katsomme tiedostoa _src/main.rs_ uudelleen, huomaamme, että `cargo fix` on muuttanut koodin:
+
+<span class="filename">Filename: src/main.rs</span>
 
 ```rust
 fn main() {
@@ -71,39 +79,36 @@ fn main() {
 
 Muuttuja `x` on nyt muuttumaton, eikä varoitusta enää näy.
 
-`cargo fix` -komentoa voi myös käyttää koodin siirtämiseen eri Rust-versioiden välillä. Rustin eri versiot käsitellään [liitteessä E][editions].
+Voit myös käyttää `cargo fix` -komentoa siirtääksesi koodiasi eri Rust-editionien välillä.
+Editioneista kerrotaan [liitteessä E][editions]<!-- ignore -->.
 
-[editions]: appendix-05-editions.md
+### Lisää linttauksia Clippyllä
 
-### Lisää tarkastuksia Clippyllä
+Clippy-työkalu on kokoelma linttauksia, jotka analysoivat koodiasi, jotta voit havaita yleisiä
+virheitä ja parantaa Rust-koodiasi. Clippy sisältyy vaki Rust-asennuksiin.
 
-Clippy on kokoelma lintereitä, jotka analysoivat koodiasi ja auttavat löytämään yleisiä virheitä sekä parantamaan Rust-koodia.
-
-Asenna Clippy seuraavasti:
-
-```console
-$ rustup component add clippy
-```
-
-Aja Clippy missä tahansa Cargo-projektissa:
+Suorittaaksesi Clippyn linttauksia missä tahansa Cargo-projektissa, anna seuraava komento:
 
 ```console
 $ cargo clippy
 ```
 
-Jos kirjoitat esimerkiksi ohjelman, joka käyttää likimääräistä matemaattista vakioarvoa, kuten piitä:
+Esimerkiksi oletetaan, että kirjoitat ohjelman, joka käyttää matemaattisen vakion likiarvoa,
+kuten piitä, kuten tämä ohjelma tekee:
 
-<span class="filename">Tiedostonimi: src/main.rs</span>
+<Listing file-name="src/main.rs">
 
 ```rust
 fn main() {
     let x = 3.1415;
     let r = 8.0;
-    println!("ympyrän pinta-ala on {}", x * r * r);
+    println!("the area of the circle is {}", x * r * r);
 }
 ```
 
-Suorittamalla `cargo clippy` saat seuraavan virheilmoituksen:
+</Listing>
+
+Tämän projektin `cargo clippy` -suoritus tuottaa tämän virheen:
 
 ```text
 error: approximate value of `f{32, 64}::consts::PI` found
@@ -117,31 +122,41 @@ error: approximate value of `f{32, 64}::consts::PI` found
   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#approx_constant
 ```
 
-Clippy ilmoittaa, että Rustissa on jo tarkempi `PI`-vakio, jota tulisi käyttää.
+Tämä virhe kertoo, että Rustissa on jo tarkempi `PI`-vakio määriteltynä ja että ohjelmasi
+olisi oikeampi, jos käyttäisit vakiota likiarvon sijaan. Muuttaisit sitten koodisi käyttämään
+`PI`-vakiota.
 
-Korjaamalla koodin:
+Seuraava koodi ei tuota Clippyltä virheitä tai varoituksia:
+
+<Listing file-name="src/main.rs">
 
 ```rust
 fn main() {
     let x = std::f64::consts::PI;
     let r = 8.0;
-    println!("ympyrän pinta-ala on {}", x * r * r);
+    println!("the area of the circle is {}", x * r * r);
 }
 ```
 
-Virheilmoitus katoaa, ja Clippy ei löydä huomautettavaa.
+</Listing>
 
-Lisätietoja Clippystä löytyy sen [dokumentaatiosta][clippy].
-
-[clippy]: https://github.com/rust-lang/rust-clippy
+Lisätietoja Clippystä löytyy [sen dokumentaatiosta][clippy].
 
 ### IDE-integraatio `rust-analyzer`-työkalulla
 
-Rust-yhteisö suosittelee käyttämään [`rust-analyzer`][rust-analyzer]<!-- ignore --> -työkalua IDE-integraatioon. Tämä työkalu sisältää kääntäjälähtöisiä apuvälineitä ja tukee [Language Server Protocol][lsp]<!-- ignore --> -määritystä, jonka avulla eri IDE:t ja ohjelmointikielet voivat kommunikoida keskenään.
+IDE-integraation helpottamiseksi Rust-yhteisö suosittelee [`rust-analyzer`][rust-analyzer]<!--
+ignore --> -työkalun käyttöä. Tämä työkalu on joukko kääntäjäkeskeisiä apuohjelmia, jotka
+käyttävät [Language Server Protocol][lsp]<!-- ignore --> -määritystä, joka on spesifikaatio
+IDE:iden ja ohjelmointikielten väliselle viestinnälle. Erilaiset asiakkaat voivat käyttää
+`rust-analyzer`-työkalua, kuten [Visual Studio Coden Rust-analyzer-liitännäinen][vscode].
 
-Asennusohjeet löytyvät `rust-analyzer`-projektin [kotisivulta][rust-analyzer]<!-- ignore -->. Asennuksen jälkeen saat käyttöösi ominaisuuksia kuten automaattisen täydennyksen, siirtymisen määrityksiin ja reaaliaikaiset virheilmoitukset.
+Vieraile `rust-analyzer`-projektin [kotisivulla][rust-analyzer]<!-- ignore --> saadaksesi
+asennusohjeet ja asenna sitten kielipalvelintuki omaan IDE:esi. IDE:si saa ominaisuuksia,
+kuten automaattisen täydennyksen, siirtymisen määrittelyyn ja rivinsisäiset virheet.
 
+[rustfmt]: https://github.com/rust-lang/rustfmt
+[editions]: appendix-05-editions.md
+[clippy]: https://github.com/rust-lang/rust-clippy
 [rust-analyzer]: https://rust-analyzer.github.io
 [lsp]: http://langserver.org/
 [vscode]: https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer
-

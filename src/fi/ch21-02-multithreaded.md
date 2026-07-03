@@ -1,6 +1,15 @@
-## Yksisäikeisen palvelimen muuttaminen monisäikeiseksi palvelimeksi
+<!-- Old headings. Do not remove or links may break. -->
+
+<a id="turning-our-single-threaded-server-into-a-multithreaded-server"></a>
+<a id="from-single-threaded-to-multithreaded-server"></a>
+
+## Yksisäikeisestä monisäikeiseksi palvelimeksi
 
 Tällä hetkellä palvelin käsittelee jokaisen pyynnön vuorotellen, eli se ei käsittele toista yhteyttä ennen kuin ensimmäinen on käsitelty loppuun. Jos palvelin saisi yhä enemmän pyyntöjä, tämä peräkkäinen suoritus olisi yhä vähemmän optimaalinen. Jos palvelin saa pyynnön, jonka käsittely kestää kauan, myöhempien pyyntöjen täytyy odottaa, kunnes pitkä pyyntö on valmis — vaikka uudet pyynnöt voisi käsitellä nopeasti. Meidän täytyy korjata tämä, mutta ensin katsomme ongelmaa käytännössä.
+
+<!-- Old headings. Do not remove or links may break. -->
+
+<a id="simulating-a-slow-request-in-the-current-server-implementation"></a>
 
 ### Hitaan pyynnön simulointi nykyisessä palvelintoteutuksessa
 
@@ -57,6 +66,10 @@ Tutkitaan ensin, miltä koodimme näyttäisi, jos se loisi uuden säikeen jokais
 Kuten opit luvussa 16, `thread::spawn` luo uuden säikeen ja suorittaa sitten sulkeuman koodin uudessa säikeessä. Jos suoritat tämän koodin ja lataat _/sleep_ selaimessasi ja sitten _/_ kahdessa muussa selainvälilehdessä, näet todellakin, etteivät _/_-pyynnöt joudu odottamaan _/sleep_-pyynnön valmistumista. Kuten mainitsimme, tämä kuitenkin lopulta ylikuormittaa järjestelmän, koska loisit uusia säikeitä ilman mitään rajaa.
 
 Saatat myös muistaa luvusta 17, että tämä on juuri sellainen tilanne, jossa async ja await todella loistavat! Pidä tämä mielessä, kun rakennamme säikeiden poolia, ja mieti, miltä asiat näyttäisivät erilaisilta tai samankaltaisilta asyncin kanssa.
+
+<!-- Old headings. Do not remove or links may break. -->
+
+<a id="creating-a-similar-interface-for-a-finite-number-of-threads"></a>
 
 <!-- Old headings. Do not remove or links may break. -->
 
@@ -136,7 +149,7 @@ Tarkistetaan koodi uudelleen:
 
 Nyt virhe johtuu siitä, ettei `ThreadPool`-rakenteella ole `execute`-metodia. Muista [”Rajallisen määrän säikeitä luovan rajapinnan luominen”](#creating-a-finite-number-of-threads)<!-- ignore --> -osiosta, että päätimme säikeiden poolimme rajapinnan olevan samankaltainen kuin `thread::spawn`. Lisäksi toteutamme `execute`-funktion niin, että se ottaa annetun sulkeuman ja antaa sen poolin joutilaalle säikeelle suoritettavaksi.
 
-Määrittelemme `execute`-metodin `ThreadPool`-rakenteelle ottamaan sulkeuman parametrina. Muista [”Kaapattujen arvojen siirtäminen sulkeumasta ja `Fn`-traitit”][fn-traits]<!-- ignore --> -osio luvusta 13, jossa voimme ottaa sulkeumia parametreina kolmella eri traitilla: `Fn`, `FnMut` ja `FnOnce`. Meidän täytyy päättää, millaista sulkeumaa käytämme tässä. Tiedämme päätyvämme tekemään jotain samankaltaista kuin standardikirjaston `thread::spawn`-toteutus, joten voimme katsoa, mitä rajoja `thread::spawn`-funktion parametri on. Dokumentaatio näyttää seuraavan:
+Määrittelemme `execute`-metodin `ThreadPool`-rakenteelle ottamaan sulkeuman parametrina. Muista [”Kaapattujen arvojen siirtäminen sulkeumista”][moving-out-of-closures]<!-- ignore --> -osio luvusta 13, jossa voimme ottaa sulkeumia parametreina kolmella eri traitilla: `Fn`, `FnMut` ja `FnOnce`. Meidän täytyy päättää, millaista sulkeumaa käytämme tässä. Tiedämme päätyvämme tekemään jotain samankaltaista kuin standardikirjaston `thread::spawn`-toteutus, joten voimme katsoa, mitä rajoja `thread::spawn`-funktion parametri on. Dokumentaatio näyttää seuraavan:
 
 ```rust,ignore
 pub fn spawn<F, T>(f: F) -> JoinHandle<T>
@@ -221,6 +234,9 @@ Olemme tuoneet `std::thread`-moduulin näkyviin kirjastocratessa, koska käytäm
 Kun kelvollinen koko on vastaanotettu, `ThreadPool`-rakenteemme luo uuden vektorin, joka voi sisältää `size` alkiota. `with_capacity`-funktio tekee saman tehtävän kuin `Vec::new`, mutta tärkeällä erolla: se varaa tilan vektorille etukäteen. Koska tiedämme tarvitsevamme tallentaa `size` elementtiä vektoriin, tämä varaus etukäteen on hieman tehokkaampaa kuin `Vec::new`-funktion käyttö, joka muuttaa kokoaan elementtien lisäämisen yhteydessä.
 
 Kun ajat `cargo check`-komennon uudelleen, sen pitäisi onnistua.
+
+<!-- Old headings. Do not remove or links may break. -->
+<a id ="a-worker-struct-responsible-for-sending-code-from-the-threadpool-to-a-thread"></a>
 
 #### `Worker`-rakenne, joka vastaa koodin lähettämisestä `ThreadPool`-rakenteesta säikeelle
 
@@ -323,7 +339,7 @@ Näillä muutoksilla koodi kääntyy! Olemme lähellä maalia!
 
 #### `execute`-metodin toteuttaminen
 
-Toteutetaan vihdoin `execute`-metodi `ThreadPool`-rakenteelle. Muutamme myös `Job`-rakenteen rakenteesta tyyppialiaaksi trait-objektille, joka sisältää `execute`-funktion vastaanottaman sulkeuman tyypin. Kuten käsiteltiin [”Tyyppialiaasien luominen”][creating-type-synonyms-with-type-aliases]<!-- ignore --> -osiossa luvussa 20, tyyppialiaasit antavat meidän lyhentää pitkiä tyyppejä helpompaa käyttöä varten. Katso listaus 21-19.
+Toteutetaan vihdoin `execute`-metodi `ThreadPool`-rakenteelle. Muutamme myös `Job`-rakenteen rakenteesta tyyppialiaaksi trait-objektille, joka sisältää `execute`-funktion vastaanottaman sulkeuman tyypin. Kuten käsiteltiin [”Tyyppialiaasit ja tyyppien synonyymit”][type-aliases]<!-- ignore --> -osiossa luvussa 20, tyyppialiaasit antavat meidän lyhentää pitkiä tyyppejä helpompaa käyttöä varten. Katso listaus 21-19.
 
 <Listing number="21-19" file-name="src/lib.rs" caption="`Job`-tyyppialiaasin luominen `Box`-rakenteelle, joka sisältää jokaisen sulkeuman, ja työn lähettäminen kanavaa pitkin">
 
@@ -404,7 +420,7 @@ Onnistui! Meillä on nyt säikeiden pooli, joka käsittelee yhteyksiä asynkroni
 
 Tämä on hyvä hetki pysähtyä ja miettiä, miten listauksien 21-18, 21-19 ja 21-20 koodi olisi erilainen, jos käyttäisimme futureja sulkeuman sijaan tehtävänä. Mitkä tyypit muuttuisivat? Miten metodien allekirjoitukset olisivat erilaisia, jos ollenkaan? Mitkä koodin osat pysyisivät samoina?
 
-Kun olet oppinut `while let` -silmukasta luvuissa 17 ja 18, saatat ihmetellä, miksi emme kirjoittaneet worker-säikeen koodia kuten listauksessa 21-21.
+Kun olet oppinut `while let` -silmukasta luvuissa 17 ja 19, saatat ihmetellä, miksi emme kirjoittaneet `Worker`-säikeen koodia kuten listauksessa 21-21.
 
 <Listing number="21-21" file-name="src/lib.rs" caption="Vaihtoehtoinen `Worker::new`-toteutus `while let` -silmukan avulla">
 
@@ -418,8 +434,8 @@ Tämä koodi kääntyy ja suoritetaan, mutta ei tuota haluttua säikeiden käytt
 
 Listauksen 21-20 koodi, joka käyttää `let job = receiver.lock().unwrap().recv().unwrap();`, toimii, koska `let`-lausekkeella kaikki lausekkeen oikean puolen väliaikaiset arvot pudotetaan heti, kun `let`-lause päättyy. `while let` (ja `if let` ja `match`) eivät kuitenkaan pudota väliaikaisia arvoja ennen kuin liittyvä lohko päättyy. Listauksessa 21-21 lukko pysyy hallussa `job()`-kutsun keston ajan, mikä tarkoittaa, etteivät muut `Worker`-instanssit voi vastaanottaa töitä.
 
-[creating-type-synonyms-with-type-aliases]: ch20-03-advanced-types.html#creating-type-synonyms-with-type-aliases
+[type-aliases]: ch20-03-advanced-types.html#type-synonyms-and-type-aliases
 [integer-types]: ch03-02-data-types.html#integer-types
-[fn-traits]: ch13-01-closures.html#moving-captured-values-out-of-the-closure-and-the-fn-traits
+[moving-out-of-closures]: ch13-01-closures.html#moving-captured-values-out-of-closures
 [builder]: ../std/thread/struct.Builder.html
 [builder-spawn]: ../std/thread/struct.Builder.html#method.spawn

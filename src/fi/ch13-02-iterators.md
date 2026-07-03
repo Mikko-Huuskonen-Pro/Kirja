@@ -1,13 +1,14 @@
-## Iteraattorien käyttö: Sarjan käsittely tehokkaasti
+## Kohteiden sarjojen käsittely iteraattoreilla
 
-Iteraattorimalli mahdollistaa tehtävien suorittamisen sarjalle kohteita yksi kerrallaan.
-Iteraattori huolehtii logiikasta, joka määrittää, miten edetään seuraavaan kohteeseen ja
-milloin sarja päättyy. Käyttämällä iteraattoreita voit välttää saman logiikan uudelleenkirjoittamisen.
+Iteraattorimalli mahdollistaa tehtävien suorittamisen sarjalle kohteita vuorotellen.
+Iteraattori huolehtii logiikasta, jolla käydään läpi jokainen kohde ja määritetään, milloin
+sarja on päättynyt. Käyttäessäsi iteraattoreita sinun ei tarvitse toteuttaa tätä logiikkaa
+uudelleen itse.
 
-Rustissa iteraattorit ovat **laiskoja**, eli ne eivät tee mitään ennen kuin kutsutaan
-metodia, joka **kuluttaa** (*consume*) iteraattorin. Esimerkiksi alla oleva koodi
-(*Listing 13-10*) luo iteraattorin `v1`-vektorin alkioista kutsumalla `iter`-metodia.
-Tämä koodi ei vielä tee mitään hyödyllistä.
+Rustissa iteraattorit ovat _laiskoja_, eli niillä ei ole vaikutusta ennen kuin kutsut
+metodeja, jotka kuluttavat iteraattorin sen käyttämiseksi loppuun. Esimerkiksi listauksen 13-10
+koodi luo iteraattorin vektorin `v1` alkioille kutsumalla `Vec<T>`-tyypille määriteltyä
+`iter`-metodia. Tämä koodi ei itsessään tee mitään hyödyllistä.
 
 <Listing number="13-10" file-name="src/main.rs" caption="Iteraattorin luominen">
 
@@ -17,13 +18,14 @@ Tämä koodi ei vielä tee mitään hyödyllistä.
 
 </Listing>
 
-Kun iteraattori on luotu, voimme käyttää sitä monin tavoin. **Luvun 3 Listing 3-5** esimerkissä
-iteroimme taulukon yli `for`-silmukalla. Rust loi automaattisesti iteraattorin ja kulutti sen,
-mutta nyt tutkimme tätä prosessia tarkemmin.
+Iteraattori tallennetaan muuttujaan `v1_iter`. Kun iteraattori on luotu, voimme käyttää sitä
+monin eri tavoin. Listauksessa 3-5 iteroimme taulukkoa `for`-silmukalla suorittaaksemme
+koodia jokaiselle sen alkioille. Taustalla tämä loi ja kulutti implisiittisesti iteraattorin,
+mutta ohitimme siihen asti tarkalleen, miten se toimii.
 
-Seuraavassa esimerkissä (*Listing 13-11*) erottelemme iteraattorin luonnin ja sen käytön
-`for`-silmukassa. Kun silmukka kutsutaan `v1_iter`:llä, jokainen iteraattorin alkio käsitellään
-silmukan sisällä.
+Listauksen 13-11 esimerkissä erotamme iteraattorin luonnin iteraattorin käytöstä `for`-silmukassa.
+Kun `for`-silmukkaa kutsutaan käyttäen iteraattoria `v1_iter`-muuttujassa, jokaista iteraattorin
+alkiota käytetään yhdessä silmukan kierroksessa, jolloin jokainen arvo tulostetaan.
 
 <Listing number="13-11" file-name="src/main.rs" caption="Iteraattorin käyttö `for`-silmukassa">
 
@@ -33,16 +35,20 @@ silmukan sisällä.
 
 </Listing>
 
-Ilman iteraattoreita joutuisimme kirjoittamaan vastaavan logiikan käsin: alustaisimme muuttujan,
-käyttäisimme sitä indeksinä vektoriin, lisäisimme sen arvoa ja lopettaisimme silmukan, kun
-olemme käyneet kaikki alkiot läpi.
+Kielissä, joiden standardikirjasto ei tarjoa iteraattoreita, kirjoittaisit todennäköisesti saman
+toiminnallisuuden aloittamalla muuttujan arvosta 0, käyttämällä tuota muuttujaa indeksinä vektoriin
+arvon hakemiseksi ja kasvattamalla muuttujan arvoa silmukassa, kunnes se saavuttaa vektorin alkiojen
+kokonaismäärän.
 
-Iteraattorit tekevät tämän työn puolestamme ja tarjoavat joustavuutta, koska ne eivät rajoitu
-vain tietorakenteisiin, joihin pääsee käsiksi indeksin avulla.
+Iteraattorit hoitavat koko tämän logiikan puolestasi, vähentäen toistuvaa koodia, jonka voisit
+potentiaalisesti kirjoittaa väärin. Iteraattorit antavat sinulle enemmän joustavuutta käyttää samaa
+logiikkaa monenlaisissa sarjoissa, eivätkä ne rajoitu vain tietorakenteisiin, joihin pääsee käsiksi
+indeksin avulla, kuten vektoreihin. Tarkastellaan, miten iteraattorit tekevät sen.
 
 ### `Iterator`-trait ja `next`-metodi
 
-Kaikki iteraattorit toteuttavat standardikirjaston **`Iterator`**-traitin. Sen määritelmä näyttää tältä:
+Kaikki iteraattorit toteuttavat standardikirjastossa määritellyn `Iterator`-nimisen traitin.
+Traitin määritelmä näyttää tältä:
 
 ```rust
 pub trait Iterator {
@@ -50,19 +56,24 @@ pub trait Iterator {
 
     fn next(&mut self) -> Option<Self::Item>;
 
-    // muita oletusmetodeja
+    // methods with default implementations elided
 }
 ```
 
-Tämä käyttää **liittyvää tyyppiä** (*associated type*), jota käsittelemme tarkemmin **luvussa 20**.
-Tässä riittää tietää, että `Item` määrittää iteraattorin tuottamien alkioiden tyypin.
+Huomaa, että tämä määritelmä käyttää uutta syntaksia: `type Item` ja `Self::Item`, jotka määrittelevät
+tälle traitille liittyvän tyypin. Käsittelemme liittyviä tyyppejä perusteellisesti luvussa 20. Toistaiseksi
+riittää tietää, että tämä koodi sanoo, että `Iterator`-traitin toteuttaminen edellyttää myös `Item`-tyypin
+määrittelyä, ja tätä `Item`-tyyppiä käytetään `next`-metodin palautustyypissä. Toisin sanoen `Item`-tyyppi
+on tyyppi, jonka iteraattori palauttaa.
 
-Ainoa pakollinen metodi `Iterator`-traitille on `next`, joka palauttaa yhden iteraattorin alkion
-kerrallaan. Kun iteraattori loppuu, `next` palauttaa `None`.
+`Iterator`-trait edellyttää toteuttajilta vain yhden metodin määrittelyä: `next`-metodin, joka palauttaa
+yhdellä kerralla yhden iteraattorin alkion käärittynä `Some`-arvoon ja kun iterointi on päättynyt,
+palauttaa `None`-arvon.
 
-Kutsumalla `next`-metodia suoraan voimme nähdä, miten iteraattori palauttaa arvoja:
+Voimme kutsua `next`-metodia iteraattoreilla suoraan; listaus 13-12 havainnollistaa, mitä arvoja
+palautetaan toistuvilla `next`-kutsuilla iteraattorille, joka on luotu vektorista.
 
-<Listing number="13-12" file-name="src/lib.rs" caption="`next`-metodin kutsuminen">
+<Listing number="13-12" file-name="src/lib.rs" caption="`next`-metodin kutsuminen iteraattorilla">
 
 ```rust,noplayground
 {{#rustdoc_include ../listings/ch13-functional-features/listing-13-12/src/lib.rs:here}}
@@ -70,17 +81,32 @@ Kutsumalla `next`-metodia suoraan voimme nähdä, miten iteraattori palauttaa ar
 
 </Listing>
 
-Huomaa, että `v1_iter` täytyy olla **muuttuva**, koska `next` muuttaa iteraattorin sisäistä tilaa.
-Siksi `for`-silmukka ei tarvitse erikseen muuttuvaa iteraattoria – se ottaa omistajuuden ja käsittelee sen taustalla.
+Huomaa, että meidän täytyi tehdä `v1_iter` muuttuvaksi: iteraattorin `next`-metodin kutsuminen
+muuttaa sisäistä tilaa, jota iteraattori käyttää seuratakseen sijaintiaan sarjassa. Toisin sanoen tämä
+koodi _kuluttaa_ eli käyttää iteraattorin loppuun. Jokainen `next`-kutsu kuluttaa yhden alkion
+iteraattorista. Meidän ei tarvinnut tehdä `v1_iter`-muuttujasta muuttuvaa käyttäessämme `for`-silmukkaa,
+koska silmukka otti omistajuuden `v1_iter`-muuttujasta ja teki sen muuttuvaksi taustalla.
+
+Huomaa myös, että `next`-kutsuista saamamme arvot ovat muuttumattomia viittauksia vektorin arvoihin.
+`iter`-metodi tuottaa iteraattorin muuttumattomien viittausten yli. Jos haluamme luoda iteraattorin,
+joka ottaa omistajuuden `v1`-muuttujasta ja palauttaa omistettuja arvoja, voimme kutsua `into_iter`-metodia
+`iter`-metodin sijaan. Vastaavasti, jos haluamme iteroida muuttuvien viittausten yli, voimme kutsua
+`iter_mut`-metodia `iter`-metodin sijaan.
 
 ### Iteraattorin kuluttavat metodit
 
-`Iterator`-trait sisältää monia metodeja, jotka kutsuvat `next`-metodia kuluttaen iteraattorin.
-Näitä kutsutaan **kuluttaviksi sovittimiksi** (*consuming adapters*), koska ne käyttävät iteraattorin loppuun.
+`Iterator`-traitilla on useita eri metodeja, joille standardikirjasto tarjoaa oletustoteutukset; näistä
+metodeista voi lukea standardikirjaston API-dokumentaatiosta `Iterator`-traitin kohdalta. Jotkin näistä
+metodeista kutsuvat määritelmässään `next`-metodia, minkä vuoksi `Iterator`-traitin toteuttamisessa
+on pakollista toteuttaa `next`-metodi.
 
-Yksi esimerkki on `sum`-metodi:
+Metodeja, jotka kutsuvat `next`-metodia, kutsutaan _kuluttaviksi sovittimiksi_, koska niiden kutsuminen
+käyttää iteraattorin loppuun. Yksi esimerkki on `sum`-metodi, joka ottaa omistajuuden iteraattorista ja
+iteroi alkioiden läpi kutsumalla toistuvasti `next`-metodia ja näin kuluttaen iteraattorin. Iteroidessaan
+se lisää jokaisen alkion käynnissä olevaan summaan ja palauttaa summan, kun iterointi on valmis. Listauksessa
+13-13 on testi, joka havainnollistaa `sum`-metodin käyttöä.
 
-<Listing number="13-13" file-name="src/lib.rs" caption="`sum`-metodin käyttö">
+<Listing number="13-13" file-name="src/lib.rs" caption="`sum`-metodin kutsuminen iteraattorin kaikkien alkioiden summan saamiseksi">
 
 ```rust,noplayground
 {{#rustdoc_include ../listings/ch13-functional-features/listing-13-13/src/lib.rs:here}}
@@ -88,15 +114,20 @@ Yksi esimerkki on `sum`-metodi:
 
 </Listing>
 
-Kutsuttaessa `sum` omistajuus siirtyy ja iteraattoria ei voi enää käyttää sen jälkeen.
+Emme saa käyttää `v1_iter`-muuttujaa `sum`-kutsun jälkeen, koska `sum` ottaa omistajuuden iteraattorista,
+jolle sitä kutsutaan.
 
-### Iteraattorin tuottavat metodit
+### Muita iteraattoreja tuottavat metodit
 
-**Sovittavat metodit** (*iterator adapters*) eivät kuluta iteraattoria vaan tuottavat uusia iteraattoreita.
+_Iteraattorisovittimet_ ovat `Iterator`-traitille määriteltyjä metodeja, jotka eivät kuluta iteraattoria.
+Sen sijaan ne tuottavat eri iteraattoreja muuttamalla jotakin alkuperäisen iteraattorin ominaisuutta.
 
-Alla oleva `map`-esimerkki (*Listing 13-14*) ottaa sulkeisen ja soveltaa sitä jokaiseen iteraattorin alkioon:
+Listaus 13-14 näyttää esimerkin iteraattorisovitinmetodin `map` kutsumisesta, joka ottaa sulkeisen
+kutsumista varten jokaiselle alkioille, kun alkioiden läpi iteroidaan. `map`-metodi palauttaa uuden
+iteraattorin, joka tuottaa muokatut alkiot. Tässä sulkeinen luo uuden iteraattorin, jossa vektorin jokainen
+alkio kasvatetaan yhdellä.
 
-<Listing number="13-14" file-name="src/main.rs" caption="`map`-metodin käyttö uuden iteraattorin luomiseen">
+<Listing number="13-14" file-name="src/main.rs" caption="Iteraattorisovittimen `map` kutsuminen uuden iteraattorin luomiseksi">
 
 ```rust,not_desired_behavior
 {{#rustdoc_include ../listings/ch13-functional-features/listing-13-14/src/main.rs:here}}
@@ -104,15 +135,23 @@ Alla oleva `map`-esimerkki (*Listing 13-14*) ottaa sulkeisen ja soveltaa sitä j
 
 </Listing>
 
-Tämä ei kuitenkaan tee mitään, koska iteraattorit ovat **laiskoja**. Saamme varoituksen:
+Tämä koodi tuottaa kuitenkin varoituksen:
 
 ```console
 {{#include ../listings/ch13-functional-features/listing-13-14/output.txt}}
 ```
 
-Kutsumme `collect`-metodia, joka kuluttaa iteraattorin ja muuntaa sen vektoriksi:
+Listauksen 13-14 koodi ei tee mitään; määrittämäämme sulkeista ei koskaan kutsuta. Varoitus muistuttaa
+miksi: iteraattorisovittimet ovat laiskoja, ja meidän täytyy kuluttaa iteraattori tässä.
 
-<Listing number="13-15" file-name="src/main.rs" caption="`map`-metodin tuloksen kerääminen vektoriksi">
+Varoituksen korjaamiseksi ja iteraattorin kuluttamiseksi käytämme `collect`-metodia, jota käytimme
+`env::args`-funktion kanssa listauksessa 12-1. Tämä metodi kuluttaa iteraattorin ja kerää tuloksena
+syntyvät arvot kokoelmatietotyypiksi.
+
+Listauksessa 13-15 keräämme `map`-kutsusta palautetun iteraattorin iteroinnin tulokset vektoriksi.
+Tämä vektori sisältää lopulta jokaisen alkuperäisen vektorin alkion kasvatettuna yhdellä.
+
+<Listing number="13-15" file-name="src/main.rs" caption="`map`-metodin kutsuminen uuden iteraattorin luomiseksi ja sitten `collect`-metodin kutsuminen uuden iteraattorin kuluttamiseksi ja vektorin luomiseksi">
 
 ```rust
 {{#rustdoc_include ../listings/ch13-functional-features/listing-13-15/src/main.rs:here}}
@@ -120,18 +159,31 @@ Kutsumme `collect`-metodia, joka kuluttaa iteraattorin ja muuntaa sen vektoriksi
 
 </Listing>
 
-Koska `map` ottaa sulkeisen, voimme määritellä minkä tahansa muunnoksen.
+Koska `map` ottaa sulkeisen, voimme määrittää minkä tahansa operaation, jonka haluamme suorittaa
+jokaiselle alkioille. Tämä on erinomainen esimerkki siitä, miten sulkeiset antavat sinun mukauttaa
+käyttäytymistä samalla kun hyödynnät uudelleen `Iterator`-traitin tarjoamaa iterointikäyttäytymistä.
 
-### Sulkeiset ja iteraattorien sovittimet
+Voit ketjuttaa useita iteraattorisovitinmetodien kutsuja suorittaaksesi monimutkaisia toimintoja
+luettavalla tavalla. Koska kaikki iteraattorit ovat kuitenkin laiskoja, sinun täytyy kutsua yhtä
+kuluttavista sovitinmetodeista saadaksesi tuloksia iteraattorisovitinmetodien kutsuista.
 
-Monet iteraattorien sovittimet käyttävät **sulkeisia**, jotka voivat tallentaa ympäristönsä muuttujia.
+<!-- Old headings. Do not remove or links may break. -->
 
-Esimerkiksi `filter`-metodi ottaa sulkeisen, joka palauttaa `true` tai `false`. Jos tulos on `true`,
-alkio sisällytetään uuteen iteraattoriin.
+<a id="using-closures-that-capture-their-environment"></a>
 
-Alla oleva esimerkki (*Listing 13-16*) käyttää `filter`-metodia suodattaakseen kengät kokotiedon perusteella:
+### Ympäristönsä sieppaavat sulkeiset
 
-<Listing number="13-16" file-name="src/lib.rs" caption="`filter`-metodin käyttö sulkeisen kanssa">
+Monet iteraattorisovittimet ottavat sulkeisia argumentteina, ja usein iteraattorisovittimille määrittämämme
+sulkeiset ovat sulkeisia, jotka sieppaavat ympäristönsä.
+
+Tätä esimerkkiä varten käytämme `filter`-metodia, joka ottaa sulkeisen. Sulkeinen saa alkion iteraattorista
+ja palauttaa `bool`-arvon. Jos sulkeinen palauttaa `true`, arvo sisällytetään `filter`-metodin tuottamaan
+iteraattoriin. Jos sulkeinen palauttaa `false`, arvoa ei sisällytetä.
+
+Listauksessa 13-16 käytämme `filter`-metodia sulkeisella, joka sieppaa `shoe_size`-muuttujan ympäristöstään
+iteroidakseen `Shoe`-rakenteen instanssien kokoelman yli. Se palauttaa vain kengät, joiden koko on määritetty.
+
+<Listing number="13-16" file-name="src/lib.rs" caption="`filter`-metodin käyttö `shoe_size`-muuttujaa sieppaavan sulkeisen kanssa">
 
 ```rust,noplayground
 {{#rustdoc_include ../listings/ch13-functional-features/listing-13-16/src/lib.rs}}
@@ -139,15 +191,16 @@ Alla oleva esimerkki (*Listing 13-16*) käyttää `filter`-metodia suodattaaksee
 
 </Listing>
 
-Tässä `filter` käyttää sulkeista, joka vertaa kenkiä `shoe_size`-arvoon.
+`shoes_in_size`-funktio ottaa omistajuuden kenkävektorista ja kenkäkoosta parametreina. Se palauttaa vektorin,
+joka sisältää vain määritetyn kokoiset kengät.
 
----
+`shoes_in_size`-funktion rungossa kutsumme `into_iter`-metodia luodaksemme iteraattorin, joka ottaa omistajuuden
+vektorista. Sen jälkeen kutsumme `filter`-metodia mukauttaaksemme iteraattorin uudeksi iteraattoriksi, joka
+sisältää vain ne alkiot, joille sulkeinen palauttaa `true`-arvon.
 
-Tässä osiossa opimme:
+Sulkeinen sieppaa `shoe_size`-parametrin ympäristöstä ja vertaa arvoa kunkin kengän kokoon, säilyttäen vain
+määritetyn kokoiset kengät. Lopuksi `collect`-kutsu kerää mukautetun iteraattorin palauttamat arvot vektoriin,
+jonka funktio palauttaa.
 
-- **Iteraattorien käytön ja edut**.
-- **Kuluttavat metodit** (`sum`), jotka käyttävät iteraattorin loppuun.
-- **Sovittavat metodit** (`map`, `filter`), jotka muokkaavat iteraattoria.
-- **Sulkeisten yhdistämisen iteraattoreihin** joustavuuden lisäämiseksi.
-
-Seuraavaksi tutustumme **oman iteraattorin toteuttamiseen**!
+Testi osoittaa, että kun kutsumme `shoes_in_size`-funktiota, saamme takaisin vain kengät, joiden koko on sama
+kuin määrittämämme arvo.

@@ -1,67 +1,109 @@
-## Tiiviimpi ohjausrakenne `if let` ja `let else` -rakenteilla
+## Tiivis ohjausrakenne `if let`- ja `let...else`-rakenteilla
 
-`if let` -syntaksi yhdistää `if`- ja `let`-rakenteet tiiviimmäksi tavaksi käsitellä tapauksia, joissa haluamme suorittaa koodia vain yhden kuvion täsmätessä ja ohittaa muut. Tarkastellaan ohjelmaa, joka käyttää `match`-rakennetta `Option<u8>`-arvon käsittelyyn:
+`if let`-syntaksi antaa yhdistää `if`- ja `let`-rakenteet vähemmän puhelijaan tapaan käsitellä arvoja, jotka täsmäävät yhteen kuvioon, ja sivuuttaa loput.
+Harkitse Listauksen 6-6 ohjelmaa, joka täsmää `Option<u8>`-arvon `config_max`-muuttujassa, mutta haluaa suorittaa koodia vain, jos arvo on `Some`-variantti.
+
+<Listing number="6-6" caption="`match`, joka välittää vain `Some`-arvon suorittamisesta koodia">
 
 ```rust
 {{#rustdoc_include ../listings/ch06-enums-and-pattern-matching/listing-06-06/src/main.rs:here}}
 ```
 
-Koska haluamme tehdä jotain vain `Some`-variantin kanssa ja jättää `None` huomiotta, joudumme lisäämään `_ => ()` -haaran, mikä on ylimääräistä koodia.
+</Listing>
 
-Tämä voidaan kirjoittaa lyhyemmin `if let` -rakenteella:
+Jos arvo on `Some`, tulostamme `Some`-variantin arvon sitomalla arvon muuttujaan `max` kuviossa. Emme halua tehdä mitään `None`-arvolla. `match`-lausekkeen
+tyydyttämiseksi meidän täytyy lisätä `_ => ()` yhden variantin käsittelyn jälkeen, mikä on ärsyttävää ylimääräistä koodia.
+
+Sen sijaan voisimme kirjoittaa tämän lyhyemmällä tavalla käyttämällä `if let`-rakennetta. Seuraava koodi käyttäytyy samoin kuin Listauksen 6-6 `match`:
 
 ```rust
 {{#rustdoc_include ../listings/ch06-enums-and-pattern-matching/no-listing-12-if-let/src/main.rs:here}}
 ```
 
-Tässä `if let Some(max) = config_max` toimii kuten `match`, mutta se käsittelee vain `Some(max)`-tapauksen ja ohittaa muut. 
+`if let`-syntaksi ottaa kuvion ja lausekkeen, jotka erotetaan yhtäsuuruusmerkillä. Se toimii samalla tavalla kuin `match`, jossa lauseke annetaan `match`:lle
+ja kuvio on sen ensimmäinen haara. Tässä tapauksessa kuvio on `Some(max)`, ja `max` sitoutuu `Some`:n sisällä olevaan arvoon. Voimme sitten käyttää `max`:ia
+`if let`-lohkon rungossa samalla tavalla kuin käytimme `max`:ia vastaavassa `match`-haarassa. `if let`-lohkon koodi suoritetaan vain, jos arvo täsmää kuvioon.
 
-### `if let` ja `else`
+`if let` tarkoittaa vähemmän kirjoittamista, vähemmän sisennystä ja vähemmän ylimääräistä koodia. Menetät kuitenkin `match`-lausekkeen pakottaman tyhjentävän
+tarkistuksen, joka varmistaa, ettei sinun unohda käsitellä mitään tapauksia. Valinta `match`- ja `if let`-rakenteiden välillä riippuu siitä, mitä teet
+tietyssä tilanteessa, ja siitä, onko tiiviys sopiva kompromissi tyhjentävän tarkistuksen menettämisestä.
 
-Voimme myös yhdistää `if let`-rakenteeseen `else`-haaran:
+Toisin sanoen voit ajatella `if let`:iä syntaksisokerina `match`-lausekkeelle, joka suorittaa koodia, kun arvo täsmää yhteen kuvioon, ja sitten sivuuttaa kaikki
+muut arvot.
 
-```rust
-{{#rustdoc_include ../listings/ch06-enums-and-pattern-matching/no-listing-14-count-and-announce-if-let-else/src/main.rs:here}}
-```
-
-Tämä vastaa seuraavaa `match`-rakennetta:
+Voimme liittää `else`-haaran `if let`-rakenteeseen. `else`-haaraan liittyvä koodilohko on sama kuin koodilohko, joka menisi `_`-tapaukseen `match`-lausekkeessa,
+joka vastaa `if let`- ja `else`-rakennetta. Muista Listauksen 6-4 `Coin`-enumin määrittely, jossa `Quarter`-variantti sisälsi myös `UsState`-arvon. Jos
+haluaisimme laskea kaikki ei-25-senttiset kolikot ja samalla ilmoittaa 25 sentin kolikoiden osavaltiot, voisimme tehdä sen `match`-lausekkeella näin:
 
 ```rust
 {{#rustdoc_include ../listings/ch06-enums-and-pattern-matching/no-listing-13-count-and-announce-match/src/main.rs:here}}
 ```
 
-`if let` tekee koodista tiiviimpää, mutta toisin kuin `match`, se ei pakota käsittelemään kaikkia mahdollisia tapauksia.
+Tai voisimme käyttää `if let`- ja `else`-lauseketta näin:
 
-### "Happy path" ja `let else`
+```rust
+{{#rustdoc_include ../listings/ch06-enums-and-pattern-matching/no-listing-14-count-and-announce-if-let-else/src/main.rs:here}}
+```
 
-Jos haluamme suorittaa laskennan, kun arvo on olemassa, ja käyttää oletusarvoa muuten, `let else` voi auttaa. Esimerkiksi voimme tarkistaa, kuinka vanha kolikossa oleva osavaltio on:
+## Pysyminen ”onnellisella polulla” `let...else`-rakenteella
+
+Yleinen kuvio on suorittaa laskenta, kun arvo on läsnä, ja palauttaa oletusarvo muuten. Jatkamalla kolikkoesimerkkiämme `UsState`-arvolla, jos haluaisimme
+sanoa jotain hauskaa riippuen siitä, kuinka vanha 25 sentin kolikon osavaltio on, voisimme lisätä `UsState`-rakenteeseen metodin, joka tarkistaa osavaltion
+iän, näin:
 
 ```rust
 {{#rustdoc_include ../listings/ch06-enums-and-pattern-matching/listing-06-07/src/main.rs:state}}
 ```
 
-Tämän voi toteuttaa `if let` -rakenteella:
+Sitten voisimme käyttää `if let`:iä täsmätäksemme kolikon tyyppiin ja esitelläksemme `state`-muuttujan ehdon rungon sisällä, kuten Listauksessa 6-7.
+
+<Listing number="6-7" caption="Tarkistus, oliko osavaltio olemassa vuonna 1900, käyttämällä ehtorakenteita `if let`:n sisällä">
+
+```rust
+{{#rustdoc_include ../listings/ch06-enums-and-pattern-matching/listing-06-07/src/main.rs:describe}}
+```
+
+</Listing>
+
+Se hoitaa asian, mutta on siirtänyt työn `if let`-lausekkeen runkoon, ja jos tehtävä on monimutkaisempi, voi olla vaikea seurata, miten ylätason haarat
+liittyvät toisiinsa. Voisimme myös hyödyntää sitä, että lausekkeet tuottavat arvon, joko tuottaaksemme `state`:n `if let`:stä tai palauttaaksemme aikaisin,
+kuten Listauksessa 6-8. (Voit tehdä jotain vastaavaa myös `match`-lausekkeella.)
+
+<Listing number="6-8" caption="`if let`:n käyttö arvon tuottamiseen tai aikaisen paluun tekemiseen">
 
 ```rust
 {{#rustdoc_include ../listings/ch06-enums-and-pattern-matching/listing-06-08/src/main.rs:describe}}
 ```
 
-Tässä `if let` joko tuottaa arvon tai päättää funktion suorittamisen, mutta looginen kulku on hieman vaikeampi seurata.
+</Listing>
 
-`let else` tekee tästä selkeämmän:
+Tämä on kuitenkin omalla tavallaan hieman ärsyttävää seurata! Yksi `if let`-haara tuottaa arvon, ja toinen palaa kokonaan funktiosta.
+
+Tämän yleisen kuvion ilmaisemiseksi miellyttävämmällä tavalla Rustissa on `let...else`. `let...else`-syntaksi ottaa kuvion vasemmalle puolelle ja lausekkeen
+oikealle puolelle, hyvin samankaltaisesti kuin `if let`, mutta siinä ei ole `if`-haaraa, vain `else`-haara. Jos kuvio täsmää, se sitoo arvon kuviosta
+ulompaan näkyvyysalueeseen. Jos kuvio _ei_ täsmää, ohjelma siirtyy `else`-haaraan, jonka täytyy palata funktiosta.
+
+Listauksessa 6-9 näet, miltä Listaus 6-8 näyttää, kun `if let` korvataan `let...else`-rakenteella.
+
+<Listing number="6-9" caption="`let...else`:n käyttö funktion kulun selkeyttämiseen">
 
 ```rust
 {{#rustdoc_include ../listings/ch06-enums-and-pattern-matching/listing-06-09/src/main.rs:describe}}
 ```
 
-Tässä ohjelman pääasiallinen suorituspolku pysyy selkeänä, ja `else`-haara hoitaa varhaisen poistumisen.
+</Listing>
 
-### Yhteenveto
+Huomaa, että näin pysytään ”onnellisella polulla” funktion päärungossa ilman merkittävästi erilaista ohjausrakennetta kahdelle haaralle, kuten `if let` teki.
 
-Olemme nyt käsitelleet:
+Jos ohjelmassasi on logiikkaa, joka on liian puheliasta ilmaistavaksi `match`-lausekkeella, muista, että `if let` ja `let...else` ovat myös Rust-työkalupakissasi.
 
-- `match`: pakottaa käsittelemään kaikki vaihtoehdot.
-- `if let`: tekee koodista tiiviimpää silloin, kun tarvitsemme vain yhden haaran.
-- `let else`: mahdollistaa sujuvamman koodin, kun haluamme varmistaa pääpolun selkeyden.
+## Yhteenveto
 
-Seuraavaksi tarkastelemme Rustin moduuleja, jotka auttavat järjestämään koodia selkeästi.
+Olemme nyt käsitelleet, miten enumien avulla luodaan mukautettuja tyyppejä, jotka voivat olla yksi joukosta lueteltuja arvoja. Olemme näyttäneet, miten
+standardikirjaston `Option<T>`-tyyppi auttaa käyttämään tyyppijärjestelmää virheiden estämiseen. Kun enum-arvoilla on dataa sisällään, voit käyttää `match`- tai
+`if let`-rakennetta poimiaksesi ja käyttääksesi näitä arvoja riippuen siitä, kuinka monta tapausta sinun täytyy käsitellä.
+
+Rust-ohjelmasi voivat nyt ilmaista sovellusalueesi käsitteitä rakenteiden ja enumien avulla. Mukautettujen tyyppien luominen API:isi käyttöön varmistaa
+tyyppiturvallisuuden: kääntäjä varmistaa, että funktiosi saavat vain sellaisia arvoja, joita kukin funktio odottaa.
+
+Jotta voit tarjota käyttäjillesi hyvin organisoidun ja suoraviivaisen API:n, joka paljastaa juuri sen, mitä käyttäjät tarvitsevat, siirrytään nyt Rustin moduuleihin.

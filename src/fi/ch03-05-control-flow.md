@@ -1,34 +1,22 @@
-## Ohjausrakenne
+## Ohjausrakenteet
 
-Kyky suorittaa koodia riippuen siitä, onko ehto `true`, ja suorittaa koodia toistuvasti niin kauan
-kuin ehto on `true`, ovat perusrakennuspalikoita useimmissa ohjelmointikielissä. Yleisimmät
-rakenteet, joilla voit hallita Rust-koodin suorituksen kulkua, ovat `if`-lausekkeet ja silmukat.
+Mahdollisuus suorittaa koodia riippuen siitä, onko ehto `true`, ja mahdollisuus suorittaa koodia toistuvasti, kun ehto on `true`, ovat perusrakennuspalikoita useimmissa ohjelmointikielissä. Yleisimmät rakenteet, jotka antavat hallita Rust-koodin suoritusvirtaa, ovat `if`-lausekkeet ja silmukat.
 
 ### `if`-lausekkeet
 
-`if`-lauseke antaa sinun haarauttaa koodiasi ehtojen perusteella. Annat ehdon ja määrität:
-”Jos tämä ehto täyttyy, suorita tämä koodilohko. Jos ehto ei täyty, älä suorita tätä koodilohkoa.”
+`if`-lauseke antaa haarauttaa koodiasi ehtojen mukaan. Annat ehdon ja sanot sitten: "Jos tämä ehto täyttyy, suorita tämä koodilohko. Jos ehto ei täyty, älä suorita tätä koodilohkoa."
 
-Luo uusi projekti nimeltä _branches_ hakemistoon _projects_ tutkiaksesi `if`-lauseketta. Syötä
-tiedostoon _src/main.rs_ seuraava:
+Luo uusi projekti nimeltä _branches_ _projects_-kansioosi tutkiaksesi `if`-lauseketta. Kirjoita _src/main.rs_-tiedostoon seuraava:
 
-<span class="filename">Tiedostonimi: src/main.rs</span>
+<span class="filename">Filename: src/main.rs</span>
 
 ```rust
 {{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-26-if-true/src/main.rs}}
 ```
 
-Kaikki `if`-lausekkeet alkavat avainsanalla `if`, jota seuraa ehto. Tässä tapauksessa ehto
-tarkistaa, onko muuttujan `number` arvo alle 5. Sijoitamme koodilohkon, joka suoritetaan, jos ehto
-on `true`, heti ehdon jälkeen aaltosulkeiden sisään. `if`-lausekkeiden ehtoihin liittyviä
-koodilohkoja kutsutaan joskus _haaroiksi_, aivan kuten `match`-lausekkeiden haaroja, joita
-käsittelimme [”Arvauksen vertaaminen salaisuuteen”][comparing-the-guess-to-the-secret-number]<!--
-ignore --> -osiossa luvussa 2.
+Kaikki `if`-lausekkeet alkavat avainsanalla `if`, jota seuraa ehto. Tässä tapauksessa ehto tarkistaa, onko muuttujan `number` arvo pienempi kuin 5. Sijoitamme koodilohkon, joka suoritetaan, jos ehto on `true`, heti ehdon jälkeen aaltosulkeiden sisään. `if`-lausekkeiden ehtoihin liittyviä koodilohkoja kutsutaan joskus _haaroiksi_, aivan kuten `match`-lausekkeiden haaroiksi, joita käsittelimme ["Arvauksen vertaaminen salaisnumeroon"][comparing-the-guess-to-the-secret-number]<!-- ignore --> -osiossa Luvussa 2.
 
-Valinnaisesti voimme myös sisällyttää `else`-lausekkeen, minkä valitsimme tehdä tässä, antaaksemme
-ohjelmalle vaihtoehtoisen koodilohkon suoritettavaksi, jos ehto evaluoituu arvoksi `false`. Jos et
-anna `else`-lauseketta ja ehto on `false`, ohjelma vain ohittaa `if`-lohkon ja siirtyy seuraavaan
-kohtaan.
+Valinnaisesti voimme myös sisällyttää `else`-lausekkeen, kuten teimme tässä, antaaksemme ohjelmalle vaihtoehtoisen koodilohkon suoritettavaksi, jos ehto evaluoituu `false`:ksi. Jos et anna `else`-lauseketta ja ehto on `false`, ohjelma ohittaa `if`-lohkon ja siirtyy seuraavaan koodinpalaan.
 
 Kokeile suorittaa tämä koodi; sinun pitäisi nähdä seuraava tuloste:
 
@@ -36,8 +24,7 @@ Kokeile suorittaa tämä koodi; sinun pitäisi nähdä seuraava tuloste:
 {{#include ../listings/ch03-common-programming-concepts/no-listing-26-if-true/output.txt}}
 ```
 
-Kokeillaan muuttaa `number`-muuttujan arvoksi sellainen, joka tekee ehdosta `false`, ja katsotaan,
-mitä tapahtuu:
+Kokeillaan muuttaa `number`-muuttujan arvoksi sellainen, joka tekee ehdosta `false`, ja katsotaan, mitä tapahtuu:
 
 ```rust,ignore
 {{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-27-if-false/src/main.rs:here}}
@@ -49,28 +36,23 @@ Suorita ohjelma uudelleen ja katso tuloste:
 {{#include ../listings/ch03-common-programming-concepts/no-listing-27-if-false/output.txt}}
 ```
 
-On myös syytä huomata, että tämän koodin ehdon _täytyy_ olla `bool`. Jos ehto ei ole `bool`, saamme
-virheen. Kokeile esimerkiksi suorittaa seuraava koodi:
+On myös syytä huomata, että tämän koodin ehdon _täytyy_ olla `bool`. Jos ehto ei ole `bool`, saamme virheen. Kokeile esimerkiksi suorittaa seuraava koodi:
 
-<span class="filename">Tiedostonimi: src/main.rs</span>
+<span class="filename">Filename: src/main.rs</span>
 
 ```rust,ignore,does_not_compile
 {{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-28-if-condition-must-be-bool/src/main.rs}}
 ```
 
-`if`-ehto evaluoituu tällä kertaa arvoksi `3`, ja Rust antaa virheen:
+`if`-ehto evaluoituu tällä kertaa arvoksi `3`, ja Rust heittää virheen:
 
 ```console
 {{#include ../listings/ch03-common-programming-concepts/no-listing-28-if-condition-must-be-bool/output.txt}}
 ```
 
-Virhe osoittaa, että Rust odotti `bool`-tyyppiä mutta sai kokonaisluvun. Toisin kuin kielet kuten
-Ruby ja JavaScript, Rust ei yritä automaattisesti muuntaa ei-totuusarvoisia tyyppejä totuusarvoiksi.
-Sinun täytyy olla eksplisiittinen ja antaa `if`-lausekkeelle aina totuusarvo ehtona. Jos haluamme,
-että `if`-koodilohko suoritetaan vain, kun luku ei ole yhtä suuri kuin `0`, voimme muuttaa
-`if`-lausekkeen seuraavaksi:
+Virhe osoittaa, että Rust odotti `bool`-tyyppiä mutta sai kokonaisluvun. Toisin kuin kielet kuten Ruby ja JavaScript, Rust ei automaattisesti yritä muuntaa ei-totuusarvoisia tyyppejä totuusarvoiksi. Sinun täytyy olla eksplisiittinen ja antaa `if`:lle aina totuusarvo ehtona. Jos haluamme `if`-koodilohkon suorittuvan vain, kun luku ei ole yhtä suuri kuin `0`, voimme muuttaa `if`-lausekkeen seuraavaksi:
 
-<span class="filename">Tiedostonimi: src/main.rs</span>
+<span class="filename">Filename: src/main.rs</span>
 
 ```rust
 {{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-29-if-not-equal-0/src/main.rs}}
@@ -78,38 +60,29 @@ että `if`-koodilohko suoritetaan vain, kun luku ei ole yhtä suuri kuin `0`, vo
 
 Tämän koodin suorittaminen tulostaa `number was something other than zero`.
 
-#### Useiden ehtojen käsittely `else if`-rakenteella
+#### Useiden ehtojen käsittely `else if`:llä
 
-Voit käyttää useita ehtoja yhdistämällä `if`- ja `else`-lausekkeet `else if` -lausekkeeseen.
-Esimerkiksi:
+Voit käyttää useita ehtoja yhdistämällä `if`- ja `else`-lausekkeet `else if` -lausekkeeseen. Esimerkiksi:
 
-<span class="filename">Tiedostonimi: src/main.rs</span>
+<span class="filename">Filename: src/main.rs</span>
 
 ```rust
 {{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-30-else-if/src/main.rs}}
 ```
 
-Tällä ohjelmalla on neljä mahdollista polkua. Sen suorittamisen jälkeen sinun pitäisi nähdä
-seuraava tuloste:
+Tällä ohjelmalla on neljä mahdollista polkua. Suoritettuasi sen sinun pitäisi nähdä seuraava tuloste:
 
 ```console
 {{#include ../listings/ch03-common-programming-concepts/no-listing-30-else-if/output.txt}}
 ```
 
-Kun tämä ohjelma suoritetaan, se tarkistaa jokaisen `if`-lausekkeen vuorollaan ja suorittaa ensimmäisen
-rungon, jonka ehto evaluoituu arvoksi `true`. Huomaa, että vaikka 6 on jaollinen kahdella, emme näe
-tulostetta `number is divisible by 2`, emmekä `number is not divisible by 4, 3, or 2` -tekstiä
-`else`-lohkosta. Se johtuu siitä, että Rust suorittaa vain ensimmäisen `true`-ehdon lohkon, ja kun
-se löytää sellaisen, se ei edes tarkista loput.
+Kun tämä ohjelma suoritetaan, se tarkistaa jokaisen `if`-lausekkeen vuorollaan ja suorittaa ensimmäisen rungon, jonka ehto evaluoituu `true`:ksi. Huomaa, että vaikka 6 on jaollinen 2:lla, emme näe tulostetta `number is divisible by 2`, emmekä `number is not divisible by 4, 3, or 2` -tekstiä `else`-lohkosta. Tämä johtuu siitä, että Rust suorittaa vain ensimmäisen `true`-ehdon lohkon, eikä tarkista loputkaan sen jälkeen.
 
-Liian monen `else if` -lausekkeen käyttö voi sotkea koodiasi, joten jos sinulla on useampi kuin yksi,
-saatat haluta refaktoroida koodiasi. Luku 6 kuvaa tehokkaan Rustin haarautumisrakenteen nimeltä
-`match` näitä tapauksia varten.
+Liian monen `else if` -lausekkeen käyttö voi sotkea koodiasi, joten jos sinulla on useampi kuin yksi, saatat haluta refaktoroida koodisi. Luku 6 kuvaa tehokkaan Rust-haarautumisrakenteen nimeltä `match` näihin tapauksiin.
 
-#### `if`-lausekkeen käyttö `let`-lauseessa
+#### `if`:n käyttö `let`-lausekkeessa
 
-Koska `if` on lauseke, voimme käyttää sitä `let`-lauseen oikealla puolella sijoittaaksemme tuloksen
-muuttujaan, kuten listauksessa 3-2.
+Koska `if` on lauseke, voimme käyttää sitä `let`-lausekkeen oikealla puolella sijoittaaksemme tuloksen muuttujaan, kuten Listauksessa 3-2.
 
 <Listing number="3-2" file-name="src/main.rs" caption="`if`-lausekkeen tuloksen sijoittaminen muuttujaan">
 
@@ -119,64 +92,47 @@ muuttujaan, kuten listauksessa 3-2.
 
 </Listing>
 
-Muuttuja `number` sidotaan arvoon `if`-lausekkeen tuloksen perusteella. Suorita tämä koodi nähdäksesi,
-mitä tapahtuu:
+`number`-muuttuja sidotaan arvoon `if`-lausekkeen tuloksen perusteella. Suorita tämä koodi nähdäksesi, mitä tapahtuu:
 
 ```console
 {{#include ../listings/ch03-common-programming-concepts/listing-03-02/output.txt}}
 ```
 
-Muista, että koodilohkot evaluoituvat viimeiseen lausekkeeseensa, ja luvut itsessään ovat myös
-lausekkeita. Tässä tapauksessa koko `if`-lausekkeen arvo riippuu siitä, mikä koodilohko suoritetaan.
-Tämä tarkoittaa, että arvojen, joilla on potentiaalia olla tuloksia kustakin `if`-lausekkeen haarasta,
-täytyy olla sama tyyppi; listauksessa 3-2 sekä `if`-haaran että `else`-haaran tulokset olivat
-`i32`-kokonaislukuja. Jos tyypit eivät täsmää, kuten seuraavassa esimerkissä, saamme virheen:
+Muista, että koodilohkot evaluoituvat viimeiseen lausekkeeseensa, ja numerot itsessään ovat myös lausekkeita. Tässä tapauksessa koko `if`-lausekkeen arvo riippuu siitä, mikä koodilohko suoritetaan. Tämä tarkoittaa, että arvojen, joilla on potentiaalia olla tuloksia kustakin `if`-haarasta, täytyy olla sama tyyppi; Listauksessa 3-2 sekä `if`- että `else`-haaran tulokset olivat `i32`-kokonaislukuja. Jos tyypit eivät täsmää, kuten seuraavassa esimerkissä, saamme virheen:
 
-<span class="filename">Tiedostonimi: src/main.rs</span>
+<span class="filename">Filename: src/main.rs</span>
 
 ```rust,ignore,does_not_compile
 {{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-31-arms-must-return-same-type/src/main.rs}}
 ```
 
-Kun yritämme kääntää tämän koodin, saamme virheen. `if`- ja `else`-haaroilla on yhteensopimattomat
-arvotyypit, ja Rust osoittaa tarkalleen, mistä ongelma löytyy ohjelmasta:
+Kun yritämme kääntää tämän koodin, saamme virheen. `if`- ja `else`-haaroilla on yhteensopimattomat arvotyypit, ja Rust osoittaa tarkalleen, mistä ongelma löytyy ohjelmasta:
 
 ```console
 {{#include ../listings/ch03-common-programming-concepts/no-listing-31-arms-must-return-same-type/output.txt}}
 ```
 
-`if`-lohkon lauseke evaluoituu kokonaisluvuksi, ja `else`-lohkon lauseke evaluoituu merkkijonoksi.
-Tämä ei toimi, koska muuttujilla täytyy olla yksi tyyppi, ja Rustin täytyy tietää käännösaikana
-varmasti, mikä tyyppi `number`-muuttujalla on. `number`-muuttujan tyypin tunteminen antaa kääntäjälle
-mahdollisuuden varmistaa, että tyyppi on kelvollinen kaikkialla, missä käytämme `number`-muuttujaa.
-Rust ei pystyisi tekemään sitä, jos `number`-muuttujan tyyppi määräytyisi vasta suorituksen aikana;
-kääntäjä olisi monimutkaisempi ja antaisi vähemmän takeita koodista, jos sen täytyisi seurata useita
-hypoteettisia tyyppejä mille tahansa muuttujalle.
+`if`-lohkon lauseke evaluoituu kokonaisluvuksi, ja `else`-lohkon lauseke evaluoituu merkkijonoksi. Tämä ei toimi, koska muuttujilla täytyy olla yksi tyyppi, ja Rustin täytyy tietää varmasti käännösaikana, mikä `number`-muuttujan tyyppi on. `number`-muuttujan tyypin tunteminen antaa kääntäjälle mahdollisuuden tarkistaa, että tyyppi on kelvollinen kaikkialla, missä käytämme `number`-muuttujaa. Rust ei pystyisi siihen, jos `number`-muuttujan tyyppi määräytyisi vasta ajonaikana; kääntäjä olisi monimutkaisempi ja antaisi vähemmän takeita koodista, jos sen täytyisi seurata useita hypoteettisia tyyppejä mille tahansa muuttujalle.
 
 ### Toisto silmukoilla
 
-On usein hyödyllistä suorittaa koodilohko useammin kuin kerran. Tätä tehtävää varten Rust tarjoaa
-useita _silmukoita_, jotka suorittavat silmukan rungon sisällä olevan koodin loppuun ja alkavat
-sitten heti alusta. Kokeillaksemme silmukoita luodaan uusi projekti nimeltä _loops_.
+On usein hyödyllistä suorittaa koodilohkoa useammin kuin kerran. Tätä tehtävää varten Rust tarjoaa useita _silmukoita_, jotka suorittavat silmukan rungon koodin loppuun ja alkavat sitten heti alusta. Kokeillaksemme silmukoita luodaan uusi projekti nimeltä _loops_.
 
-Rustissa on kolmenlaisia silmukoita: `loop`, `while` ja `for`. Kokeillaan kutakin.
+Rustissa on kolmelaista silmukkaa: `loop`, `while` ja `for`. Kokeillaan kutakin.
 
-#### Koodin toistaminen `loop`-silmukalla
+#### Koodin toistaminen `loop`:lla
 
-`loop`-avainsana käskee Rustia suorittamaan koodilohkoa yhä uudelleen ikuisesti tai kunnes käsket
-sitä eksplisiittisesti lopettamaan.
+`loop`-avainsana käskee Rustia suorittamaan koodilohkon uudelleen ja uudelleen joko ikuisesti tai kunnes kerrot sille eksplisiittisesti lopettamaan.
 
-Esimerkkinä muuta _loops_-hakemiston _src/main.rs_-tiedosto näyttämään tältä:
+Esimerkkinä muuta _loops_-kansiosi _src/main.rs_-tiedosto näyttämään tältä:
 
-<span class="filename">Tiedostonimi: src/main.rs</span>
+<span class="filename">Filename: src/main.rs</span>
 
 ```rust,ignore
 {{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-32-loop/src/main.rs}}
 ```
 
-Kun suoritamme tämän ohjelman, näemme `again!` tulostettuna yhä uudelleen, kunnes pysäytämme ohjelman
-manuaalisesti. Useimmat terminaalit tukevat näppäinyhdistelmää <kbd>ctrl</kbd>-<kbd>c</kbd>
-keskeyttääkseen ohjelman, joka on jumissa jatkuvassa silmukassa. Kokeile sitä:
+Kun suoritamme tämän ohjelman, näemme `again!` tulostuvan yhä uudelleen, kunnes pysäytämme ohjelman manuaalisesti. Useimmat terminaalit tukevat näppäinyhdistelmää <kbd>ctrl</kbd>-<kbd>C</kbd> keskeyttääkseen ohjelman, joka on jumissa jatkuvassa silmukassa. Kokeile:
 
 <!-- manual-regeneration
 cd listings/ch03-common-programming-concepts/no-listing-32-loop
@@ -196,72 +152,51 @@ again!
 ^Cagain!
 ```
 
-Symboli `^C` edustaa kohtaa, jossa painoit <kbd>ctrl</kbd>-<kbd>c</kbd>. Saatat nähdä tai et näe
-sanaa `again!` tulostettuna `^C`:n jälkeen riippuen siitä, missä kohdassa silmukkaa koodi oli, kun
-se sai keskeytyssignaalin.
+Symboli `^C` edustaa kohtaa, jossa painoit <kbd>ctrl</kbd>-<kbd>C</kbd>.
 
-Onneksi Rust tarjoaa myös tavan poistua silmukasta koodilla. Voit sijoittaa `break`-avainsanan
-silmukan sisään kertoaksesi ohjelmalle, milloin lopettaa silmukan suorittaminen. Muistathan, että
-teimme tämän arvauspelissä [”Lopettaminen oikean arvauksen jälkeen”][quitting-after-a-correct-guess]<!-- ignore
---> -osiossa luvussa 2 poistuaksemme ohjelmasta, kun käyttäjä voitti pelin arvaamalla oikean luvun.
+Saatat tai et näe sanaa `again!` tulostuvan `^C`:n jälkeen riippuen siitä, missä koodissa silmukka oli, kun se vastaanotti keskeytystsignaalin.
 
-Käytimme myös `continue`-avainsanaa arvauspelissä, mikä silmukassa käskee ohjelmaa ohittamaan
-jäljellä olevan koodin tässä silmukan iteraatiossa ja siirtymään seuraavaan iteraatioon.
+Onneksi Rust tarjoaa myös tavan poistua silmukasta koodilla. Voit sijoittaa `break`-avainsanan silmukan sisään kertoaksesi ohjelmalle, milloin lopettaa silmukan suorittaminen. Muistathan, että teimme tämän arvauspelissä ["Lopettaminen oikean arvauksen jälkeen"][quitting-after-a-correct-guess]<!-- ignore --> -osiossa Luvussa 2 poistuaksemme ohjelmasta, kun käyttäjä voitti pelin arvaamalla oikean numeron.
+
+Käytimme myös `continue`-avainsanaa arvauspelissä, joka silmukassa käskee ohjelmaa ohittamaan kaiken jäljellä olevan koodin tässä iteraatiossa ja siirtymään seuraavaan iteraatioon.
 
 #### Arvojen palauttaminen silmukoista
 
-Yksi `loop`-silmukan käyttötarkoituksista on yrittää uudelleen operaatiota, jonka tiedät voivan
-epäonnistua, kuten tarkistaa, onko säie suorittanut tehtävänsä. Saatat myös tarvita operaation
-tuloksen välittämistä silmukasta muulle koodillesi. Voit tehdä tämän lisäämällä palautettavan arvon
-`break`-lausekkeen jälkeen, jota käytät silmukan pysäyttämiseen; kyseinen arvo palautetaan silmukasta,
-jotta voit käyttää sitä, kuten tässä näytetään:
+Yksi `loop`-silmukan käyttötarkoitus on yrittää uudelleen operaatiota, jonka tiedät saattavan epäonnistua, kuten tarkistaa, onko säie suorittanut työnsä loppuun. Saatat myös tarvita välittää kyseisen operaation tuloksen silmukasta koodisi loppuosan. Voit tehdä tämän lisäämällä palautettavan arvon `break`-lausekkeen jälkeen, jota käytät silmukan pysäyttämiseen; tämä arvo palautetaan silmukasta, jotta voit käyttää sitä, kuten tässä:
 
 ```rust
 {{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-33-return-value-from-loop/src/main.rs}}
 ```
 
-Ennen silmukkaa määrittelemme muuttujan nimeltä `counter` ja alustamme sen arvoon `0`. Sitten
-määrittelemme muuttujan nimeltä `result` pitämään silmukasta palautettavaa arvoa. Jokaisella
-silmukan iteraatiolla lisäämme `1`:n `counter`-muuttujaan ja tarkistamme sitten, onko `counter`
-yhtä suuri kuin `10`. Kun se on, käytämme `break`-avainsanaa arvolla `counter * 2`. Silmukan jälkeen
-käytämme puolipistettä lopettaaksemme lauseen, joka sijoittaa arvon muuttujaan `result`. Lopuksi
-tulostamme `result`-muuttujan arvon, joka tässä tapauksessa on `20`.
+Ennen silmukkaa julistamme muuttujan nimeltä `counter` ja alustamme sen arvoon `0`. Sitten julistamme muuttujan nimeltä `result` pitämään silmukasta palautettavan arvon. Jokaisella silmukan iteraatiolla lisäämme `1`:n `counter`-muuttujaan ja tarkistamme sitten, onko `counter` yhtä suuri kuin `10`. Kun se on, käytämme `break`-avainsanaa arvolla `counter * 2`. Silmukan jälkeen käytämme puolipistettä lopettaaksemme lausekkeen, joka sijoittaa arvon `result`:iin. Lopuksi tulostamme `result`:in arvon, joka tässä tapauksessa on `20`.
 
-Voit myös `return`-palauttaa silmukan sisältä. Vaikka `break` poistuu vain nykyisestä silmukasta,
-`return` poistuu aina nykyisestä funktiosta.
+Voit myös `return`-palata silmukan sisältä. Vaikka `break` poistuu vain nykyisestä silmukasta, `return` poistuu aina nykyisestä funktiosta.
 
-#### Silmukkaetiketit useiden silmukoiden erottamiseen
+<!-- Old headings. Do not remove or links may break. -->
+<a id="loop-labels-to-disambiguate-between-multiple-loops"></a>
 
-Jos sinulla on silmukoita silmukoiden sisällä, `break` ja `continue` koskevat kyseisen kohdan
-sisintä silmukkaa. Voit valinnaisesti määrittää _silmukkaetiketin_ silmukalle, jota voit sitten
-käyttää `break`- tai `continue`-avainsanojen kanssa määrittääksesi, että nämä avainsanat koskevat
-merkittyä silmukkaa sisimmän silmukan sijaan. Silmukkaetikettien täytyy alkaa yksittäisellä
-heittomerkillä. Tässä on esimerkki kahdesta sisäkkäisestä silmukasta:
+#### Erottelu silmukkamerkinnöillä
+
+Jos sinulla on silmukoita silmukoiden sisällä, `break` ja `continue` koskevat sisintä silmukkaa kyseisessä kohdassa. Voit valinnaisesti määrittää _silmukkamerkinnän_ silmukalle, jota voit sitten käyttää `break`- tai `continue`-avainsanojen kanssa määrittääksesi, että nämä avainsanat koskevat merkittyä silmukkaa sisimmän silmukan sijaan. Silmukkamerkintöjen täytyy alkaa yksittäisellä heittomerkillä. Tässä on esimerkki kahdella sisäkkäisellä silmukalla:
 
 ```rust
 {{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-32-5-loop-labels/src/main.rs}}
 ```
 
-Ulompi silmukka on merkitty etiketillä `'counting_up`, ja se laskee ylöspäin 0:sta 2:een.
-Sisempi silmukka ilman etikettiä laskee alaspäin 10:stä 9:ään. Ensimmäinen `break`, joka ei määritä
-etikettiä, poistuu vain sisemmästä silmukasta. Lauseke `break 'counting_up;` poistuu ulommasta
-silmukasta. Tämä koodi tulostaa:
+Ulompi silmukka on merkitty `'counting_up`, ja se laskee ylöspäin 0:sta 2:een. Sisempi silmukka ilman merkintää laskee alaspäin 10:stä 9:ään. Ensimmäinen `break`, joka ei määritä merkintää, poistuu vain sisemmästä silmukasta. `break 'counting_up;` -lauseke poistuu ulommasta silmukasta. Tämä koodi tulostaa:
 
 ```console
 {{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-32-5-loop-labels/output.txt}}
 ```
 
-#### Ehdolliset silmukat `while`-silmukalla
+<!-- Old headings. Do not remove or links may break. -->
+<a id="conditional-loops-with-while"></a>
 
-Ohjelman täytyy usein evaluoida ehtoa silmukan sisällä. Niin kauan kuin ehto on `true`, silmukka
-suoritetaan. Kun ehto ei enää ole `true`, ohjelma kutsuu `break`-avainsanaa pysäyttäen silmukan.
-On mahdollista toteuttaa tämänkaltainen käyttäytyminen yhdistelmällä `loop`-, `if`-, `else`- ja
-`break`-rakenteita; voit kokeilla sitä nyt ohjelmassa, jos haluat. Tämä malli on kuitenkin niin
-yleinen, että Rustissa on sisäänrakennettu kielen rakenne sille, nimeltä `while`-silmukka.
-Listauksessa 3-3 käytämme `while`-silmukkaa silmukan suorittamiseen kolme kertaa, laskemalla
-joka kerta alaspäin, ja tulostamme sitten viestin ja poistumme.
+#### Ehdollisten silmukoiden virtaviivaistaminen while:lla
 
-<Listing number="3-3" file-name="src/main.rs" caption="`while`-silmukan käyttö koodin suorittamiseen niin kauan kuin ehto on tosi">
+Ohjelman täytyy usein arvioida ehto silmukan sisällä. Niin kauan kuin ehto on `true`, silmukka suoritetaan. Kun ehto ei enää ole `true`, ohjelma kutsuu `break`:ia pysäyttääkseen silmukan. Tällaisen käyttäytymisen voi toteuttaa yhdistelmällä `loop`, `if`, `else` ja `break`; voit kokeilla sitä nyt ohjelmassa, jos haluat. Tämä malli on kuitenkin niin yleinen, että Rustissa on siihen sisäänrakennettu kielenrakenne nimeltä `while`-silmukka. Listauksessa 3-3 käytämme `while`-silmukkaa silmukan suorittamiseen kolme kertaa, laskemalla alas joka kerta, ja sitten silmukan jälkeen tulostamaan viestin ja poistumaan.
+
+<Listing number="3-3" file-name="src/main.rs" caption="`while`-silmukan käyttö koodin suorittamiseen, kun ehto evaluoituu `true`:ksi">
 
 ```rust
 {{#rustdoc_include ../listings/ch03-common-programming-concepts/listing-03-03/src/main.rs}}
@@ -269,14 +204,11 @@ joka kerta alaspäin, ja tulostamme sitten viestin ja poistumme.
 
 </Listing>
 
-Tämä rakenne poistaa paljon sisäkkäisyyttä, joka olisi tarpeen, jos käyttäisit `loop`-, `if`-,
-`else`- ja `break`-rakenteita, ja se on selkeämpi. Niin kauan kuin ehto evaluoituu arvoksi `true`,
-koodi suoritetaan; muuten silmukasta poistutaan.
+Tämä rakenne poistaa paljon sisäkkäisyyttä, joka olisi tarpeen, jos käyttäisit `loop`, `if`, `else` ja `break`, ja se on selkeämpi. Niin kauan kuin ehto evaluoituu `true`:ksi, koodi suoritetaan; muuten silmukasta poistutaan.
 
 #### Kokoelman läpikäynti `for`-silmukalla
 
-Voit myös käyttää `while`-rakennetta kokoelman, kuten taulukon, elementtien läpikäyntiin.
-Esimerkiksi listauksen 3-4 silmukka tulostaa jokaisen taulukon `a` elementin.
+Voit valita käyttää `while`-rakennetta silmukan läpikäymiseen kokoelman elementtien yli, kuten taulukon. Esimerkiksi Listauksen 3-4 silmukka tulostaa jokaisen elementin taulukossa `a`.
 
 <Listing number="3-4" file-name="src/main.rs" caption="Kokoelman jokaisen elementin läpikäynti `while`-silmukalla">
 
@@ -286,26 +218,17 @@ Esimerkiksi listauksen 3-4 silmukka tulostaa jokaisen taulukon `a` elementin.
 
 </Listing>
 
-Tässä koodi laskee taulukon elementtien läpi. Se alkaa indeksistä `0` ja silmukoi, kunnes se saavuttaa
-taulukon viimeisen indeksin (eli kun `index < 5` ei enää ole `true`). Tämän koodin suorittaminen
-tulostaa jokaisen taulukon elementin:
+Tässä koodi laskee ylöspäin taulukon elementtien läpi. Se alkaa indeksistä `0` ja silmukoi, kunnes se saavuttaa taulukon viimeisen indeksin (eli kun `index < 5` ei enää ole `true`). Tämän koodin suorittaminen tulostaa jokaisen elementin taulukossa:
 
 ```console
 {{#include ../listings/ch03-common-programming-concepts/listing-03-04/output.txt}}
 ```
 
-Kaikki viisi taulukon arvoa ilmestyvät terminaaliin odotetusti. Vaikka `index` saavuttaa jossain
-vaiheessa arvon `5`, silmukka lopettaa suorittamisen ennen kuin yrittää hakea kuudetta arvoa
-taulukosta.
+Kaikki viisi taulukon arvoa ilmestyvät terminaaliin odotetusti. Vaikka `index` saavuttaa arvon `5` jossain vaiheessa, silmukka lopettaa suorittamisen ennen kuin yrittää hakea kuudetta arvoa taulukosta.
 
-Tämä lähestymistapa on kuitenkin virhealtis; voisimme saada ohjelman panikoimaan, jos indeksiarvo
-tai testiehto on virheellinen. Esimerkiksi jos muuttaisit taulukon `a` määrittelyä sisältämään neljä
-elementtiä mutta unohtaisit päivittää ehdoksi `while index < 4`, koodi panikoisi. Se on myös hidas,
-koska kääntäjä lisää suoritusaikaista koodia tarkistamaan jokaisella silmukan iteraatiolla, onko
-indeksi taulukon rajojen sisällä.
+Tämä lähestymistapa on virhealtis; voisimme saada ohjelman panikoimaan, jos indeksiarvo tai testiehto on virheellinen. Esimerkiksi jos muuttaisit `a`-taulukon määritelmää sisältämään neljä elementtiä mutta unohtaisit päivittää ehdon `while index < 4`:ksi, koodi panikoisi. Se on myös hidas, koska kääntäjä lisää ajonaikaista koodia tarkistamaan jokaisella silmukan iteraatiolla, onko indeksi taulukon rajojen sisällä.
 
-Tiiviimpänä vaihtoehtona voit käyttää `for`-silmukkaa ja suorittaa koodia jokaiselle kokoelman
-kohteelle. `for`-silmukka näyttää listauksen 3-5 koodilta.
+Tiiviimpänä vaihtoehtona voit käyttää `for`-silmukkaa ja suorittaa koodia jokaiselle kokoelman kohteelle. `for`-silmukka näyttää Listauksen 3-5 koodilta.
 
 <Listing number="3-5" file-name="src/main.rs" caption="Kokoelman jokaisen elementin läpikäynti `for`-silmukalla">
 
@@ -315,42 +238,31 @@ kohteelle. `for`-silmukka näyttää listauksen 3-5 koodilta.
 
 </Listing>
 
-Kun suoritamme tämän koodin, näemme saman tulosteen kuin listauksessa 3-4. Tärkeämpää on, että olemme
-nyt lisänneet koodin turvallisuutta ja poistaneet mahdollisuuden virheille, jotka voisivat johtua
-taulukon lopun ylittämisestä tai liian vähäisestä etenemisestä ja joidenkin kohteiden ohittamisesta.
+Kun suoritamme tämän koodin, näemme saman tulosteen kuin Listauksessa 3-4. Tärkeämpää on, että olemme nyt lisänneet koodin turvallisuutta ja poistaneet bugien mahdollisuuden, jotka voisivat johtua taulukon lopun ylittämisestä tai liian vähäisestä etenemisestä ja joidenkin kohteiden ohittamisesta. Konekoodi, joka generoidaan `for`-silmukoista, voi myös olla tehokkaampaa, koska indeksiä ei tarvitse verrata taulukon pituuteen jokaisella iteraatiolla.
 
-Käyttämällä `for`-silmukkaa sinun ei tarvitse muistaa muuttaa muuta koodia, jos muutat taulukon
-arvojen määrää, toisin kuin listauksessa 3-4 käytetyllä menetelmällä.
+Käyttämällä `for`-silmukkaa sinun ei tarvitse muistaa muuttaa muuta koodia, jos muutat taulukon arvojen määrää, toisin kuin Listauksessa 3-4 käytetyllä menetelmällä.
 
-`for`-silmukoiden turvallisuus ja tiiviys tekevät niistä yleisimmin käytetyn silmukkarakenteen
-Rustissa. Jopa tilanteissa, joissa haluat suorittaa koodia tietyn määrän kertoja, kuten
-lähtölaskennassa, joka käytti `while`-silmukkaa listauksessa 3-3, useimmat rustilaiset käyttäisivät
-`for`-silmukkaa. Tapa tehdä se olisi käyttää vakiokirjaston tarjoamaa _Range_-tyyppiä, joka generoi
-kaikki luvut peräkkäin yhdestä luvusta toiseen lukuun asti.
+`for`-silmukoiden turvallisuus ja tiiviys tekevät niistä yleisimmin käytetyn silmukkarakenteen Rustissa. Jopa tilanteissa, joissa haluat suorittaa koodia tietyn määrän kertoja, kuten Listauksen 3-3 `while`-silmukassa käytetyssä lähtölaskentaesimerkissä, useimmat Rustaceanit käyttäisivät `for`-silmukkaa. Tapa tehdä se olisi käyttää standardikirjaston tarjoamaa `Range`-tyyppiä, joka generoi kaikki numerot peräkkäin yhdestä numerosta toiseen numeroon asti.
 
-Tältä lähtölaskenta näyttäisi käyttäen `for`-silmukkaa ja toista menetelmää, josta emme ole vielä
-puhuneet, `rev`-metodia, kääntääkseen alueen:
+Tässä on, miltä lähtölaskenta näyttäisi `for`-silmukalla ja toisella menetelmällä, josta emme ole vielä puhuneet, `rev`:llä kääntääksemme alueen:
 
-<span class="filename">Tiedostonimi: src/main.rs</span>
+<span class="filename">Filename: src/main.rs</span>
 
 ```rust
 {{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-34-for-range/src/main.rs}}
 ```
 
-Tämä koodi on hieman siistimpi, eikö olekin?
+Tämä koodi on hieman siistimpi, eikö?
 
 ## Yhteenveto
 
-Sinä teit sen! Tämä oli suuri luku: opit muuttujista, skaari- ja yhdistetyistä tietotyypeistä,
-funktioista, kommenteista, `if`-lausekkeista ja silmukoista! Harjoitellaksesi tässä luvussa
-käsittelemiämme käsitteitä kokeile rakentaa ohjelmia, jotka tekevät seuraavaa:
+Sinä teit sen! Tämä oli laaja luku: Opit muuttujista, skaari- ja yhdistelmätietotyypeistä, funktioista, kommenteista, `if`-lausekkeista ja silmukoista! Harjoitellaksesi tässä luvussa käsiteltyjä käsitteitä, kokeile rakentaa ohjelmia, jotka:
 
-- Muuntavat lämpötiloja Fahrenheitin ja Celsiusin välillä.
+- Muuntavat lämpötiloja Fahrenheit- ja Celsius-asteiden välillä.
 - Generoivat *n*:nnen Fibonacci-luvun.
-- Tulostavat joululaulun ”The Twelve Days of Christmas” sanat hyödyntäen laulun toistoa.
+- Tulostavat joululaulun "The Twelve Days of Christmas" -laulun sanat hyödyntäen laulun toistoa.
 
-Kun olet valmis jatkamaan, puhumme Rustin käsitteestä, jota _ei_ yleensä ole muissa
-ohjelmointikielissä: omistajuudesta.
+Kun olet valmis jatkamaan, puhumme Rustin käsitteestä, jota _ei_ yleensä ole muissa ohjelmointikielissä: omistajuudesta.
 
 [comparing-the-guess-to-the-secret-number]: ch02-00-guessing-game-tutorial.html#comparing-the-guess-to-the-secret-number
 [quitting-after-a-correct-guess]: ch02-00-guessing-game-tutorial.html#quitting-after-a-correct-guess

@@ -75,7 +75,7 @@
 ## Rust-ajattelu
 
 - [Funktionaaliset ominaisuudet: Iteraattorit ja sulkeiset](ch13-00-functional-features.md)
-  - [Sulkeiset: anonyymit funktiot, jotka sieppaavat ympäristönsä](ch13-01-closures.md)
+  - [Sulkeiset](ch13-01-closures.md)
   - [Kohteiden sarjojen käsittely iteraattoreilla](ch13-02-iterators.md)
   - [I/O-projektimme parantaminen](ch13-03-improving-our-io-project.md)
   - [Suorituskyvyn vertailu: silmukat vs. iteraattorit](ch13-04-performance.md)
@@ -89,7 +89,7 @@
 
 - [Älykkäät osoittimet](ch15-00-smart-pointers.md)
   - [`Box<T>`:n käyttö osoittamaan pinomuistin tietoihin](ch15-01-box.md)
-  - [Älykkäiden osoittimien käsitteleminen tavallisina viitteinä `Deref`-traitin avulla](ch15-02-deref.md)
+  - [Älykkäiden osoittimien käsitteleminen tavallisina viitteinä](ch15-02-deref.md)
   - [Koodin suorittaminen siivouksessa `Drop`-traitin avulla](ch15-03-drop.md)
   - [`Rc<T>`, viitelaskennallinen älykäs osoitin](ch15-04-rc.md)
   - [`RefCell<T>` ja sisäisen muuttuvuuden malli](ch15-05-interior-mutability.md)
@@ -99,7 +99,7 @@
   - [Säikeiden käyttö koodin samanaikaiseen suorittamiseen](ch16-01-threads.md)
   - [Viestien välityksen käyttö tietojen siirtämiseen säikeiden välillä](ch16-02-message-passing.md)
   - [Jaetun tilan rinnakkaisuus](ch16-03-shared-state.md)
-  - [Laajennettava rinnakkaisuus `Sync`- ja `Send`-traitien avulla](ch16-04-extensible-concurrency-sync-and-send.md)
+  - [Laajennettava rinnakkaisuus `Send`- ja `Sync`-traitien avulla](ch16-04-extensible-concurrency-sync-and-send.md)
 
 - [Asynkronisen ohjelmoinnin perusteet: Async, Await, Futures ja Streams](ch17-00-async-await.md)
   - [Futures ja async-syntaksi](ch17-01-futures-and-syntax.md)
@@ -134,10 +134,10 @@
   - [Siisti sammutus ja siivous](ch21-03-graceful-shutdown-and-cleanup.md)
 
 - [Liite](appendix-00.md)
-  - [A - Keywords](appendix-01-keywords.md)
-  - [B - Operators and Symbols](appendix-02-operators.md)
-  - [C - Derivable Traits](appendix-03-derivable-traits.md)
-  - [D - Useful Development Tools](appendix-04-useful-development-tools.md)
+  - [A - Avainsanat](appendix-01-keywords.md)
+  - [B - Operaattorit ja symbolit](appendix-02-operators.md)
+  - [C - Johdettavat traitit](appendix-03-derivable-traits.md)
+  - [D - Hyödylliset kehitystyökalut](appendix-04-useful-development-tools.md)
   - [E - Editions](appendix-05-editions.md)
   - [F - Translations of the Book](appendix-06-translation.md)
   - [G - How Rust is Made and “Nightly Rust”](appendix-07-nightly-rust.md)

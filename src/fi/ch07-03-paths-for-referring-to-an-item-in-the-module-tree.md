@@ -1,21 +1,21 @@
 ## Polut kohteen viittaamiseen moduulipuussa
 
-Näyttääksemme Rustille, mistä kohde löytyy moduulipuussa, käytämme polkua samalla tavalla kuin käytämme polkua tiedostojärjestelmässä navigoidessamme. Kutsuaksemme funktiota meidän täytyy tietää sen polku.
+Näyttääksemme Rustille, mistä kohteen moduulipuussa löytyy, käytämme polkua samalla tavalla kuin käytämme polkua navigoidessamme tiedostojärjestelmässä. Kutsuaksemme funktiota meidän on tiedettävä sen polku.
 
-Polulla voi olla kaksi muotoa:
+Polku voi olla kahdessa muodossa:
 
-- _Absoluuttinen polku_ on täysi polku, joka alkaa crate-juuresta; ulkoisen craten koodille absoluuttinen polku alkaa craten nimellä, ja nykyisen craten koodille se alkaa literaalilla `crate`.
-- _Suhteellinen polku_ alkaa nykyisestä moduulista ja käyttää `self`:ää, `super`:ia tai tunnistetta nykyisessä moduulissa.
+- _Absoluuttinen polku_ on täydellinen polku, joka alkaa crate-juuresta; ulkoisen crate:n koodille absoluuttinen polku alkaa crate:n nimellä, ja nykyisen crate:n koodille se alkaa literaalilla `crate`.
+- _Suhteellinen polku_ alkaa nykyisestä moduulista ja käyttää `self`-, `super`- tai nykyisen moduulin tunnistetta.
 
-Molempia absoluuttisia ja suhteellisia polkuja seuraa yksi tai useampi tunniste, jotka on erotettu kaksoispisteillä (`::`).
+Sekä absoluuttisia että suhteellisia polkuja seuraa yksi tai useampi tunniste, jotka on erotettu kaksoispisteillä (`::`).
 
-Palatkaamme Listaukseen 7-1 ja sanokaamme, että haluamme kutsua `add_to_waitlist`-funktiota. Tämä on sama kuin kysyisi: mikä on `add_to_waitlist`-funktion polku? Listausta 7-3 sisältää Listauksen 7-1, josta on poistettu joitakin moduuleja ja funktioita.
+Palataan listaukseen 7-1 ja oletetaan, että haluamme kutsua `add_to_waitlist`-funktiota. Tämä on sama kuin kysyisi: Mikä on `add_to_waitlist`-funktion polku? Listaus 7-3 sisältää listauksen 7-1, josta on poistettu joitakin moduuleja ja funktioita.
 
-Näytämme kaksi tapaa kutsua `add_to_waitlist`-funktiota uudesta funktiosta, `eat_at_restaurant`, joka on määritelty crate-juuressa. Nämä polut ovat oikein, mutta on jäljellä toinen ongelma, joka estää tämän esimerkin kääntymisen sellaisenaan. Selitämme miksi hetken kuluttua.
+Näytämme kaksi tapaa kutsua `add_to_waitlist`-funktiota uudesta funktiosta `eat_at_restaurant`, joka on määritelty crate-juuressa. Nämä polut ovat oikein, mutta on vielä toinen ongelma, joka estää tämän esimerkin kääntymisen sellaisenaan. Selitämme syyn hetken kuluttua.
 
-`eat_at_restaurant`-funktio on osa kirjastocratemme julkista API:a, joten merkitsemme sen `pub`-avainsanalla. [”Polkujen paljastaminen `pub`-avainsanalla”][pub]<!-- ignore --> -osiossa käsittelemme `pub`:ia tarkemmin.
+`eat_at_restaurant`-funktio on osa kirjastocrate:amme julkista API:a, joten merkitsemme sen `pub`-avainsanalla. Kohdassa [”Polkujen paljastaminen `pub`-avainsanalla”][pub]<!-- ignore --> käsittelemme `pub`:ia tarkemmin.
 
-<Listing number="7-3" file-name="src/lib.rs" caption="`add_to_waitlist`-funktion kutsuminen absoluuttisia ja suhteellisia polkuja käyttäen">
+<Listing number="7-3" file-name="src/lib.rs" caption="`add_to_waitlist`-funktion kutsuminen absoluuttisilla ja suhteellisilla poluilla">
 
 ```rust,ignore,does_not_compile
 {{#rustdoc_include ../listings/ch07-managing-growing-projects/listing-07-03/src/lib.rs}}
@@ -23,15 +23,15 @@ Näytämme kaksi tapaa kutsua `add_to_waitlist`-funktiota uudesta funktiosta, `e
 
 </Listing>
 
-Ensimmäisellä kerralla kun kutsumme `add_to_waitlist`-funktiota `eat_at_restaurant`:ssa, käytämme absoluuttista polkua. `add_to_waitlist`-funktio on määritelty samassa cratessa kuin `eat_at_restaurant`, mikä tarkoittaa, että voimme käyttää `crate`-avainsanaa aloittaaksemme absoluuttisen polun. Sisällytämme sitten jokaisen peräkkäisen moduulin, kunnes pääsemme `add_to_waitlist`:iin. Voit kuvitella tiedostojärjestelmän samalla rakenteella: määrittäisimme polun `/front_of_house/hosting/add_to_waitlist` suorittaaksemme `add_to_waitlist`-ohjelman; `crate`-nimen käyttö aloittaaksemme crate-juuresta on kuin `/`:n käyttö aloittaaksemme tiedostojärjestelmän juuresta komentorivilläsi.
+Ensimmäisellä kerralla kun kutsumme `add_to_waitlist`-funktiota funktiossa `eat_at_restaurant`, käytämme absoluuttista polkua. `add_to_waitlist`-funktio on määritelty samassa crate:ssa kuin `eat_at_restaurant`, mikä tarkoittaa, että voimme käyttää `crate`-avainsanaa absoluuttisen polun aloittamiseen. Sisällytämme sitten jokaisen peräkkäisen moduulin, kunnes pääsemme `add_to_waitlist`-funktioon. Voit kuvitella tiedostojärjestelmän, jolla on sama rakenne: Määrittäisimme polun `/front_of_house/hosting/add_to_waitlist` suorittaaksemme `add_to_waitlist`-ohjelman; `crate`-nimen käyttäminen crate-juuresta aloittamiseen on kuin `/`-merkin käyttäminen tiedostojärjestelmän juuresta aloittamiseen komentorivilläsi.
 
-Toisella kerralla kun kutsumme `add_to_waitlist`:ia `eat_at_restaurant`:ssa, käytämme suhteellista polkua. Polku alkaa `front_of_house`:sta, moduulin nimestä, joka on määritelty samalla tasolla moduulipuussa kuin `eat_at_restaurant`. Tässä tiedostojärjestelmän vastine olisi polun `front_of_house/hosting/add_to_waitlist` käyttö. Moduulin nimellä aloittaminen tarkoittaa, että polku on suhteellinen.
+Toisella kerralla kun kutsumme `add_to_waitlist`-funktiota funktiossa `eat_at_restaurant`, käytämme suhteellista polkua. Polku alkaa `front_of_house`-moduulin nimellä, joka on määritelty samalla tasolla moduulipuussa kuin `eat_at_restaurant`. Tässä tiedostojärjestelmän vastine olisi polun `front_of_house/hosting/add_to_waitlist` käyttäminen. Moduulin nimellä aloittaminen tarkoittaa, että polku on suhteellinen.
 
-Valinta suhteellisen tai absoluuttisen polun käytöstä on päätös, jonka teet projektisi perusteella, ja se riippuu siitä, siirrätkö todennäköisemmin kohteen määrittelykoodia erillään vai yhdessä koodin kanssa, joka käyttää kohdetta. Esimerkiksi, jos siirtäisimme `front_of_house`-moduulin ja `eat_at_restaurant`-funktion moduuliin nimeltä `customer_experience`, meidän täytyisi päivittää absoluuttinen polku `add_to_waitlist`:iin, mutta suhteellinen polku olisi edelleen kelvollinen. Jos kuitenkin siirtäisimme `eat_at_restaurant`-funktion erillään moduuliin nimeltä `dining`, absoluuttinen polku `add_to_waitlist`-kutsuun pysyisi samana, mutta suhteellinen polku täytyisi päivittää. Yleinen mieltymyksemme on määrittää absoluuttiset polut, koska on todennäköisempää, että haluamme siirtää koodimäärittelyjä ja kohteen kutsuja toisistaan riippumatta.
+Valinta suhteellisen tai absoluuttisen polun käytöstä on päätös, jonka teet projektisi perusteella, ja se riippuu siitä, siirrätkö todennäköisemmin kohteen määrittelykoodia erikseen vai yhdessä koodin kanssa, joka käyttää kohdetta. Esimerkiksi jos siirtäisimme `front_of_house`-moduulin ja `eat_at_restaurant`-funktion moduuliin nimeltä `customer_experience`, meidän pitäisi päivittää absoluuttinen polku `add_to_waitlist`-funktioon, mutta suhteellinen polku olisi edelleen kelvollinen. Jos kuitenkin siirtäisimme `eat_at_restaurant`-funktion erikseen moduuliin nimeltä `dining`, absoluuttinen polku `add_to_waitlist`-kutsuun pysyisi samana, mutta suhteellinen polku pitäisi päivittää. Yleinen mieltymyksemme on määrittää absoluuttiset polut, koska on todennäköisempää, että haluamme siirtää koodin määrittelyjä ja kohteiden kutsuja toisistaan riippumatta.
 
-Yritetään kääntää Listausta 7-3 ja selvitetään, miksi se ei vielä käänny! Virheet, jotka saamme, on esitetty Listauksessa 7-4.
+Yritetään kääntää listaus 7-3 ja selvitetään, miksi se ei vielä käänny! Virheet, jotka saamme, on näytetty listauksessa 7-4.
 
-<Listing number="7-4" caption="Kääntäjävirheet Listauksen 7-3 koodin kääntämisestä">
+<Listing number="7-4" caption="Kääntäjän virheet listauksen 7-3 koodin rakentamisesta">
 
 ```console
 {{#include ../listings/ch07-managing-growing-projects/listing-07-03/output.txt}}
@@ -39,17 +39,17 @@ Yritetään kääntää Listausta 7-3 ja selvitetään, miksi se ei vielä kää
 
 </Listing>
 
-Virheilmoitukset sanovat, että moduuli `hosting` on yksityinen. Toisin sanoen meillä on oikeat polut `hosting`-moduulille ja `add_to_waitlist`-funktiolle, mutta Rust ei anna meidän käyttää niitä, koska sillä ei ole pääsyä yksityisiin osiin. Rustissa kaikki kohteet (funktiot, metodit, rakenteet, enumit, moduulit ja vakiot) ovat oletuksena yksityisiä emomoduuleilleen. Jos haluat tehdä kohteesta kuten funktiosta tai rakenteesta yksityisen, laitat sen moduuliin.
+Virheilmoitukset sanovat, että moduuli `hosting` on yksityinen. Toisin sanoen meillä on oikeat polut `hosting`-moduuliin ja `add_to_waitlist`-funktioon, mutta Rust ei anna meidän käyttää niitä, koska sillä ei ole pääsyä yksityisiin osiin. Rustissa kaikki kohteet (funktiot, metodit, structit, enumit, moduulit ja vakiot) ovat oletuksena yksityisiä emomoduuleilleen. Jos haluat tehdä kohteen, kuten funktion tai structin, yksityiseksi, laitat sen moduuliin.
 
-Emomoduulin kohteet eivät voi käyttää lapsimoduulien yksityisiä kohteita, mutta lapsimoduulien kohteet voivat käyttää esi-isämoduuliensa kohteita. Tämä johtuu siitä, että lapsimoduulit käärivät ja piilottavat toteutuksensa yksityiskohdat, mutta lapsimoduulit näkevät kontekstin, jossa ne on määritelty. Jatkaaksemme metaforaamme, ajattele yksityisyyssääntöjä kuin ravintolan takaosastoa: siellä tapahtuva on yksityistä ravintolan asiakkaille, mutta toimistopäälliköt näkevät ja voivat tehdä kaiken ravintolassa, jota he operoivat.
+Emomoduulin kohteet eivät voi käyttää alimoduuulien yksityisiä kohteita, mutta alimoduuulien kohteet voivat käyttää esi-isämoduuliensa kohteita. Tämä johtuu siitä, että alimoduuulit käärivät ja piilottavat toteutustietonsa, mutta alimoduuulit näkevät kontekstin, jossa ne on määritelty. Jatkaaksemme metaforaamme, ajattele yksityisyyssääntöjä kuin ravintolan takaosaa: Siellä tapahtuva on yksityistä ravintolan asiakkaille, mutta toimistopäälliköt näkevät ja voivat tehdä kaiken ravintolassa, jota he hallinnoivat.
 
-Rust valitsi moduulijärjestelmän toimivan näin, jotta sisäisten toteutuksen yksityiskohtien piilottaminen on oletus. Näin tiedät, mitä sisäisen koodin osia voit muuttaa rikkomatta ulkoista koodia. Rust antaa kuitenkin mahdollisuuden paljastaa lapsimoduulien koodin sisäisiä osia ulkoisille esi-isämoduuleille käyttämällä `pub`-avainsanaa tehdäksesi kohteen julkiseksi.
+Rust päätti, että moduulijärjestelmä toimii tällä tavalla, jotta sisäisten toteutustietojen piilottaminen on oletus. Näin tiedät, mitä sisäisen koodin osia voit muuttaa rikkomatta ulkoista koodia. Rust antaa kuitenkin mahdollisuuden paljastaa alimoduuulien koodin sisäisiä osia ulommille esi-isämoduuleille käyttämällä `pub`-avainsanaa kohteen tekemiseksi julkiseksi.
 
 ### Polkujen paljastaminen `pub`-avainsanalla
 
-Palataan Listauksen 7-4 virheeseen, joka kertoi, että `hosting`-moduuli on yksityinen. Haluamme, että emomoduulin `eat_at_restaurant`-funktiolla on pääsy `add_to_waitlist`-funktioon lapsimoduulissa, joten merkitsemme `hosting`-moduulin `pub`-avainsanalla, kuten Listauksessa 7-5 on esitetty.
+Palataan listauksen 7-4 virheeseen, joka kertoi, että `hosting`-moduuli on yksityinen. Haluamme, että emomoduulin `eat_at_restaurant`-funktiolla on pääsy alimoduuulin `add_to_waitlist`-funktioon, joten merkitsemme `hosting`-moduulin `pub`-avainsanalla, kuten listauksessa 7-5.
 
-<Listing number="7-5" file-name="src/lib.rs" caption="`hosting`-moduulin julistaminen `pub`:iksi sen käyttämiseksi `eat_at_restaurant`:sta">
+<Listing number="7-5" file-name="src/lib.rs" caption="`hosting`-moduulin määrittely `pub`:ksi sen käyttämiseksi funktiosta `eat_at_restaurant`">
 
 ```rust,ignore,does_not_compile
 {{#rustdoc_include ../listings/ch07-managing-growing-projects/listing-07-05/src/lib.rs:here}}
@@ -57,9 +57,9 @@ Palataan Listauksen 7-4 virheeseen, joka kertoi, että `hosting`-moduuli on yksi
 
 </Listing>
 
-Valitettavasti Listauksen 7-5 koodi tuottaa edelleen kääntäjävirheitä, kuten Listauksessa 7-6 on esitetty.
+Valitettavasti listauksen 7-5 koodi tuottaa edelleen kääntäjän virheitä, kuten listauksessa 7-6.
 
-<Listing number="7-6" caption="Kääntäjävirheet Listauksen 7-5 koodin kääntämisestä">
+<Listing number="7-6" caption="Kääntäjän virheet listauksen 7-5 koodin rakentamisesta">
 
 ```console
 {{#include ../listings/ch07-managing-growing-projects/listing-07-05/output.txt}}
@@ -67,13 +67,13 @@ Valitettavasti Listauksen 7-5 koodi tuottaa edelleen kääntäjävirheitä, kute
 
 </Listing>
 
-Mitä tapahtui? `pub`-avainsanan lisääminen `mod hosting`:n eteen tekee moduulista julkisen. Tämän muutoksen jälkeen, jos pääsemme `front_of_house`:iin, pääsemme `hosting`:iin. Mutta `hosting`:in _sisältö_ on edelleen yksityistä; moduulin tekeminen julkiseksi ei tee sen sisällöstä julkista. `pub`-avainsana moduulissa antaa vain sen esi-isämoduulien koodin viitata siihen, ei käyttää sen sisäistä koodia. Koska moduulit ovat säiliöitä, emme voi tehdä paljon pelkällä moduulin tekemisellä julkiseksi; meidän täytyy mennä pidemmälle ja valita tehdä yhdestä tai useammasta moduulin sisällä olevasta kohteesta julkisia.
+Mitä tapahtui? `pub`-avainsanan lisääminen `mod hosting` -lauseen eteen tekee moduulista julkisen. Tämän muutoksen jälkeen, jos pääsemme `front_of_house`-moduuliin, pääsemme `hosting`-moduuliin. Mutta `hosting`-moduulin _sisältö_ on edelleen yksityistä; moduulin tekeminen julkiseksi ei tee sen sisällöstä julkista. `pub`-avainsana moduulissa sallii vain sen esi-isämoduulien koodin viitata siihen, ei päästä sen sisäiseen koodiin. Koska moduulit ovat säiliöitä, pelkällä moduulin tekemisellä julkiseksi emme voi tehdä paljon; meidän on mentävä pidemmälle ja valittava tehdä yksi tai useampi moduulin sisällä olevista kohteista julkisiksi.
 
-Listauksen 7-6 virheet sanovat, että `add_to_waitlist`-funktio on yksityinen. Yksityisyyssäännöt pätevät rakenteisiin, enumeihin, funktioihin ja metodeihin sekä moduuleihin.
+Listauksen 7-6 virheet sanovat, että `add_to_waitlist`-funktio on yksityinen. Yksityisyyssäännöt koskevat structeja, enumeja, funktioita ja metodeja sekä moduuleja.
 
-Tehdään myös `add_to_waitlist`-funktiosta julkinen lisäämällä `pub`-avainsana sen määrittelyn eteen, kuten Listauksessa 7-7.
+Tehdään myös `add_to_waitlist`-funktiosta julkinen lisäämällä `pub`-avainsana sen määrittelyn eteen, kuten listauksessa 7-7.
 
-<Listing number="7-7" file-name="src/lib.rs" caption="`pub`-avainsanan lisääminen `mod hosting`:iin ja `fn add_to_waitlist`:iin antaa meille mahdollisuuden kutsua funktiota `eat_at_restaurant`:sta">
+<Listing number="7-7" file-name="src/lib.rs" caption="`pub`-avainsanan lisääminen `mod hosting` - ja `fn add_to_waitlist` -lauseisiin sallii funktion kutsumisen funktiosta `eat_at_restaurant`.">
 
 ```rust,noplayground,test_harness
 {{#rustdoc_include ../listings/ch07-managing-growing-projects/listing-07-07/src/lib.rs:here}}
@@ -81,27 +81,27 @@ Tehdään myös `add_to_waitlist`-funktiosta julkinen lisäämällä `pub`-avain
 
 </Listing>
 
-Nyt koodi kääntyy! Nähdäksemme, miksi `pub`-avainsanan lisääminen antaa meidän käyttää näitä polkuja `eat_at_restaurant`:ssa yksityisyyssääntöjen suhteen, katsotaan absoluuttista ja suhteellista polkua.
+Nyt koodi kääntyy! Nähdäksemme, miksi `pub`-avainsanan lisääminen sallii näiden polkujen käytön funktiossa `eat_at_restaurant` yksityisyyssääntöjen suhteen, tarkastellaan absoluuttista ja suhteellista polkua.
 
-Absoluuttisessa polussa aloitamme `crate`:sta, cratemme moduulipuun juuresta. `front_of_house`-moduuli on määritelty crate-juuressa. Vaikka `front_of_house` ei ole julkinen, koska `eat_at_restaurant`-funktio on määritelty samassa moduulissa kuin `front_of_house` (eli `eat_at_restaurant` ja `front_of_house` ovat sisaruksia), voimme viitata `front_of_house`:iin `eat_at_restaurant`:sta. Seuraavaksi on `hosting`-moduuli, joka on merkitty `pub`:illa. Pääsemme `hosting`:in emomoduuliin, joten pääsemme `hosting`:iin. Lopuksi `add_to_waitlist`-funktio on merkitty `pub`:illa ja pääsemme sen emomoduuliin, joten tämä funktiokutsu toimii!
+Absoluuttisessa polussa aloitamme `crate`:sta, crate:amme moduulipuun juuresta. `front_of_house`-moduuli on määritelty crate-juuressa. Vaikka `front_of_house` ei ole julkinen, koska `eat_at_restaurant`-funktio on määritelty samassa moduulissa kuin `front_of_house` (eli `eat_at_restaurant` ja `front_of_house` ovat sisaruksia), voimme viitata `front_of_house`-moduuliin funktiosta `eat_at_restaurant`. Seuraavaksi on `hosting`-moduuli, joka on merkitty `pub`:lla. Pääsemme `hosting`-moduulin emomoduuliin, joten pääsemme `hosting`-moduuliin. Lopuksi `add_to_waitlist`-funktio on merkitty `pub`:lla, ja pääsemme sen emomoduuliin, joten tämä funktiokutsu toimii!
 
-Suhteellisessa polussa logiikka on sama kuin absoluuttisessa polussa paitsi ensimmäinen askel: sen sijaan, että aloittaisimme crate-juuresta, polku alkaa `front_of_house`:sta. `front_of_house`-moduuli on määritelty samassa moduulissa kuin `eat_at_restaurant`, joten suhteellinen polku, joka alkaa moduulista, jossa `eat_at_restaurant` on määritelty, toimii. Sitten, koska `hosting` ja `add_to_waitlist` on merkitty `pub`:illa, loppu polusta toimii, ja tämä funktiokutsu on kelvollinen!
+Suhteellisessa polussa logiikka on sama kuin absoluuttisessa polussa paitsi ensimmäisessä vaiheessa: Sen sijaan, että aloittaisimme crate-juuresta, polku alkaa `front_of_house`-moduulista. `front_of_house`-moduuli on määritelty samassa moduulissa kuin `eat_at_restaurant`, joten suhteellinen polku, joka alkaa moduulista, jossa `eat_at_restaurant` on määritelty, toimii. Sitten, koska `hosting` ja `add_to_waitlist` on merkitty `pub`:lla, polun loppuosa toimii, ja tämä funktiokutsu on kelvollinen!
 
-Jos aiot jakaa kirjastocratesi, jotta muut projektit voivat käyttää koodiasi, julkinen API on sopimuksesi craten käyttäjien kanssa, joka määrittää, miten he voivat olla vuorovaikutuksessa koodisi kanssa. Julkisen API:n muutosten hallintaan liittyy monia näkökohtia, jotta craten käyttäminen olisi helpompaa. Nämä näkökohdat ovat tämän kirjan laajuuden ulkopuolella; jos olet kiinnostunut tästä aiheesta, katso [The Rust API Guidelines][api-guidelines].
+Jos aiot jakaa kirjastocrate:asi, jotta muut projektit voivat käyttää koodiasi, julkinen API:si on sopimus crate:si käyttäjien kanssa, joka määrittää, miten he voivat olla vuorovaikutuksessa koodisi kanssa. Julkisen API:n muutosten hallintaan liittyy monia näkökohtia, jotka helpottavat ihmisten riippuvuutta crate:stasi. Nämä näkökohdat ylittävät tämän kirjan laajuuden; jos olet kiinnostunut tästä aiheesta, katso [Rust API Guidelines -ohjeet][api-guidelines].
 
 > #### Parhaat käytännöt paketeille, joissa on binääri ja kirjasto
 >
-> Mainitsimme, että paketti voi sisältää sekä _src/main.rs_-binääricrate-juuren että _src/lib.rs_-kirjastocrate-juuren, ja molemmilla crateilla on oletuksena paketin nimi. Tyypillisesti paketit, joissa on tämä malli sisältäen sekä kirjasto- että binääricraten, sisältävät binääricratessa vain tarpeeksi koodia käynnistääkseen suoritettavan, joka kutsuu kirjastocraten koodia. Tämä antaa muiden projektien hyötyä suurimmasta osasta paketin tarjoamaa toiminnallisuutta, koska kirjastocraten koodia voidaan jakaa.
+> Mainitsimme, että paketti voi sisältää sekä _src/main.rs_ binääricrate-juuren että _src/lib.rs_ kirjastocrate-juuren, ja molemmilla crate:illa on oletuksena paketin nimi. Tyypillisesti paketit, joissa on tämä malli sisältäen sekä kirjasto- että binääricrate:n, sisältävät binääricrate:ssa vain tarpeeksi koodia käynnistääkseen suoritettavan, joka kutsuu kirjastocrate:ssa määriteltyä koodia. Tämä antaa muiden projektien hyötyä suurimmasta osasta paketin tarjoamaa toiminnallisuutta, koska kirjastocrate:n koodia voidaan jakaa.
 >
-> Moduulipuu pitäisi määritellä _src/lib.rs_:ssä. Sitten mitkä tahansa julkiset kohteet voidaan käyttää binääricratessa aloittamalla polut paketin nimellä. Binääricratesta tulee kirjastocraten käyttäjä aivan kuten täysin ulkoinen crate käyttäisi kirjastocratetta: se voi käyttää vain julkista API:a. Tämä auttaa sinua suunnittelemaan hyvän API:n; et ole vain tekijä, olet myös asiakas!
+> Moduulipuu tulisi määritellä tiedostossa _src/lib.rs_. Sitten mitä tahansa julkisia kohteita voidaan käyttää binääricrate:ssa aloittamalla polut paketin nimellä. Binääricrate:sta tulee kirjastocrate:n käyttäjä aivan kuten täysin ulkoinen crate käyttäisi kirjastocrate:a: se voi käyttää vain julkista API:a. Tämä auttaa suunnittelemaan hyvän API:n; et ole vain kirjoittaja, vaan myös asiakas!
 >
-> Luvussa 12<!-- ignore --> demonstroimme tätä organisointikäytäntöä komentorivi-ohjelmalla, joka sisältää sekä binääri- että kirjastocraten.
+> [Luvussa 12][ch12]<!-- ignore --> havainnollistamme tätä organisointikäytäntöä komentoriviohjelmalla, joka sisältää sekä binääri- että kirjastocrate:n.
 
 ### Suhteellisten polkujen aloittaminen `super`:lla
 
-Voimme rakentaa suhteellisia polkuja, jotka alkavat emomoduulista nykyisen moduulin tai crate-juuren sijaan, käyttämällä `super`:ia polun alussa. Tämä on kuin tiedostojärjestelmäpolun aloittaminen `..`-syntaksilla. `super`:n käyttö antaa meille mahdollisuuden viitata kohteeseen, jonka tiedämme olevan emomoduulissa, mikä voi helpottaa moduulipuun uudelleenjärjestelyä, kun moduuli liittyy läheisesti emomoduuliin, mutta emomoduuli saatetaan siirtää muualle moduulipuussa jonain päivänä.
+Voimme rakentaa suhteellisia polkuja, jotka alkavat emomoduulista nykyisen moduulin tai crate-juuren sijaan käyttämällä `super`-avainsanaa polun alussa. Tämä on kuin tiedostojärjestelmän polun aloittaminen `..`-syntaksilla, joka tarkoittaa siirtymistä emohakemistoon. `super`:n käyttäminen sallii meidän viitata kohteeseen, jonka tiedämme olevan emomoduulissa, mikä voi helpottaa moduulipuun uudelleenjärjestelyä, kun moduuli on läheisesti liittynyt emomoduuliin, mutta emomoduuli saatetaan joskus siirtää muualle moduulipuussa.
 
-Harkitse Listauksen 7-8 koodia, joka mallintaa tilannetta, jossa kokki korjaa virheellisen tilauksen ja tuo sen henkilökohtaisesti asiakkaalle. `back_of_house`-moduulissa määritelty `fix_incorrect_order`-funktio kutsuu emomoduulissa määriteltyä `deliver_order`-funktiota määrittämällä polun `deliver_order`:iin aloittaen `super`:lla.
+Harkitse listauksen 7-8 koodia, joka mallintaa tilannetta, jossa keittiömestari korjaa virheellisen tilauksen ja tuo sen henkilökohtaisesti asiakkaalle. `back_of_house`-moduulissa määritelty `fix_incorrect_order`-funktio kutsuu emomoduulissa määriteltyä `deliver_order`-funktiota määrittämällä polun `deliver_order`-funktioon aloittaen `super`:lla.
 
 <Listing number="7-8" file-name="src/lib.rs" caption="Funktion kutsuminen suhteellisella polulla, joka alkaa `super`:lla">
 
@@ -111,13 +111,13 @@ Harkitse Listauksen 7-8 koodia, joka mallintaa tilannetta, jossa kokki korjaa vi
 
 </Listing>
 
-`fix_incorrect_order`-funktio on `back_of_house`-moduulissa, joten voimme käyttää `super`:ia siirtyäksemme `back_of_house`:n emomoduuliin, joka tässä tapauksessa on `crate`, juuri. Sieltä etsimme `deliver_order`:ia ja löydämme sen. Onnistui! Uskomme, että `back_of_house`-moduuli ja `deliver_order`-funktio pysyvät todennäköisesti samassa suhteessa toisiinsa ja siirretään yhdessä, jos päätämme järjestellä craten moduulipuuta uudelleen. Siksi käytimme `super`:ia, jotta meillä olisi vähemmän paikkoja päivittää koodia tulevaisuudessa, jos tämä koodi siirretään eri moduuliin.
+`fix_incorrect_order`-funktio on `back_of_house`-moduulissa, joten voimme käyttää `super`:a siirtyäksemme `back_of_house`-moduulin emomoduuliin, joka tässä tapauksessa on `crate`, juuri. Sieltä etsimme `deliver_order`-funktiota ja löydämme sen. Onnistui! Uskomme, että `back_of_house`-moduuli ja `deliver_order`-funktio pysyvät todennäköisesti samassa suhteessa toisiinsa ja siirtyvät yhdessä, jos päättäisimme järjestää crate:n moduulipuun uudelleen. Siksi käytimme `super`:a, jotta meillä olisi vähemmän paikkoja päivitettäväksi tulevaisuudessa, jos tämä koodi siirretään eri moduuliin.
 
-### Rakenteiden ja enumien tekeminen julkisiksi
+### Structien ja enumien tekeminen julkisiksi
 
-Voimme myös käyttää `pub`:ia merkitsemään rakenteet ja enumit julkisiksi, mutta `pub`:in käytössä rakenteiden ja enumien kanssa on muutamia ylimääräisiä yksityiskohtia. Jos käytämme `pub`:ia ennen rakennemäärittelyä, teemme rakenteesta julkisen, mutta rakenteen kentät ovat edelleen yksityisiä. Voimme tehdä jokaisesta kentästä julkisen tai ei tapauskohtaisesti. Listauksessa 7-9 olemme määritelleet julkisen `back_of_house::Breakfast`-rakenteen julkisella `toast`-kentällä mutta yksityisellä `seasonal_fruit`-kentällä. Tämä mallintaa ravintolatilannetta, jossa asiakas voi valita aterian kanssa tulevan leivän tyypin, mutta kokki päättää, mikä hedelmä seuraa ateriaa sen perusteella, mikä on sesongissa ja varastossa. Saatavilla olevat hedelmät vaihtuvat nopeasti, joten asiakkaat eivät voi valita hedelmää tai edes nähdä, minkä hedelmän he saavat.
+Voimme myös käyttää `pub`:ia structien ja enumien merkitsemiseen julkisiksi, mutta `pub`:n käytössä structien ja enumien kanssa on muutamia lisätietoja. Jos käytämme `pub`:ia struct-määrittelyn edessä, teemme structista julkisen, mutta structin kentät ovat edelleen yksityisiä. Voimme tehdä jokaisesta kentästä julkisen tai yksityisen tapauskohtaisesti. Listauksessa 7-9 olemme määritelleet julkisen `back_of_house::Breakfast`-structin, jossa on julkinen `toast`-kenttä mutta yksityinen `seasonal_fruit`-kenttä. Tämä mallintaa ravintolatilannetta, jossa asiakas voi valita aterian kanssa tulevan leivän tyypin, mutta keittiömestari päättää, mikä hedelmä seuraa ateriaa sen perusteella, mikä on sesongissa ja varastossa. Saatavilla olevat hedelmät vaihtuvat nopeasti, joten asiakkaat eivät voi valita hedelmää tai edes nähdä, minkä hedelmän he saavat.
 
-<Listing number="7-9" file-name="src/lib.rs" caption="Rakenne, jossa on joitakin julkisia ja joitakin yksityisiä kenttiä">
+<Listing number="7-9" file-name="src/lib.rs" caption="Struct, jossa on joitakin julkisia ja joitakin yksityisiä kenttiä">
 
 ```rust,noplayground
 {{#rustdoc_include ../listings/ch07-managing-growing-projects/listing-07-09/src/lib.rs}}
@@ -125,13 +125,13 @@ Voimme myös käyttää `pub`:ia merkitsemään rakenteet ja enumit julkisiksi, 
 
 </Listing>
 
-Koska `toast`-kenttä `back_of_house::Breakfast`-rakenteessa on julkinen, `eat_at_restaurant`:ssa voimme kirjoittaa ja lukea `toast`-kenttää käyttämällä pistesyntaksia. Huomaa, ettemme voi käyttää `seasonal_fruit`-kenttää `eat_at_restaurant`:ssa, koska `seasonal_fruit` on yksityinen. Kokeile poistaa kommentti riviltä, joka muokkaa `seasonal_fruit`-kentän arvoa, nähdäksesi minkä virheen saat!
+Koska `back_of_house::Breakfast`-structin `toast`-kenttä on julkinen, funktiossa `eat_at_restaurant` voimme kirjoittaa ja lukea `toast`-kenttää käyttämällä pistesyntaksia. Huomaa, ettemme voi käyttää `seasonal_fruit`-kenttää funktiossa `eat_at_restaurant`, koska `seasonal_fruit` on yksityinen. Kokeile poistaa kommentti riviltä, joka muuttaa `seasonal_fruit`-kentän arvoa, nähdäksesi minkä virheen saat!
 
-Huomaa myös, että koska `back_of_house::Breakfast`:lla on yksityinen kenttä, rakenteen täytyy tarjota julkinen liittyvä funktio, joka rakentaa `Breakfast`-instanssin (olemme nimenneet sen tässä `summer`:iksi). Jos `Breakfast`:lla ei olisi tällaista funktiota, emme voisi luoda `Breakfast`-instanssia `eat_at_restaurant`:ssa, koska emme voisi asettaa yksityisen `seasonal_fruit`-kentän arvoa `eat_at_restaurant`:ssa.
+Huomaa myös, että koska `back_of_house::Breakfast`-structilla on yksityinen kenttä, structin on tarjottava julkinen assosioitu funktio, joka luo `Breakfast`-instanssin (olemme nimenneet sen tässä `summer`). Jos `Breakfast`-structilla ei olisi tällaista funktiota, emme voisi luoda `Breakfast`-instanssia funktiossa `eat_at_restaurant`, koska emme voisi asettaa yksityisen `seasonal_fruit`-kentän arvoa funktiossa `eat_at_restaurant`.
 
-Sitä vastoin, jos teemme enumista julkisen, kaikki sen variantit ovat sitten julkisia. Tarvitsemme vain `pub`:in `enum`-avainsanan eteen, kuten Listauksessa 7-10 on esitetty.
+Sitä vastoin, jos teemme enumista julkisen, kaikista sen varianteista tulee julkisia. Tarvitsemme vain `pub`-avainsanan `enum`-avainsanan edessä, kuten listauksessa 7-10.
 
-<Listing number="7-10" file-name="src/lib.rs" caption="Enumin merkitseminen julkiseksi tekee kaikista sen varianteista julkisia.">
+<Listing number="7-10" file-name="src/lib.rs" caption="Enumin määrittely julkiseksi tekee kaikista sen varianteista julkisia.">
 
 ```rust,noplayground
 {{#rustdoc_include ../listings/ch07-managing-growing-projects/listing-07-10/src/lib.rs}}
@@ -139,11 +139,11 @@ Sitä vastoin, jos teemme enumista julkisen, kaikki sen variantit ovat sitten ju
 
 </Listing>
 
-Koska teimme `Appetizer`-enumista julkisen, voimme käyttää `Soup`- ja `Salad`-variantteja `eat_at_restaurant`:ssa.
+Koska teimme `Appetizer`-enumista julkisen, voimme käyttää `Soup`- ja `Salad`-variantteja funktiossa `eat_at_restaurant`.
 
-Enumit eivät ole kovin hyödyllisiä, elleivät niiden variantit ole julkisia; olisi ärsyttävää joutua merkitsemään kaikki enum-variantit `pub`:illa joka tapauksessa, joten enum-varianttien oletus on olla julkisia. Rakenteet ovat usein hyödyllisiä ilman, että niiden kentät ovat julkisia, joten rakennekentät noudattavat yleistä sääntöä, että kaikki on oletuksena yksityistä, ellei niitä ole merkitty `pub`:illa.
+Enumit eivät ole kovin hyödyllisiä, elleivät niiden variantit ole julkisia; olisi ärsyttävää joutua merkitsemään kaikki enum-variantit `pub`:lla joka tapauksessa, joten enum-varianttien oletus on olla julkisia. Structit ovat usein hyödyllisiä ilman, että niiden kentät olisivat julkisia, joten struct-kentät noudattavat yleistä sääntöä, että kaikki on oletuksena yksityistä, ellei niitä ole merkitty `pub`:lla.
 
-On vielä yksi tilanne, jossa `pub` on mukana, jota emme ole käsitelleet, ja se on viimeinen moduulijärjestelmämme ominaisuus: `use`-avainsana. Käsittelemme `use`:n erikseen ensin, ja sitten näytämme, miten yhdistää `pub` ja `use`.
+On vielä yksi tilanne, jossa `pub`:ia käytetään, jota emme ole käsitelleet, ja se on viimeinen moduulijärjestelmämme ominaisuus: `use`-avainsana. Käsittelemme `use`:a ensin erikseen, ja sitten näytämme, miten `pub` ja `use` yhdistetään.
 
 [pub]: ch07-03-paths-for-referring-to-an-item-in-the-module-tree.html#exposing-paths-with-the-pub-keyword
 [api-guidelines]: https://rust-lang.github.io/api-guidelines/

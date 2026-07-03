@@ -1,59 +1,69 @@
 ## Liite A: Avainsanat
 
-Seuraava luettelo sisältää avainsanoja, jotka ovat varattuina Rust-kielelle joko nykyiseen tai tulevaan käyttöön. Näitä ei voi käyttää tunnisteina (paitsi raakatunnisteina, kuten käsitellään kohdassa "[Raakatunnisteet][raw-identifiers]<!-- ignore -->").  
-Tunnisteet ovat nimiä, joita käytetään funktioissa, muuttujissa, parametreissa, rakenteiden kentissä, moduleissa, paketeissa, vakioissa, makroissa, staattisissa arvoissa, attribuuteissa, tyypeissä, rajapinnoissa (traits) tai elinaikojen hallinnassa.
+Seuraavissa luetteloissa on avainsanoja, jotka Rust-kieli on varannut nykyiseen tai
+tulevaan käyttöön. Sellaisenaan niitä ei voi käyttää tunnisteina (paitsi raakatunnisteina,
+kuten käsitellään kohdassa [”Raakatunnisteet”][raw-identifiers]<!-- ignore -->).
+_Tunnisteet_ ovat funktioiden, muuttujien, parametrien, rakenteiden kenttien, moduulien,
+pakettien, vakioiden, makrojen, staattisten arvojen, attribuuttien, tyyppien, traitien
+tai elinikien nimiä.
 
 [raw-identifiers]: #raw-identifiers
 
-### Käytössä olevat avainsanat
+### Tällä hetkellä käytössä olevat avainsanat
 
-Seuraava on lista tällä hetkellä käytössä olevista avainsanoista ja niiden toiminnoista:
+Seuraavassa on luettelo tällä hetkellä käytössä olevista avainsanoista ja niiden
+toiminnallisuudesta.
 
-- `as` - suorittaa primitiivisen tyypin muunnoksen, määrittää tietyn rajapinnan sisältävän kohteen tai uudelleennimeää kohteita `use`-lausunnoissa  
-- `async` - palauttaa `Future`-olion estämättä nykyistä säiettä  
-- `await` - keskeyttää suorituksen, kunnes `Future`-olion tulos on valmis  
-- `break` - poistuu silmukasta välittömästi  
-- `const` - määrittää vakioita tai vakio-osoittimia  
-- `continue` - jatkaa seuraavaan silmukka-iteraatioon  
-- `crate` - moduulipolussa viittaa paketin juureen  
-- `dyn` - mahdollistaa dynaamisen viittaamisen rajapintaolioihin  
-- `else` - varavaihtoehto `if`- ja `if let` -rakenteille  
-- `enum` - määrittää luettelotyypin  
-- `extern` - linkittää ulkoiseen funktioon tai muuttujaan  
-- `false` - looginen epätosi-vakio  
-- `fn` - määrittää funktion tai funktioviittauksen tyypin  
-- `for` - käy läpi iteraattorista saatuja arvoja, toteuttaa rajapinnan tai määrittää korkeatasoisen eliniän  
-- `if` - suorittaa ehdollisen haarautumisen  
-- `impl` - toteuttaa sisäänrakennettua tai rajapinnan funktioita  
-- `in` - osa `for`-silmukan syntaksia  
-- `let` - sitoo muuttujan  
-- `loop` - suorittaa silmukan loputtomasti  
-- `match` - vertailee arvoa eri kaavoihin  
-- `mod` - määrittää moduulin  
-- `move` - siirtää sulkeuman muuttujat omistukseen  
-- `mut` - määrittää muuttuvuuden viittauksissa, osoittimissa tai sidonnoissa  
-- `pub` - määrittää näkyvyyden julkiseksi rakenteiden kentissä, `impl`-lohkoissa tai moduleissa  
-- `ref` - sitoo muuttujan viittauksena  
-- `return` - palauttaa funktion suorituksesta  
-- `Self` - viittaa tämänhetkiseen tyyppiin, jota määritellään tai toteutetaan  
-- `self` - viittaa metodin kohteeseen tai nykyiseen moduuliin  
-- `static` - määrittää globaalin muuttujan tai arvon, joka säilyy ohjelman suoritusajan läpi  
-- `struct` - määrittää rakenteen  
-- `super` - viittaa nykyisen moduulin ylämoduuliin  
-- `trait` - määrittää rajapinnan  
-- `true` - looginen tosi-vakio  
-- `type` - määrittää tyyppialiasin tai assosioidun tyypin  
-- `union` - määrittää [unionin][union]<!-- ignore -->; tämä on avainsana vain unionin yhteydessä  
-- `unsafe` - merkitsee turvattoman koodin, funktion, rajapinnan tai toteutuksen  
-- `use` - tuo symboleja näkyviin; tarkentaa kaappauksia geneerisille ja elinikärajoille  
-- `where` - määrittää ehdot, jotka rajoittavat tyyppiä  
-- `while` - suorittaa ehdollisen silmukan  
+- **`as`**: Suorittaa primitiivisen tyypinmuunnoksen, poistaa moniselitteisyyden sen
+  traitin osalta, joka sisältää kohteen, tai uudelleennimeää kohteita `use`-lauseissa.
+- **`async`**: Palauttaa `Future`-olion estämättä nykyistä säiettä.
+- **`await`**: Keskeyttää suorituksen, kunnes `Future`-olion tulos on valmis.
+- **`break`**: Poistuu silmukasta välittömästi.
+- **`const`**: Määrittää vakioita tai vakioraakaosoittimia.
+- **`continue`**: Jatkaa seuraavaan silmukkaiteraatioon.
+- **`crate`**: Moduulipolussa viittaa paketin juureen.
+- **`dyn`**: Dynaaminen lähetys trait-oliolle.
+- **`else`**: Varavaihtoehto `if`- ja `if let` -ohjausrakenteille.
+- **`enum`**: Määrittää luettelon.
+- **`extern`**: Linkittää ulkoisen funktion tai muuttujan.
+- **`false`**: Totuusarvon epätosi-literaali.
+- **`fn`**: Määrittää funktion tai funktio-osoitintyypin.
+- **`for`**: Käy läpi iteraattorin kohteita, toteuttaa traitin tai määrittää korkeamman
+  asteen eliniän.
+- **`if`**: Haarautuu ehdollisen lausekkeen tuloksen perusteella.
+- **`impl`**: Toteuttaa sisäänrakennettua tai trait-toiminnallisuutta.
+- **`in`**: Osa `for`-silmukan syntaksia.
+- **`let`**: Sitoo muuttujan.
+- **`loop`**: Toistaa silmukkaa ehdottomasti.
+- **`match`**: Vertaa arvoa kuvioihin.
+- **`mod`**: Määrittää moduulin.
+- **`move`**: Saattaa sulkeuman ottamaan omistukseen kaikista kaappauksistaan.
+- **`mut`**: Ilmaisee muuttuvuutta viittauksissa, raakaosoittimissa tai kuviosidonnissa.
+- **`pub`**: Ilmaisee julkisen näkyvyyden rakenteiden kentissä, `impl`-lohkoissa tai
+  moduuleissa.
+- **`ref`**: Sitoo viittauksena.
+- **`return`**: Palaa funktiosta.
+- **`Self`**: Tyyppialias tyypille, jota määritellään tai toteutetaan.
+- **`self`**: Metodin kohde tai nykyinen moduuli.
+- **`static`**: Globaali muuttuja tai koko ohjelman suorituksen kestävä elinikä.
+- **`struct`**: Määrittää rakenteen.
+- **`super`**: Nykyisen moduulin ylämoduuli.
+- **`trait`**: Määrittää traitin.
+- **`true`**: Totuusarvon tosi-literaali.
+- **`type`**: Määrittää tyyppialiasin tai assosioituneen tyypin.
+- **`union`**: Määrittää [unionin][union]<!-- ignore -->; on avainsana vain
+  unioni-määrittelyssä.
+- **`unsafe`**: Merkitsee turvatonta koodia, funktiota, traitia tai toteutusta.
+- **`use`**: Tuo symboleja näkyvyysalueelle.
+- **`where`**: Ilmaisee tyyppiä rajoittavia lausekkeita.
+- **`while`**: Toistaa silmukkaa ehdollisesti lausekkeen tuloksen perusteella.
 
 [union]: ../reference/items/unions.html
 
-### Tulevaisuuden varatut avainsanat
+### Tulevaisuutta varten varatut avainsanat
 
-Seuraavat avainsanat eivät vielä ole käytössä, mutta ne on varattu Rustin mahdolliseen tulevaan käyttöön:
+Seuraavilla avainsanoilla ei ole vielä toiminnallisuutta, mutta Rust on varannut ne
+mahdollista tulevaa käyttöä varten:
 
 - `abstract`
 - `become`
@@ -72,9 +82,14 @@ Seuraavat avainsanat eivät vielä ole käytössä, mutta ne on varattu Rustin m
 
 ### Raakatunnisteet
 
-**Raakatunnisteet** ovat syntaksi, jonka avulla voit käyttää avainsanoja tunnisteina siellä, missä niitä normaalisti ei sallittaisi. Raakatunniste muodostetaan lisäämällä avainsanan eteen `r#`-etuliite.
+_Raakatunnisteet_ ovat syntaksia, jonka avulla avainsanoja voi käyttää paikoissa, joissa
+niitä ei normaalisti sallittaisi. Raakatunniste muodostetaan lisäämällä avainsanan eteen
+`r#`.
 
-Esimerkiksi `match` on avainsana. Jos yrität kääntää seuraavan funktion, joka käyttää `match`-sanaa funktion nimenä:
+Esimerkiksi `match` on avainsana. Jos yrität kääntää seuraavan funktion, joka käyttää
+`match`-sanaa nimenään:
+
+<span class="filename">Filename: src/main.rs</span>
 
 ```rust,ignore,does_not_compile
 fn match(needle: &str, haystack: &str) -> bool {
@@ -82,7 +97,7 @@ fn match(needle: &str, haystack: &str) -> bool {
 }
 ```
 
-Saat seuraavan virheilmoituksen:
+saat tämän virheen:
 
 ```text
 error: expected identifier, found keyword `match`
@@ -92,7 +107,10 @@ error: expected identifier, found keyword `match`
   |    ^^^^^ expected identifier, found keyword
 ```
 
-Virhe kertoo, että et voi käyttää `match`-sanaa funktion nimenä. Tämän voi kuitenkin kiertää käyttämällä raakatunnisteita:
+Virhe kertoo, että avainsanaa `match` ei voi käyttää funktion tunnisteena. Käyttääksesi
+`match`-sanaa funktion nimenä, sinun täytyy käyttää raakatunnistesyntaksia näin:
+
+<span class="filename">Filename: src/main.rs</span>
 
 ```rust
 fn r#match(needle: &str, haystack: &str) -> bool {
@@ -104,9 +122,17 @@ fn main() {
 }
 ```
 
-Tämä koodi kääntyy ilman virheitä. Huomaa `r#`-etuliite sekä funktion määrittelyssä että sen kutsussa `main`-funktiossa.
+Tämä koodi kääntyy ilman virheitä. Huomaa `r#`-etuliite funktion nimessä sekä sen
+määrittelyssä että siinä kohdassa, jossa funktiota kutsutaan `main`-funktiossa.
 
-Raakatunnisteet mahdollistavat minkä tahansa sanan käytön tunnisteena, vaikka sana olisi muuten varattu avainsanaksi. Tämä antaa ohjelmoijalle enemmän vapautta valita muuttujien ja funktioiden nimet sekä helpottaa integraatiota muiden ohjelmointikielten kanssa, joissa nämä sanat eivät ole avainsanoja. Lisäksi raakatunnisteet mahdollistavat erilaisten Rust-versioiden yhteensopivuuden. Esimerkiksi `try` ei ollut avainsana Rust 2015 -versiossa, mutta siitä tuli sellainen Rust 2018, 2021 ja 2024 -versioissa. Jos riippuvuus käyttää vanhempaa Rust-versiota, saatat joutua käyttämään raakatunnistetta (`r#try`) kutsuessasi sen funktioita. Katso lisää tietoa Rustin eri versioista kohdasta [Liite E][appendix-e]<!-- ignore -->.
+Raakatunnisteet mahdollistavat minkä tahansa sanan käytön tunnisteena, vaikka sana olisi
+varattu avainsana. Tämä antaa enemmän vapautta valita tunnistenimiä ja helpottaa
+integraatiota ohjelmiin, jotka on kirjoitettu kielellä, jossa nämä sanat eivät ole
+avainsanoja. Lisäksi raakatunnisteet mahdollistavat kirjastojen käytön, jotka on kirjoitettu
+eri Rust-editionilla kuin mitä pakettisi käyttää. Esimerkiksi `try` ei ole avainsana
+editionissa 2015, mutta on editioneissa 2018, 2021 ja 2024. Jos riippuvuutesi on kirjoitettu
+editionilla 2015 ja siinä on `try`-funktio, sinun täytyy käyttää raakatunnistesyntaksia,
+tässä tapauksessa `r#try`, kutsuessasi kyseistä funktiota koodistasi myöhemmissä
+editioneissa. Katso lisätietoja editioneista [liitteestä E][appendix-e]<!-- ignore -->.
 
 [appendix-e]: appendix-05-editions.html
-

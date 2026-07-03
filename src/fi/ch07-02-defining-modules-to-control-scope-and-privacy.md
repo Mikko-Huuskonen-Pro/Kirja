@@ -1,55 +1,29 @@
-## Moduulien määrittäminen laajuuden ja yksityisyyden hallitsemiseksi
+<!-- Old headings. Do not remove or links may break. -->
 
-Tässä osiossa käsittelemme moduuleja ja muita moduulijärjestelmän osia,
-eli _polkuja_ (paths), joiden avulla voit nimetä kohteita; `use`-avainsanaa, joka
-tuo polun näkyvyysalueeseen; ja `pub`-avainsanaa, joka tekee kohteet julkisiksi.
-Käsittelemme myös `as`-avainsanaa, ulkoisia paketteja ja glob-operaattoria.
+<a id="defining-modules-to-control-scope-and-privacy"></a>
+
+## Laajuuden ja yksityisyyden hallinta moduuleilla
+
+Tässä osiossa käsittelemme moduuleja ja moduulijärjestelmän muita osia, nimittäin _polkuja_, joiden avulla voit nimetä kohteita; `use`-avainsanaa, joka tuo polun laajuuteen; ja `pub`-avainsanaa, jolla kohteet tehdään julkisiksi. Käsittelemme myös `as`-avainsanaa, ulkoisia paketteja ja glob-operaattoria.
 
 ### Moduulien pikaopas
 
-Ennen kuin siirrymme moduulien ja polkujen yksityiskohtiin, tässä on nopea
-viite siitä, miten moduulit, polut, `use`-avainsana ja `pub`-avainsana toimivat
-kääntäjässä ja miten useimmat kehittäjät järjestävät koodinsa. Käymme läpi
-esimerkkejä näistä säännöistä tämän luvun aikana, mutta tämä on hyvä paikka
-viitata muistutuksena siitä, miten moduulit toimivat.
+Ennen kuin siirrymme moduulien ja polkujen yksityiskohtiin, tässä on nopea viite siitä, miten moduulit, polut, `use`-avainsana ja `pub`-avainsana toimivat kääntäjässä ja miten useimmat kehittäjät järjestävät koodinsa. Käymme läpi esimerkkejä jokaisesta näistä säännöistä koko luvun ajan, mutta tämä on hyvä paikka muistuttaa itseään moduulien toiminnasta.
 
-- **Aloita crate-juuresta**: Kun kääntäjä kääntää craten, se etsii ensin
-  koodia kääntääkseen crate-juuritiedostosta (yleensä _src/lib.rs_ kirjastocratelle tai
-  _src/main.rs_ binääricratelle).
-- **Moduulien määrittäminen**: Crate-juuritiedostossa voit määrittää uusia moduuleja;
-  esimerkiksi voit määrittää "garden"-moduulin komennolla `mod garden;`. Kääntäjä etsii
-  moduulin koodia näistä paikoista:
-  - Inline, aaltosulkeiden sisällä, jotka korvaavat `mod garden`-komennon
-    jälkeisen puolipisteen
-  - Tiedostossa _src/garden.rs_
-  - Tiedostossa _src/garden/mod.rs_
-- **Alimoduulien määrittäminen**: Missä tahansa muussa tiedostossa kuin crate-juurissa voit
-  määrittää alimoduuleja. Esimerkiksi voit määrittää `mod vegetables;` tiedostossa
-  _src/garden.rs_. Kääntäjä etsii alimoduulin koodia vanhemman moduulin nimeämästä
-  hakemistosta näistä paikoista:
-  - Inline, suoraan `mod vegetables`-komennon jälkeen, aaltosulkeiden sisällä
-    puolipisteen sijaan
-  - Tiedostossa _src/garden/vegetables.rs_
-  - Tiedostossa _src/garden/vegetables/mod.rs_
-- **Polut moduulien koodiin**: Kun moduuli on osa crateasi, voit viitata
-  siinä olevaan koodiin mistä tahansa muusta paikasta samassa cratessa, niin kauan
-  kuin yksityisyyssäännöt sen sallivat, käyttämällä koodin polkua. Esimerkiksi
-  `Asparagus`-tyyppi puutarhan vihannemoduulissa löytyisi polusta
-  `crate::garden::vegetables::Asparagus`.
-- **Yksityinen vs. julkinen**: Moduulin sisällä oleva koodi on yksityistä sen
-  vanhempien moduulien näkökulmasta oletusarvoisesti. Tehdäksesi moduulin julkiseksi,
-  määritä se `pub mod`-komennolla `mod`-komennon sijaan. Tehdäksesi julkisen moduulin
-  sisällä olevat kohteet julkisiksi, käytä `pub`-avainsanaa ennen niiden määrittelyjä.
-- **`use`-avainsana**: Näkyvyysalueen sisällä `use`-avainsana luo oikoteitä
-  kohteisiin vähentääkseen pitkien polkujen toistoa. Missä tahansa näkyvyysalueessa,
-  joka voi viitata `crate::garden::vegetables::Asparagus`-tyyppiin, voit luoda
-  oikotien komennolla `use crate::garden::vegetables::Asparagus;` ja sen jälkeen
-  sinun tarvitsee vain kirjoittaa `Asparagus` käyttääksesi kyseistä tyyppiä
-  näkyvyysalueessa.
+- **Aloita crate-juuresta**: Kun crate käännetään, kääntäjä etsii ensin crate-juuritiedostosta (yleensä _src/lib.rs_ kirjastocrate:lle ja _src/main.rs_ binääricrate:lle) käännettävää koodia.
+- **Moduulien määrittely**: Crate-juuritiedostossa voit määritellä uusia moduuleja; oletetaan, että määrittelet ”garden”-moduulin komennolla `mod garden;`. Kääntäjä etsii moduulin koodia näistä paikoista:
+  - Inline, aaltosulkeissa, jotka korvaavat `mod garden` -lauseen lopussa olevan puolipisteen
+  - Tiedostosta _src/garden.rs_
+  - Tiedostosta _src/garden/mod.rs_
+- **Alimoduulien määrittely**: Missä tahansa tiedostossa paitsi crate-juuressa voit määritellä alimoduuuleja. Esimerkiksi voit määritellä `mod vegetables;` tiedostossa _src/garden.rs_. Kääntäjä etsii alimoduuulin koodia emomoduulin nimisestä hakemistosta näistä paikoista:
+  - Inline, suoraan `mod vegetables` -lauseen jälkeen aaltosulkeissa puolipisteen sijaan
+  - Tiedostosta _src/garden/vegetables.rs_
+  - Tiedostosta _src/garden/vegetables/mod.rs_
+- **Polut moduulien koodiin**: Kun moduuli on osa crate:asi, voit viitata kyseisen moduulin koodiin mistä tahansa muualta samassa crate:ssa, kunhan yksityisyyssäännöt sen sallivat, käyttämällä polkua koodiin. Esimerkiksi `Asparagus`-tyyppi garden-moduulin vegetables-alimoduuulissa löytyy polusta `crate::garden::vegetables::Asparagus`.
+- **Yksityinen vs. julkinen**: Moduulin sisällä oleva koodi on oletuksena yksityistä emomoduuleilleen. Tehdäksesi moduulin julkiseksi, määrittele se komennolla `pub mod` `mod`-komennon sijaan. Tehdäksesi julkisen moduulin kohteet myös julkisiksi, käytä `pub`-avainsanaa niiden määrittelyjen edessä.
+- **`use`-avainsana**: Laajuudessa `use`-avainsana luo oikoteitä kohteille vähentääkseen pitkien polkujen toistoa. Missä tahansa laajuudessa, jossa voidaan viitata `crate::garden::vegetables::Asparagus`-polkuun, voit luoda oikotien komennolla `use crate::garden::vegetables::Asparagus;`, ja sen jälkeen sinun tarvitsee vain kirjoittaa `Asparagus` käyttääksesi kyseistä tyyppiä laajuudessa.
 
-Tässä luomme binääricraten nimeltä `backyard`, joka havainnollistaa näitä sääntöjä.
-Craten hakemisto, myös nimeltään `backyard`, sisältää nämä tiedostot ja
-hakemistot:
+Tässä luomme binääricrate:n nimeltä `backyard`, joka havainnollistaa näitä sääntöjä. Crate:n hakemisto, joka myös on nimeltään _backyard_, sisältää nämä tiedostot ja hakemistot:
 
 ```text
 backyard
@@ -62,7 +36,7 @@ backyard
     └── main.rs
 ```
 
-Crate-juuritiedosto on tässä tapauksessa _src/main.rs_, ja se sisältää:
+Tässä tapauksessa crate-juuritiedosto on _src/main.rs_, ja se sisältää:
 
 <Listing file-name="src/main.rs">
 
@@ -72,8 +46,7 @@ Crate-juuritiedosto on tässä tapauksessa _src/main.rs_, ja se sisältää:
 
 </Listing>
 
-Rivi `pub mod garden;` kertoo kääntäjälle sisällyttää koodin, jonka se löytää
-tiedostosta _src/garden.rs_, joka on:
+`pub mod garden;` -rivi kertoo kääntäjälle sisällyttää koodi, jonka se löytää tiedostosta _src/garden.rs_, joka on:
 
 <Listing file-name="src/garden.rs">
 
@@ -83,42 +56,25 @@ tiedostosta _src/garden.rs_, joka on:
 
 </Listing>
 
-Tässä `pub mod vegetables;` tarkoittaa, että myös tiedoston _src/garden/vegetables.rs_
-koodi sisällytetään. Tuo koodi on:
+Tässä `pub mod vegetables;` tarkoittaa, että koodi tiedostosta _src/garden/vegetables.rs_ sisällytetään myös. Kyseinen koodi on:
 
 ```rust,noplayground,ignore
 {{#rustdoc_include ../listings/ch07-managing-growing-projects/quick-reference-example/src/garden/vegetables.rs}}
 ```
 
-Siirrytään nyt näiden sääntöjen yksityiskohtiin ja demonstroidaan niitä käytännössä!
+Siirrytään nyt näiden sääntöjen yksityiskohtiin ja havainnollistetaan niitä käytännössä!
 
 ### Liittyvän koodin ryhmittely moduuleihin
 
-_Moduulit_ (Modules) antavat meille mahdollisuuden järjestää koodi craten sisällä
-luettavuuden ja helpon uudelleenkäytön vuoksi. Moduulit antavat meille myös
-mahdollisuuden hallita kohteiden _yksityisyyttä_ (privacy), koska moduulin sisällä
-oleva koodi on yksityistä oletusarvoisesti. Yksityiset kohteet ovat sisäisiä
-toteutusyksityiskohtia, jotka eivät ole saatavilla ulkoiseen käyttöön. Voimme
-valita tehdä moduulit ja niiden sisällä olevat kohteet julkisiksi, mikä paljastaa
-ne sallien ulkoisen koodin käyttää ja riippua niistä.
+_Moduulit_ antavat meille mahdollisuuden järjestää koodia crate:n sisällä luettavuuden ja helpon uudelleenkäytön vuoksi. Moduulit antavat myös hallita kohteiden _yksityisyyttä_, koska moduulin sisällä oleva koodi on oletuksena yksityistä. Yksityiset kohteet ovat sisäisiä toteutustietoja, jotka eivät ole ulkopuolisen käytön saatavilla. Voimme valita tehdä moduulit ja niiden sisällä olevat kohteet julkisiksi, mikä paljastaa ne ulkoisen koodin käytettäväksi ja riippuvuudeksi.
 
-Esimerkkinä kirjoitamme kirjastocraten, joka tarjoaa ravintolan toiminnallisuuden.
-Määrittelemme funktioiden allekirjoitukset, mutta jätämme niiden rungot tyhjiksi
-keskittyäksemme koodin järjestelyyn ravintolan toteutuksen sijaan.
+Esimerkkinä kirjoitetaan kirjastocrate, joka tarjoaa ravintolan toiminnallisuuden. Määrittelemme funktioiden signatuurit, mutta jätämme niiden rungot tyhjiksi keskittyäksemme koodin organisointiin ravintolan toteutuksen sijaan.
 
-Ravintola-alalla joitakin ravintolan osia kutsutaan _etualueeksi_ (front of house)
-ja toisia _takapihoiksi_ (back of house). Etualue on siellä, missä asiakkaat ovat;
-tämä kattaa paikat, joissa isännät istuttavat asiakkaat, tarjoilijat ottavat
-tilauksia ja maksuja, ja baarimikot tekevät juomia. Takapihoilla kokit ja keittäjät
-työskentelevät keittiössä, tiskarit siivoavat, ja johtajat tekevät hallinnollista työtä.
+Ravintola-alalla ravintolan osia kutsutaan etu- ja takaosaksi. _Etuosassa_ asiakkaat ovat; se kattaa paikat, joissa emännät istuttavat asiakkaat, tarjoilijat ottavat tilaukset ja maksut, ja baarimestarit valmistavat juomia. _Takaosassa_ keitit ja kokit työskentelevät keittiössä, tiskinpesijät siivoavat, ja esimiehet tekevät hallinnollista työtä.
 
-Järjestääksemme craten tällä tavalla, voimme järjestää sen funktiot sisäkkäisiin
-moduuleihin. Luo uusi kirjasto nimeltä `restaurant` suorittamalla `cargo new
-restaurant --lib`. Syötä sitten koodi Listauksesta 7-1 tiedostoon _src/lib.rs_
-määrittääksesi joitakin moduuleja ja funktioiden allekirjoituksia; tämä koodi on
-etualueen osio.
+Rakentaaksemme crate:amme tällä tavalla voimme järjestää sen funktiot sisäkkäisiin moduuleihin. Luo uusi kirjasto nimeltä `restaurant` suorittamalla `cargo new restaurant --lib`. Syötä sitten listauksen 7-1 koodi tiedostoon _src/lib.rs_ määritelläksesi moduuleja ja funktiosignatuureja; tämä koodi on etuosan osio.
 
-<Listing number="7-1" file-name="src/lib.rs" caption="`front_of_house`-moduuli, joka sisältää muita moduuleja, jotka puolestaan sisältävät funktioita">
+<Listing number="7-1" file-name="src/lib.rs" caption="`front_of_house`-moduuli, joka sisältää muita moduuleja, jotka sisältävät funktioita">
 
 ```rust,noplayground
 {{#rustdoc_include ../listings/ch07-managing-growing-projects/listing-07-01/src/lib.rs}}
@@ -126,28 +82,15 @@ etualueen osio.
 
 </Listing>
 
-Määrittelemme moduulin `mod`-avainsanalla, jota seuraa moduulin nimi
-(tässä tapauksessa `front_of_house`). Moduulin runko menee sitten aaltosulkeiden
-sisään. Moduulien sisällä voimme sijoittaa muita moduuleja, kuten tässä tapauksessa
-moduulit `hosting` ja `serving`. Moduulit voivat myös sisältää määrittelyjä muille
-kohteille, kuten rakenteille (structs), luettelotyypeille (enums), vakioille,
-traiteille ja—kuten Listauksessa 7-1—funktioille.
+Määrittelemme moduulin `mod`-avainsanalla, jota seuraa moduulin nimi (tässä tapauksessa `front_of_house`). Moduulin runko menee sitten aaltosulkeiden sisään. Moduulien sisällä voimme sijoittaa muita moduuleja, kuten tässä tapauksessa moduulit `hosting` ja `serving`. Moduulit voivat myös sisältää määrittelyjä muille kohteille, kuten structeille, enumeille, vakioille, trait:eille ja kuten listauksessa 7-1 funktioille.
 
-Käyttämällä moduuleja voimme ryhmitellä liittyvät määrittelyt yhteen ja nimetä,
-miksi ne liittyvät toisiinsa. Ohjelmoijat, jotka käyttävät tätä koodia, voivat
-navigoida koodissa ryhmien perusteella sen sijaan, että heidän täytyisi lukea
-läpi kaikki määrittelyt, mikä helpottaa heidän löytääkseen heille relevantit
-määrittelyt. Ohjelmoijat, jotka lisäävät uutta toiminnallisuutta tähän koodiin,
-tietäisivät, mihin sijoittaa koodi pitääkseen ohjelman järjestäytyneenä.
+Moduuleja käyttämällä voimme ryhmitellä liittyvät määrittelyt yhteen ja nimetä, miksi ne liittyvät toisiinsa. Tätä koodia käyttävät ohjelmoijat voivat navigoida koodissa ryhmien perusteella sen sijaan, että heidän pitäisi lukea läpi kaikki määrittelyt, mikä helpottaa heille relevanttien määrittelyjen löytämistä. Tähän koodiin uutta toiminnallisuutta lisäävät ohjelmoijat tietävät, mihin sijoittaa koodin pitääkseen ohjelman järjestyksessä.
 
-Aiemmin mainitsimme, että _src/main.rs_ ja _src/lib.rs_ kutsutaan crate-juuriksi.
-Nimen syy on, että kummankin näistä kahdesta tiedostosta sisältö muodostaa moduulin
-nimeltä `crate` craten moduulirakenteen juuressa, joka tunnetaan nimellä
-_moduulipuu_ (module tree).
+Aiemmin mainitsimme, että _src/main.rs_ ja _src/lib.rs_ kutsutaan _crate-juuriksi_. Niiden nimen syy on se, että kummankin näistä kahdesta tiedostosta sisältö muodostaa moduulin nimeltä `crate` crate:n moduulirakenteen juuressa, jota kutsutaan _moduulipuuksi_.
 
-Listaus 7-2 näyttää moduulipuun Listauksen 7-1 rakenteelle.
+Listaus 7-2 näyttää moduulipuun listauksen 7-1 rakenteelle.
 
-<Listing number="7-2" caption="Moduulipuu Listauksen 7-1 koodille">
+<Listing number="7-2" caption="Moduulipuu listauksen 7-1 koodille">
 
 ```text
 crate
@@ -163,15 +106,6 @@ crate
 
 </Listing>
 
-Tämä puu näyttää, miten jotkut moduulit pesiytyvät muiden moduulien sisään; esimerkiksi
-`hosting` pesiytyy `front_of_house`-moduulin sisään. Puu näyttää myös, että jotkut
-moduulit ovat _sisarusmoduuleja_ (siblings), mikä tarkoittaa, että ne on määritelty
-samassa moduulissa; `hosting` ja `serving` ovat sisarusmoduuleja, jotka on määritelty
-`front_of_house`-moduulin sisällä. Jos moduuli A on moduulin B sisällä, sanomme,
-että moduuli A on moduulin B _lapsi_ ja että moduuli B on moduulin A _vanhempi_.
-Huomaa, että koko moduulipuu on juurettu implisiittisen `crate`-nimisen moduulin alle.
+Tämä puu näyttää, miten jotkin moduulit sisäkkäistyvät muihin moduuleihin; esimerkiksi `hosting` sisäkkäistyy `front_of_house`-moduuliin. Puu näyttää myös, että jotkin moduulit ovat _sisaruksia_, eli ne on määritelty samassa moduulissa; `hosting` ja `serving` ovat sisaruksia, jotka on määritelty `front_of_house`-moduulissa. Jos moduuli A on moduulin B sisällä, sanomme, että moduuli A on moduulin B _lapsi_ ja moduuli B on moduulin A _vanhempi_. Huomaa, että koko moduulipuu on juurrutettu implisiittiseen moduuliin nimeltä `crate`.
 
-Moduulipuu saattaa muistuttaa tietokoneesi tiedostojärjestelmän hakemistopuuta;
-tämä on erittäin osuva vertaus! Aivan kuten hakemistot tiedostojärjestelmässä,
-käytät moduuleja järjestääksesi koodisi. Ja aivan kuten tiedostot hakemistossa,
-tarvitsemme tavan löytää moduulimme.
+Moduulipuu saattaa muistuttaa tietokoneesi tiedostojärjestelmän hakemistopuuta; tämä on erittäin osuva vertaus! Aivan kuten hakemistot tiedostojärjestelmässä, käytät moduuleja koodisi organisointiin. Ja aivan kuten tiedostot hakemistossa, tarvitsemme tavan löytää moduulimme.

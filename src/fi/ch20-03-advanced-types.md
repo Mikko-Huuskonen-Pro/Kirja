@@ -1,18 +1,24 @@
-## Kehittyneitä tyyppejä
+## Edistyneet tyypit
 
-Rustin tyyppijärjestelmässä on joitakin ominaisuuksia, joita olemme tähän asti maininneet, mutta joita emme ole vielä käsitelleet. Aloitamme käsittelemällä newtype-kuvioita yleisesti ja tarkastelemalla, miksi newtypet ovat hyödyllisiä tyyppeinä. Siirrymme sitten tyyppialiasseihin, ominaisuuteen, joka on samanlainen kuin newtypet mutta hieman erilaisella semantiikalla. Käsittelemme myös `!`-tyyppiä ja dynaamisesti kokoisia tyyppejä.
+Rustin tyyppijärjestelmässä on ominaisuuksia, joista olemme maininneet mutta joita emme ole vielä käsitelleet. Aloitamme käsittelemällä newtype-tyyppejä yleisesti ja tutkimalla, miksi ne ovat hyödyllisiä tyyppeinä. Siirrymme sitten tyyppialiasiin, ominaisuuteen, joka muistuttaa newtype-tyyppejä mutta hieman eri semantiikalla. Käsittelemme myös `!`-tyypin ja dynaamisesti mitoitetut tyypit.
 
-### Newtype-kuvion käyttäminen tyyppiturvallisuuteen ja abstraktioon
+<!-- Old headings. Do not remove or links may break. -->
 
-Tämä osio olettaa, että olet lukenut aiemman osion [”Newtype-mallin käyttö ulkoisten traitien toteuttamiseen ulkoisille tyypeille.”][using-the-newtype-pattern]<!--
-ignore --> Newtype-kuvio on hyödyllinen myös tehtäviin, joita emme ole vielä käsitelleet, mukaan lukien arvojen sekoittumisen staattinen estäminen ja arvon yksiköiden ilmaiseminen. Näitä arvojen yksiköiden ilmaisemiseen liittyvää newtype-käyttöä esitettiin Listauksessa 20-16: muistathan, että `Millimeters`- ja `Meters`-rakenteet käärivät `u32`-arvot newtypeen. Jos kirjoittaisimme funktion, jonka parametrin tyyppi on `Millimeters`, emme voisi kääntää ohjelmaa, joka yrittäisi vahingossa kutsua kyseistä funktiota `Meters`-tyyppisellä arvolla tai pelkällä `u32`:lla.
+<a id="using-the-newtype-pattern-for-type-safety-and-abstraction"></a>
 
-Voimme käyttää newtype-kuviota myös piilottamaan tyypin toteutustietoja: uusi tyyppi voi tarjota julkisen rajapinnan, joka eroaa yksityisen sisätyypin rajapinnasta.
+### Tyyppiturvallisuus ja abstraktio newtype-kuviolla
 
-Newtypet voivat myös piilottaa sisäisen toteutuksen. Esimerkiksi voisimme tarjota `People`-tyypin käärimään `HashMap<i32, String>`-rakenteen, joka tallentaa henkilön tunnuksen liitettynä hänen nimeensä. `People`-tyyppiä käyttävä koodi vuorovaikuttaisi vain tarjoamamme julkisen rajapinnan kanssa, kuten metodin, joka lisää nimirivin `People`-kokoelmaan; kyseisen koodin ei tarvitsisi tietää, että liitämme nimiin sisäisesti `i32`-tunnuksen. Newtype-kuvio on kevyt tapa saavuttaa kapselointi toteutustietojen piilottamiseksi, josta käsittelimme [”Kapselointi, joka piilottaa toteutustiedot”][encapsulation-that-hides-implementation-details]<!--
-ignore --> -osiossa Luvussa 18.
+Tämä osio olettaa, että olet lukenut aiemman [”Ulkoisten traitien toteuttaminen newtype-kuviolla”][newtype]<!-- ignore --> -kohdan. Newtype-kuvio on hyödyllinen myös muissa tehtävissä kuin niissä, joita olemme tähän asti käsitelleet, mukaan lukien arvojen sekoittumisen estäminen staattisesti ja arvon yksiköiden ilmaiseminen. Näit esimerkin newtype-tyyppien käytöstä yksiköiden ilmaisemiseen listauksessa 20-16: muista, että `Millimeters`- ja `Meters`-rakenteet käärivät `u32`-arvot newtype-tyyppiin. Jos kirjoittaisimme funktion, jonka parametri on tyyppiä `Millimeters`, emme voisi kääntää ohjelmaa, joka yrittäisi vahingossa kutsua funktiota `Meters`- tai tavallisella `u32`-arvolla.
 
-### Tyyppisynonyymien luominen tyyppialiasseilla
+Voimme käyttää newtype-kuviota myös piilottaaksemme tyypin toteutuksen yksityiskohtia: uusi tyyppi voi tarjota julkisen API:n, joka eroaa sisäisen yksityisen tyypin API:sta.
+
+Newtype-tyypit voivat myös piilottaa sisäisen toteutuksen. Esimerkiksi voisimme tarjota `People`-tyypin käärimään `HashMap<i32, String>`-rakenteen, joka tallentaa henkilön tunnuksen ja nimen. `People`-tyyppiä käyttävä koodi käyttäisi vain tarjoamaamme julkista API:a, kuten metodia nimen lisäämiseen `People`-kokoelmaan; koodin ei tarvitse tietää, että liitämme nimiin sisäisesti `i32`-tunnuksen. Newtype-kuvio on kevyt tapa saavuttaa kapselointi toteutuksen yksityiskohtien piilottamiseksi, josta puhuimme luvun 18 [”Toteutuksen yksityiskohdat piilottava kapselointi”][encapsulation-that-hides-implementation-details]<!-- ignore --> -kohdassa.
+
+<!-- Old headings. Do not remove or links may break. -->
+
+<a id="creating-type-synonyms-with-type-aliases"></a>
+
+### Tyyppisynonyymit ja tyyppialiasit
 
 Rust tarjoaa mahdollisuuden julistaa _tyyppialiasin_ antaakseen olemassa olevalle tyypille toisen nimen. Tätä varten käytämme `type`-avainsanaa. Esimerkiksi voimme luoda aliasin `Kilometers` tyypille `i32` näin:
 
@@ -20,21 +26,21 @@ Rust tarjoaa mahdollisuuden julistaa _tyyppialiasin_ antaakseen olemassa olevall
 {{#rustdoc_include ../listings/ch20-advanced-features/no-listing-04-kilometers-alias/src/main.rs:here}}
 ```
 
-Nyt alias `Kilometers` on _synonyymi_ tyypille `i32`; toisin kuin Listauksessa 20-16 luodut `Millimeters`- ja `Meters`-tyypit, `Kilometers` ei ole erillinen, uusi tyyppi. Arvoja, joiden tyyppi on `Kilometers`, käsitellään samalla tavalla kuin arvoja, joiden tyyppi on `i32`:
+Nyt alias `Kilometers` on _synonyymi_ tyypille `i32`; toisin kuin listauksessa 20-16 luodut `Millimeters`- ja `Meters`-tyypit, `Kilometers` ei ole erillinen uusi tyyppi. `Kilometers`-tyypin arvoja käsitellään samoin kuin `i32`-tyypin arvoja:
 
 ```rust
 {{#rustdoc_include ../listings/ch20-advanced-features/no-listing-04-kilometers-alias/src/main.rs:there}}
 ```
 
-Koska `Kilometers` ja `i32` ovat sama tyyppi, voimme laskea yhteen molempien tyyppien arvoja ja välittää `Kilometers`-arvoja funktioille, jotka ottavat `i32`-parametreja. Tällä menetelmällä emme kuitenkaan saa tyyppitarkistuksen etuja, joita saamme aiemmin käsitellystä newtype-kuviosta. Toisin sanoen, jos sekoitamme `Kilometers`- ja `i32`-arvoja jossakin, kääntäjä ei anna meille virhettä.
+Koska `Kilometers` ja `i32` ovat sama tyyppi, voimme laskea yhteen molempien tyyppien arvoja ja välittää `Kilometers`-arvoja funktioille, jotka ottavat `i32`-parametreja. Tällä tavalla emme kuitenkaan saa tyyppitarkistuksen etuja, joita saamme aiemmin käsitellystä newtype-kuviosta. Toisin sanoen, jos sekoitamme `Kilometers`- ja `i32`-arvoja jossain, kääntäjä ei anna virhettä.
 
-Tyyppisynonyymien pääasiallinen käyttötapaus on toiston vähentäminen. Esimerkiksi meillä saattaa olla pitkä tyyppi, kuten tämä:
+Tyyppisynonyymien pääasiallinen käyttötarkoitus on toiston vähentäminen. Esimerkiksi meillä voi olla pitkä tyyppi kuten tämä:
 
 ```rust,ignore
 Box<dyn Fn() + Send + 'static>
 ```
 
-Tämän pitkän tyypin kirjoittaminen funktiomerkintöihin ja tyyppihuomautuksiin koko koodissa voi olla työlästä ja virhealtista. Kuvittele projekti, joka on täynnä Listauksen 20-25 kaltaista koodia.
+Tämän pitkän tyypin kirjoittaminen funktiosignatuureissa ja tyyppimerkinnöissä koko koodissa voi olla työlästä ja virhealtista. Kuvittele projekti, joka on täynnä tällaista koodia kuten listauksessa 20-25.
 
 <Listing number="20-25" caption="Pitkän tyypin käyttö monessa paikassa">
 
@@ -44,7 +50,7 @@ Tämän pitkän tyypin kirjoittaminen funktiomerkintöihin ja tyyppihuomautuksii
 
 </Listing>
 
-Tyyppialias tekee tästä koodista hallittavampaa vähentämällä toistoa. Listauksessa 20-26 olemme ottaneet käyttöön aliasin nimeltä `Thunk` pitkälle tyypille ja voimme korvata kaikki tyypin käytöt lyhyemmällä aliasilla `Thunk`.
+Tyyppialias tekee tästä koodista hallittavampaa vähentämällä toistoa. Listauksessa 20-26 olemme tuoneet aliasin nimeltä `Thunk` monimutkaiselle tyypille ja voimme korvata kaikki tyypin käytöt lyhyemmällä aliasilla `Thunk`.
 
 <Listing number="20-26" caption="Tyyppialiasin `Thunk` käyttöönotto toiston vähentämiseksi">
 
@@ -54,41 +60,41 @@ Tyyppialias tekee tästä koodista hallittavampaa vähentämällä toistoa. List
 
 </Listing>
 
-Tätä koodia on paljon helpompi lukea ja kirjoittaa! Tyyppialiasille merkityksellisen nimen valitseminen voi auttaa myös viestimään aikomuksestasi (_thunk_ on sana koodille, joka arvioidaan myöhemmin, joten se on sopiva nimi tallennettavalle sulkeiselle).
+Tätä koodia on paljon helpompi lukea ja kirjoittaa! Tyyppialiasille merkityksellisen nimen valinta auttaa myös viestimään aikomuksestasi (_thunk_ tarkoittaa koodia, joka arvioidaan myöhemmin, joten se on sopiva nimi tallennettavalle sulkeumalle).
 
-Tyyppialiasseja käytetään myös yleisesti `Result<T, E>`-tyypin kanssa toiston vähentämiseksi. Harkitse standardikirjaston `std::io`-moduulia. I/O-operaatiot palauttavat usein `Result<T, E>`-tyypin käsitelläkseen tilanteita, joissa operaatiot eivät onnistu. Tässä kirjastossa on `std::io::Error`-rakenne, joka edustaa kaikkia mahdollisia I/O-virheitä. Monet `std::io`-moduulin funktioista palauttavat `Result<T, E>`-tyypin, jossa `E` on `std::io::Error`, kuten nämä `Write`-traitin funktiot:
+Tyyppialiasit ovat myös yleisiä `Result<T, E>`-tyypin kanssa toiston vähentämiseksi. Harkitse standardikirjaston `std::io`-moduulia. I/O-operaatiot palauttavat usein `Result<T, E>`-tyypin käsitelläkseen tilanteita, joissa operaatiot eivät onnistu. Tässä kirjastossa on `std::io::Error`-rakenne, joka edustaa kaikkia mahdollisia I/O-virheitä. Monet `std::io`-moduulin funktiot palauttavat `Result<T, E>`-tyypin, jossa `E` on `std::io::Error`, kuten nämä `Write`-traitin funktiot:
 
 ```rust,noplayground
 {{#rustdoc_include ../listings/ch20-advanced-features/no-listing-05-write-trait/src/lib.rs}}
 ```
 
-`Result<..., Error>` toistuu paljon. Siksi `std::io`-moduulissa on tämä tyyppialiasjulistus:
+`Result<..., Error>` toistuu paljon. Siksi `std::io`-moduulissa on tämä tyyppialiasin:
 
 ```rust,noplayground
 {{#rustdoc_include ../listings/ch20-advanced-features/no-listing-06-result-alias/src/lib.rs:here}}
 ```
 
-Koska tämä julistus on `std::io`-moduulissa, voimme käyttää täysin määriteltyä aliasia `std::io::Result<T>`; eli `Result<T, E>`, jossa `E` on täytetty arvolla `std::io::Error`. `Write`-traitin funktiomerkinnät näyttävät lopulta tältä:
+Koska tämä julistus on `std::io`-moduulissa, voimme käyttää täysin pätevää aliasia `std::io::Result<T>`; eli `Result<T, E>`-tyyppiä, jossa `E` on `std::io::Error`. `Write`-traitin funktiosignatuurit näyttävät lopulta tältä:
 
 ```rust,noplayground
 {{#rustdoc_include ../listings/ch20-advanced-features/no-listing-06-result-alias/src/lib.rs:there}}
 ```
 
-Tyyppialias auttaa kahdella tavalla: se tekee koodin kirjoittamisesta helpompaa _ja_ antaa meille yhtenäisen rajapinnan koko `std::io`-moduulissa. Koska se on alias, se on vain toinen `Result<T, E>`, mikä tarkoittaa, että voimme käyttää sen kanssa kaikkia `Result<T, E>`-tyypille toimivia metodeja sekä erityissyntaksia, kuten `?`-operaattoria.
+Tyyppialias auttaa kahdella tavalla: se helpottaa koodin kirjoittamista _ja_ tarjoaa yhtenäisen rajapinnan koko `std::io`-moduulissa. Koska se on alias, se on vain toinen `Result<T, E>`, mikä tarkoittaa, että voimme käyttää kaikkia `Result<T, E>`-tyypin metodeja sen kanssa sekä erityissyntaksia kuten `?`-operaattoria.
 
-### Never-tyyppi, joka ei koskaan palauta
+### Never-tyyppi, joka ei koskaan palaa
 
-Rustissa on erityinen tyyppi nimeltä `!`, joka tunnetaan tyypinteoriassa _tyhjänä tyypinä_, koska sillä ei ole arvoja. Kutsumme sitä mieluummin _never-tyypiksi_, koska se on paluutyypin paikalla, kun funktio ei koskaan palauta. Tässä esimerkki:
+Rustissa on erityinen tyyppi nimeltä `!`, jota työteorian kielessä kutsutaan _tyhjäksi tyypiksi_, koska sillä ei ole arvoja. Kutsumme sitä mieluummin _never-tyypiksi_, koska se edustaa palautustyyppiä, kun funktio ei koskaan palaa. Tässä on esimerkki:
 
 ```rust,noplayground
 {{#rustdoc_include ../listings/ch20-advanced-features/no-listing-07-never-type/src/lib.rs:here}}
 ```
 
-Tämä koodi luetaan ”funktio `bar` palauttaa never”. Funktioita, jotka eivät koskaan palauta, kutsutaan _divergoiviksi funktioiksi_. Emme voi luoda arvoja tyypille `!`, joten `bar` ei voi koskaan palauttaa.
+Tämä koodi luetaan: ”funktio `bar` palauttaa never-tyypin.” Funktioita, jotka eivät koskaan palaavat, kutsutaan _hajautuviksi funktioiksi_. Emme voi luoda `!`-tyypin arvoja, joten `bar` ei voi koskaan palata.
 
-Mutta mitä hyötyä on tyypistä, jolle et voi koskaan luoda arvoja? Muista Listauksen 2-5 koodi, osa numeronarvailupelistä; olemme toistaneet osan siitä tässä Listauksessa 20-27.
+Mutta mitä hyötyä on tyypistä, jonka arvoja ei voi koskaan luoda? Muista listauksen 2-5 koodi numeronarvauspelistä; olemme toistaneet osan siitä listauksessa 20-27.
 
-<Listing number="20-27" caption="`match`, jossa haara päättyy `continue`en">
+<Listing number="20-27" caption="`match`-lauseke, jonka haara päättyy `continue`-lauseeseen">
 
 ```rust,ignore
 {{#rustdoc_include ../listings/ch02-guessing-game-tutorial/listing-02-05/src/main.rs:ch19}}
@@ -96,77 +102,76 @@ Mutta mitä hyötyä on tyypistä, jolle et voi koskaan luoda arvoja? Muista Lis
 
 </Listing>
 
-Tuolloin ohitimme tässä koodissa joitakin yksityiskohtia. [”`match`-ohjausrakenne”][the-match-control-flow-operator]<!-- ignore --> -osiossa Luvussa 6 käsittelimme, että `match`-haarojen on kaikkien palautettava sama tyyppi. Esimerkiksi seuraava koodi ei toimi:
+Silloin ohitimme joitakin yksityiskohtia tässä koodissa. Luvun 6 [”`match`-ohjausrakenne”][the-match-control-flow-construct]<!-- ignore --> -kohdassa käsittelimme, että `match`-haarojen täytyy kaikkien palauttaa sama tyyppi. Esimerkiksi seuraava koodi ei toimi:
 
 ```rust,ignore,does_not_compile
 {{#rustdoc_include ../listings/ch20-advanced-features/no-listing-08-match-arms-different-types/src/main.rs:here}}
 ```
 
-Muuttujan `guess` tyypin tässä koodissa pitäisi olla kokonaisluku _ja_ merkkijono, ja Rust vaatii, että `guess`illä on vain yksi tyyppi. Mitä `continue` sitten palauttaa? Miten saimme palauttaa `u32`:n yhdestä haarasta ja toisessa haarassa Listauksessa 20-27 päättyä `continue`en?
+Tässä koodissa `guess`-muuttujan tyypin pitäisi olla sekä kokonaisluku _että_ merkkijono, ja Rust vaatii, että `guess`-muuttujalla on vain yksi tyyppi. Mitä siis `continue` palauttaa? Miten saimme palauttaa `u32`-arvon yhdestä haarasta ja toisessa haarassa `continue`-lauseen listauksessa 20-27?
 
-Kuten saatoit arvata, `continue`lla on `!`-arvo. Eli kun Rust laskee muuttujan `guess` tyypin, se katsoo molempia match-haaroja, joista ensimmäisessä on `u32`-arvo ja jälkimmäisessä `!`-arvo. Koska `!` ei voi koskaan saada arvoa, Rust päättää, että `guess`in tyyppi on `u32`.
+Kuten saatoit arvata, `continue`-lauseella on `!`-arvon tyyppi. Eli kun Rust laskee `guess`-muuttujan tyypin, se katsoo molemmat `match`-haarat: edellisessä arvo on `u32` ja jälkimmäisessä `!`-arvon tyyppi. Koska `!`-tyypillä ei voi koskaan olla arvoa, Rust päättelee, että `guess`-muuttujan tyyppi on `u32`.
 
-Tämän käyttäytymisen muodollinen kuvaus on, että `!`-tyyppiset lausekkeet voidaan pakottaa mihin tahansa muuhun tyyppiin. Saamme päättää tämän `match`-haaran `continue`lla, koska `continue` ei palauta arvoa; sen sijaan se siirtää ohjauksen takaisin silmukan alkuun, joten `Err`-tapauksessa emme koskaan anna arvoa muuttujalle `guess`.
+Tätä käyttäytymistä kuvataan muodollisesti niin, että `!`-tyypin lausekkeet voidaan pakottaa mihin tahansa muuhun tyyppiin. Saamme päättää tämän `match`-haaran `continue`-lauseella, koska `continue` ei palauta arvoa; sen sijaan se siirtää ohjauksen silmukan alkuun, joten `Err`-tapauksessa emme koskaan sijoita arvoa `guess`-muuttujaan.
 
-Never-tyyppi on hyödyllinen myös `panic!`-makron kanssa. Muista `unwrap`-funktio, jota kutsumme `Option<T>`-arvoilla tuottaaksemme arvon tai panikoidaksemme tällä määritelmällä:
+Never-tyyppi on hyödyllinen myös `panic!`-makron kanssa. Muista `unwrap`-funktio, jota kutsumme `Option<T>`-arvoilla saadaksemme arvon tai panikoidaksemme tämän määritelmän mukaisesti:
 
 ```rust,ignore
 {{#rustdoc_include ../listings/ch20-advanced-features/no-listing-09-unwrap-definition/src/lib.rs:here}}
 ```
 
-Tässä koodissa tapahtuu sama kuin Listauksen 20-27 `match`issa: Rust näkee, että `val`illa on tyyppi `T` ja `panic!`illa on tyyppi `!`, joten koko `match`-lausekkeen tulos on `T`. Tämä koodi toimii, koska `panic!` ei tuota arvoa; se lopettaa ohjelman. `None`-tapauksessa emme palauta arvoa `unwrap`ista, joten tämä koodi on kelvollinen.
+Tässä koodissa tapahtuu sama kuin listauksen 20-27 `match`-lausekkeessa: Rust näkee, että `val` on tyyppiä `T` ja `panic!` on tyyppiä `!`, joten koko `match`-lausekkeen tulos on `T`. Tämä koodi toimii, koska `panic!` ei tuota arvoa; se lopettaa ohjelman. `None`-tapauksessa emme palauta arvoa `unwrap`-funktiosta, joten tämä koodi on kelvollinen.
 
-Yksi viimeinen lauseke, jolla on tyyppi `!`, on `loop`:
+Viimeinen lauseke, jolla on tyyppi `!`, on silmukka:
 
 ```rust,ignore
 {{#rustdoc_include ../listings/ch20-advanced-features/no-listing-10-loop-returns-never/src/main.rs:here}}
 ```
 
-Tässä silmukka ei koskaan pääty, joten `!` on lausekkeen arvo. Tämä ei kuitenkaan pitäisi paikkaansa, jos sisällyttäisimme `break`in, koska silmukka päättyisi, kun se saavuttaisi `break`in.
+Tässä silmukka ei koskaan pääty, joten lausekkeen arvo on `!`. Tämä ei kuitenkaan pitäisi paikkaansa, jos sisällyttäisimme `break`-lauseen, koska silmukka päättyisi `break`-lauseeseen.
 
-### Dynaamisesti kokoiset tyypit ja `Sized`-trait
+### Dynaamisesti mitoitetut tyypit ja `Sized`-trait
 
-Rustin täytyy tietää tiettyjä yksityiskohtia tyypeistään, kuten kuinka paljon tilaa varata tietyn tyypin arvolle. Tämä jättää tyyppijärjestelmän yhden nurkan aluksi hieman hämmentäväksi: _dynaamisesti kokoisten tyyppien_ käsite. Joskus _DST:iksi_ tai _kokoon mitoittamattomiksi tyypeiksi_ kutsuttujen tyyppien avulla voimme kirjoittaa koodia käyttäen arvoja, joiden koon tiedämme vasta ajonaikana.
+Rustin täytyy tietää tiettyjä yksityiskohtia tyypeistään, kuten kuinka paljon tilaa varata tietyn tyypin arvolle. Tämä jättää tyyppijärjestelmän yhden nurkan aluksi hieman hämmentäväksi: _dynaamisesti mitoitettujen tyyppien_ käsite. Joskus kutsutaan _DST-tyypeiksi_ tai _kokoon mitoittamattomiksi tyypeiksi_, nämä tyypit sallivat koodin kirjoittamisen arvoilla, joiden koon tiedämme vasta ajonaikana.
 
-Syvennytään dynaamisesti kokoisen tyypin nimeltä `str` yksityiskohtiin, jota olemme käyttäneet koko kirjassa. Aivan oikein, ei `&str`, vaan pelkkä `str` on DST. Emme voi tietää, kuinka pitkä merkkijono on, ennen ajonaikaa, mikä tarkoittaa, että emme voi luoda muuttujaa tyypille `str`, emmekä voi ottaa parametria tyypille `str`. Harkitse seuraavaa koodia, joka ei toimi:
+Syvennytään dynaamisesti mitoitetun tyypin `str` yksityiskohtiin, jota olemme käyttäneet koko kirjan ajan. Aivan oikein, ei `&str` vaan pelkkä `str` on DST. Monissa tapauksissa, kuten kun tallennamme käyttäjän syöttämää tekstiä, emme voi tietää merkkijonon pituutta ennen ajonaikaa. Tämä tarkoittaa, ettemme voi luoda `str`-tyyppistä muuttujaa emmekä ottaa `str`-tyyppistä argumenttia. Harkitse seuraavaa koodia, joka ei toimi:
 
 ```rust,ignore,does_not_compile
 {{#rustdoc_include ../listings/ch20-advanced-features/no-listing-11-cant-create-str/src/main.rs:here}}
 ```
 
-Rustin täytyy tietää, kuinka paljon muistia varata mille tahansa tietyn tyypin arvolle, ja kaikkien tietyn tyypin arvojen on käytettävä samaa määrää muistia. Jos Rust sallisi tämän koodin kirjoittamisen, nämä kaksi `str`-arvoa pitäisi viedä saman verran tilaa. Mutta niillä on eri pituudet: `s1` tarvitsee 12 tavua tallennustilaa ja `s2` tarvitsee 15. Siksi dynaamisesti kokoisen tyypin arvoa sisältävää muuttujaa ei voi luoda.
+Rustin täytyy tietää, kuinka paljon muistia varata minkä tahansa tietyn tyypin arvolle, ja kaikkien saman tyypin arvojen täytyy käyttää saman verran muistia. Jos Rust sallisi tämän koodin kirjoittamisen, nämä kaksi `str`-arvoa tarvitsisivat saman verran tilaa. Niillä on kuitenkin eri pituudet: `s1` tarvitsee 12 tavua tallennustilaa ja `s2` tarvitsee 15. Siksi dynaamisesti mitoitetun tyypin muuttujaa ei voi luoda.
 
-Mitä teemme siis? Tässä tapauksessa tiedät jo vastauksen: teemme `s1`:n ja `s2`:n tyypeistä `&str` eikä `str`. Muista [”Merkkijonoviipaleet”][string-slices]<!-- ignore --> -osio Luvusta 4, jossa viipalerakenne tallentaa vain viipaleen aloitusposition ja pituuden. Vaikka `&T` on yksittäinen arvo, joka tallentaa muistiosoitteen, jossa `T` sijaitsee, `&str` on _kaksi_ arvoa: `str`:n osoite ja sen pituus. Näin voimme tietää `&str`-arvon koon käännösaikana: se on kaksi kertaa `usize`:n pituus. Eli tiedämme aina `&str`:n koon riippumatta siitä, kuinka pitkä sen viittaama merkkijono on. Yleisesti ottaen näin dynaamisesti kokoisia tyyppejä käytetään Rustissa: niillä on ylimääräinen metatieto, joka tallentaa dynaamisen tiedon koon. Dynaamisesti kokoisten tyyppien kultainen sääntö on, että dynaamisesti kokoisten tyyppien arvot on aina sijoitettava jonkinlaisen osoittimen taakse.
+Mitä siis teemme? Tässä tapauksessa tiedät jo vastauksen: teemme `s1`:n ja `s2`:n tyypiksi merkkijonoviipaleen (`&str`) eikä `str`. Muista luvun 4 [”Merkkijonoviipaleet”][string-slices]<!-- ignore --> -kohdasta, että viipaleen tietorakenne tallentaa vain aloitusposition ja viipaleen pituuden. Vaikka `&T` on yksi arvo, joka tallentaa muistiosoitteen, jossa `T` sijaitsee, merkkijonoviipale on _kaksi_ arvoa: `str`:n osoite ja sen pituus. Näin ollen merkkijonoviipaleen arvon koon tiedämme käännösaikana: se on kaksi kertaa `usize`:n pituus. Eli tiedämme aina merkkijonoviipaleen koon riippumatta siitä, kuinka pitkä viipaleen viittaama merkkijono on. Yleisesti tämä on tapa, jolla dynaamisesti mitoitettuja tyyppejä käytetään Rustissa: niillä on ylimääräinen metatieto, joka tallentaa dynaamisen tiedon koon. Dynaamisesti mitoitettujen tyyppien kultainen sääntö on, että dynaamisesti mitoitettujen tyyppien arvot täytyy aina sijoittaa jonkinlaisen osoittimen taakse.
 
-Voimme yhdistää `str`:n kaikenlaisiin osoittimiin: esimerkiksi `Box<str>` tai `Rc<str>`. Itse asiassa olet nähnyt tämän aiemmin, mutta eri dynaamisesti kokoisella tyypillä: traitit. Jokainen trait on dynaamisesti kokoinen tyyppi, johon voimme viitata traitin nimellä. [”Trait-objektien käyttö, jotka sallivat eri tyyppisten arvojen käytön”][using-trait-objects-that-allow-for-values-of-different-types]<!-- ignore
---> -osiossa Luvussa 18 mainitsimme, että käyttääksemme traitteja trait-objekteina meidän on sijoitettava ne osoittimen taakse, kuten `&dyn Trait` tai `Box<dyn Trait>` (`Rc<dyn Trait>` toimisi myös).
+Voimme yhdistää `str`:n kaikenlaisiin osoittimiin: esimerkiksi `Box<str>` tai `Rc<str>`. Itse asiassa olet nähnyt tämän aiemmin, mutta eri dynaamisesti mitoitetulla tyypillä: traitit. Jokainen trait on dynaamisesti mitoitettu tyyppi, johon voimme viitata traitin nimellä. Luvun 18 [”Trait-olioiden käyttö yhteisen käyttäytymisen abstrahoimiseen”][using-trait-objects-to-abstract-over-shared-behavior]<!-- ignore --> -kohdassa mainitsimme, että traitien käyttämiseksi trait-olioina meidän täytyy sijoittaa ne osoittimen taakse, kuten `&dyn Trait` tai `Box<dyn Trait>` (`Rc<dyn Trait>` toimisi myös).
 
-DST:iden kanssa työskentelyyn Rust tarjoaa `Sized`-traitin määrittämään, tiedetäänkö tyypin koko käännösaikana. Tämä trait toteutetaan automaattisesti kaikelle, jonka koko tiedetään käännösaikana. Lisäksi Rust lisää implisiittisesti `Sized`-rajoituksen jokaiseen geneeriseen funktioon. Eli geneerinen funktiomäärittely, kuten tämä:
+DST-tyyppien kanssa työskentelyyn Rust tarjoaa `Sized`-traitin määrittämään, tiedetäänkö tyypin koko käännösaikana. Tämä trait toteutetaan automaattisesti kaikelle, jonka koko tiedetään käännösaikana. Lisäksi Rust lisää implisiittisesti `Sized`-sidonnan jokaiseen geneeriseen funktioon. Eli geneerinen funktiomääritelmä kuten tämä:
 
 ```rust,ignore
 {{#rustdoc_include ../listings/ch20-advanced-features/no-listing-12-generic-fn-definition/src/lib.rs}}
 ```
 
-käsitellään itse asiassa ikään kuin olisimme kirjoittaneet tämän:
+käsitellään ikään kuin olisimme kirjoittaneet tämän:
 
 ```rust,ignore
 {{#rustdoc_include ../listings/ch20-advanced-features/no-listing-13-generic-implicit-sized-bound/src/lib.rs}}
 ```
 
-Oletusarvoisesti geneeriset funktiot toimivat vain tyypeillä, joiden koko tunnetaan käännösaikana. Voit kuitenkin käyttää seuraavaa erityissyntaksia tämän rajoituksen lieventämiseksi:
+Oletuksena geneeriset funktiot toimivat vain tyypeillä, joiden koko tunnetaan käännösaikana. Voit kuitenkin käyttää seuraavaa erityissyntaksia tämän rajoituksen lieventämiseksi:
 
 ```rust,ignore
 {{#rustdoc_include ../listings/ch20-advanced-features/no-listing-14-generic-maybe-sized/src/lib.rs}}
 ```
 
-`?Sized`-traitrajoitus tarkoittaa ”`T` voi olla tai olla olematta `Sized`”, ja tämä merkintä ohittaa oletuksen, että geneeristen tyyppien on oltava tunnetun kokoisia käännösaikana. `?Trait`-syntaksi tällä merkityksellä on käytettävissä vain `Sized`-traitille, ei millekään muulle traitille.
+`?Sized`-trait-sidonta tarkoittaa ”`T` voi olla tai olla olematta `Sized`”, ja tämä merkintä ohittaa oletuksen, että geneeristen tyyppien täytyy olla koon tiedetty käännösaikana. `?Trait`-syntaksi tällä merkityksellä on saatavilla vain `Sized`-traitille, ei muille traitille.
 
-Huomaa myös, että vaihdoimme parametrin `t` tyypin `T`:stä `&T`:hen. Koska tyyppi ei välttämättä ole `Sized`, meidän täytyy käyttää sitä jonkinlaisen osoittimen taakse. Tässä tapauksessa olemme valinneet viitteen.
+Huomaa myös, että vaihdoimme `t`-parametrin tyypin `T`:stä `&T`:hen. Koska tyyppi ei välttämättä ole `Sized`, meidän täytyy käyttää sitä jonkinlaisen osoittimen kautta. Tässä tapauksessa valitsimme viitteen.
 
-Seuraavaksi puhumme funktioista ja sulkeisista!
+Seuraavaksi puhumme funktioista ja sulkeumista!
 
 [encapsulation-that-hides-implementation-details]: ch18-01-what-is-oo.html#encapsulation-that-hides-implementation-details
 [string-slices]: ch04-03-slices.html#string-slices
-[the-match-control-flow-operator]: ch06-02-match.html#the-match-control-flow-operator
-[using-trait-objects-that-allow-for-values-of-different-types]: ch18-02-trait-objects.html#using-trait-objects-that-allow-for-values-of-different-types
-[using-the-newtype-pattern]: ch20-02-advanced-traits.html#using-the-newtype-pattern-to-implement-external-traits-on-external-types
+[the-match-control-flow-construct]: ch06-02-match.html#the-match-control-flow-construct
+[using-trait-objects-to-abstract-over-shared-behavior]: ch18-02-trait-objects.html#using-trait-objects-to-abstract-over-shared-behavior
+[newtype]: ch20-02-advanced-traits.html#implementing-external-traits-with-the-newtype-pattern

@@ -1,89 +1,175 @@
-## I/O-projektin parantaminen
+## I/O-projektimme parantaminen
 
-Nyt kun olemme oppineet iteraattoreista, voimme parantaa luvussa 12 tehtyä I/O-projektia käyttämällä iteraattoreita koodin selkeyttämiseen ja tiivistämiseen. Katsotaan, kuinka voimme parantaa `Config::build`- ja `search`-funktioiden toteutusta.
+Tämän uuden iteraattoritietämyksen avulla voimme parantaa luvun 12 I/O-projektia
+käyttämällä iteraattoreita koodin selkeyttämiseen ja tiivistämiseen. Katsotaan, miten
+iteraattorit voivat parantaa `Config::build`- ja `search`-funktioiden toteutusta.
 
-### `clone`-kutsun poistaminen iteraattorin avulla
+### `clone`-kutsun poistaminen iteraattorilla
 
-Listing 12-6:ssa loimme `Config`-rakenteen käyttämällä viipaletta `String`-arvoja, ja kopioimme (`clone`) arvot, jotta `Config`-instanssi omistaisi ne. **Listing 13-17** toistaa `Config::build`-funktion alkuperäisen toteutuksen **Listing 12-23**:sta:
+Listauksessa 12-6 lisäsimme koodia, joka otti `String`-arvojen viipaleen ja loi
+`Config`-rakenteen instanssin indeksoimalla viipaleeseen ja kloonaamalla arvot, jotta
+`Config`-rakenne voi omistaa ne. Listauksessa 13-17 olemme toistaneet `Config::build`-funktion
+toteutuksen sellaisena kuin se oli listauksessa 12-23.
 
-```rust,ignore
-{{#rustdoc_include ../listings/ch13-functional-features/listing-12-23-reproduced/src/lib.rs:ch13}}
-```
+Silloin sanoin, ettei tehokkaiden `clone`-kutsujen tarvitse huolestuttaa, koska poistamme
+ne myöhemmin. No, se aika on nyt!
 
-Tuolloin sanoimme, ettei `clone`-kutsujen tehokkuuteen kannata kiinnittää huomiota vielä, mutta nyt on aika optimoida se!
+Tarvitsimme `clone`-kutsun, koska parametrissa `args` on `String`-elementtien viipale,
+mutta `build`-funktio ei omista `args`-parametria. Palauttaaksemme `Config`-instanssin
+omistajuuden meidän täytyi kloonata arvot `query`- ja `file_path`-kentistä, jotta
+`Config`-instanssi voi omistaa arvonsa.
 
-`clone`-kutsuja tarvittiin, koska `args`-parametri oli viipale `String`-arvoja, mutta `build`-funktio ei omistanut `args`-viipaletta. Jotta `Config` voisi omistaa `query`- ja `file_path`-kentät, sen täytyi **kopioida ne** (`clone`).
+Uudella iteraattoritietämyksellämme voimme muuttaa `build`-funktion ottamaan omistajuuden
+iteraattorista argumenttina viipaleen lainaamisen sijaan. Käytämme iteraattorin
+toiminnallisuutta viipaleen pituuden tarkistamiseen ja tiettyihin paikkoihin
+indeksoimiseen. Tämä selkeyttää, mitä `Config::build` tekee, koska iteraattori käyttää
+arvoja.
 
-Nyt voimme muuttaa `build`-funktion käyttämään **iteraattoria** viipaleen sijaan. Tämä parantaa luettavuutta, koska voimme käyttää iteraattoria arvojen hakemiseen suoraan ilman viittausindeksointia.
+Kun `Config::build` ottaa omistajuuden iteraattorista eikä enää käytä lainaavia
+indeksointioperaatioita, voimme siirtää `String`-arvot iteraattorista `Config`-rakenteeseen
+`clone`-kutsun ja uuden allokoinnin sijaan.
 
-Kun `Config::build` ottaa iteraattorin omistukseensa ja lopettaa indeksien käytön, voimme **siirtää (`move`)** arvot `Config`-rakenteeseen ilman `clone`-kutsua.
+#### Palautetun iteraattorin käyttö suoraan
 
-### Suoraan palautetun iteraattorin käyttäminen
+Avaa I/O-projektisi tiedosto _src/main.rs_, jonka pitäisi näyttää tältä:
 
-Avaa I/O-projektisi _src/main.rs_-tiedosto. Se näyttää tältä:
+<span class="filename">Filename: src/main.rs</span>
 
 ```rust,ignore
 {{#rustdoc_include ../listings/ch13-functional-features/listing-12-24-reproduced/src/main.rs:ch13}}
 ```
 
-Muokataan `main`-funktion alkua **Listing 13-18** mukaiseksi:
+Muutamme ensin `main`-funktion alun listauksesta 12-24 listauksen 13-18 koodiin, joka
+tällä kertaa käyttää iteraattoria. Tämä ei käänny ennen kuin päivitämme myös
+`Config::build`-funktion.
+
+<Listing number="13-18" file-name="src/main.rs" caption="`env::args`-funktion palautusarvon välittäminen `Config::build`-funktiolle">
 
 ```rust,ignore,does_not_compile
 {{#rustdoc_include ../listings/ch13-functional-features/listing-13-18/src/main.rs:here}}
 ```
 
-Tämä ei vielä käänny, koska meidän täytyy päivittää myös `Config::build`-funktio.
+</Listing>
 
-Tässä uudessa toteutuksessa `env::args` palauttaa **iteraattorin**! Sen sijaan, että keräisimme arvot vektoriin ja välittäisimme viipaleen `Config::build`-funktiolle, välitämme nyt iteraattorin **suoraan**.
+`env::args`-funktio palauttaa iteraattorin! Sen sijaan, että keräisimme iteraattorin
+arvot vektoriin ja välittäisimme viipaleen `Config::build`-funktiolle, välitämme nyt
+suoraan omistajuuden `env::args`-funktion palauttamaan iteraattoriin `Config::build`-funktiolle.
 
-Seuraavaksi päivitetään `Config::build`-funktion määritys _src/lib.rs_-tiedostossa **Listing 13-19** mukaiseksi:
+Seuraavaksi päivitämme `Config::build`-funktion määrittelyn. Muutetaan `Config::build`-funktion
+allekirjoitus näyttämään listauksen 13-19 mukaiselta. Tämäkään ei vielä käänny, koska
+meidän täytyy päivittää funktion runko.
+
+<Listing number="13-19" file-name="src/main.rs" caption="`Config::build`-funktion allekirjoituksen päivittäminen odottamaan iteraattoria">
 
 ```rust,ignore,does_not_compile
-{{#rustdoc_include ../listings/ch13-functional-features/listing-13-19/src/lib.rs:here}}
+{{#rustdoc_include ../listings/ch13-functional-features/listing-13-19/src/main.rs:here}}
 ```
 
-Standardikirjaston dokumentaatio `env::args`-funktiolle kertoo, että se palauttaa **`std::env::Args`**-tyypin iteraattorin, joka toteuttaa `Iterator`-traitin ja palauttaa `String`-arvoja.
+</Listing>
 
-Päivitämme `Config::build`-funktion siten, että `args` on **geneerinen tyyppi**, joka toteuttaa `Iterator<Item = String>` -traitin. Tämä tarkoittaa, että se voi olla mikä tahansa iteraattori, joka palauttaa `String`-arvoja.
+Standardikirjaston dokumentaatio `env::args`-funktiolle näyttää, että sen palauttaman
+iteraattorin tyyppi on `std::env::Args`, ja tämä tyyppi toteuttaa `Iterator`-traitin ja
+palauttaa `String`-arvoja.
 
-Koska otamme `args`-iteraattorin omistukseen ja **käytämme sitä muuttuvana**, lisäämme `mut`-määreen.
+Olemme päivittäneet `Config::build`-funktion allekirjoituksen niin, että parametrilla `args`
+on geneerinen tyyppi trait-rajoilla `impl Iterator<Item = String>` `&[String]`-tyypin
+sijaan. Tämä `impl Trait` -syntaksin käyttö, josta puhuimme luvun 10 osiossa
+[”Traitien käyttö parametreina”][impl-trait]<!-- ignore -->, tarkoittaa, että `args` voi
+olla mikä tahansa tyyppi, joka toteuttaa `Iterator`-traitin ja palauttaa `String`-kohteita.
 
-### `Iterator`-traitin metodien käyttö indeksien sijaan
+Koska otamme omistajuuden `args`-parametrista ja muutamme sitä iteroinnin aikana,
+voimme lisätä `mut`-avainsanan `args`-parametrin määrittelyyn tehdäksemme siitä
+muuttuvan.
 
-Seuraavaksi päivitetään `Config::build`-funktion runko. Koska `args` on iteraattori, voimme kutsua sen `next`-metodia! **Listing 13-20** päivittää **Listing 12-23**:n käyttämään `next`-metodia:
+<!-- Old headings. Do not remove or links may break. -->
 
-```rust,noplayground
-{{#rustdoc_include ../listings/ch13-functional-features/listing-13-20/src/lib.rs:here}}
+<a id="using-iterator-trait-methods-instead-of-indexing"></a>
+
+#### `Iterator`-traitin metodien käyttö
+
+Seuraavaksi korjaamme `Config::build`-funktion rungon. Koska `args` toteuttaa `Iterator`-traitin,
+tiedämme voivamme kutsua sille `next`-metodia! Listaus 13-20 päivittää listauksen 12-23
+koodin käyttämään `next`-metodia.
+
+<Listing number="13-20" file-name="src/main.rs" caption="`Config::build`-funktion rungon muuttaminen käyttämään iteraattorimetodeja">
+
+```rust,ignore,noplayground
+{{#rustdoc_include ../listings/ch13-functional-features/listing-13-20/src/main.rs:here}}
 ```
 
-Ensimmäinen `next`-kutsu ohittaa ohjelman nimen. Toinen `next`-kutsu asettaa `query`-muuttujan arvon, ja jos arvoa ei ole, palautamme virheen. Sama tehdään `file_path`-muuttujalle.
+</Listing>
 
-### Koodin yksinkertaistaminen iteraattorisovittimilla
+Muista, että `env::args`-funktion palautusarvon ensimmäinen arvo on ohjelman nimi. Haluamme
+jättää sen huomiotta ja siirtyä seuraavaan arvoon, joten kutsumme ensin `next`-metodia
+tekemättä mitään palautusarvolla. Sitten kutsumme `next`-metodia saadaksemme arvon, jonka
+haluamme `Config`-rakenteen `query`-kenttään. Jos `next` palauttaa `Some`-variantin,
+käytämme `match`-lausetta arvon purkamiseen. Jos se palauttaa `None`-variantin, argumentteja
+ei annettu tarpeeksi, ja palaamme aikaisin `Err`-arvolla. Teemme saman `file_path`-arvolle.
 
-Voimme parantaa myös `search`-funktion toteutusta käyttämällä iteraattorisovittimia. **Listing 13-21** näyttää alkuperäisen toteutuksen **Listing 12-19**:stä:
+<!-- Old headings. Do not remove or links may break. -->
+
+<a id="making-code-clearer-with-iterator-adapters"></a>
+
+### Koodin selkeyttäminen iteraattorisovittimilla
+
+Voimme hyödyntää iteraattoreita myös I/O-projektimme `search`-funktiossa, joka on toistettu
+tässä listauksessa 13-21 sellaisena kuin se oli listauksessa 12-19.
+
+<Listing number="13-21" file-name="src/lib.rs" caption="`search`-funktion toteutus listauksesta 12-19">
 
 ```rust,ignore
 {{#rustdoc_include ../listings/ch12-an-io-project/listing-12-19/src/lib.rs:ch13}}
 ```
 
-Voimme kirjoittaa tämän tiiviimmin käyttäen `filter`-iteraattoria, mikä myös poistaa tarpeen käyttää muuttuvaa `results`-vektoria. **Listing 13-22** näyttää parannetun version:
+</Listing>
+
+Voimme kirjoittaa tämän koodin tiiviimmin iteraattorisovittimien avulla. Samalla voimme
+välttää väliaikaisen muuttuvan `results`-vektorin. Funktionaalinen ohjelmointityyli pyrkii
+minimoimaan muuttuvan tilan määrän koodin selkeyttämiseksi. Muuttuvan tilan poistaminen
+voisi mahdollistaa tulevaisuudessa rinnakkaisen haun, koska emme joutuisi hallitsemaan
+samanaikaista pääsyä `results`-vektoriin. Listaus 13-22 näyttää tämän muutoksen.
+
+<Listing number="13-22" file-name="src/lib.rs" caption="Iteraattorisovittimien käyttö `search`-funktion toteutuksessa">
 
 ```rust,ignore
 {{#rustdoc_include ../listings/ch13-functional-features/listing-13-22/src/lib.rs:here}}
 ```
 
-Tämä toimii kuten aiempi toteutus, mutta käyttää `filter`-metodia, joka säilyttää vain ne rivit, jotka täyttävät ehdon `line.contains(query)`. Lopuksi `collect` kerää tulokset vektoriin.
+</Listing>
 
-Voit tehdä saman muutoksen myös `search_case_insensitive`-funktiolle.
+Muista, että `search`-funktion tarkoitus on palauttaa kaikki `contents`-merkkijonon rivit,
+jotka sisältävät `query`-merkkijonon. Kuten `filter`-esimerkissä listauksessa 13-16, tämä
+koodi käyttää `filter`-sovitinta pitämään vain rivit, joille `line.contains(query)` palauttaa
+`true`. Keräämme sitten vastaavat rivit toiseen vektoriin `collect`-metodilla. Paljon
+yksinkertaisempaa! Voit vapaasti tehdä saman muutoksen `search_case_insensitive`-funktioon
+käyttämällä iteraattorimetodeja.
 
-### Looppien ja iteraattorien valitseminen
+Lisäparannuksena voit palauttaa iteraattorin `search`-funktiosta poistamalla `collect`-kutsun
+ja muuttamalla palautustyypiksi `impl Iterator<Item = &'a str>`, jolloin funktiosta tulee
+iteraattorisovitin. Huomaa, että sinun täytyy päivittää myös testit! Etsi suuresta tiedostosta
+`minigrep`-työkalullasi ennen ja jälkeen muutoksen tehdessäsi ja havainnoi käyttäytymisen
+eroa. Ennen muutosta ohjelma ei tulosta tuloksia ennen kuin se on kerännyt kaikki tulokset,
+mutta muutoksen jälkeen tulokset tulostetaan sitä mukaa kun vastaava rivi löytyy, koska
+`run`-funktion `for`-silmukka hyödyntää iteraattorin laiskuutta.
 
-Pitäisikö meidän valita alkuperäinen toteutus **Listing 13-21** vai iteraattoriversio **Listing 13-22**?
+<!-- Old headings. Do not remove or links may break. -->
 
-Useimmat Rust-ohjelmoijat suosivat **iteraattoreita**, koska ne:
+<a id="choosing-between-loops-or-iterators"></a>
 
-- Tiivistävät koodia ja vähentävät muuttuvan tilan käyttöä.
-- Selkeyttävät tarkoitusta: sen sijaan, että hallitsemme **loopin yksityiskohtia**, keskitymme **tehtävään**.
-- Voivat **parantaa suorituskykyä**, koska Rust optimoi iteraattorit erittäin tehokkaasti.
+### Silmukoiden ja iteraattorien valinta
 
-Mutta onko iteraattoriversio todella yhtä tehokas kuin perinteinen `for`-silmukka? Intuitiivisesti voisi ajatella, että matalan tason silmukka on nopeampi. Seuraavaksi tutkimme suorituskykyä ja optimointia Rustissa!
+Seuraava looginen kysymys on, kumpaa tyyliä sinun kannattaa käyttää omassa koodissasi ja
+miksi: alkuperäinen toteutus listauksessa 13-21 vai iteraattoreita käyttävä versio
+listauksessa 13-22 (olettaen, että keräämme kaikki tulokset ennen palauttamista iteraattorin
+sijaan). Useimmat Rust-ohjelmoijat suosivat iteraattorityyliä. Se on aluksi hieman vaikeampi
+omaksua, mutta kun saat tuntuman eri iteraattorisovittimista ja niiden toiminnasta,
+iteraattorit voivat olla helpommin ymmärrettäviä. Sen sijaan, että säätäisit silmukan eri
+osia ja rakentaisit uusia vektoreita, koodi keskittyy silmukan korkean tason tavoitteeseen.
+Tämä abstrahoi pois tavanomaista koodia, jolloin tämän koodin ainutlaatuiset käsitteet —
+kuten suodatusehto, jonka jokaisen iteraattorin elementin täytyy läpäistä — erottuvat
+paremmin.
+
+Ovatko kaksi toteutusta todella vastaavia? Intuitiivinen oletus saattaa olla, että matalamman
+tason silmukka on nopeampi. Puhutaan suorituskyvystä.
+
+[impl-trait]: ch10-02-traits.html#traits-as-parameters

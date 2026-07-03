@@ -1,21 +1,45 @@
 # Älykkäät osoittimet
 
-_Osoitin_ on yleinen käsite muuttujalle, joka sisältää muistiosoitteen. Tämä osoite viittaa johonkin toiseen dataan. Rustin yleisin osoitin on viite, johon tutustuit luvussa 4. Viitteet merkitään `&`-symbolilla, ja ne lainaavat arvoa, johon ne viittaavat. Viitteillä ei ole erityisiä ominaisuuksia viittauksen lisäksi, eikä niistä aiheudu lisäkustannuksia.
+Osoitin on yleinen käsite muuttujalle, joka sisältää muistiosoitteen. Tämä osoite
+viittaa johonkin muuhun dataan tai ”osoittaa” sitä. Rustin yleisin osoitintyyppi on
+viite, josta opit luvussa 4. Viitteet merkitään `&`-symbolilla ja lainaavat arvoa,
+johon ne viittaavat. Niillä ei ole erityisiä ominaisuuksia datan viittaamisen lisäksi,
+eikä niihin liity ylimääräistä kuormitusta.
 
-_Älykkäät osoittimet_ puolestaan ovat tietorakenteita, jotka toimivat kuin osoittimet, mutta sisältävät myös lisätietoa ja -ominaisuuksia. Älykkäät osoittimet eivät ole Rustille ainutlaatuisia: ne ovat peräisin C++:sta ja niitä löytyy myös muista ohjelmointikielistä. Rustin standardikirjasto tarjoaa useita älykkäitä osoittimia, jotka tarjoavat enemmän toiminnallisuuksia kuin tavalliset viitteet. Yleisestä konseptista esimerkkinä tarkastelemme muutamaa erilaista älykästä osoitinta, mukaan lukien _viittauslaskennan...
+_Älykkäät osoittimet_ puolestaan ovat datarakenteita, jotka käyttäytyvät osoittimien
+tavoin mutta sisältävät myös lisämetatietoa ja -ominaisuuksia. Älykkäiden osoittimien
+käsite ei ole Rustille ainutlaatuinen: ne ovat peräisin C++:sta ja esiintyvät muissakin
+kielissä. Rustissa on standardikirjastossa useita älykkäitä osoittimia, jotka tarjoavat
+toiminnallisuutta viitteiden tarjoaman lisäksi. Tutustumme yleiseen käsitteeseen
+tarkastelemalla muutamia eri esimerkkejä älykkäistä osoittimista, mukaan lukien
+_viitelaskennallinen_ älykäs osoitintyyppi. Tämä osoitin mahdollistaa usean omistajan
+sallimisen pitämällä kirjaa omistajien määrästä ja vapauttamalla datan, kun omistajia ei
+enää ole.
 
-Rustin omistajuus- ja lainausmallin vuoksi sillä on erityinen ero viitteiden ja älykkäiden osoittimien välillä: kun viitteet vain lainaavat dataa, älykkäät osoittimet _omistavat_ viittaamansa datan monissa tapauksissa.
+Rustissa omistajuuden ja lainauksen käsitteiden vuoksi viitteiden ja älykkäiden
+osoittimien välillä on lisäero: vaikka viitteet lainaavat dataa, älykkäät osoittimet
+omistavat usein datan, johon ne viittaavat.
 
-Vaikka emme ole aiemmin kutsuneet niitä tällä nimellä, olemme jo tavanneet muutamia älykkäitä osoittimia tässä kirjassa, kuten `String`- ja `Vec<T>`-tyypit luvussa 8. Molemmat kuuluvat älykkäisiin osoittimiin, koska ne omistavat muistia ja mahdollistavat sen käsittelyn. Ne sisältävät myös metatietoa ja tarjoavat ylimääräisiä ominaisuuksia tai takuita. Esimerkiksi `String` tallentaa kapasiteettinsa metatietona ja varmistaa, että sen data on aina kelvollista UTF-8-muotoista tekstiä.
+Älykkäät osoittimet toteutetaan yleensä rakenteina. Tavallisesta rakenteesta poiketen
+älykkäät osoittimet toteuttavat `Deref`- ja `Drop`-traitit. `Deref`-traitin avulla
+älykkään osoittimen instanssi voi käyttäytyä viitteen tavoin, jolloin koodisi voi toimia
+sekä viitteiden että älykkäiden osoittimien kanssa. `Drop`-traitin avulla voit
+mukauttaa koodia, joka suoritetaan, kun älykkään osoittimen instanssi poistuu
+näkyvyysalueeltaan. Tässä luvussa käsittelemme molempia traitteja ja selitämme, miksi ne
+ovat tärkeitä älykkäille osoittimille.
 
-Älykkäät osoittimet toteutetaan yleensä structien avulla. Toisin kuin tavalliset structit, älykkäät osoittimet toteuttavat `Deref`- ja `Drop`-traitit. `Deref`-trait mahdollistaa sen, että älykkään osoittimen instanssia voidaan käyttää kuten viitettä, jolloin koodi voi käsitellä sekä viitteitä että älykkäitä osoittimia samalla tavalla. `Drop`-trait puolestaan mahdollistaa mukautetun koodin suorittamisen, kun älykkään osoittimen instanssi poistuu laajuudesta. Tässä luvussa käsittelemme molempia näitä traittej...
+Koska älykkäiden osoittimien malli on yleinen suunnittelumalli, jota käytetään
+Rustissa usein, tämä luku ei kata kaikkia olemassa olevia älykkäitä osoittimia. Monilla
+kirjastoilla on omia älykkäitä osoittimiaan, ja voit kirjoittaa omasikin. Käsittelemme
+yleisimmät standardikirjaston älykkäät osoittimet:
 
-Älykkäät osoittimet ovat Rustissa laajalti käytetty suunnittelumalli, mutta emme käsittele kaikkia mahdollisia toteutuksia. Monet kirjastot sisältävät omia älykkäitä osoittimia, ja voit jopa kirjoittaa omasi. Käymme kuitenkin läpi yleisimmät standardikirjaston tarjoamat älykkäät osoittimet:
+- `Box<T>` arvojen allokointiin pinomuistiin
+- `Rc<T>`, viitelaskennallinen tyyppi, joka mahdollistaa usean omistajuuden
+- `Ref<T>` ja `RefMut<T>`, joihin pääsee `RefCell<T>`-tyypin kautta; tyyppi pakottaa
+  lainaussäännöt ajonaikana käännösaikan sijaan
 
-- `Box<T>` arvojen allokointiin keolle  
-- `Rc<T>`, viittauslaskentatyyppi, joka mahdollistaa usean omistajan  
-- `Ref<T>` ja `RefMut<T>`, joita käytetään `RefCell<T>`-tyypin kautta, ja jotka pakottavat lainaussäännöt noudatettavaksi ajon aikana käännösvaiheen sijaan  
-
-Lisäksi käsittelemme _sisäisen mutabiliteetin_ mallia, jossa muuttumaton tyyppi tarjoaa API:n sisäisen arvon muuttamiseen. Käymme myös läpi _viittauskehäongelman_, joka voi aiheuttaa muistivuotoja, ja opimme keinoja niiden estämiseen.
+Lisäksi käsittelemme _sisäisen muuttuvuuden_ mallin, jossa muuttumaton tyyppi tarjoaa
+rajapinnan sisäisen arvon muuttamiseen. Käsittelemme myös viitesyklejä: miten ne voivat
+vuotaa muistia ja miten niitä voi estää.
 
 Aloitetaan!

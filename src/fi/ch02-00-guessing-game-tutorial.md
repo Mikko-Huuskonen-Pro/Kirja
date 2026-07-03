@@ -324,6 +324,9 @@ vaikea. Rust ei vielä sisällytä satunnaislukutoiminnallisuutta standardikirja
 Rust-tiimi tarjoaa kuitenkin [`rand`-craten][randcrate], jossa
 kyseinen toiminnallisuus on.
 
+<!-- Old headings. Do not remove or links may break. -->
+<a id="using-a-crate-to-get-more-functionality"></a>
+
 ### Craten käyttö lisätoiminnallisuuden saamiseksi
 
 Muista, että crate on kokoelma Rust-lähdekooditiedostoja. Projekti,
@@ -354,15 +357,15 @@ _Cargo.toml_-tiedostossa kaikki otsikon jälkeen tuleva kuuluu siihen
 osioon, joka jatkuu, kunnes toinen osio alkaa. `[dependencies]`-osiossa
 kerrot Cargolle, mistä ulkoisista crateista projektisi riippuu ja mitä versioita
 näistä crateista tarvitset. Tässä tapauksessa määrittelemme `rand`-craten
-semanttisella versionumerolla `0.8.5`. Cargo ymmärtää [semanttisen
+semanttisella versionumerolla `0.10.1`. Cargo ymmärtää [semanttisen
 versionhallinnan][semver]<!-- ignore --> (joskus kutsutaan _SemVeriksi_), joka on
-standardi versionumeroiden kirjoittamiseen. Määrite `0.8.5` on itse asiassa
-lyhennys muodolle `^0.8.5`, mikä tarkoittaa mitä tahansa versiota, joka on vähintään 0.8.5 mutta
-alle 0.8.9.0.
+standardi versionumeroiden kirjoittamiseen. Määrite `0.10.1` on itse asiassa
+lyhennys muodolle `^0.10.1`, mikä tarkoittaa mitä tahansa versiota, joka on vähintään 0.10.1 mutta
+alle 0.11.0.
 
 Cargo pitää näitä versioita julkisesti yhteensopivina version
-0.8.5 API:n kanssa, ja tämä määrite varmistaa, että saat uusimman korjausjulkaisun, joka
-vielä kääntyy tämän luvun koodin kanssa. Mikään versio 0.9.0 tai suurempi
+0.10.1 API:n kanssa, ja tämä määrite varmistaa, että saat uusimman korjausjulkaisun, joka
+vielä kääntyy tämän luvun koodin kanssa. Mikään versio 0.11.0 tai suurempi
 ei ole taattu sisältävän samaa API:a kuin seuraavat esimerkit käyttävät.
 
 Nyt, muuttamatta mitään koodia, käännetään projekti, kuten listauksessa 2-2.
@@ -377,25 +380,20 @@ cargo build -->
 
 ```console
 $ cargo build
-  Updating crates.io index
-   Locking 15 packages to latest Rust 1.85.0 compatible versions
-    Adding rand v0.8.5 (available: v0.9.0)
- Compiling proc-macro2 v1.0.93
- Compiling unicode-ident v1.0.17
- Compiling libc v0.2.170
- Compiling cfg-if v1.0.0
- Compiling byteorder v1.5.0
- Compiling getrandom v0.2.15
- Compiling rand_core v0.6.4
- Compiling quote v1.0.38
- Compiling syn v2.0.98
- Compiling zerocopy-derive v0.7.35
- Compiling zerocopy v0.7.35
- Compiling ppv-lite86 v0.2.20
- Compiling rand_chacha v0.3.1
- Compiling rand v0.8.5
- Compiling guessing_game v0.1.0 (file:///projects/guessing_game)
-  Finished `dev` profile [unoptimized + debuginfo] target(s) in 2.48s
+    Updating crates.io index
+     Locking 8 packages to latest Rust 1.96.0 compatible versions
+  Downloaded rand_core v0.10.1
+  Downloaded chacha20 v0.10.1
+  Downloaded rand v0.10.1
+  Downloaded 3 crates (162.9KiB) in 0.59s
+   Compiling libc v0.2.186
+   Compiling rand_core v0.10.1
+   Compiling getrandom v0.4.3
+   Compiling cfg-if v1.0.4
+   Compiling chacha20 v0.10.1
+   Compiling rand v0.10.1
+   Compiling guessing_game v0.1.0 (file:///projects/guessing_game)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 2.03s
 ```
 
 </Listing>
@@ -440,12 +438,15 @@ Nämä rivit osoittavat, että Cargo päivittää käännöksen vain pienellä m
 _src/main.rs_-tiedostoon. Riippuvuutesi eivät ole muuttuneet, joten Cargo tietää voivansa
 käyttää uudelleen jo ladattua ja kääntämäänsä.
 
+<!-- Old headings. Do not remove or links may break. -->
+<a id="ensuring-reproducible-builds-with-the-cargo-lock-file"></a>
+
 #### Toistettavien käännösten varmistaminen _Cargo.lock_-tiedostolla
 
 Cargolla on mekanismi, joka varmistaa, että voit kääntää saman artefaktin joka kerta,
 kun sinä tai kuka tahansa kääntää koodisi: Cargo käyttää vain niitä riippuvuuksien versioita,
 joita määritit, kunnes ilmoitat toisin. Sanotaan esimerkiksi, että
-ensi viikolla `rand`-craten versio 0.8.6 julkaistaan, ja tuo versio
+ensi viikolla `rand`-craten versio 0.10.2 julkaistaan, ja tuo versio
 sisältää tärkeän bugikorjauksen, mutta myös regressiota, joka
 rikkoo koodisi. Tätä varten Rust luo _Cargo.lock_-tiedoston ensimmäisellä
 `cargo build` -ajolla, joten meillä on nyt tämä _guessing_game_-
@@ -457,7 +458,7 @@ _Cargo.lock_-tiedostoon. Kun käännät projektisi tulevaisuudessa, Cargo näkee
 _Cargo.lock_-tiedoston olevan olemassa ja käyttää siellä määriteltyjä versioita
 sen sijaan, että tekisi kaiken työn versioiden selvittämiseksi uudelleen. Tämä antaa sinulle
 toistettavan käännöksen automaattisesti. Toisin sanoen projektisi pysyy
-versiossa 0.8.5, kunnes päivität eksplisiittisesti, _Cargo.lock_-tiedoston ansiosta.
+versiossa 0.10.1, kunnes päivität eksplisiittisesti, _Cargo.lock_-tiedoston ansiosta.
 Koska _Cargo.lock_-tiedosto on tärkeä toistettaville käännöksille, se tarkistetaan usein
 versionhallintaan muun projektikoodin kanssa.
 
@@ -466,31 +467,33 @@ versionhallintaan muun projektikoodin kanssa.
 Kun _haluat_ päivittää craten, Cargo tarjoaa `update`-komennon,
 joka ohittaa _Cargo.lock_-tiedoston ja selvittää kaikki uusimmat versiot,
 jotka sopivat määrittelyihisi _Cargo.toml_-tiedostossa. Cargo kirjoittaa sitten nämä
-versiot _Cargo.lock_-tiedostoon. Tässä tapauksessa Cargo etsii vain
-versioita, jotka ovat suurempia kuin 0.8.5 ja pienempiä kuin 0.9.0. Jos `rand`-cratella on
-julkaistu kaksi uutta versiota 0.8.6 ja 0.9.0, näkisit seuraavan, jos
+versiot _Cargo.lock_-tiedostoon. Muuten Cargo etsii oletuksena vain
+versioita, jotka ovat suurempia kuin 0.10.1 ja pienempiä kuin 0.11.0. Jos `rand`-cratella on
+julkaistu kaksi uutta versiota 0.10.2 ja 0.999.0, näkisit seuraavan, jos
 ajaisit `cargo update`-komennon:
 
 <!-- manual-regeneration
 cd listings/ch02-guessing-game-tutorial/listing-02-02/
 cargo update
-assuming there is a new 0.8.x version of rand; otherwise use another update
+assuming there is a new version of rand; otherwise use another update
 as a guide to creating the hypothetical output shown here -->
 
 ```console
 $ cargo update
     Updating crates.io index
-     Locking 1 package to latest Rust 1.85.0 compatible version
-    Updating rand v0.8.5 -> v0.8.6 (available: v0.9.0)
+     Locking 1 package to latest Rust 1.96.0 compatible version
+    Updating rand v0.10.1 -> v0.10.2 (available: v0.999.0)
 ```
 
-Cargo jättää huomiotta version 0.9.0 julkaisun. Tässä vaiheessa huomaisit myös muutoksen
-_Cargo.lock_-tiedostossasi, joka osoittaa, että käyttämäsi `rand`-craten versio on nyt 0.8.6. Käyttääksesi `rand`-version 0.9.0 tai mitä tahansa versiota 0.9._x_-
-sarjassa, sinun täytyisi päivittää _Cargo.toml_-tiedosto näyttämään tältä:
+Cargo jättää huomiotta version 0.999.0 julkaisun. Tässä vaiheessa huomaisit myös muutoksen
+_Cargo.lock_-tiedostossasi, joka osoittaa, että käyttämäsi `rand`-craten versio on nyt 0.10.2. Käyttääksesi `rand`-version 0.999.0 tai mitä tahansa versiota 0.999._x_-
+sarjassa, sinun täytyisi päivittää _Cargo.toml_-tiedosto näyttämään tältä
+sen sijaan (älä tee tätä muutosta, koska seuraavat esimerkit olettavat
+käyttäväsi `rand`-versiota 0.10):
 
 ```toml
 [dependencies]
-rand = "0.9.0"
+rand = "0.999.0"
 ```
 
 Seuraavalla `cargo build` -ajolla Cargo päivittää saatavilla olevien cratejen rekisterin
@@ -516,16 +519,17 @@ päivittää _src/main.rs_, kuten listauksessa 2-3.
 
 </Listing>
 
-Ensin lisäämme rivin `use rand::Rng;`. `Rng`-trait määrittelee metodit, jotka
-satunnaislukugeneraattorit toteuttavat, ja tämän traitin täytyy olla näkyvissä, jotta voimme
-käyttää näitä metodeja. Luku 10 käsittelee traitit tarkemmin.
+Ensin lisäämme rivin `use rand::prelude::*;`. `prelude`-moduuli sisältää
+`rand`-craten yleisimmin käytetyt osat, ja `use` tuo nämä kohteet
+ohjelmamme näkyvyysalueelle.
 
 Seuraavaksi lisäämme kaksi riviä keskelle. Ensimmäisellä rivillä kutsumme
-`rand::thread_rng`-funktiota, joka antaa meille tietyn satunnaislukugeneraattorin,
+`rand::rng`-funktiota, joka antaa meille tietyn satunnaislukugeneraattorin,
 jota käytämme: sellaisen, joka on paikallinen nykyiselle suoritussäikeelle
-ja jonka käyttöjärjestelmä siemenöi. Sitten kutsumme `gen_range`-
-metodia satunnaislukugeneraattorilla. Tämän metodin määrittelee `Rng`-
-trait, jonka toimme näkyviin `use rand::Rng;` -lauseella. `gen_range`-metodi ottaa
+ja jonka käyttöjärjestelmä siemenöi. Sitten kutsumme `random_range`-
+metodia satunnaislukugeneraattorilla. Tämän metodin määrittelee `RngExt`-trait, joka on
+osa `rand::prelude`-moduulia, jonka toimme näkyviin `use
+rand::prelude::*;` -lauseella. `random_range`-metodi ottaa
 alueen lausekkeena argumenttina ja generoi satunnaisluvun alueella. Käyttämämme
 alueen lauseke on muodossa `start..=end` ja on sisältävä molemmissa rajoissa, joten meidän
 täytyy määritellä `1..=100` pyytääksemme lukua väliltä 1–100.
@@ -575,7 +579,10 @@ You guessed: 5
 ```
 
 Sinun pitäisi saada eri satunnaislukuja, ja niiden kaikkien pitäisi olla lukuja väliltä
-1–100. Hienoa työtä!
+1–100. Jos saat varoituksia, ne ovat turvallisia ohittaa. Jos saat virheitä,
+tarkista, että sinulla on `rand = "0.10.1"` *Cargo.toml*-tiedostossasi, koska tulevat
+`rand`-versiot voivat sisältää erilaisen API:n, mutta mikä tahansa versio `0.10`-sarjassa
+pitäisi toimia tämän luvun koodin kanssa.
 
 ## Arvauksen vertaaminen salaiseen lukuun
 

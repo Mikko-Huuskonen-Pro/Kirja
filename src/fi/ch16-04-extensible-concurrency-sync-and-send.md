@@ -1,33 +1,49 @@
-## Laajennettava rinnakkaisuus `Sync`- ja `Send`-traitien avulla
+<!-- Old headings. Do not remove or links may break. -->
 
-On mielenkiintoista, että Rust-kielellä on _hyvin_ vähän sisäänrakennettuja rinnakkaisuusominaisuuksia. Lähes kaikki tämän luvun aikana käsitellyt rinnakkaisuusominaisuudet ovat olleet standardikirjaston osia, eivät itse kielen ominaisuuksia. Rinnakkaisuuden hallinnan vaihtoehdot eivät rajoitu vain kieleen tai standardikirjastoon; voit kirjoittaa omia rinnakkaisuusratkaisujasi tai käyttää muiden tekemiä ratkaisuja.
+<a id="extensible-concurrency-with-the-sync-and-send-traits"></a>
+<a id="extensible-concurrency-with-the-send-and-sync-traits"></a>
 
-Kaksi tärkeää rinnakkaisuuteen liittyvää käsitettä on kuitenkin sisäänrakennettu itse kieleen: `std::marker`-traitit `Sync` ja `Send`.
+## Laajennettava rinnakkaisuus `Send`- ja `Sync`-traitien avulla
 
-### Omistajuuden siirtäminen säikeiden välillä `Send`-traitin avulla
+Mielenkiintoista kyllä, lähes kaikki rinnakkaisuusominaisuudet, joista olemme puhuneet tässä luvussa, ovat olleet osa standardikirjastoa, eivät kieltä. Rinnakkaisuuden käsittelyn vaihtoehdot eivät rajoitu kieleen tai standardikirjastoon; voit kirjoittaa omia rinnakkaisuusominaisuuksiasi tai käyttää muiden kirjoittamia.
 
-`Send`-merkkaustraitti osoittaa, että kyseisen tyypin arvot voidaan siirtää säikeiden välillä. Lähes kaikki Rustin tyypit ovat `Send`, mutta on olemassa poikkeuksia, kuten `Rc<T>`. `Rc<T>` ei voi olla `Send`, koska jos kloonaisit `Rc<T>`-arvon ja yrittäisit siirtää sen toiseen säikeeseen, molemmat säikeet voisivat yrittää päivittää viittauslaskuria samanaikaisesti. Tämän vuoksi `Rc<T>` on tarkoitettu käytettäväksi vain yksisäikeisissä tilanteissa, joissa et halua maksaa säikeistämisen turvallisuuteen liittyvää suorituskykyrasitetta.
+Kielen sisään upotettuja rinnakkaisuuskäsitteitä ovat kuitenkin muun muassa `std::marker`-traitit `Send` ja `Sync`.
 
-Rustin tyyppijärjestelmä ja trait-rajoitukset varmistavat, että et voi vahingossa siirtää `Rc<T>`-arvoa säikeiden välillä vaarallisella tavalla. Kun yritimme tehdä tämän esimerkissä 16-14, saimme virheilmoituksen `the trait Send is not implemented for Rc<Mutex<i32>>`. Kun vaihdoimme `Arc<T>`-tyyppiin, joka tukee `Send`-traitia, koodi kääntyi.
+<!-- Old headings. Do not remove or links may break. -->
 
-Kaikki `Send`-tyypeistä koostuvat tyypit merkitään automaattisesti `Send`-traitilla. Lähes kaikki primitiivityypit ovat `Send`, lukuun ottamatta raakaviittauksia, joita käsittelemme luvussa 20.
+<a id="allowing-transference-of-ownership-between-threads-with-send"></a>
 
-### Pääsy samaan tietoon useista säikeistä `Sync`-traitin avulla
+### Omistajuuden siirtäminen säikeiden välillä
 
-`Sync`-merkkaustraitti tarkoittaa, että kyseistä tyyppiä on turvallista viitata useista säikeistä. Toisin sanoen tyyppi `T` on `Sync`, jos `&T` (eli `T`:n muuttumaton viittaus) on `Send`, mikä tarkoittaa, että viittauksen voi lähettää turvallisesti toiseen säikeeseen. Samoin kuin `Send`, primitiivityypit ovat `Sync`, ja kaikki `Sync`-tyypeistä koostuvat tyypit ovat myös `Sync`.
+`Send`-merkkaustraitti osoittaa, että tätä traitia toteuttavan tyypin arvojen omistajuus voidaan siirtää säikeiden välillä. Lähes jokainen Rustin tyyppi toteuttaa `Send`-traitin, mutta on olemassa poikkeuksia, kuten `Rc<T>`: tämä ei voi toteuttaa `Send`-traitia, koska jos kloonaisit `Rc<T>`-arvon ja yrittäisit siirtää kloonin omistajuuden toiseen säikeeseen, molemmat säikeet saattaisivat päivittää viittauslaskuria samanaikaisesti. Tästä syystä `Rc<T>` on toteutettu käytettäväksi yksisäikeisissä tilanteissa, joissa et halua maksaa säikeistettävyyteen liittyvää suorituskykyrasitetta.
 
-Älykäs osoitin `Rc<T>` ei ole `Sync` samoista syistä kuin se ei ole `Send`. Myös `RefCell<T>` ja siihen liittyvät `Cell<T>`-tyypit eivät ole `Sync`, koska niiden lainanvalvonta tapahtuu ajonaikaisesti eikä ole säieturvallinen. Sen sijaan älykäs osoitin `Mutex<T>` on `Sync` ja sitä voidaan käyttää jakamaan pääsy useille säikeille, kuten nähtiin luvussa [“`Mutex<T>`:n jakaminen useiden säikeiden kesken”](ch16-03-shared-state.html#sharing-a-mutext-between-multiple-threads).
+Rustin tyyppijärjestelmä ja trait-rajoitukset varmistavat siis, ettei voi vahingossa lähettää `Rc<T>`-arvoa säikeiden välillä turvattomasti. Kun yritimme tehdä tämän listauksessa 16-14, saimme virheen `` the trait `Send` is not implemented for `Rc<Mutex<i32>>` ``. Kun vaihdoimme `Arc<T>`-tyyppiin, joka toteuttaa `Send`-traitin, koodi kääntyi.
 
-### `Send`- ja `Sync`-traitien manuaalinen toteuttaminen on vaarallista
+Mikä tahansa tyyppi, joka koostuu kokonaan `Send`-tyypeistä, merkitään automaattisesti myös `Send`-traitilla. Lähes kaikki primitiivityypit ovat `Send`, lukuun ottamatta raakaviittauksia, joita käsittelemme luvussa 20.
 
-Koska `Send`- ja `Sync`-tyypeistä koostuvat tyypit merkitään automaattisesti näillä traiteilla, niitä ei tarvitse toteuttaa manuaalisesti. Koska ne ovat merkkaustraiteja, niillä ei ole mitään toteutettavia metodeja, vaan ne ovat hyödyllisiä vain rinnakkaisuuteen liittyvien sääntöjen valvonnassa.
+<!-- Old headings. Do not remove or links may break. -->
 
-Näiden traitien manuaalinen toteuttaminen vaatii `unsafe`-koodia, jota käsittelemme luvussa 20. On tärkeää ymmärtää, että uusien rinnakkaisuusmekanismien luominen ilman `Send`- ja `Sync`-komponentteja vaatii erityistä varovaisuutta, jotta Rustin turvallisuustakeet säilyvät. [“The Rustonomicon”](../nomicon/index.html) sisältää lisätietoa näistä takeista ja niiden ylläpidosta.
+<a id="allowing-access-from-multiple-threads-with-sync"></a>
+
+### Pääsy useista säikeistä
+
+`Sync`-merkkaustraitti osoittaa, että tätä traitia toteuttavaan tyyppiin on turvallista viitata useista säikeistä. Toisin sanoen mikä tahansa tyyppi `T` toteuttaa `Sync`-traitin, jos `&T` (muuttumaton viittaus tyyppiin `T`) toteuttaa `Send`-traitin, eli viittaus voidaan lähettää turvallisesti toiseen säikeeseen. Samoin kuin `Send`-traitin kohdalla, primitiivityypit toteuttavat kaikki `Sync`-traitin, ja tyypit, jotka koostuvat kokonaan `Sync`-traitia toteuttavista tyypeistä, toteuttavat myös `Sync`-traitin.
+
+Älykäs osoitin `Rc<T>` ei myöskään toteuta `Sync`-traitia samoista syistä kuin se ei toteuta `Send`-traitia. `RefCell<T>`-tyyppi (josta puhuimme luvussa 15) ja siihen liittyvä `Cell<T>`-tyyppien perhe eivät toteuta `Sync`-traitia. `RefCell<T>`-tyypin ajonaikainen lainanvalvonta ei ole säikeistä turvallista. Älykäs osoitin `Mutex<T>` toteuttaa `Sync`-traitin ja sitä voidaan käyttää jakamaan pääsy useille säikeille, kuten näit [”Jaettu pääsy `Mutex<T>`-tyyppiin”][shared-access]<!-- ignore --> -osiossa.
+
+### `Send`- ja `Sync`-traitien manuaalinen toteuttaminen on turvatonta
+
+Koska tyypit, jotka koostuvat kokonaan muista tyypeistä, jotka toteuttavat `Send`- ja `Sync`-traitit, toteuttavat automaattisesti myös `Send`- ja `Sync`-traitit, emme tarvitse toteuttaa näitä traiteja manuaalisesti. Merkkaustraiteina niillä ei ole edes toteutettavia metodeja. Ne ovat hyödyllisiä vain rinnakkaisuuteen liittyvien invarianttien pakottamiseen.
+
+Näiden traitien manuaalinen toteuttaminen edellyttää turvattoman Rust-koodin kirjoittamista. Käsittelemme turvattoman Rust-koodin käyttöä luvussa 20; toistaiseksi tärkeää tietää on, että uusien rinnakkaisuustyyppien rakentaminen, jotka eivät koostu `Send`- ja `Sync`-osista, vaatii huolellista pohdintaa turvallisuustakuujen ylläpitämiseksi. [”The Rustonomicon”][nomicon] sisältää lisätietoa näistä takuista ja niiden ylläpidosta.
 
 ## Yhteenveto
 
-Tämä ei ole viimeinen kerta, kun kohtaamme rinnakkaisuuden tässä kirjassa: seuraava luku keskittyy asynkroniseen ohjelmointiin, ja luvun 21 projektissa hyödynnämme tämän luvun käsitteitä realistisemmassa tilanteessa.
+Tämä ei ole viimeinen kerta, kun kohtaamme rinnakkaisuuden tässä kirjassa: seuraava luku keskittyy asynkroniseen ohjelmointiin, ja luvun 21 projekti käyttää tämän luvun käsitteitä realistisemmassa tilanteessa kuin tässä käsitellyt pienemmät esimerkit.
 
-Kuten aiemmin mainittiin, koska suurin osa Rustin rinnakkaisuusominaisuuksista ei ole osa itse kieltä, monet rinnakkaisuusratkaisut toteutetaan erillisinä kirjastoina. Näitä kirjastoja kehitetään nopeammin kuin standardikirjastoa, joten kannattaa etsiä verkosta ajankohtaisia kirjastoja monisäikeisiin tilanteisiin.
+Kuten aiemmin mainittiin, koska hyvin vähän siitä, miten Rust käsittelee rinnakkaisuutta, on osa kieltä, monet rinnakkaisuusratkaisut toteutetaan kirjastoina. Nämä kehittyvät nopeammin kuin standardikirjasto, joten kannattaa etsiä verkosta ajankohtaisia, huippuluokan kirjastoja monisäikeisiin tilanteisiin.
 
-Rustin standardikirjasto tarjoaa kanavia viestinvälitykseen ja älyosoitinluokkia, kuten `Mutex<T>` ja `Arc<T>`, jotka ovat turvallisia käyttää rinnakkaisissa konteksteissa. Rustin tyyppijärjestelmä ja lainanvalvonta varmistavat, että näitä ratkaisuja käyttävä koodi ei joudu tietokilpailuihin tai virheellisiin viittauksiin. Kun koodisi kääntyy, voit olla varma, että se toimii useilla säikeillä ilman vaikeasti jäljitettäviä virheitä, joita esiintyy monissa muissa kielissä. Rinnakkaisohjelmointi ei ole enää asia, jota p...
+Rustin standardikirjasto tarjoaa kanavia viestinvälitykseen ja älykkäitä osoitintyyppejä, kuten `Mutex<T>` ja `Arc<T>`, jotka ovat turvallisia käyttää rinnakkaisissa konteksteissa. Tyyppijärjestelmä ja lainanvalvonta varmistavat, että näitä ratkaisuja käyttävä koodi ei päädy tietokilpailutilanteisiin tai virheellisiin viittauksiin. Kun saat koodisi kääntymään, voit olla varma, että se toimii useilla säikeillä ilman muiden kielten yleisiä vaikeasti jäljitettäviä vikoja. Rinnakkaisohjelmointi ei ole enää käsite, jota kannattaa pelätä: eteenpäin ja tee ohjelmistasi rinnakkaisia – pelottomasti!
+
+[shared-access]: ch16-03-shared-state.html#shared-access-to-mutext
+[nomicon]: ../nomicon/index.html

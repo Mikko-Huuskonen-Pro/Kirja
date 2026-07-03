@@ -138,7 +138,7 @@ let s = String::from("hello");
 
 Kaksoispiste `::` -operaattori antaa meidän nimetä tämän tietyn `from`-funktion `String`-tyypin alle
 sen sijaan, että käyttäisimme jotain nimeä kuten `string_from`. Käsittelemme tätä syntaksia tarkemmin
-Luvun 5 [”Metodisyntaksi”][method-syntax]<!-- ignore --> -osiossa ja kun puhumme nimiavaruuksista moduuleilla
+Luvun 5 [”Metodit”][methods]<!-- ignore --> -osiossa ja kun puhumme nimiavaruuksista moduuleilla
 Luvun 7 [”Polut viittaamiseen moduulipuun kohteeseen”][paths-module-tree]<!-- ignore --> -osiossa.
 
 Tämänkaltainen merkkijono _voidaan_ muuttaa:
@@ -446,6 +446,6 @@ Onneksi Rustissa on ominaisuus arvon käyttämiseen siirtämättä omistajuutta,
 [ch8]: ch08-02-strings.html
 [traits]: ch10-02-traits.html
 [derivable-traits]: appendix-03-derivable-traits.html
-[method-syntax]: ch05-03-method-syntax.html#method-syntax
+[methods]: ch05-03-method-syntax.html#methods
 [paths-module-tree]: ch07-03-paths-for-referring-to-an-item-in-the-module-tree.html
 [drop]: ../std/ops/trait.Drop.html#tymethod.drop

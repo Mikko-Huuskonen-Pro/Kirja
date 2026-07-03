@@ -1,25 +1,29 @@
 ## Hello, World!
 
-Nyt kun olet asentanut Rustin, on aika kirjoittaa ensimmäinen Rust-ohjelmasi.
-On perinteistä, että uutta ohjelmointikieltä opetellessa ensimmäinen ohjelma
-tulostaa ruudulle tekstin `Hello, world!`, joten teemme saman täällä!
+Nyt kun olet asentanut Rustin, on aika kirjoittaa ensimmäinen Rust-ohjelmasi. Uutta kieltä
+opiskellessa on perinteistä kirjoittaa pieni ohjelma, joka tulostaa tekstin `Hello, world!`
+näytölle, joten teemme saman tässä!
 
-> Huom: Tämä kirja olettaa, että olet perillä komentorivin käytöstä. Rust ei
-> aseta erityisiä vaatimuksia siitä, mitä editoria tai työkaluja käytät tai missä koodisi sijaitsee.
-> Jos haluat käyttää komentorivin sijaan suosikki-IDE:täsi, se on täysin sallittua. Monissa IDE:issä on nykyään Rust-tuki;
-> tarkista IDE:si dokumentaatio lisätietoja varten. Rust-tiimi on panostanut **`rust-analyzer`**-työkaluun,
-> joka mahdollistaa erinomaisen IDE-tuotetuen. Katso lisätietoja [Liitteestä D][devtools]<!-- ignore -->.
+> Huom: Tämä kirja olettaa perustuntemusta komentorivistä. Rust ei aseta erityisiä vaatimuksia
+> editorillesi, työkaluillesi tai koodisi sijainnille, joten jos haluat käyttää IDE:tä komentorivin
+> sijaan, käytä vapaasti suosikki-IDE:täsi. Monilla IDE:illä on nyt jonkin verran Rust-tukea;
+> katso IDE:n dokumentaatiosta yksityiskohdat. Rust-tiimi on keskittynyt erinomaisen IDE-tuen
+> mahdollistamiseen `rust-analyzer`-työkalun kautta. Katso [Liite D][devtools]<!-- ignore -->
+> lisätietoja varten.
 
-### Projektihakemiston luominen
+<!-- Old headings. Do not remove or links may break. -->
+<a id="creating-a-project-directory"></a>
 
-Aloitat luomalla hakemiston, johon tallennat Rust-koodisi. Rust ei välitä,
-missä koodisi sijaitsee, mutta tämän kirjan harjoituksia ja projekteja varten
-suosittelemme luomaan **_projects_**-hakemiston kotihakemistoosi ja pitämään kaikki projektit siellä.
+### Projektikansion luominen
 
-Avaa terminaali ja suorita seuraavat komennot luodaksesi **_projects_**-hakemiston
-sekä **"Hello, world!"** -projektihakemiston sen sisään.
+Aloitat luomalla kansion Rust-koodillesi. Rustille ei ole väliä, missä koodisi sijaitsee, mutta
+tämän kirjan harjoituksia ja projekteja varten suosittelemme _projects_-kansion luomista
+kotihakemistoosi ja kaikkien projektiesi säilyttämistä siellä.
 
-Linuxilla, macOS:llä ja Windowsin PowerShellillä:
+Avaa terminaali ja kirjoita seuraavat komennot luodaksesi _projects_-kansion ja "Hello, world!"
+-projektin kansion _projects_-kansion sisään.
+
+Linuxissa, macOS:ssä ja PowerShellissä Windowsilla kirjoita tämä:
 
 ```console
 $ mkdir ~/projects
@@ -28,7 +32,7 @@ $ mkdir hello_world
 $ cd hello_world
 ```
 
-Windowsin CMD:ssä:
+Windows CMD:ssä kirjoita tämä:
 
 ```cmd
 > mkdir "%USERPROFILE%\projects"
@@ -37,12 +41,16 @@ Windowsin CMD:ssä:
 > cd hello_world
 ```
 
-### Rust-ohjelman kirjoittaminen ja suorittaminen
+<!-- Old headings. Do not remove or links may break. -->
+<a id="writing-and-running-a-rust-program"></a>
 
-Seuraavaksi luo uusi lähdetiedosto ja nimeä se **_main.rs_**. Rust-tiedostot päättyvät aina **.rs**-päätteeseen.
-Jos tiedostonimi koostuu useammasta sanasta, käytä alaviivaa erottamaan ne toisistaan, esim. **_hello_world.rs_**.
+### Rust-ohjelman perusteet
 
-Avaa nyt **_main.rs_**-tiedosto ja kirjoita siihen seuraava koodi (Listaus 1-1):
+Seuraavaksi luo uusi lähdekooditiedosto ja kutsu sitä _main.rs_. Rust-tiedostot päättyvät aina
+_.rs_-päätteeseen. Jos käytät tiedostonimessä useampaa sanaa, käytä niiden erottamiseen alaviivaa.
+Käytä esimerkiksi _hello_world.rs_ eikä _helloworld.rs_.
+
+Avaa juuri luomasi _main.rs_-tiedosto ja kirjoita siihen Listauksen 1-1 koodi.
 
 <Listing number="1-1" file-name="main.rs" caption="Ohjelma, joka tulostaa `Hello, world!`">
 
@@ -54,9 +62,8 @@ fn main() {
 
 </Listing>
 
-Tallenna tiedosto ja siirry takaisin terminaaliin **_~/projects/hello_world_**-hakemistossa. Käännä ja suorita ohjelma:
-
-Linuxilla tai macOS:llä:
+Tallenna tiedosto ja palaa terminaali-ikkunaan _~/projects/hello_world_-kansiossa. Linuxissa tai
+macOS:ssä kirjoita seuraavat komennot tiedoston kääntämiseksi ja suorittamiseksi:
 
 ```console
 $ rustc main.rs
@@ -64,26 +71,28 @@ $ ./main
 Hello, world!
 ```
 
-Windowsissa suorita ohjelma komennolla:
+Windowsissa kirjoita komento `.\main` `./main`-komennon sijaan:
 
 ```powershell
 > rustc main.rs
-> .\main.exe
+> .\main
 Hello, world!
 ```
 
-Riippumatta käyttöjärjestelmästäsi, terminaalissa tulisi näkyä:
+Käyttöjärjestelmästä riippumatta merkkijono `Hello, world!` pitäisi tulostua terminaaliin. Jos et
+näe tätä tulostetta, katso [Vianmääritys][troubleshooting]<!-- ignore --> -osio asennusluvusta
+saadaksesi apua.
 
-```text
-Hello, world!
-```
+Jos `Hello, world!` tulostui, onnittelut! Olet virallisesti kirjoittanut Rust-ohjelman. Se tekee
+sinusta Rust-ohjelmoijan—tervetuloa!
 
-Jos et näe tätä tulostetta, katso [vianmääritysosio][troubleshooting]<!-- ignore -->.
-Jos ohjelma tulosti `Hello, world!`, olet juuri kirjoittanut ensimmäisen Rust-ohjelmasi – onnittelut! 🎉
+<!-- Old headings. Do not remove or links may break. -->
 
-### Rust-ohjelman anatomia
+<a id="anatomy-of-a-rust-program"></a>
 
-Käydään läpi ohjelman osat yksityiskohtaisesti. Ensimmäinen koodilohko:
+### Rust-ohjelman rakenne
+
+Käydään tämä "Hello, world!" -ohjelma läpi yksityiskohtaisesti. Tässä on ensimmäinen palanen:
 
 ```rust
 fn main() {
@@ -91,65 +100,100 @@ fn main() {
 }
 ```
 
-Nämä rivit määrittävät funktion nimeltä **`main`**. Tämä funktio on erityinen: **kaikki Rust-ohjelmat käynnistyvät `main`-funktiosta**.
-Ensimmäinen rivi määrittää funktion, jolla ei ole parametreja eikä se palauta mitään.
+Nämä rivit määrittelevät funktion nimeltä `main`. `main`-funktio on erityinen: se on aina ensimmäinen
+koodi, joka suoritetaan jokaisessa ajettavassa Rust-ohjelmassa. Tässä ensimmäinen rivi julistaa
+`main`-nimisen funktion, jolla ei ole parametreja eikä se palauta mitään. Jos parametreja olisi,
+ne olisivat sulkeissa (`()`).
 
-Funktion runko on suljettu **`{}`**-merkkien sisään. Rust vaatii aaltosulkeet jokaisen funktion ympärille.
-On hyvä tyyli sijoittaa avauskaarisulje `main`-funktion määrittelyrivin perään ja jättää yksi välilyönti väliin.
+Funktion runko on kääritty `{}`-merkkeihin. Rust vaatii aaltosulkeet kaikkien funktioiden runkojen
+ympärille. On hyvä tyyli sijoittaa avaava aaltosulje samalle riville funktion julistuksen kanssa
+ja jättää niiden väliin yksi välilyönti.
 
-> Huom: Rust-projektien koodityylin yhtenäistämiseen voit käyttää **`rustfmt`**-työkalua, joka muotoilee koodin
-> automaattisesti. **`rustfmt`** on sisällytetty Rustin viralliseen jakeluun.
+> Huom: Jos haluat noudattaa yhtenäistä tyyliä Rust-projekteissa, voit käyttää automaattista
+> muotoilutyökalua nimeltä `rustfmt` muotoillaksesi koodisi tietyssä tyylissä (lisätietoa
+> `rustfmt`-työkalusta [Liitteessä D][devtools]<!-- ignore -->). Rust-tiimi on sisällyttänyt
+> tämän työkalun standardiin Rust-jakeluun, kuten `rustc`-kääntäjäkin, joten sen pitäisi olla jo
+> asennettuna tietokoneellesi!
 
-Funktion **`main`** sisällä on yksi rivi koodia:
+`main`-funktion rungossa on seuraava koodi:
 
 ```rust
 println!("Hello, world!");
 ```
 
-Tämä rivi tekee kaiken työn: se **tulostaa tekstin ruudulle**. Kolme tärkeää asiaa:
+Tämä rivi tekee kaiken työn tässä pienessä ohjelmassa: se tulostaa tekstiä näytölle. Tässä on
+kolme tärkeää yksityiskohtaa.
 
-1. **`println!` on Rust-makro**. Jos se olisi funktio, sen nimi olisi `println` ilman huutomerkkiä (`!`).
-2. **"Hello, world!"** on merkkijono, joka välitetään **`println!`**-makrolle.
-3. **Rivi päättyy puolipisteeseen (`;`)**, mikä päättää lausekkeen ja siirtyy seuraavaan.
+Ensinnäkin `println!` kutsuu Rust-makroa. Jos se olisi kutsunut funktiota, se kirjoitettaisiin
+`println` (ilman `!`-merkkiä). Rust-makrot ovat tapa kirjoittaa koodia, joka generoi koodia
+laajentaakseen Rustin syntaksia, ja käsittelemme niitä tarkemmin [Luvussa 20][ch20-macros]<!-- ignore -->.
+Toistaiseksi sinun tarvitsee vain tietää, että `!`-merkin käyttö tarkoittaa, että kutsut makroa
+tavallisen funktion sijaan ja että makrot eivät aina noudata samoja sääntöjä kuin funktiot.
 
-### Kääntäminen ja ajaminen ovat erillisiä vaiheita
+Toiseksi näet merkkijonon `"Hello, world!"`. Välitämme tämän merkkijonon argumenttina `println!`-makrolle,
+ja merkkijono tulostetaan näytölle.
 
-Rust on **etukäteen käännettävä (ahead-of-time compiled)** kieli, mikä tarkoittaa, että ohjelma on **käännettävä ennen suorittamista**.
-Ohjelma käännetään komennolla:
+Kolmanneksi päätteemme rivin puolipisteellä (`;`), joka osoittaa, että tämä lauseke on ohi ja
+seuraava on valmis alkamaan. Useimmat Rust-koodin rivit päättyvät puolipisteeseen.
+
+<!-- Old headings. Do not remove or links may break. -->
+<a id="compiling-and-running-are-separate-steps"></a>
+
+### Kääntäminen ja suorittaminen
+
+Suoritit juuri juuri luomasi ohjelman, joten tarkastellaan prosessin jokaista vaihetta.
+
+Ennen Rust-ohjelman suorittamista sinun on käännettävä se Rust-kääntäjällä kirjoittamalla `rustc`-komento
+ja välittämällä sille lähdekooditiedostosi nimi, näin:
 
 ```console
 $ rustc main.rs
 ```
 
-Kääntämisen jälkeen syntyy suoritettava **binaaritiedosto**. Näet sen hakemistosta:
+Jos sinulla on C- tai C++-tausta, huomaat, että tämä on samankaltaista kuin `gcc` tai `clang`.
+Onnistuneen kääntämisen jälkeen Rust tuottaa binäärisen ajettavan tiedoston.
 
-Linux/macOS:
+Linuxissa, macOS:ssä ja PowerShellissä Windowsilla näet ajettavan tiedoston kirjoittamalla `ls`-komennon
+komentorivilläsi:
 
 ```console
 $ ls
 main  main.rs
 ```
 
-Windows CMD:
+Linuxissa ja macOS:ssä näet kaksi tiedostoa. PowerShellissä Windowsilla näet samat kolme tiedostoa
+kuin CMD:ssä. CMD:ssä Windowsilla kirjoittaisit seuraavan:
 
 ```cmd
-> dir /B
+> dir /B %= the /B option says to only show the file names =%
 main.exe
 main.pdb
 main.rs
 ```
 
-Tiedostojen joukossa on **_main_**- (tai Windowsissa **_main.exe_**) -tiedosto, joka voidaan suorittaa komennolla:
+Tämä näyttää lähdekooditiedoston _.rs_-päätteellä, ajettavan tiedoston (_main.exe_ Windowsilla,
+mutta _main_ kaikilla muilla alustoilla) ja Windowsilla käytettäessä tiedoston, joka sisältää
+virheenkorjaustietoja _.pdb_-päätteellä. Tästä eteenpäin suoritat _main_- tai _main.exe_-tiedoston
+näin:
 
 ```console
-$ ./main    # tai Windowsissa: .\main.exe
+$ ./main # or .\main on Windows
 ```
 
-**Dynaamisesti tulkittavissa kielissä** (kuten Python, Ruby tai JavaScript) ohjelmat ajetaan **suoraan ilman kääntämistä**.  
-Rust toimii toisin: **voit kääntää ohjelman kerran ja jakaa sen ilman, että vastaanottajan täytyy asentaa Rustia.**
+Jos _main.rs_ on "Hello, world!" -ohjelmasi, tämä rivi tulostaa `Hello, world!` terminaaliisi.
 
-`rustc`-komennolla kääntäminen riittää pieniin ohjelmiin, mutta suuremmissa projekteissa haluat hallita riippuvuuksia
-ja tehdä kehityksestä tehokkaampaa. Tässä kohtaa **Cargo-työkalu** tulee avuksi! Seuraavaksi tutustumme **Cargoon**.
+Jos olet tottunut dynaamiseen kieleen, kuten Rubyyn, Pythoniin tai JavaScriptiin, et ehkä ole
+tottunut kääntämisen ja ohjelman suorittamisen erottamiseen eri vaiheiksi. Rust on _etukäteen
+käännettävä_ kieli, mikä tarkoittaa, että voit kääntää ohjelman ja antaa ajettavan tiedoston
+jollekin toiselle, ja he voivat suorittaa sen vaikka heillä ei olisi Rustia asennettuna. Jos
+annat jollekulle _.rb_-, _.py_- tai _.js_-tiedoston, he tarvitsevat Ruby-, Python- tai JavaScript-toteutuksen
+asennettuna (vastaavasti). Mutta näissä kielissä tarvitset vain yhden komennon ohjelmasi kääntämiseen
+ja suorittamiseen. Kaikki on kompromissi kielen suunnittelussa.
+
+Pelkkä kääntäminen `rustc`-kääntäjällä riittää yksinkertaisiin ohjelmiin, mutta projektisi kasvaessa
+haluat hallita kaikkia vaihtoehtoja ja helpottaa koodisi jakamista. Seuraavaksi esittelemme sinulle
+Cargo-työkalun, joka auttaa kirjoittamaan tosielämän Rust-ohjelmia.
 
 [troubleshooting]: ch01-01-installation.html#troubleshooting
 [devtools]: appendix-04-useful-development-tools.html
+[ch20-macros]: ch20-05-macros.html

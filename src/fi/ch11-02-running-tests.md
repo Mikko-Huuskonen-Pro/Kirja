@@ -1,152 +1,187 @@
-## Testien suorittamisen hallinta
+## Testien ajamisen hallinta
 
-Samalla tavalla kuin `cargo run` kääntää koodisi ja ajaa lopullisen binääritiedoston, `cargo test` kääntää koodisi **testitilassa** ja suorittaa testiohjelman. Oletuksena `cargo test` suorittaa kaikki testit **rinnakkain** ja kaappaa testien aikana syntyneen tulosteen, jotta testitulosten lukeminen on helpompaa. Voit kuitenkin muuttaa tätä käyttäytymistä antamalla komentoriviparametreja.
+Aivan kuten `cargo run` kääntää koodisi ja ajaa syntyneen binääritiedoston,
+`cargo test` kääntää koodisi testitilassa ja ajaa syntyneen testibinääritiedoston.
+`cargo test` -komennon tuottaman binääritiedoston oletuskäyttäytyminen on ajaa
+kaikki testit rinnakkain ja kaapata testien aikana syntynyt tuloste, estäen
+tulosteen näyttämisen ja helpottaen testituloksiin liittyvän tulosteen lukemista.
+Voit kuitenkin määrittää komentorivivalintoja muuttaaksesi tätä oletuskäyttäytymistä.
 
-Jotkut argumentit menevät suoraan `cargo test` -komennolle, ja toiset menevät testiohjelmalle. Erottamaan nämä toisistaan, listaa ensin `cargo test` -parametrit, lisää `--`-erotin ja sitten testiohjelman parametrit. Voit tarkastella `cargo test` -valintoja suorittamalla:
+Jotkut komentorivivalinnat menevät `cargo test` -komennolle ja jotkut syntyneelle
+testibinääritiedostolle. Erottaaksesi nämä kaksi argumenttityyppiä, listaa
+`cargo test` -komennolle menevät argumentit, sitten erotin `--` ja sitten
+testibinääritiedostolle menevät argumentit. `cargo test --help` näyttää valinnat,
+joita voit käyttää `cargo test` -komennolla, ja `cargo test -- --help` näyttää
+valinnat, joita voit käyttää erottimen jälkeen. Nämä valinnat on myös dokumentoitu
+[_The `rustc` Book_ -kirjan osiossa ”Tests”][tests].
 
-```console
-$ cargo test --help
-```
+[tests]: https://doc.rust-lang.org/rustc/tests/index.html
 
-ja testiohjelman valintoja suorittamalla:
+### Testien ajaminen rinnakkain tai peräkkäin
 
-```console
-$ cargo test -- --help
-```
+Kun ajat useita testejä, ne ajetaan oletusarvoisesti rinnakkain säikeitä käyttäen,
+mikä tarkoittaa, että ne valmistuvat nopeammin ja saat palautetta aikaisemmin.
+Koska testit ajetaan samaan aikaan, sinun täytyy varmistaa, etteivät testisi
+riipu toisistaan tai jaetusta tilasta, mukaan lukien jaettu ympäristö, kuten
+nykyinen työhakemisto tai ympäristömuuttujat.
 
-Näitä vaihtoehtoja on myös dokumentoitu [Rustc-kirjan testausosiossa](https://doc.rust-lang.org/rustc/tests/index.html).
+Esimerkiksi sanotaan, että jokainen testisi ajaa koodia, joka luo levylle
+tiedoston nimeltä _test-output.txt_ ja kirjoittaa siihen dataa. Sitten jokainen
+testi lukee tiedoston datan ja varmistaa, että tiedosto sisältää tietyn arvon,
+joka on eri jokaisessa testissä. Koska testit ajetaan samaan aikaan, yksi testi
+saattaa ylikirjoittaa tiedoston aikana, jolloin toinen testi kirjoittaa ja lukee
+tiedostoa. Toinen testi epäonnistuu silloin, ei siksi että koodi olisi virheellinen,
+vaan siksi että testit häiritsivät toisiaan ajettaessa rinnakkain. Yksi ratkaisu
+on varmistaa, että jokainen testi kirjoittaa eri tiedostoon; toinen ratkaisu on
+ajaa testit yksi kerrallaan.
 
-### Testien suorittaminen rinnakkain tai peräkkäin
-
-Oletuksena useita testejä ajetaan **rinnakkain** säikeitä hyödyntäen, jotta testit valmistuvat nopeammin. Koska testit suoritetaan samanaikaisesti, varmista, että testit eivät **riipu toisistaan** eivätkä jaetusta tilasta, kuten nykyisestä hakemistosta tai ympäristömuuttujista.
-
-Jos esimerkiksi jokainen testi kirjoittaa tiedostoon `_test-output.txt_`, mutta jokainen testi odottaa eri sisältöä, testit voivat **häiritä toisiaan** rinnakkaissuorituksessa. Yksi ratkaisu on kirjoittaa eri tiedostoihin, toinen on suorittaa testit **yksi kerrallaan**.
-
-Voit määrittää testisäikeiden määrän `--test-threads`-lipulla:
+Jos et halua ajaa testejä rinnakkain tai haluat tarkemman hallinnan käytettävien
+säikeiden määrästä, voit lähettää `--test-threads`-lipun ja haluamasi säikeiden
+määrän testibinääritiedostolle. Katso seuraava esimerkki:
 
 ```console
 $ cargo test -- --test-threads=1
 ```
 
-Tällöin testit suoritetaan **yksi kerrallaan**, jolloin ne eivät vaikuta toisiinsa. Tämä vie enemmän aikaa kuin rinnakkainen suoritus.
+Asetamme testisäikeiden määräksi `1`, kertoen ohjelmalle, ettei se käytä
+rinnakkaisuutta. Testien ajaminen yhdellä säikeellä kestää kauemmin kuin
+rinnakkain, mutta testit eivät häiritse toisiaan, jos ne jakavat tilaa.
 
-### Tulosteen näyttäminen
+### Funktioiden tulosteen näyttäminen
 
-Oletuksena Rustin testikirjasto **kaappaa** kaiken `println!`-tulosteen onnistuneilta testeilta. Jos testi epäonnistuu, tuloste näytetään virheilmoituksen yhteydessä.
+Oletusarvoisesti, jos testi läpäisee, Rustin testikirjasto kaappaa kaiken
+vakiotulosteeseen tulostetun. Esimerkiksi jos kutsumme `println!`:a testissä ja
+testi läpäisee, emme näe `println!`-tulostetta terminaalissa; näemme vain rivin,
+joka ilmaisee testin läpäisseen. Jos testi epäonnistuu, näemme kaiken
+vakiotulosteeseen tulostetun epäonnistumisviestin mukana.
 
-Esimerkiksi seuraava testiohjelma:
+Esimerkkinä listauksessa 11-10 on hassu funktio, joka tulostaa parametriarvonsa
+ja palauttaa 10, sekä testi, joka läpäisee, ja testi, joka epäonnistuu.
+
+<Listing number="11-10" file-name="src/lib.rs" caption="Testit funktiolle, joka kutsuu `println!`-makroa">
 
 ```rust,panics,noplayground
 {{#rustdoc_include ../listings/ch11-writing-automated-tests/listing-11-10/src/lib.rs}}
 ```
 
-tuottaa seuraavan tulosteen:
+</Listing>
+
+Kun ajamme nämä testit `cargo test` -komennolla, näemme seuraavan tulosteen:
 
 ```console
 {{#include ../listings/ch11-writing-automated-tests/listing-11-10/output.txt}}
 ```
 
-Huomaa, että `I got the value 4` -tulostetta **ei näy**, koska testi onnistui. Sen sijaan epäonnistuneen testin `I got the value 8` näkyy.
+Huomaa, ettei tässä tulosteessa missään näy `I got the value 4`, joka tulostetaan,
+kun läpäisevä testi ajetaan. Tuo tuloste on kaapattu. Epäonnistuneen testin
+tuloste `I got the value 8` näkyy testiyhteenvedon osiossa, joka näyttää myös
+testin epäonnistumisen syyn.
 
-Jos haluat nähdä **kaikkien testien tulosteen**, käytä `--show-output`-lippua:
+Jos haluamme nähdä läpäisevien testien tulostetut arvot, voimme kertoa Rustille
+näyttämään myös onnistuneiden testien tulosteen `--show-output`-lipulla:
 
 ```console
 $ cargo test -- --show-output
 ```
 
-Tällöin saat kaikki `println!`-tulosteet riippumatta testin lopputuloksesta.
+Kun ajamme listauksen 11-10 testit uudelleen `--show-output`-lipulla, näemme
+seuraavan tulosteen:
 
-### Testien osajoukon suorittaminen nimen perusteella
+```console
+{{#include ../listings/ch11-writing-automated-tests/output-only-01-show-output/output.txt}}
+```
 
-Jos sinulla on paljon testejä ja haluat ajaa vain tietyn osan niistä, voit antaa `cargo test` -komennolle yksittäisen testin **nimen** tai osan siitä.
+### Testien osajoukon ajaminen nimen perusteella
 
-Esimerkiksi meillä voi olla seuraavat testit:
+Koko testisarjan ajaminen voi joskus kestää kauan. Jos työskentelet tietyn alueen
+koodin parissa, saatat haluta ajaa vain kyseiseen koodiin liittyvät testit. Voit
+valita, mitkä testit ajetaan, antamalla `cargo test` -komennolle ajettavien
+testien nimen tai nimet argumenttina.
+
+Demonstroidaksemme, miten testien osajoukko ajetaan, luomme ensin kolme testiä
+`add_two`-funktiollemme, kuten listauksessa 11-11, ja valitsemme, mitkä niistä
+ajetaan.
+
+<Listing number="11-11" file-name="src/lib.rs" caption="Kolme testiä kolmella eri nimellä">
 
 ```rust,noplayground
 {{#rustdoc_include ../listings/ch11-writing-automated-tests/listing-11-11/src/lib.rs}}
 ```
 
-Kaikkien testien suorittaminen:
+</Listing>
+
+Jos ajamme testit antamatta argumentteja, kuten näimme aiemmin, kaikki testit
+ajetaan rinnakkain:
 
 ```console
 {{#include ../listings/ch11-writing-automated-tests/listing-11-11/output.txt}}
 ```
 
-#### Yksittäisen testin ajaminen
+#### Yksittäisten testien ajaminen
 
-Voit ajaa vain yhden testin antamalla sen nimen:
-
-```console
-$ cargo test one_hundred
-```
-
-Tulostus:
+Voimme antaa `cargo test` -komennolle minkä tahansa testifunktion nimen ajaa
+vain kyseisen testin:
 
 ```console
 {{#include ../listings/ch11-writing-automated-tests/output-only-02-single-test/output.txt}}
 ```
 
-Huomaa, että vain `one_hundred` ajettiin, ja muut testit **suodatettiin pois**.
+Vain `one_hundred`-niminen testi ajettiin; kaksi muuta testiä ei vastannut
+tätä nimeä. Testituloste kertoo, että meillä oli enemmän testejä, joita ei
+ajettu, näyttämällä lopussa `2 filtered out`.
 
-#### Useiden testien ajaminen suodattamalla
+Emme voi määrittää useita testinimiä tällä tavalla; vain ensimmäistä `cargo
+test` -komennolle annettua arvoa käytetään. Mutta on tapa ajaa useita testejä.
 
-Voit myös suodattaa testejä osittaisella nimellä:
+#### Suodatus useiden testien ajamiseen
 
-```console
-$ cargo test add
-```
-
-Tämä ajaa **kaikki testit, joiden nimessä on "add"**, ja suodattaa pois muut:
+Voimme määrittää osan testinimestä, ja jokainen testi, jonka nimi vastaa tätä
+arvoa, ajetaan. Esimerkiksi koska kahden testimme nimi sisältää `add`, voimme
+ajaa nämä kaksi ajamalla `cargo test add`:
 
 ```console
 {{#include ../listings/ch11-writing-automated-tests/output-only-03-multiple-tests/output.txt}}
 ```
 
-Lisäksi voit suorittaa **kaikki testit tietystä moduulista** suodattamalla moduulin nimen perusteella.
+Tämä komento ajoi kaikki testit, joiden nimessä on `add`, ja suodatti pois
+`one_hundred`-nimisen testin. Huomaa myös, että moduuli, jossa testi esiintyy,
+tulee osaksi testin nimeä, joten voimme ajaa kaikki moduulin testit suodattamalla
+moduulin nimen perusteella.
 
-### Tiettyjen testien ohittaminen
+<!-- Old headings. Do not remove or links may break. -->
 
-Jos tietyt testit ovat **aikaavieviä**, voit merkitä ne `#[ignore]`-attribuutilla, jolloin ne **eivät ajeta oletuksena**:
+<a id="ignoring-some-tests-unless-specifically-requested"></a>
+
+### Testien ohittaminen, ellei niitä erikseen pyydetä
+
+Joskus muutama tietty testi voi olla hyvin aikaa vievä suorittaa, joten saatat
+haluta jättää ne pois useimmista `cargo test` -ajoista. Sen sijaan, että
+listaisit argumentteina kaikki testit, jotka haluat ajaa, voit merkitä aikaa
+vievät testit `ignore`-attribuutilla poissulkemista varten, kuten tässä:
+
+<span class="filename">Filename: src/lib.rs</span>
 
 ```rust,noplayground
 {{#rustdoc_include ../listings/ch11-writing-automated-tests/no-listing-11-ignore-a-test/src/lib.rs:here}}
 ```
 
-Kun suoritat `cargo test`, `expensive_test` merkitään ohitetuksi:
+`#[test]`-merkinnän jälkeen lisäämme `#[ignore]`-rivin testiin, jonka haluamme
+jättää pois. Nyt kun ajamme testejämme, `it_works` ajetaan, mutta `expensive_test`
+ei:
 
 ```console
 {{#include ../listings/ch11-writing-automated-tests/no-listing-11-ignore-a-test/output.txt}}
 ```
 
-Voit suorittaa **vain ohitetut testit** komennolla:
-
-```console
-$ cargo test -- --ignored
-```
-
-Tulostus:
+`expensive_test`-funktio on listattu `ignored`-tilassa. Jos haluamme ajaa vain
+ohitetut testit, voimme käyttää `cargo test -- --ignored`:
 
 ```console
 {{#include ../listings/ch11-writing-automated-tests/output-only-04-running-ignored/output.txt}}
 ```
 
-Jos haluat ajaa **kaikki testit** (mukaan lukien ohitetut), käytä:
-
-```console
-$ cargo test -- --include-ignored
-```
-
-Tällä tavoin voit nopeuttaa testejä keskittymällä oleellisiin testejä kehitystyön aikana ja ajaa pidemmät testit vain tarvittaessa.
-
----
-
-## Yhteenveto
-
-Tässä osiossa opimme:
-
-- **Kuinka hallita testien rinnakkaisuutta** `--test-threads`-valinnalla.
-- **Miten näyttää testitulosteet myös onnistuneista testeistä** `--show-output`-valinnalla.
-- **Kuinka suorittaa yksittäisiä testejä** nimeämällä ne `cargo test` -komennossa.
-- **Kuinka merkitä testit ohitettaviksi** `#[ignore]`-attribuutilla ja suorittaa ne tarvittaessa.
-
-Seuraavaksi tutkimme **integraatiotestien** käyttöä testikoodin järjestämiseen tehokkaasti!
+Hallitsemalla, mitkä testit ajetaan, voit varmistaa, että `cargo test` -tulokset
+palautuvat nopeasti. Kun olet siinä vaiheessa, että on järkevää tarkistaa
+`ignored`-testien tulokset ja sinulla on aikaa odottaa tuloksia, voit ajaa
+`cargo test -- --ignored` sen sijaan. Jos haluat ajaa kaikki testit riippumatta
+siitä, ovatko ne ohitettuja vai eivät, voit ajaa `cargo test -- --include-ignored`.

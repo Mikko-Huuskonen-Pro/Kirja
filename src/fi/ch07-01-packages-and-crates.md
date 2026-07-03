@@ -1,22 +1,22 @@
-## Paketit ja laatikot
+## Paketit ja crate:t
 
-Ensimmäisenä käsittelemme moduulijärjestelmän perusosia: paketteja ja laatikoita (_crates_).
+Moduulijärjestelmän ensimmäiset osat, joita käsittelemme, ovat paketit ja crate:t.
 
-_Laatikko_ (_crate_) on pienin yksikkö, jota Rustin kääntäjä käsittelee kerrallaan. Vaikka käyttäisit `rustc`-komentoa ilman Cargoa ja kääntäisit yhden lähdekooditiedoston (kuten luvussa 1 teimme), kääntäjä pitää sitä yksittäisenä laatikkona. Laatikoihin voi kuulua moduuleita, ja moduulit voivat olla määriteltyinä muissa tiedostoissa, jotka käännetään osana laatikkoa.
+_Crate_ on pienin määrä koodia, jota Rust-kääntäjä käsittelee kerrallaan. Vaikka käyttäisit `rustc`-komentoa `cargo`-komennon sijaan ja antaisit yhden lähdekooditiedoston (kuten teimme jo [”Rust-ohjelman perusteet”][basics]<!-- ignore
+-->-kohdassa luvussa 1), kääntäjä pitää kyseistä tiedostoa crate:na. Crate:t voivat sisältää moduuleja, ja moduulit voidaan määritellä muissa tiedostoissa, jotka käännetään crate:n mukana, kuten tulemme näkemään seuraavissa osioissa.
 
-Laatikot voivat olla kahdenlaisia: binäärilaatikoita ja kirjastolaatikoita.  
-- **Binäärilaatikot** kääntyvät suoritettavaksi ohjelmaksi, kuten komentorivityökalu tai palvelin. Jokaisessa binäärilaatikossa täytyy olla `main`-funktio, joka määrittelee ohjelman suorituksen aloituskohdan.  
-- **Kirjastolaatikot** eivät sisällä `main`-funktiota eivätkä käänny suoritettavaksi tiedostoksi. Sen sijaan ne tarjoavat toiminnallisuutta, jota muut projektit voivat käyttää. Esimerkiksi `rand`-kirjastolaatikko luvussa 2 tarjosi satunnaislukujen generoimiseen liittyviä toimintoja.
+Crate voi olla jommassakummassa muodossa: binääricrate tai kirjastocrate.
+_Binääricrate:t_ ovat ohjelmia, jotka voidaan kääntää ajettavaksi suoritettavaksi tiedostoksi, kuten komentoriviohjelma tai palvelin. Jokaisella on oltava `main`-funktio, joka määrittää, mitä tapahtuu suoritettavan käynnistyessä. Kaikki tähän mennessä luomamme crate:t ovat olleet binääricrate:ja.
 
-_Laatikon juuri_ on lähdekooditiedosto, josta Rustin kääntäjä aloittaa ja josta muodostuu laatikon päämoduuli.
+_Kirjastocrate:illa_ ei ole `main`-funktiota, eivätkä ne käänny suoritettaviksi tiedostoiksi. Sen sijaan ne määrittelevät toiminnallisuutta, joka on tarkoitettu jaettavaksi useiden projektien kesken. Esimerkiksi `rand`-crate, jota käytimme [luvussa 2][rand]<!-- ignore -->, tarjoaa toiminnallisuutta satunnaisten lukujen generointiin. Useimmiten kun rustilaiset sanovat ”crate”, he tarkoittavat kirjastocrate:a, ja he käyttävät sanaa ”crate” vaihdettavasti yleisen ohjelmointikäsitteen ”kirjasto” kanssa.
 
-**Paketti** on yksi tai useampi laatikko, joka tarjoaa tietyn toiminnallisuuden. Paketti sisältää _Cargo.toml_-tiedoston, joka määrittelee, miten laatikot kootaan ja rakennetaan. Cargo itse on paketti, joka sisältää sekä binäärilaatikon (komentorivityökalun) että kirjastolaatikon, jota muut ohjelmat voivat käyttää.
+_Crate-juuri_ on lähdekooditiedosto, josta Rust-kääntäjä aloittaa ja joka muodostaa crate:si juurimoduulin (käsittelemme moduuleja perusteellisesti kohdassa [”Laajuuden ja yksityisyyden hallinta moduuleilla”][modules]<!-- ignore -->).
 
-Paketti voi sisältää useita binäärilaatikoita, mutta enintään yhden kirjastolaatikon. Jokaisen paketin täytyy sisältää vähintään yksi laatikko, joko binääri- tai kirjastolaatikko.
+_Paketti_ on yhden tai useamman crate:n kokoelma, joka tarjoaa tietyn toiminnallisuuden. Paketti sisältää _Cargo.toml_-tiedoston, joka kuvaa, miten nämä crate:t rakennetaan. Cargo on itse asiassa paketti, joka sisältää binääricrate:n komentorivityökalulle, jota olet käyttänyt koodisi kääntämiseen. Cargo-paketti sisältää myös kirjastocrate:n, josta binääricrate riippuu. Muut projektit voivat riippua Cargo-kirjastocrate:sta käyttääkseen samaa logiikkaa, jota Cargo-komentorivityökalu käyttää.
 
-### Paketin luominen
+Paketti voi sisältää niin monta binääricrate:a kuin haluat, mutta enintään yhden kirjastocrate:n. Paketissa on oltava vähintään yksi crate, olipa se kirjasto- tai binääricrate.
 
-Kun suoritat komennon `cargo new my-project`, tapahtuu seuraavaa:
+Käydään läpi, mitä tapahtuu, kun luomme paketin. Ensin annamme komennon `cargo new my-project`:
 
 ```console
 $ cargo new my-project
@@ -28,8 +28,10 @@ $ ls my-project/src
 main.rs
 ```
 
-Tässä `cargo new` luo paketin, jossa on _Cargo.toml_-tiedosto ja _src/main.rs_. Koska paketti ei sisällä _src/lib.rs_-tiedostoa, se on binäärilaatikko. Jos kansiossa olisi myös _src/lib.rs_, paketti sisältäisi sekä binäärilaatikon että kirjastolaatikon.
+Kun olemme suorittaneet `cargo new my-project`, käytämme `ls`-komentoa nähdäksemme, mitä Cargo luo. _my-project_-hakemistossa on _Cargo.toml_-tiedosto, joka muodostaa paketin. Siellä on myös _src_-hakemisto, joka sisältää _main.rs_-tiedoston. Avaa _Cargo.toml_ tekstieditorissasi ja huomaa, ettei siinä mainita _src/main.rs_:ää. Cargo noudattaa käytäntöä, jonka mukaan _src/main.rs_ on binääricrate:n crate-juuri, jolla on sama nimi kuin paketilla. Vastaavasti Cargo tietää, että jos pakettihakemisto sisältää _src/lib.rs_:n, paketti sisältää kirjastocrate:n, jolla on sama nimi kuin paketilla, ja _src/lib.rs_ on sen crate-juuri. Cargo välittää crate-juuritiedostot `rustc`-kääntäjälle kirjaston tai binäärin rakentamiseksi.
 
-Voit myös lisätä useita binäärilaatikoita luomalla tiedostoja _src/bin/_-hakemistoon. Jokainen tiedosto _src/bin/-hakemistossa muodostaa oman binäärilaatikkonsa.
+Tässä meillä on paketti, joka sisältää vain _src/main.rs_:n, eli se sisältää vain binääricrate:n nimeltä `my-project`. Jos paketti sisältää sekä _src/main.rs_:n että _src/lib.rs_:n, siinä on kaksi crate:a: binääri ja kirjasto, molemmilla sama nimi kuin paketilla. Paketissa voi olla useita binääricrate:ja sijoittamalla tiedostoja _src/bin_-hakemistoon: jokainen tiedosto on erillinen binääricrate.
 
-Seuraavaksi tarkastelemme moduuleita ja sitä, kuinka ne vaikuttavat näkyvyysalueisiin ja tietoturvaan.
+[basics]: ch01-02-hello-world.html#rust-program-basics
+[modules]: ch07-02-defining-modules-to-control-scope-and-privacy.html
+[rand]: ch02-00-guessing-game-tutorial.html#generating-a-random-number

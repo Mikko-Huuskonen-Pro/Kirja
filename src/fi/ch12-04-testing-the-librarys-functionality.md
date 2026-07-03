@@ -1,155 +1,214 @@
-## Kirjaston toiminnallisuuden kehittäminen testivetoisesti
+<!-- Old headings. Do not remove or links may break. -->
+<a id="developing-the-librarys-functionality-with-test-driven-development"></a>
 
-Nyt kun olemme siirtäneet ohjelmalogiikan tiedostoon _src/lib.rs_ ja jättäneet
-argumenttien käsittelyn sekä virheiden hallinnan _src/main.rs_-tiedostoon, on
-paljon helpompaa kirjoittaa testejä koodin keskeiselle toiminnallisuudelle.
-Voimme kutsua funktioita suoraan erilaisilla argumenteilla ja tarkistaa niiden
-paluuarvot ilman, että tarvitsemme suorittaa binääriä komentoriviltä.
+## Toiminnallisuuden lisääminen testivetoisella kehityksellä
 
-Tässä osiossa lisäämme hakutoiminnallisuuden `minigrep`-ohjelmaan
-testivetoisen kehityksen (TDD) prosessin avulla:
+Nyt kun hakulogiikka on _src/lib.rs_-tiedostossa erillään `main`-funktiosta,
+on paljon helpompaa kirjoittaa testejä koodimme ydintoiminnallisuudelle. Voimme
+kutsua funktioita suoraan eri argumenteilla ja tarkistaa palautusarvot kutsumatta
+binääriämme komentoriviltä.
 
-1. Kirjoitetaan testi, joka epäonnistuu, ja ajetaan se varmistaaksemme, että
-   se epäonnistuu odotetusta syystä.
-2. Kirjoitetaan tai muokataan koodia juuri sen verran, että testi menee läpi.
-3. Refaktoroidaan lisätty tai muutettu koodi varmistaen, että testit yhä toimivat.
-4. Palataan kohtaan 1 ja toistetaan!
+Tässä osiossa lisäämme hakulogiikan `minigrep`-ohjelmaan käyttäen testivetoista
+kehitysprosessia (*test-driven development*, TDD) seuraavilla vaiheilla:
 
-Vaikka tämä on vain yksi monista tavoista kirjoittaa ohjelmistoa, TDD auttaa
-rakentamaan testikattavuutta ja ohjaa koodin suunnittelua. Kun testi kirjoitetaan
-ennen toiminnallisuuden toteutusta, se varmistaa, että testit pysyvät ajan tasalla
-ja kattavat koko kehitysprosessin.
+1. Kirjoita testi, joka epäonnistuu, ja aja se varmistaaksesi, että se epäonnistuu
+   odottamastasi syystä.
+2. Kirjoita tai muokkaa juuri tarpeeksi koodia, jotta uusi testi läpäisee.
+3. Refaktoroi juuri lisäämäsi tai muuttamasi koodi ja varmista, että testit
+   jatkavat läpäisemistä.
+4. Toista vaiheesta 1!
 
-Toteutamme hakufunktion, joka etsii hakusanaa tiedoston sisällöstä ja palauttaa
-vain ne rivit, jotka sisältävät kyseisen hakusanan. Lisätään tämä toiminnallisuus
-`search`-nimiseen funktioon.
+Vaikka se on vain yksi monista tavoista kirjoittaa ohjelmistoa, TDD voi auttaa
+ohjaamaan koodin suunnittelua. Testin kirjoittaminen ennen koodia, joka saa
+testin läpäisemään, auttaa ylläpitämään korkeaa testikattavuutta koko prosessin
+ajan.
 
-### Kirjoitetaan epäonnistuva testi
+Testivetoisesti toteutamme toiminnallisuuden, joka todella etsii hakumerkkijonoa
+tiedoston sisällöstä ja tuottaa listan riveistä, jotka vastaavat hakua. Lisäämme
+tämän toiminnallisuuden `search`-nimiseen funktioon.
 
-Poistetaan _src/lib.rs_ ja _src/main.rs_ -tiedostoista aiemmin lisätyt `println!`-
-komennot, koska emme enää tarvitse niitä. Lisäämme sen jälkeen _src/lib.rs_-tiedostoon
-testimoduulin, kuten teimme [luvussa 11][ch11-anatomy].
+### Epäonnistuvan testin kirjoittaminen
 
-Alla oleva testi määrittelee, miten `search`-funktion pitäisi käyttäytyä: sen
-tulisi ottaa vastaan hakusana ja etsittävä teksti, ja palauttaa vain ne rivit,
-joissa hakusana esiintyy. **Listing 12-15** näyttää tämän testin:
+_src/lib.rs_-tiedostossa lisäämme `tests`-moduulin testifunktiolla, kuten teimme
+luvussa 11. Testifunktio määrittää käyttäytymisen, jonka haluamme `search`-
+funktiolla olevan: Se ottaa haun ja haettavan tekstin ja palauttaa vain rivit
+tekstistä, jotka sisältävät haun. Listaus 12-15 näyttää tämän testin.
+
+<Listing number="12-15" file-name="src/lib.rs" caption="Epäonnistuvan testin luominen `search`-funktiolle toiminnallisuudelle, jota toivoisimme olevan">
 
 ```rust,ignore,does_not_compile
 {{#rustdoc_include ../listings/ch12-an-io-project/listing-12-15/src/lib.rs:here}}
 ```
 
-Testi etsii merkkijonoa `"duct"`. Haettavassa tekstissä on kolme riviä, joista
-vain yksi sisältää `"duct"`-sanan. Testissä varmistamme, että `search` palauttaa
-vain tämän rivin.
+</Listing>
 
-Tällä hetkellä emme voi vielä suorittaa testiä, koska `search`-funktiota ei
-ole olemassa! TDD-periaatteen mukaisesti lisäämme juuri sen verran koodia,
-että testi kääntyy ja suoritetaan. Alla **Listing 12-16** näyttää, kuinka lisäämme
-`search`-funktion, joka toistaiseksi vain palauttaa tyhjän vektorin:
+Tämä testi etsii merkkijonoa `"duct"`. Haettava teksti on kolme riviä, joista
+vain yksi sisältää `"duct"` (huomaa, että kenoviiva avaavan lainausmerkin
+jälkeen kertoo Rustille olla laittamasta rivinvaihtomerkkiä tämän merkkijonoliteraalin
+sisällön alkuun). Varmistamme, että `search`-funktion palauttama arvo sisältää
+vain odottamamme rivin.
+
+Jos ajamme tämän testin, se epäonnistuu tällä hetkellä, koska `unimplemented!`-
+makro paniikkiutuu viestillä ”not implemented”. TDD-periaatteiden mukaisesti
+otamme pienen askeleen lisäämällä juuri tarpeeksi koodia, jotta testi ei paniikkiudu
+funktiota kutsuttaessa määrittelemällä `search`-funktion palauttamaan aina tyhjän
+vektorin, kuten listauksessa 12-16. Sitten testin pitäisi kääntyä ja epäonnistua,
+koska tyhjä vektori ei vastaa vektoria, joka sisältää rivin `"safe, fast,
+productive."`.
+
+<Listing number="12-16" file-name="src/lib.rs" caption="Juuri tarpeeksi `search`-funktion määrittelyä, jotta sen kutsuminen ei paniikkiudu">
 
 ```rust,noplayground
 {{#rustdoc_include ../listings/ch12-an-io-project/listing-12-16/src/lib.rs:here}}
 ```
 
-`search`-funktion määrityksessä meidän täytyy määrittää elinikä `'a`, jota käytetään
-`contents`-parametrille ja palautusarvolle. Tämä varmistaa, että palautettava
-vektori sisältää merkkijonoviipaleita, jotka viittaavat `contents`-parametrin
-viipaleisiin.
+</Listing>
 
-Nyt voimme ajaa testin:
+Keskustellaan nyt, miksi meidän täytyy määrittää eksplisiittinen elinikä `'a`
+`search`-funktion allekirjoituksessa ja käyttää sitä `contents`-argumentin ja
+palautusarvon kanssa. Muista luvussa 10, että elinikäparametrit määrittävät,
+mikä argumentin elinikä on yhdistetty palautusarvon elinikään. Tässä tapauksessa
+ilmaisemme, että palautetun vektorin pitäisi sisältää merkkijonoviipaleita,
+jotka viittaavat `contents`-argumentin viipaleisiin (eivät `query`-argumentin
+viipaleisiin).
+
+Toisin sanoen kerromme Rustille, että `search`-funktion palauttama data elää
+niin kauan kuin `search`-funktiolle `contents`-argumentissa annettu data. Tämä
+on tärkeää! Viipaleen _viittaaman_ datan täytyy olla kelvollista, jotta viittaus
+on kelvollinen; jos kääntäjä olettaisi tekevämme merkkijonoviipaleita `query`-
+argumentista `contents`-argumentin sijaan, se tekisi turvallisuustarkistuksensa
+väärin.
+
+Jos unohdamme elinikämerkinnät ja yritämme kääntää tämän funktion, saamme tämän
+virheen:
 
 ```console
-{{#include ../listings/ch12-an-io-project/listing-12-16/output.txt}}
+{{#include ../listings/ch12-an-io-project/output-only-02-missing-lifetimes/output.txt}}
 ```
 
-Testi epäonnistui, kuten odotettiin. Seuraavaksi saamme sen onnistumaan!
+Rust ei voi tietää, kumpaa kahdesta parametrista tarvitsemme tulosteeseen, joten
+meidän täytyy kertoa se eksplisiittisesti. Huomaa, että ohjeteksti ehdottaa
+saman elinikäparametrin määrittämistä kaikille parametreille ja tulostyypille,
+mikä on virheellistä! Koska `contents` on parametri, joka sisältää kaiken
+tekstimme ja haluamme palauttaa osat siitä tekstistä, jotka vastaavat, tiedämme,
+että vain `contents` tulisi yhdistää palautusarvoon elinikäsyntaksilla.
 
-### Kirjoitetaan koodi, joka saa testin läpäisemään
+Muut ohjelmointikielet eivät vaadi argumenttien yhdistämistä palautusarvoihin
+allekirjoituksessa, mutta tästä käytännöstä tulee helpompaa ajan myötä. Saatat
+haluta verrata tätä esimerkkiä luvun 10 osion [”Viittausten validointi
+elinien avulla”][validating-references-with-lifetimes]<!-- ignore --> esimerkkeihin.
 
-Testi epäonnistuu tällä hetkellä, koska `search` palauttaa aina tyhjän vektorin.
-Korjataksemme tämän lisäämme seuraavat vaiheet:
+### Testin läpäisevän koodin kirjoittaminen
 
-1. Käydään läpi jokainen rivi `contents`-muuttujasta.
-2. Tarkistetaan, sisältääkö rivi haettavan hakusanan.
-3. Jos kyllä, lisätään se palautettavaan listaan.
-4. Muussa tapauksessa ei tehdä mitään.
-5. Palautetaan hakutulokset sisältävä lista.
+Tällä hetkellä testimme epäonnistuu, koska palautamme aina tyhjän vektorin.
+Korjataksemme sen ja toteuttaaksemme `search`-funktion, ohjelmamme täytyy seurata
+näitä vaiheita:
+
+1. Käy läpi jokainen rivi sisällöstä.
+2. Tarkista, sisältääkö rivi hakumerkkijonomme.
+3. Jos sisältää, lisää se palautettavien arvojen listaan.
+4. Jos ei sisällä, älä tee mitään.
+5. Palauta vastaavien tulosten lista.
+
+Työstetään jokainen vaihe, alkaen rivien läpikäynnistä.
 
 #### Rivien läpikäynti `lines`-metodilla
 
-Rust tarjoaa `lines`-metodin, joka helpottaa tekstin käsittelyä rivitasolla.
-Seuraava koodi (Listing 12-17) esittää rivien iteroimisen:
+Rustissa on hyödyllinen metodi merkkijonojen rivi riviltä -iterointiin, sopivasti
+nimeltä `lines`, joka toimii kuten listauksessa 12-17. Huomaa, että tämä ei vielä
+käänny.
+
+<Listing number="12-17" file-name="src/lib.rs" caption="Jokaisen rivin läpikäynti `contents`-parametrissa">
 
 ```rust,ignore,does_not_compile
 {{#rustdoc_include ../listings/ch12-an-io-project/listing-12-17/src/lib.rs:here}}
 ```
 
-`lines` palauttaa iteraattorin, jonka avulla voimme käsitellä jokaista riviä erikseen.
+</Listing>
 
-#### Hakusanan etsiminen `contains`-metodilla
+`lines`-metodi palauttaa iteraattorin. Käsittelemme iteraattoreita syvällisesti
+luvussa 13. Mutta muista, että näit tämän iteraattorin käyttötavan listauksessa
+3-5, jossa käytimme `for`-silmukkaa iteraattorin kanssa suorittaaksemme koodia
+jokaiselle kokoelman kohteelle.
 
-Lisätään hakutoiminnallisuus hyödyntämällä `contains`-metodia:
+#### Haun etsiminen jokaiselta riviltä
+
+Seuraavaksi tarkistamme, sisältääkö nykyinen rivi hakumerkkijonomme. Onneksi
+merkkijonoilla on hyödyllinen metodi nimeltä `contains`, joka tekee tämän
+meille! Lisää `contains`-metodin kutsu `search`-funktioon, kuten listauksessa
+12-18. Huomaa, että tämä ei vielä käänny.
+
+<Listing number="12-18" file-name="src/lib.rs" caption="Toiminnallisuuden lisääminen tarkistamaan, sisältääkö rivi `query`-merkkijonon">
 
 ```rust,ignore,does_not_compile
 {{#rustdoc_include ../listings/ch12-an-io-project/listing-12-18/src/lib.rs:here}}
 ```
 
-Nyt funktio tarkistaa, sisältääkö rivi hakusanan.
+</Listing>
 
-#### Osumien tallentaminen
+Tällä hetkellä rakennamme toiminnallisuutta. Saadaksemme koodin kääntymään
+meidän täytyy palauttaa arvo rungosta, kuten ilmaisimme funktion allekirjoituksessa.
 
-Seuraavaksi lisäämme mekanismin osumien tallentamiseen:
+#### Vastaavien rivien tallentaminen
+
+Viimeistelläksemme tämän funktion tarvitsemme tavan tallentaa vastaavat rivit,
+jotka haluamme palauttaa. Voimme tehdä muuttuvan vektorin ennen `for`-silmukkaa
+ja kutsua `push`-metodia tallentaaksemme `line`-rivin vektoriin. `for`-silmukan
+jälkeen palautamme vektorin, kuten listauksessa 12-19.
+
+<Listing number="12-19" file-name="src/lib.rs" caption="Vastaavien rivien tallentaminen, jotta voimme palauttaa ne">
 
 ```rust,ignore
 {{#rustdoc_include ../listings/ch12-an-io-project/listing-12-19/src/lib.rs:here}}
 ```
 
-Nyt `search` palauttaa vain ne rivit, jotka sisältävät hakusanan. Ajetaan testi:
+</Listing>
+
+Nyt `search`-funktion pitäisi palauttaa vain rivit, jotka sisältävät `query`-merkkijonon,
+ja testimme pitäisi läpäistä. Ajetaan testi:
 
 ```console
 {{#include ../listings/ch12-an-io-project/listing-12-19/output.txt}}
 ```
 
-Testi onnistui!
+Testimme läpäisi, joten tiedämme, että se toimii!
 
-Seuraavaksi voisimme optimoida `search`-funktion käyttämään iterointia tehokkaammin,
-mutta palaamme tähän [luvussa 13][ch13-iterators], jossa käsittelemme iterointia
-yksityiskohtaisemmin.
+Tässä vaiheessa voisimme harkita refaktorointimahdollisuuksia hakufunktion
+toteutuksessa pitäen testit läpäisevinä säilyttääksemme saman toiminnallisuuden.
+Hakufunktion koodi ei ole liian huono, mutta se ei hyödynnä iteraattoreiden
+hyödyllisiä ominaisuuksia. Palaamme tähän esimerkkiin luvussa 13, jossa tutkimme
+iteraattoreita yksityiskohtaisesti, ja katsomme, miten sitä voisi parantaa.
 
-### `search`-funktion käyttäminen `run`-funktiossa
-
-Nyt kun `search` toimii ja on testattu, kutsumme sitä `run`-funktiosta. Seuraavassa
-koodissa (Listing 12-20) kutsutaan `search`-funktiota ja tulostetaan osumat:
-
-```rust,ignore
-{{#rustdoc_include ../listings/ch12-an-io-project/no-listing-02-using-search-in-run/src/lib.rs:here}}
-```
-
-Nyt voimme kokeilla ohjelmaa!
-
-Etsitään sanaa `"frog"`, jonka pitäisi palauttaa yksi rivi:
+Nyt koko ohjelman pitäisi toimia! Kokeillaan sitä, ensin sanalla, joka pitäisi
+palauttaa täsmälleen yksi rivi Emily Dickinsonin runosta: _frog_.
 
 ```console
 {{#include ../listings/ch12-an-io-project/no-listing-02-using-search-in-run/output.txt}}
 ```
 
-Etsitään sanaa `"body"`, jonka pitäisi palauttaa useita rivejä:
+Siistiä! Kokeillaan sitten sanaa, joka vastaa useita rivejä, kuten _body_:
 
 ```console
 {{#include ../listings/ch12-an-io-project/output-only-03-multiple-matches/output.txt}}
 ```
 
-Etsitään sanaa, joka ei esiinny tiedostossa:
+Ja lopuksi varmistetaan, ettei saamme rivejä, kun etsimme sanaa, jota ei ole
+missään runossa, kuten _monomorphization_:
 
 ```console
 {{#include ../listings/ch12-an-io-project/output-only-04-no-matches/output.txt}}
 ```
 
-Kaikki toimii! Olemme rakentaneet oman miniversiomme klassisesta `grep`-työkalusta
-ja oppineet paljon Rustin ohjelmoinnista.
+Erinomaista! Olemme rakentaneet oman pienen version klassisesta työkalusta ja
+oppineet paljon sovellusten rakentamisesta. Olemme myös oppineet hieman tiedoston
+syöttöä ja tulostusta, eliniöitä, testausta ja komentorivin jäsentämistä.
 
-Seuraavaksi opimme, miten ympäristömuuttujia ja **standard error** -tulostusta
-voidaan hyödyntää komentoriviohjelmissa.
+Viimeistelläksemme tämän projektin demonstroimme lyhyesti, miten työskennellä
+ympäristömuuttujien kanssa ja miten tulostaa vakiovirheeseen, molemmat hyödyllisiä
+kirjoitettaessa komentoriviohjelmia.
 
+[validating-references-with-lifetimes]: ch10-03-lifetime-syntax.html#validating-references-with-lifetimes
 [ch11-anatomy]: ch11-01-writing-tests.html#the-anatomy-of-a-test-function
+[ch10-lifetimes]: ch10-03-lifetime-syntax.html
+[ch3-iter]: ch03-05-control-flow.html#looping-through-a-collection-with-for
 [ch13-iterators]: ch13-02-iterators.html
